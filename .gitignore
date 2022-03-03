@@ -1,0 +1,5 @@
+.coda.json
+.coda-credentials.json
+scratch
+node_modules
+package-lock.json
