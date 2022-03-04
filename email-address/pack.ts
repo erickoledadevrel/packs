@@ -26,9 +26,8 @@ pack.addFormula({
   resultType: coda.ValueType.Boolean,
   examples: [
     { params: ["alice@example.com"], result: true },
-    { params: ["Alice Smith <alice@example.com>"], result: true },
-    { params: ["nope@"], result: false },
-    { params: ["Nuh uh"], result: false },
+    { params: ["Alice <alice@example.com>"], result: true },
+    { params: ["Chair"], result: false },
   ],
   execute: async function ([input], context) {
     return parse(input) !== null;
@@ -46,6 +45,11 @@ pack.addFormula({
     }),
   ],
   resultType: coda.ValueType.Boolean,
+  examples: [
+    { params: ["alice@example.com, bob@example.com"], result: true },
+    { params: ["Alice <alice@example.com>, Bob <bob@example.com>"], result: true },
+    { params: ["Chair, Desk"], result: false },
+  ],
   execute: async function ([input], context) {
     return parseList(input) !== null;
   },
@@ -53,7 +57,7 @@ pack.addFormula({
 
 pack.addFormula({
   name: "EmailAddress",
-  description: "Gets the email address from an email string.",
+  description: "Gets the email address from an email string. Returns an error if the input is not a single email.",
   parameters: [
     coda.makeParameter({
       type: coda.ParameterType.String,
@@ -62,6 +66,10 @@ pack.addFormula({
     }),
   ],
   resultType: coda.ValueType.String,
+  examples: [
+    { params: ["alice@example.com"], result: "alice@example.com" },
+    { params: ["Alice <alice@example.com>"], result: "alice@example.com" },
+  ],
   execute: async function ([input], context) {
     let parsed = parse(input);
     if (parsed === null) {
@@ -73,7 +81,7 @@ pack.addFormula({
 
 pack.addFormula({
   name: "EmailAddresses",
-  description: "Gets the email addresses from an email string.",
+  description: "Gets the list of email addresses from an email string. Return an error if the input is not an email list.",
   parameters: [
     coda.makeParameter({
       type: coda.ParameterType.String,
@@ -83,6 +91,10 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.Array,
   items: { type: coda.ValueType.String },
+  examples: [
+    { params: ["alice@example.com, bob@example.com"], result: ["alice@example.com", "bob@example.com"] },
+    { params: ["Alice <alice@example.com>, Bob <bob@example.com>"], result: ["alice@example.com", "bob@example.com"] },
+  ],
   execute: async function ([input], context) {
     let parsed = parseList(input);
     if (parsed === null) {
@@ -94,7 +106,7 @@ pack.addFormula({
 
 pack.addFormula({
   name: "EmailParts",
-  description: "Breaks an email down into it's parts.",
+  description: "Breaks an email down into it's parts. The result include the Name, Address, Local (part before the @), and Domain of the email. Returns an error if the input is not a single email.",
   parameters: [
     coda.makeParameter({
       type: coda.ParameterType.String,
@@ -104,6 +116,16 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.Object,
   schema: EmailSchema,
+  examples: [
+    { 
+      params: ["alice@example.com"], 
+      result: { Address: "alice@example.com", Local: "alice", Domain: "example.com" },
+    },
+    {
+      params: ["Alice <alice@example.com>"], 
+      result: { Name: "Alice", Address: "alice@example.com", Local: "alice", Domain: "example.com" },
+    },
+  ],
   execute: async function ([input], context) {
     let parsed = parse(input);
     if (parsed === null) {
@@ -115,7 +137,7 @@ pack.addFormula({
 
 pack.addFormula({
   name: "EmailListParts",
-  description: "Breaks a list of emails down into their parts.",
+  description: "Breaks a list of emails down into their parts. Each result includes the Name, Address, Local (part before the @), and Domain of the email. Returns an error if the input is not an email list.",
   parameters: [
     coda.makeParameter({
       type: coda.ParameterType.String,
@@ -125,6 +147,22 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.Array,
   items: EmailSchema,
+  examples: [
+    { 
+      params: ["alice@example.com, bob@example.com"], 
+      result: [
+        { Address: "alice@example.com", Local: "alice", Domain: "example.com" },
+        { Address: "bob@example.com", Local: "bob", Domain: "example.com" },
+      ] 
+    },
+    { 
+      params: ["Alice <alice@example.com>, Bob <bob@example.com>"], 
+      result: [
+        { Name: "Alice", Address: "alice@example.com", Local: "alice", Domain: "example.com" },
+        { Name: "Bob", Address: "bob@example.com", Local: "bob", Domain: "example.com" },
+      ] 
+    },
+  ],
   execute: async function ([input], context) {
     let parsed = parseList(input);
     if (parsed === null) {
