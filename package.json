@@ -1,10 +1,9 @@
 {
   "dependencies": {
     "@codahq/packs-sdk": "^0.8.1",
-    "caman": "^4.1.2",
     "email-addresses": "^5.0.0",
     "emoji-dictionary": "^1.0.11",
-    "jimp": "^0.16.1"
+    "figlet": "^1.5.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
@@ -30,6 +29,7 @@
   },
   "scripts": {
     "test": "mocha --require ts-node/register **/*_test.ts --ignore node_modules/**/*",
-    "postinstall": "npx patch-package"
+    "postinstall": "npx patch-package",
+    "generate-fonts": "node -r ts-node/register asciify/utils/generate-fonts.ts"
   }
 }
