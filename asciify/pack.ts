@@ -50,6 +50,10 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.String,
   codaType: coda.ValueHintType.Html,
+  examples: [
+    { params: ["Hello"], result: "" },
+    { params: ["Hello", "DOS Rebel"], result: "" },
+  ],
   execute: async function ([text, font="Standard"], context) {
     let art = await render(text, font);
     let padding = " ".repeat(PaddingAmount);
