@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" 
+          media="(prefers-color-scheme: light)"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/stackoverflow-light.min.css">
+    <link rel="stylesheet" 
+          media="(prefers-color-scheme: dark)"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/stackoverflow-dark.min.css">
+    <style>
+      html, body {
+        background: transparent;
+      }
+      #code {
+        width: max-content;
+        min-width: 100%;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <pre><code id="code"></code></pre>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script type="text/javascript">
+      function decodeUnicode(str) {
+        // Going backwards: from bytestream, to percent-encoding, to original string.
+        return decodeURIComponent(atob(str).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+      }
+      let params = new URLSearchParams(window.location.search);
+      let code = params.get("cb");
+      if (code) {
+        code = decodeUnicode(code);
+        console.log(code);
+      } else {
+        code = params.get("c");
+      }
+      let language = params.get("l");
+      let codeElem = document.querySelector("#code");
+      codeElem.textContent = code;
+      if (language) {
+        codeElem.classList.add(`language-${language}`);
+      }
+      hljs.highlightAll();
+    </script>
+  </body>
+</html>
