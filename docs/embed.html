@@ -20,10 +20,16 @@
     <pre><code id="code"></code></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
     <script type="text/javascript">
+      function decodeUnicode(str) {
+        // Going backwards: from bytestream, to percent-encoding, to original string.
+        return decodeURIComponent(atob(str).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+      }
       let params = new URLSearchParams(window.location.search);
       let code = params.get("cb");
       if (code) {
-        code = atob(code);
+        code = decodeUnicode(code);
         console.log(code);
       } else {
         code = params.get("c");
