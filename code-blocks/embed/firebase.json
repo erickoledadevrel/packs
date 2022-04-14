@@ -5,6 +5,11 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [ 
+      { "source": "/", "function": "index" },
+      { "source": "/embed", "destination": "embed.html" },
+      { "source": "/oembed", "function": "oembed" }
     ]
   }
 }
