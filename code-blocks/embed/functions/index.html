@@ -22,8 +22,13 @@
       html, body {
         background: transparent;
       }
+      body, pre {
+        margin: 0;
+      }
+      html, body, pre, #code {
+        height: 100%;
+      }
       #code {
-        position: relative;
         width: max-content;
         min-width: 100%;
         box-sizing: border-box;
@@ -38,11 +43,9 @@
       #code.highlighted .hljs-ln-code {
         opacity: 0.5;
       }
-      /*
-      #code::after {
-        content: "";
+      #copy {
         position: absolute;
-        top: 0;
+        bottom: 0;
         right: 0;
         margin: 1em;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12V1Z'/%3E%3C/svg%3E");
@@ -52,7 +55,12 @@
         opacity: 0.5;
         cursor: pointer;
       }
-      */
+      #copy.clicked {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m9 20.42-6.21-6.21 2.83-2.83L9 14.77l9.88-9.89 2.83 2.83L9 20.42Z'/%3E%3C/svg%3E");
+      }
+      #copy.select-all {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 4a2 2 0 0 1 2-2h3v2H4v3H2V4m20 0v3h-2V4h-3V2h3a2 2 0 0 1 2 2m-2 16v-3h2v3a2 2 0 0 1-2 2h-3v-2h3M2 20v-3h2v3h3v2H4a2 2 0 0 1-2-2m8-18h4v2h-4V2m0 18h4v2h-4v-2m10-10h2v4h-2v-4M2 10h2v4H2v-4Z'/%3E%3C/svg%3E");
+      }
     </style>
   </head>
   <body>
@@ -66,67 +74,90 @@
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
       }
-      let params = new URLSearchParams(window.location.search);
-      let code = params.get("cb");
-      if (code) {
-        code = decodeUnicode(code);
-        console.log(code);
-      } else {
-        code = params.get("c");
-      }
-      let language = params.get("l");
-      let lineNumbers = params.get("ln");
-      let lineStart = params.get("ls");
-      let highlights = params.get("hl");
 
-      let codeElem = document.querySelector("#code");
-      /*
-      codeElem.addEventListener("click", (e) => {
-        if (e.offsetX > codeElem.offsetWidth - 20 && e.offsetY <= 20) {
-          console.log("Copy clicked!");
+      async function main() {
+        let params = new URLSearchParams(window.location.search);
+        let code = params.get("cb");
+        if (code) {
+          code = decodeUnicode(code);
+        } else {
+          code = params.get("c");
         }
-      });
-      */
+        let language = params.get("l");
+        let lineNumbers = params.get("ln");
+        let lineStart = params.get("ls");
+        let highlights = params.get("hl");
+        let disableCopy = params.get("dc");
+        let copyAccess = params.get("ca");
 
-      codeElem.textContent = code;
-      if (language) {
-        codeElem.classList.add(`language-${language}`);
-      }
-      hljs.highlightElement(codeElem);
-      hljs.lineNumbersBlock(codeElem, {
-        singleLine: true,
-        startFrom: Number(lineStart) || 1,
-      });
-      if (lineNumbers !== "1") {
-        codeElem.classList.add("no-line-numbers")
-      }
-      if (highlights) {
-        codeElem.classList.add("highlighted");
-        let selectors = [];
-        let groups = highlights.split(",");
-        for (let group of groups) {
-          let start, end;
-          if (group.includes("-")) {
-            [start, end] = group.split("-");
+        let codeElem = document.querySelector("#code");
+        codeElem.textContent = code;
+        if (language) {
+          codeElem.classList.add(`language-${language}`);
+        }
+
+        if (disableCopy != "1") {
+          let copyElem = document.createElement("div");
+          copyElem.id = "copy";
+          document.body.appendChild(copyElem);
+          if (copyAccess) {
+            copyElem.title = "Copy";
           } else {
-            start = end = group;
+            copyElem.title = "Select All"
+            copyElem.classList.add("select-all");
           }
-          [start, end] = [start, end].map(n => parseInt(n, 10));
-          if (![start, end].some(n => isNaN(n))) {
-            for (let i = start; i <= end; i++) {
-              selectors.push(`.hljs-ln-code[data-line-number='${i}']`);
+          copyElem.addEventListener("click", async (e) => {
+            if (copyAccess) {
+              await navigator.clipboard.writeText(code);
+              e.target.classList.add("clicked");
+              setTimeout(() => {
+                e.target.classList.remove("clicked");
+              }, 2000);
+            } else {
+              let range = new Range();
+              document.getSelection().selectAllChildren(codeElem);
+            }
+          });
+        }
+
+        hljs.highlightElement(codeElem);
+        hljs.lineNumbersBlock(codeElem, {
+          singleLine: true,
+          startFrom: Number(lineStart) || 1,
+        });
+        if (lineNumbers !== "1") {
+          codeElem.classList.add("no-line-numbers")
+        }
+        if (highlights) {
+          codeElem.classList.add("highlighted");
+          let selectors = [];
+          let groups = highlights.split(",");
+          for (let group of groups) {
+            let start, end;
+            if (group.includes("-")) {
+              [start, end] = group.split("-");
+            } else {
+              start = end = group;
+            }
+            [start, end] = [start, end].map(n => parseInt(n, 10));
+            if (![start, end].some(n => isNaN(n))) {
+              for (let i = start; i <= end; i++) {
+                selectors.push(`.hljs-ln-code[data-line-number='${i}']`);
+              }
             }
           }
+          let styleElem = document.createElement("style");
+          styleElem.type = "text/css";
+          styleElem.innerHTML = `
+            ${selectors.join(",")} {
+              opacity: 1.0 !important;
+            }
+          `;
+          document.body.appendChild(styleElem);
         }
-        let styleElem = document.createElement("style");
-        styleElem.type = "text/css";
-        styleElem.innerHTML = `
-          ${selectors.join(",")} {
-            opacity: 1.0 !important;
-          }
-        `;
-        document.body.appendChild(styleElem);
       }
+
+      main();
     </script>
   </body>
 </html>

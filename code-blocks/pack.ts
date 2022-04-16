@@ -42,6 +42,12 @@ pack.addFormula({
         return SupportedLanguages.filter((language => !search || language.includes(search)));
       }
     }),
+    coda.makeParameter({
+      type: coda.ParameterType.Boolean,
+      name: "showButton",
+      description: "Whether or not to show the \"Select All\" button. Default: true.",
+      optional: true,
+    }),
   ],
   resultType: coda.ValueType.String,
   codaType: coda.ValueHintType.Embed,
@@ -56,8 +62,9 @@ pack.addFormula({
     { params: ["console.log('Hello World');", true, 10], result: "" },
     { params: ["console.log('Hello World');", undefined, undefined, "1,3-5,10"], result: "" },
     { params: ["console.log('Hello World');", undefined, undefined, undefined, "javascript"], result: "" },
+    { params: ["console.log('Hello World');", undefined, undefined, undefined, undefined, false], result: "" },
   ],
-  execute: async function ([code, showLineNumbers, lineNumberStart, highlightLines, language], context) {
+  execute: async function ([code, showLineNumbers, lineNumberStart, highlightLines, language, showButton=true], context) {
     let params: Record<string, any> = {
       cb: Buffer.from(code).toString("base64"),
     };
@@ -72,6 +79,9 @@ pack.addFormula({
     }
     if (highlightLines) {
       params["hl"] = highlightLines;
+    }
+    if (showButton === false) {
+      params["dc"] = 1;
     }
     return coda.withQueryParams(BaseEmbedUrl, params);
   },
