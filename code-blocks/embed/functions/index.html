@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Code Block</title>
@@ -8,25 +9,56 @@
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" 
           media="(prefers-color-scheme: light)"
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/stackoverflow-light.min.css">
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/stackoverflow-light.min.css" />
     <link rel="stylesheet" 
           media="(prefers-color-scheme: dark)"
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/stackoverflow-dark.min.css">
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/stackoverflow-dark.min.css" />
+    <link rel="stylesheet"
+          href="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.css" />
     <style>
+      * {
+        font-size: 16px;
+      }
       html, body {
         background: transparent;
       }
       #code {
+        position: relative;
         width: max-content;
         min-width: 100%;
         box-sizing: border-box;
-        font-size: 16px;
       }
+      .no-line-numbers .hljs-ln-numbers {
+        display: none;
+      }
+      .hljs-ln-n {
+        padding-right: 1em;
+        opacity: 0.5;
+      }
+      #code.highlighted .hljs-ln-code {
+        opacity: 0.5;
+      }
+      /*
+      #code::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 1em;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12V1Z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        width: 1em;
+        height: 1em;
+        opacity: 0.5;
+        cursor: pointer;
+      }
+      */
     </style>
   </head>
   <body>
     <pre><code id="code"></code></pre>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
     <script type="text/javascript">
       function decodeUnicode(str) {
         // Going backwards: from bytestream, to percent-encoding, to original string.
@@ -43,12 +75,58 @@
         code = params.get("c");
       }
       let language = params.get("l");
+      let lineNumbers = params.get("ln");
+      let lineStart = params.get("ls");
+      let highlights = params.get("hl");
+
       let codeElem = document.querySelector("#code");
+      /*
+      codeElem.addEventListener("click", (e) => {
+        if (e.offsetX > codeElem.offsetWidth - 20 && e.offsetY <= 20) {
+          console.log("Copy clicked!");
+        }
+      });
+      */
+
       codeElem.textContent = code;
       if (language) {
         codeElem.classList.add(`language-${language}`);
       }
-      hljs.highlightAll();
+      hljs.highlightElement(codeElem);
+      hljs.lineNumbersBlock(codeElem, {
+        singleLine: true,
+        startFrom: Number(lineStart) || 1,
+      });
+      if (lineNumbers !== "1") {
+        codeElem.classList.add("no-line-numbers")
+      }
+      if (highlights) {
+        codeElem.classList.add("highlighted");
+        let selectors = [];
+        let groups = highlights.split(",");
+        for (let group of groups) {
+          let start, end;
+          if (group.includes("-")) {
+            [start, end] = group.split("-");
+          } else {
+            start = end = group;
+          }
+          [start, end] = [start, end].map(n => parseInt(n, 10));
+          if (![start, end].some(n => isNaN(n))) {
+            for (let i = start; i <= end; i++) {
+              selectors.push(`.hljs-ln-code[data-line-number='${i}']`);
+            }
+          }
+        }
+        let styleElem = document.createElement("style");
+        styleElem.type = "text/css";
+        styleElem.innerHTML = `
+          ${selectors.join(",")} {
+            opacity: 1.0 !important;
+          }
+        `;
+        document.body.appendChild(styleElem);
+      }
     </script>
   </body>
 </html>

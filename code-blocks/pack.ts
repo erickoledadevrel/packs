@@ -16,6 +16,24 @@ pack.addFormula({
       description: "The code to highlight.",
     }),
     coda.makeParameter({
+      type: coda.ParameterType.Boolean,
+      name: "showLineNumbers",
+      description: "Whether or not to show line numbers. Default: false.",
+      optional: true,
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.Number,
+      name: "lineNumberStart",
+      description: "Which line number to start with. Only applies if showLineNumbers is true. Default: 1.",
+      optional: true,
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "highlightLines",
+      description: "Which lines to highlight, as a comma-separated list of line numbers. Ranges of lines can be specified using a dash (ex: 2-5). If lineNumberStart has been set the line numbers must be relative to that start.",
+      optional: true,
+    }),
+    coda.makeParameter({
       type: coda.ParameterType.String,
       name: "language",
       description: "The programming language of the code. If not specified it will be detected automatically.",
@@ -34,13 +52,28 @@ pack.addFormula({
   },
   examples: [
     { params: ["console.log('Hello World');"], result: "" },
-    { params: ["console.log('Hello World');", "javascript"], result: "" },
+    { params: ["console.log('Hello World');", true], result: "" },
+    { params: ["console.log('Hello World');", true, 10], result: "" },
+    { params: ["console.log('Hello World');", undefined, undefined, "1,3-5,10"], result: "" },
+    { params: ["console.log('Hello World');", undefined, undefined, undefined, "javascript"], result: "" },
   ],
-  execute: async function ([code, language], context) {
-    return coda.withQueryParams(BaseEmbedUrl, {
+  execute: async function ([code, showLineNumbers, lineNumberStart, highlightLines, language], context) {
+    let params: Record<string, any> = {
       cb: Buffer.from(code).toString("base64"),
-      l: language,
-    });
+    };
+    if (language) {
+      params["l"] = language;
+    }
+    if (showLineNumbers) {
+      params["ln"] = 1;
+      if (lineNumberStart) {
+        params["ls"] = lineNumberStart;
+      }
+    }
+    if (highlightLines) {
+      params["hl"] = highlightLines;
+    }
+    return coda.withQueryParams(BaseEmbedUrl, params);
   },
 });
 
