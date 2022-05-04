@@ -10,7 +10,7 @@ const EmailSchema = coda.makeObjectSchema({
     local: { type: coda.ValueType.String, description: "The part of the email address before the @." },
     domain: { type: coda.ValueType.String, description: "The domain of the email address." },
   },
-  primary: "address",
+  displayProperty: "address",
 });
 
 pack.addFormula({

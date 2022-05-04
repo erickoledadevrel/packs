@@ -15,9 +15,9 @@ const FontSchema = coda.makeObjectSchema({
       description: "A preview of the font."
     },
   },
-  primary: "name",
-  id: "name",
-  featured: ["preview"],
+  displayProperty: "name",
+  idProperty: "name",
+  featuredProperties: ["preview"],
 });
 
 const PreviewTextParameter = coda.makeParameter({

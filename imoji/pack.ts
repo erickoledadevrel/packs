@@ -13,7 +13,7 @@ pack.addFormula({
       type: coda.ParameterType.String,
       name: "emoji",
       description: "The emoji to convert into an image. It can be the actual emoji characters, or the name of the emoji.",
-      defaultValue: "😃",
+      suggestedValue: "😃",
       autocomplete: async function(context, search) {
         let options = emojidict.names.map(name => {
           let emoji = emojidict.getUnicode(name);
