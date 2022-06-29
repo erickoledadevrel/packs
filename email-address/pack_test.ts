@@ -8,19 +8,6 @@ import * as chaiAsPromised from "chai-as-promised";
 chai.use(chaiAsPromised);
 chai.should();
 
-const validEmails = [
-  {input: "alice@example.com", address: "alice@example.com", parts: {}},
-  {input: "Alice <alice@example.com>", address: "alice@example.com"},
-
-  {input: "alice@example.com", valid: true},
-  {input: "Alice <alice@example.com>", expected: true},
-  {input: "\"Alice\" <alice@example.com>", expected: true},
-  {input: "alice", expected: false},
-  {input: "alice@", expected: false},
-  {input: "@alice", expected: false},
-  {input: "Alice <>", expected: false},
-];
-
 describe('IsEmail', () => {
   it(`Address`, async () => {
     const result = await executeFormulaFromPackDef(pack, 'IsEmail', ["alice@example.com"]);

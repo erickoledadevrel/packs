@@ -2345,6 +2345,11 @@
   "resolved" "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz"
   "version" "1.0.5"
 
+"awesome-phonenumber@^3.1.0":
+  "integrity" "sha512-Rl32+VpVnJ2QOdLJQVjYn1x+wirVp4m/QUybvebFcwK8zhG/VFLmdR61D6NJoMomisOgswFt3yR9Ihz2NftAJQ=="
+  "resolved" "https://registry.npmjs.org/awesome-phonenumber/-/awesome-phonenumber-3.1.0.tgz"
+  "version" "3.1.0"
+
 "aws-sign2@~0.7.0":
   "integrity" "sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg="
   "resolved" "https://registry.npmjs.org/aws-sign2/-/aws-sign2-0.7.0.tgz"
