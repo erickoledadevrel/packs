@@ -7377,6 +7377,11 @@
     "gauge" "^4.0.0"
     "set-blocking" "^2.0.0"
 
+"number-abbreviate@^2.0.0":
+  "integrity" "sha512-A28RCggQAd0GPafgnijus1IV48TD8lbVt/J6xzkhcfk7jvXbWbh5aTaQsMjZjWAJ6LK6EoGf306RzJsdu12OqQ=="
+  "resolved" "https://registry.npmjs.org/number-abbreviate/-/number-abbreviate-2.0.0.tgz"
+  "version" "2.0.0"
+
 "oas-kit-common@^1.0.8":
   "integrity" "sha512-pJTS2+T0oGIwgjGpw7sIRU8RQMcUoKCDWFLdBqKB2BNmGpbBMH2sdqAaOXUg8OzonZHU0L7vfJu1mJFEiYDWOQ=="
   "resolved" "https://registry.npmjs.org/oas-kit-common/-/oas-kit-common-1.0.8.tgz"
