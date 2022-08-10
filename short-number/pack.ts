@@ -31,3 +31,9 @@ pack.addFormula({
     return abbreviate(number, decimalPlaces);
   }
 });
+
+pack.addColumnFormat({
+  name: "Short Number",
+  formulaName: "ShortNumber",
+  instructions: "Enter any number, and if it's over one thousand it will be abbreviated.",
+})
