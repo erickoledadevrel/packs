@@ -46,9 +46,9 @@ describe('NPS', () => {
   });
 
   it(`Sparse`, async () => {
-    const ratings = [1, null, 2];
+    const ratings = [1, null, 10, 10];
     const result = await executeFormulaFromPackDef(pack, 'NPS', [ratings]);
-    assert.equal(result, -100);
+    assert.equal(result, 33);
   });
 
   it(`Sparse empty`, async () => {
