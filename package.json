@@ -2,12 +2,17 @@
   "dependencies": {
     "@codahq/packs-sdk": "^1.0.1",
     "awesome-phonenumber": "^3.1.0",
+    "bnf": "^1.0.1",
     "email-addresses": "^5.0.0",
     "emoji-dictionary": "^1.0.11",
     "figlet": "^1.5.2",
     "lodash": "^4.17.21",
     "mime-types": "^2.1.35",
-    "number-abbreviate": "^2.0.0"
+    "nearley": "^2.20.1",
+    "number-abbreviate": "^2.0.0",
+    "parse-url": "^8.0.0",
+    "url-parse": "^1.5.10",
+    "url-polyfill": "^1.1.12"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
