@@ -56,17 +56,3 @@ export async function getMetrics(scriptId: string, context: coda.ExecutionContex
   }
   return metrics;
 }
-
-export async function getScripts(context: coda.SyncExecutionContext, pageToken?: string) {
-  let url = coda.withQueryParams("https://www.googleapis.com/drive/v3/files", {
-    q: "mimeType:'application/vnd.google-apps.script'",
-    pageSize: PageSize,
-    pageToken,
-  });
-  let response = await context.fetcher.fetch({
-    method: "GET",
-    url,
-  });
-  let data = response.body;
-  return data;
-}
