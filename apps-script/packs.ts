@@ -9,7 +9,9 @@ pack.addNetworkDomain("googleapis.com");
 pack.setUserAuthentication({
   type: coda.AuthenticationType.OAuth2,
   authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth",
-  tokenUrl: "https://oauth2.googleapis.com/token",
+  // TODO: Use googleapis.com URL after config change.
+  // tokenUrl: "https://oauth2.googleapis.com/token",
+  tokenUrl: "https://accounts.google.com/o/oauth2/token",
   scopes: [
     "profile",
     "https://www.googleapis.com/auth/script.metrics",
