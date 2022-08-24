@@ -41,6 +41,7 @@
   "scripts": {
     "test": "mocha --require ts-node/register **/*_test.ts --ignore node_modules/**/*",
     "postinstall": "npx patch-package",
-    "generate-fonts": "node -r ts-node/register asciify/utils/generate-fonts.ts"
+    "generate-fonts": "node -r ts-node/register asciify/utils/generate-fonts.ts",
+    "generate-grammar": "npx nearleyc bubble/grammar.ne -o bubble/grammar.js"
   }
 }

@@ -35,6 +35,7 @@ simpletype ->
     "text" {% simpletype %}
   | "boolean" {% simpletype %}
   | "number" {% simpletype %}
+  | "number_range" {% simpletype %}
   | "date" {% simpletype %}
   | "image" {% simpletype %}
   | "file" {% simpletype %}

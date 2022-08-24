@@ -38,18 +38,20 @@ var grammar = {
     {"name": "simpletype", "symbols": ["simpletype$string$2"], "postprocess": simpletype},
     {"name": "simpletype$string$3", "symbols": [{"literal":"n"}, {"literal":"u"}, {"literal":"m"}, {"literal":"b"}, {"literal":"e"}, {"literal":"r"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "simpletype", "symbols": ["simpletype$string$3"], "postprocess": simpletype},
-    {"name": "simpletype$string$4", "symbols": [{"literal":"d"}, {"literal":"a"}, {"literal":"t"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "simpletype$string$4", "symbols": [{"literal":"n"}, {"literal":"u"}, {"literal":"m"}, {"literal":"b"}, {"literal":"e"}, {"literal":"r"}, {"literal":"_"}, {"literal":"r"}, {"literal":"a"}, {"literal":"n"}, {"literal":"g"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "simpletype", "symbols": ["simpletype$string$4"], "postprocess": simpletype},
-    {"name": "simpletype$string$5", "symbols": [{"literal":"i"}, {"literal":"m"}, {"literal":"a"}, {"literal":"g"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "simpletype$string$5", "symbols": [{"literal":"d"}, {"literal":"a"}, {"literal":"t"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "simpletype", "symbols": ["simpletype$string$5"], "postprocess": simpletype},
-    {"name": "simpletype$string$6", "symbols": [{"literal":"f"}, {"literal":"i"}, {"literal":"l"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "simpletype$string$6", "symbols": [{"literal":"i"}, {"literal":"m"}, {"literal":"a"}, {"literal":"g"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "simpletype", "symbols": ["simpletype$string$6"], "postprocess": simpletype},
-    {"name": "simpletype$string$7", "symbols": [{"literal":"u"}, {"literal":"s"}, {"literal":"e"}, {"literal":"r"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "simpletype$string$7", "symbols": [{"literal":"f"}, {"literal":"i"}, {"literal":"l"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "simpletype", "symbols": ["simpletype$string$7"], "postprocess": simpletype},
-    {"name": "simpletype$string$8", "symbols": [{"literal":"d"}, {"literal":"a"}, {"literal":"t"}, {"literal":"e"}, {"literal":"i"}, {"literal":"n"}, {"literal":"t"}, {"literal":"e"}, {"literal":"r"}, {"literal":"v"}, {"literal":"a"}, {"literal":"l"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "simpletype$string$8", "symbols": [{"literal":"u"}, {"literal":"s"}, {"literal":"e"}, {"literal":"r"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "simpletype", "symbols": ["simpletype$string$8"], "postprocess": simpletype},
-    {"name": "simpletype$string$9", "symbols": [{"literal":"d"}, {"literal":"a"}, {"literal":"t"}, {"literal":"e"}, {"literal":"_"}, {"literal":"r"}, {"literal":"a"}, {"literal":"n"}, {"literal":"g"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "simpletype", "symbols": ["simpletype$string$9"], "postprocess": simpletype}
+    {"name": "simpletype$string$9", "symbols": [{"literal":"d"}, {"literal":"a"}, {"literal":"t"}, {"literal":"e"}, {"literal":"i"}, {"literal":"n"}, {"literal":"t"}, {"literal":"e"}, {"literal":"r"}, {"literal":"v"}, {"literal":"a"}, {"literal":"l"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "simpletype", "symbols": ["simpletype$string$9"], "postprocess": simpletype},
+    {"name": "simpletype$string$10", "symbols": [{"literal":"d"}, {"literal":"a"}, {"literal":"t"}, {"literal":"e"}, {"literal":"_"}, {"literal":"r"}, {"literal":"a"}, {"literal":"n"}, {"literal":"g"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "simpletype", "symbols": ["simpletype$string$10"], "postprocess": simpletype}
 ]
   , ParserStart: "field"
 }

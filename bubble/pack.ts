@@ -1,7 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
 import Url from "url-parse";
 import { BaseDataSchema, ConstraintTypes, DataTableIdentityName, DataTypeKey, IgnoreFields, MaxFeatured, MetadataFields, PageSize } from "./constants";
-import { getAppId, getDataTypes, getDataUrl, getFields, getPropertySchema, getPropertyValue, parseDataSource, parseField } from "./helpers";
+import { getAppId, getDataTypes, getDataUrl, getFields, getPropertySchema, getPropertyValue, getWorkflowUrl, onError, parseDataSource, parseField, serializeDataSource } from "./helpers";
 
 export const pack = coda.newPack();
 
@@ -32,7 +32,7 @@ pack.addDynamicSyncTable({
     }
     let types = await getDataTypes(folderUrl == "live", context);
     return types.map(type => {
-      let url = JSON.stringify({
+      let url = serializeDataSource({
         type: type,
         live: folderUrl == "live",
       });
@@ -67,11 +67,11 @@ pack.addDynamicSyncTable({
         continue;
       }
       let definition = parseField(key);
-      console.log(`Key: ${key}, Definition: ${JSON.stringify(definition)}`);
+      // console.log(`Key: ${key}, Definition: ${JSON.stringify(definition)}`);
       if (!MetadataFields[key]) {
         featured.push(definition.name);
       }
-      let propertySchema = getPropertySchema(definition);
+      let propertySchema = getPropertySchema(definition, live);
       propertySchema.fromKey = key;
       
       schema.properties[definition.name] = propertySchema;
@@ -103,13 +103,16 @@ pack.addDynamicSyncTable({
       };
       let url = getDataUrl(dataType, live, params)
 
-      let response = await context.fetcher.fetch({
-        method: "GET",
-        url: url,
-        cacheTtlSecs: 0,
-      });
-
-      // TODO: Handle malformed constraint error.
+      let response;
+      try {
+        response = await context.fetcher.fetch({
+          method: "GET",
+          url: url,
+          cacheTtlSecs: 0,
+        });
+      } catch (error) {
+        onError(error);
+      }
 
       let {count, remaining, results: rows} = response.body.response;
       for (let row of rows) {
@@ -118,7 +121,7 @@ pack.addDynamicSyncTable({
             continue;
           }
           let definition = parseField(key);
-          console.log(`Key: ${key}, Definition: ${JSON.stringify(definition)}`);
+          // console.log(`Key: ${key}, Definition: ${JSON.stringify(definition)}`);
           row[key] = getPropertyValue(value, definition);
         }
         row[DataTypeKey] = dataType;
@@ -134,7 +137,7 @@ pack.addDynamicSyncTable({
         continuation,
       };
     }
-  }
+  },
 });
 
 pack.addFormula({
@@ -197,4 +200,116 @@ pack.addFormula({
     }
     return JSON.stringify(results);
   },
-})
+});
+
+pack.addFormula({
+  name: "CallWorkflow",
+  description: "Call an API workflow and return the result. Meant for workflows that don't have side effects. Only supports GET workflows and all parameters are passed in the query string.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "name",
+      description: "The name of the API workflow to run.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.Boolean,
+      name: "live",
+      description: "If the workflow should be run against the live version of the app.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "parameters",
+      description: "The parameters to pass to the API workflow. Pass a JSON object or use the WorkflowParameters() formula to construct the value.",
+      optional: true,
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  onError: onError,
+  execute: async function (args, context) {
+    let [workflow, live, parameters] = args;
+    let parsed = parameters ? JSON.parse(parameters) : undefined;
+    let url = getWorkflowUrl(workflow, live, parsed);
+    let response = await context.fetcher.fetch({
+      method: "GET",
+      url,
+    });
+    let data = response.body;
+    if (typeof data == "object") {
+      return JSON.stringify(data);
+    }
+    return data;
+  },
+});
+
+pack.addFormula({
+  name: "RunWorkflow",
+  description: "Run an API workflow and return the result. Meant for workflows that have side effects. Only supports POST workflows and all parameters are passed in the request body.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "name",
+      description: "The name of the API workflow to run.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.Boolean,
+      name: "live",
+      description: "If the workflow should be run against the live version of the app.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "parameters",
+      description: "The parameters to pass to the API workflow. Pass a JSON object or use the WorkflowParameters() formula to construct the value.",
+      optional: true,
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  isAction: true,
+  onError: onError,
+  execute: async function (args, context) {
+    let [workflow, live, parameters] = args;
+    let url = getWorkflowUrl(workflow, live);
+    let response = await context.fetcher.fetch({
+      method: "POST",
+      url,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: parameters,
+    });
+    let data = response.body;
+    if (typeof data == "object") {
+      return JSON.stringify(data);
+    }
+    return data;
+  },
+});
+
+pack.addFormula({
+  name: "WorkflowParameters",
+  description: "Generate parameter values to send to an API workflow.",
+  parameters: [],
+  varargParameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "name",
+      description: "The name of the parameter.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "value",
+      description: "The value of the parameter.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  connectionRequirement: coda.ConnectionRequirement.None,
+  execute: async function (args, context) {
+    let [...varargs] = args;
+    let result = {};
+    while (varargs.length) {
+      let name, value, location, isJson;
+      [name, value, ...varargs] = varargs;
+      result[name] = value;
+    }
+    return JSON.stringify(result);
+  },
+});

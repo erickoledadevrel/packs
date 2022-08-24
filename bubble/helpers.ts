@@ -11,6 +11,10 @@ export function getAppId(endpoint: string): string {
   return parsed.hostname.split(".")[0];
 }
 
+export function serializeDataSource(datasource: DataSourceDefinition): string {
+  return JSON.stringify(datasource);
+}
+
 export function parseDataSource(url: string): DataSourceDefinition {
   return JSON.parse(url);
 }
@@ -42,7 +46,11 @@ export function parseField(key: string): FieldDefinition {
   parser.feed(key);
   let results = parser.results;
   if (!results.length) {
-    throw new Error("Cannot parse field: " + key);
+    console.warn("Cannot parse field: " + key);
+    return {
+      name: key,
+      type: "unknown",
+    };
   }
   let result = results.reduce((res, item) => {
     if (!res || item.name < res.name) return item;
@@ -73,12 +81,17 @@ export function getPropertyValue(value, definition: FieldDefinition) {
       if (value.startsWith("//")) {
         return "https:" + value;
       }
+    case "unknown": 
+      if (typeof value == "object") {
+        return JSON.stringify(value);
+      }
+      return value;
     default:
       return value;
   }
 }
 
-export function getPropertySchema(definition: FieldDefinition): coda.Schema & coda.ObjectSchemaProperty {
+export function getPropertySchema(definition: FieldDefinition, live: boolean): coda.Schema & coda.ObjectSchemaProperty {
   let schema: coda.Schema & coda.ObjectSchemaProperty;
   switch (definition.type) {
     case "boolean":
@@ -89,6 +102,14 @@ export function getPropertySchema(definition: FieldDefinition): coda.Schema & co
     case "number":
       schema = {
         type: coda.ValueType.Number,
+      };
+      break;
+    case "number_range":
+      schema = {
+        type: coda.ValueType.Array,
+        items: {
+          type: coda.ValueType.Number,
+        },
       };
       break;
     case "date":
@@ -125,10 +146,10 @@ export function getPropertySchema(definition: FieldDefinition): coda.Schema & co
       };
       break;
     case "user":
-      schema = getReferenceSchema("user");
+      schema = getReferenceSchema("user", live);
       break;
     case "custom":
-      schema = getReferenceSchema(definition.ref);
+      schema = getReferenceSchema(definition.ref, live);
       break;
     case "option":
     case "text":
@@ -144,9 +165,10 @@ export function getPropertySchema(definition: FieldDefinition): coda.Schema & co
   return schema;
 }
 
-function getReferenceSchema(type): coda.GenericObjectSchema {
+function getReferenceSchema(type: string, live: boolean): coda.GenericObjectSchema {
   let schema = coda.makeReferenceSchemaFromObjectSchema(BaseDataSchema, DataTableIdentityName);
-  schema.identity.dynamicUrl = type;
+  let datasource = serializeDataSource({type, live});
+  schema.identity.dynamicUrl = datasource;
   return schema;
 }
 
@@ -179,4 +201,15 @@ export async function getFields(dataType: string, live: boolean, context: coda.E
   let row = Object.assign({}, ...rows);
   return Object.keys(row)
     .filter(key => !IgnoreFields.includes(key));
+}
+
+export function onError(error: any) {
+  if (error.statusCode) {
+    let statusError = error as coda.StatusCodeError;
+    let message = statusError.body?.body.message;
+    if (message) {
+      throw new coda.UserVisibleError(message);
+    }
+  }
+  throw error;
 }
