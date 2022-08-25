@@ -129,14 +129,7 @@ pack.addFormula({
     { params: ["+19164451254", null, "significant"], result: "9164451254" },
   ],
   execute: async function ([input, region, format], context) {
-    let parsed = phones.parsePhoneNumber(input, region);
-    if (!parsed.isValid()) {
-      throw new coda.UserVisibleError("Invalid phone number");
-    }
-    if (format && !Formats.includes(format)) {
-      throw new coda.UserVisibleError("Invalid format");
-    }
-    return parsed.getNumber(format as phones.PhoneNumberFormat);
+    return formatNumber(input, region, format);
   },
 });
 
@@ -178,3 +171,58 @@ pack.addFormula({
   },
 });
 
+pack.addFormula({
+  name: "FormatPhoneNumberUS",
+  description: "Returns the United States (US) phone number in a standard format. Returns an error if the input is not a valid US phone number.",
+  parameters: [
+    InputParameter,
+  ],
+  resultType: coda.ValueType.String,
+  examples: [
+    { params: ["(916) 445-1254"], result: "(916) 445-1254" },
+    { params: ["9164451254"], result: "(916) 445-1254" },
+    { params: ["+19164451254"], result: "(916) 445-1254" },
+  ],
+  execute: async function ([input], context) {
+    return formatNumber(input, "US", "national");
+  },
+});
+
+pack.addFormula({
+  name: "FormatPhoneNumberIntl",
+  description: "Returns the international phone number in a standard format. It must include a plus and the country code. Returns an error if the input is not a valid phone number.",
+  parameters: [
+    InputParameter,
+  ],
+  resultType: coda.ValueType.String,
+  examples: [
+    { params: ["+1 916-445-1254"], result: "+1 916-445-1254" },
+    { params: ["+1 9164451254"], result: "+1 916-445-1254" },
+  ],
+  execute: async function ([input], context) {
+    return formatNumber(input, undefined, "international");
+  },
+});
+
+pack.addColumnFormat({
+  name: "US Phone Number",
+  formulaName: "FormatPhoneNumberUS",
+  instructions: "Paste in a United States (US) phone number and it will be formatted.",
+});
+
+pack.addColumnFormat({
+  name: "International Phone Number",
+  formulaName: "FormatPhoneNumberIntl",
+  instructions: "Paste in an international phone number (include plus and country code) and it will be formatted.",
+});
+
+function formatNumber(input: string, region: string, format: string) {
+  let parsed = phones.parsePhoneNumber(input, region);
+  if (!parsed.isValid()) {
+    throw new coda.UserVisibleError("Invalid phone number");
+  }
+  if (format && !Formats.includes(format)) {
+    throw new coda.UserVisibleError("Invalid format");
+  }
+  return parsed.getNumber(format as phones.PhoneNumberFormat);
+}
