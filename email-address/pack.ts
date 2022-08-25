@@ -79,6 +79,12 @@ pack.addFormula({
   },
 });
 
+pack.addColumnFormat({
+  name: "Email Address",
+  formulaName: "EmailAddress",
+  instructions: "Enter an email address and it will be formatted into a standard form."
+});
+
 pack.addFormula({
   name: "EmailAddresses",
   description: "Gets the list of email addresses from an email string. Return an error if the input is not an email list.",
@@ -119,7 +125,7 @@ pack.addFormula({
   examples: [
     { 
       params: ["alice@example.com"], 
-      result: { Address: "alice@example.com", Local: "alice", Domain: "example.com" },
+      result: { Name: null, Address: "alice@example.com", Local: "alice", Domain: "example.com" },
     },
     {
       params: ["Alice <alice@example.com>"], 
@@ -151,8 +157,8 @@ pack.addFormula({
     { 
       params: ["alice@example.com, bob@example.com"], 
       result: [
-        { Address: "alice@example.com", Local: "alice", Domain: "example.com" },
-        { Address: "bob@example.com", Local: "bob", Domain: "example.com" },
+        { Name: null, Address: "alice@example.com", Local: "alice", Domain: "example.com" },
+        { Name: null, Address: "bob@example.com", Local: "bob", Domain: "example.com" },
       ] 
     },
     { 
