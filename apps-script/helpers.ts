@@ -1,5 +1,6 @@
 import * as coda from "@codahq/packs-sdk";
 import { ScriptUrlRegexes } from "./constants";
+import _string = require('lodash/string');
 
 const PageSize = 20;
 const Extensions = {
@@ -52,7 +53,10 @@ export async function getMetrics(scriptId: string, context: coda.ExecutionContex
   });
   let metrics = response.body;
   for (let [key, value] of Object.entries(metrics)) {
-    metrics[key] = value[0].value ?? 0;
+    metrics[key] = parseInt(value[0].value) ?? 0;
   }
+  metrics.summary = "Last 7 days: " + Object.entries(metrics)
+      .map(([key, value]) => `${value} ${_string.startCase(key)}`)
+      .join(", ");
   return metrics;
 }

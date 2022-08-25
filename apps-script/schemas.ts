@@ -22,11 +22,12 @@ const FileSchema = coda.makeObjectSchema({
 
 const MetricsSchema = coda.makeObjectSchema({
   properties: {
-    activeUsers7d: { type: coda.ValueType.Number },
-    totalExecutions7d: { type: coda.ValueType.Number },
-    failedExecutions7d: { type: coda.ValueType.Number },
+    summary: { type: coda.ValueType.String },
+    activeUsers: { type: coda.ValueType.Number },
+    totalExecutions: { type: coda.ValueType.Number },
+    failedExecutions: { type: coda.ValueType.Number },
   },
-  displayProperty: "activeUsers7d",
+  displayProperty: "summary",
 });
 
 export const ScriptSchema = coda.makeObjectSchema({
