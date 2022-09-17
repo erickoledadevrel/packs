@@ -1,17 +1,21 @@
 import * as functions from "firebase-functions";
-const admin = require('firebase-admin');
+import * as admin from "firebase-admin";
+// @ts-ignore
+import * as Amadeus from "amadeus";
 
 admin.initializeApp({
   databaseURL: "https://erickoleda-flight-status.firebaseio.com/",
 });
 
-// @ts-ignore
-import Amadeus = require('amadeus');
-
 const MonthMax = 200;
 const DocIdHeader = "X-DocId";
 
 export const flightStatus = functions.https.onRequest(async (request, response) => {
+  let secret = request.headers.authorization?.split(" ")[1];
+  if (secret != process.env.SECRET_VALUE) {
+    throw new Error("Invalid authorization.");
+  }
+
   let docId = request.headers[DocIdHeader.toLocaleLowerCase()] as string;
   if (!docId) {
     throw new Error("Missing doc ID header.");
@@ -26,7 +30,7 @@ export const flightStatus = functions.https.onRequest(async (request, response) 
   let apiResponse;
   try {
     console.log(request.query);
-    apiResponse = await amadeus.client.get('/v2/schedule/flights', request.query);
+    apiResponse = await amadeus.client.get("/v2/schedule/flights", request.query);
   } catch (e: any) {
     response.status(400).send(e.response.result);
     return;
@@ -37,7 +41,7 @@ export const flightStatus = functions.https.onRequest(async (request, response) 
 async function checkQuota(docId: string): Promise<boolean> {
   let now = new Date();
   let month = now.toISOString().substring(0, 7);
-  
+
   let db = admin.database();
   let countsRef = db.ref(`docs/${docId}/counts/${month}`);
   let transaction = await countsRef.transaction((count: number) => {
@@ -50,17 +54,17 @@ async function checkQuota(docId: string): Promise<boolean> {
     }
     return count + 1;
   });
-  return transaction.committed
+  return transaction.committed;
 }
 
 function getAmadeusClient() {
   const AmadeusClientId = process.env.AMADEUS_CLIENT_ID;
   const AmadeusClientSecret = process.env.AMADEUS_CLIENT_SECRET;
-  
+
   if (!AmadeusClientId || !AmadeusClientSecret) {
     throw new Error("Amadeus client ID or secret not found.");
   }
-  
+
   return new Amadeus({
     clientId: process.env.AMADEUS_CLIENT_ID,
     clientSecret: process.env.AMADEUS_CLIENT_SECRET,
