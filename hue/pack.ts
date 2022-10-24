@@ -1,13 +1,18 @@
 import * as coda from "@codahq/packs-sdk";
 import HueColor from "hue-colors";
-import CSSColorList from 'css-named-colors';
-import { getColorSwatchUri, getLights, getResource, setState } from "./helpers";
+import CSSColorList from "css-named-colors";
+import * as hsl from "hsl-to-hex";
+import { getColorSwatchUri, getLights, getResource, getRooms, setState } from "./helpers";
 import { LightSchema, LightStatusSchema as LightStateSchema, RoomSchema } from "./schemas";
 
 export const pack = coda.newPack();
 
 const BaseUrl = "https://api.meethue.com";
 const ApplicationName = "Hue Pack for Coda";
+const HexRegex = /^#?[0-9a-f]{6}$/;
+const MaxAPIHue = 65535;
+const MaxAPISat = 254;
+const MaxAPIBri = 254;
 
 const LightIdParam = coda.makeParameter({
   type: coda.ParameterType.String,
@@ -20,6 +25,33 @@ const LightIdParam = coda.makeParameter({
     });
   },
 });
+
+const LightOrGroupIdParam = coda.makeParameter({
+  type: coda.ParameterType.String,
+  name: "lightOrRoomId",
+  description: "The ID of the light or room to control.",
+  autocomplete: async function (context) {
+    let [lights, rooms] = await Promise.all([
+      getLights(context),
+      getRooms(context),
+    ]);
+    return [].concat(
+      lights.map(light => {
+        return { display: `${light.name} (Light)`, value: light.id };
+      }),
+      rooms.map(room => {
+        return { display: `${room.name} (Room)`, value: room.id };
+      }),
+    );
+  },
+});
+
+const ErrorHandler = function(error) {
+  if (error.status == 504) {
+    throw new coda.UserVisibleError("The request timed out, please try again.");
+  }
+  throw error;
+}
 
 pack.addNetworkDomain("meethue.com");
 
@@ -59,14 +91,15 @@ pack.setUserAuthentication({
 
 pack.addFormula({
   name: "TurnOn",
-  description: "Turns a light on.",
+  description: "Turns a light or room on.",
   parameters: [
-    LightIdParam,
+    LightOrGroupIdParam,
   ],
   resultType: coda.ValueType.String,
   isAction: true,
-  execute: async function ([lightId], context) {
-    await setState(context, lightId, {
+  onError: ErrorHandler,
+  execute: async function ([lightOrRoomId], context) {
+    await setState(context, lightOrRoomId, {
       on: true,
     });
     return "Done";
@@ -75,14 +108,14 @@ pack.addFormula({
 
 pack.addFormula({
   name: "TurnOff",
-  description: "Turns a light off.",
+  description: "Turns a light or room off.",
   parameters: [
-    LightIdParam,
+    LightOrGroupIdParam,
   ],
   resultType: coda.ValueType.String,
   isAction: true,
-  execute: async function ([lightId], context) {
-    await setState(context, lightId, {
+  execute: async function ([lightOrRoomId], context) {
+    await setState(context, lightOrRoomId, {
       on: false,
     });
     return "Done";
@@ -90,32 +123,73 @@ pack.addFormula({
 });
 
 pack.addFormula({
-  name: "SetColor",
-  description: "Changes the color of a light.",
+  name: "SetColorCSS",
+  description: "Changes the color of a light or room, approximating the CSS color string provided.",
   parameters: [
-    LightIdParam,
+    LightOrGroupIdParam,
     coda.makeParameter({
       type: coda.ParameterType.String,
       name: "color",
-      description: "The color to set the light to.",
-      autocomplete: async function (context, search, parameters) {
-        return coda.autocompleteSearchObjects(search, CSSColorList, "name", "hex");
-      },
+      description: `The CSS color to set. Must be a named CSS color (ex: "red") or a hex string (ex: "#ff2200").`,
     }),
   ],
   resultType: coda.ValueType.String,
   isAction: true,
-  execute: async function ([lightId, color], context) {
-    let strippedColor = color.replace(/^#/, "").toLocaleLowerCase();
-    if (strippedColor.length != 6) {
-      throw new coda.UserVisibleError(`The color must be a six digit hex string (Ex: #ff00ff). Got: ${color}.`);
+  execute: async function ([lightOrRoomId, color], context) {
+    color = color.toLocaleLowerCase();
+    let hex = CSSColorList.find(c => c.name == color)?.hex;
+    if (!hex && color.match(HexRegex)) {
+      hex = color;
     }
-    let hueColor = HueColor.fromHex(strippedColor);
-    console.log(JSON.stringify(hueColor));
-    let cie = hueColor.toCie();
-    await setState(context, lightId, {
+    if (!hex) {
+      throw new coda.UserVisibleError(`Invalid color: "${color}". Must be a named CSS color (ex: "red") or a hex string (ex: "#ff2200").`);
+    }
+    hex = hex.replace(/^#/, "").toLocaleLowerCase();
+    let hueColor = HueColor.fromHex(hex);
+    let [hue, saturation, brightness] = hueColor.toHsb();
+    await setState(context, lightOrRoomId, {
       on: true,
-      xy: cie.slice(0, 2),
+      hue: hue,
+      sat: saturation,
+      bri: brightness,
+    });
+    return "Done";
+  },
+});
+
+pack.addFormula({
+  name: "SetColor",
+  description: "Changes the color of a light or room, given a hue and saturation.",
+  parameters: [
+    LightOrGroupIdParam,
+    coda.makeParameter({
+      type: coda.ParameterType.Number,
+      name: "hue",
+      description: "The hue to set, as a number between 0 (red) and 360 (also red).",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.Number,
+      name: "saturation",
+      description: "The satuation to set, as a number between 0 (no saturation) and 100 (full saturation).",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  isAction: true,
+  execute: async function ([lightOrRoomId, hue, saturation], context) {
+    if (hue < 0 || hue > 360) {
+      throw new coda.UserVisibleError(`Invalid hue: "${hue}".The value must be between 0 and 360.`)
+    }
+    hue = Math.round(hue / 360 * MaxAPIHue);
+
+    if (saturation < 0 || saturation > 100) {
+      throw new coda.UserVisibleError(`Invalid saturation: "${saturation}".The value must be between 0 and 100.`)
+    }
+    saturation = Math.round(saturation / 100 * MaxAPISat);
+
+    await setState(context, lightOrRoomId, {
+      on: true,
+      hue: hue,
+      sat: saturation,
     });
     return "Done";
   },
@@ -123,9 +197,9 @@ pack.addFormula({
 
 pack.addFormula({
   name: "SetBrightness",
-  description: "Changes the brightness of a light.",
+  description: "Changes the brightness of a light or room.",
   parameters: [
-    LightIdParam,
+    LightOrGroupIdParam,
     coda.makeParameter({
       type: coda.ParameterType.Number,
       name: "brightness",
@@ -134,8 +208,8 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.String,
   isAction: true,
-  execute: async function ([lightId, brightness], context) {
-    await setState(context, lightId, {
+  execute: async function ([lightOrRoomId, brightness], context) {
+    await setState(context, lightOrRoomId, {
       on: true,
       bri: Math.round((brightness / 100) * 255),
     });
@@ -145,20 +219,20 @@ pack.addFormula({
 
 pack.addFormula({
   name: "Blink",
-  description: "Makes a light blink.",
+  description: "Makes a light(s) or blink.",
   parameters: [
-    LightIdParam,
+    LightOrGroupIdParam,
     coda.makeParameter({
       type: coda.ParameterType.Boolean,
       name: "long",
-      description: "If the light should blink for a long time (15 seconds).",
+      description: "If the light(s) should blink for a long time (15 seconds).",
       optional: true,
     }),
   ],
   resultType: coda.ValueType.String,
   isAction: true,
-  execute: async function ([lightId, long], context) {
-    await setState(context, lightId, {
+  execute: async function ([lightOrRoomId, long], context) {
+    await setState(context, lightOrRoomId, {
       on: true,
       alert: long ? "lselect" : "select",
     });
@@ -182,18 +256,24 @@ pack.addFormula({
   schema: LightStateSchema,
   cacheTtlSecs: 0,
   execute: async function ([lightId, _], context) {
-    let {name, state} = await getResource(context, `lights/${lightId}`, {
+    let {name, state} = await getResource(context, `${lightId}`, {
       cacheTtlSecs: 0,
     });
-    let hueColor = HueColor.fromCIE(state.xy[0], state.xy[1], state.bri);
-    let color = "#" + hueColor.toHex();
+    let {hue, sat, bri, xy} = state;
+    let hueColor = HueColor.fromCIE(xy[0], xy[1], MaxAPIBri);
+    let color = "#" + hueColor.toHex().toLocaleLowerCase();
+    hue = Math.round((hue / MaxAPIHue) * 360);
+    sat = Math.round((sat / MaxAPISat) * 100);
+    bri = Math.round((bri / MaxAPIBri) * 100);
     return {
       id: lightId,
       name: name,
       ...state,
-      bri: Math.round((state.bri / 255) * 100),
+      hue: Math.round((state.hue / MaxAPIHue) * 360),
+      sat: Math.round((state.sat / MaxAPISat) * 100),
+      bri: Math.round((state.bri / MaxAPIBri) * 100),
       color,
-      colorSwatch: getColorSwatchUri(color),
+      swatch: getColorSwatchUri(color),
     }
   },
 });
@@ -226,17 +306,7 @@ pack.addSyncTable({
     description: "Sync the rooms.",
     parameters: [],
     execute: async function ([], context) {
-      let data = await getResource(context, "groups");
-      let rooms = Object.entries(data).map(([id, value]) => {
-        let room = value as any;
-        return {
-          ...room,
-          id,
-          lights: room.lights.map(lightId => {
-            return { id: lightId, name: "Not found" };
-          }),
-        };
-      });
+      let rooms = await getRooms(context);
       return {
         result: rooms,
       };

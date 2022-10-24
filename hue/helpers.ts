@@ -1,11 +1,16 @@
 import * as coda from "@codahq/packs-sdk";
 
-export async function setState(context, lightId, state) {
+export async function setState(context, lightOrRoomId, state) {
   let username = getUsername(context.endpoint);
-  console.log(JSON.stringify(state));
+  let url = coda.joinUrl(
+    "https://api.meethue.com/route/api/",
+    username,
+    lightOrRoomId,
+    lightOrRoomId.startsWith("group") ? "action" : "state"
+  );
   await context.fetcher.fetch({
     method: "PUT",
-    url: `https://api.meethue.com/route/api/${username}/lights/${lightId}/state`,
+    url,
     headers: {
       "Content-Type": "application/json",
     },
@@ -20,7 +25,21 @@ export async function getLights(context) {
     return {
       ...light,
       ...light.config,
-      id,
+      id: `lights/${id}`,
+    };
+  });
+}
+
+export async function getRooms(context) {
+  let data = await getResource(context, "groups");
+  return Object.entries(data).map(([id, value]) => {
+    let room = value as any;
+    return {
+      ...room,
+      id: `groups/${id}`,
+      lights: room.lights.map(lightId => {
+        return { id: `lights/${lightId}`, name: "Not found" };
+      }),
     };
   });
 }
