@@ -82,6 +82,9 @@ export async function getResource(context, path, options = {}) {
 }
 
 function getUsername(endpoint) {
+  if (!endpoint) {
+    throw new coda.UserVisibleError("Account setup failed. Please sign into your Philips Hue account again.");
+  }
   return endpoint.split("#")[1];
 }
 

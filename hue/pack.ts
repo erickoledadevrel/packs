@@ -113,7 +113,7 @@ pack.setUserAuthentication({
       let username = response.body[0].success.username;
       let endpoint = `${BaseUrl}#${username}`
       return [
-        { display: "Finish", value: endpoint },
+        { display: "Click here to complete login.", value: endpoint },
       ];
     },
   }],
