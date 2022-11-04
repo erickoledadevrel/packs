@@ -32,15 +32,33 @@ const LightReferenceSchema = coda.makeReferenceSchemaFromObjectSchema(LightSchem
 
 export const RoomSchema = coda.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
+    name: { type: coda.ValueType.String, required: true },
     type: { type: coda.ValueType.String, fromKey: "class" },
     lights: { 
       type: coda.ValueType.Array,
       items: LightReferenceSchema,
     },
-    roomId: { type: coda.ValueType.String, fromKey: "id" },
+    roomId: { type: coda.ValueType.String, fromKey: "id", required: true },
   },
   displayProperty: "name",
   idProperty: "roomId",
   featuredProperties: ["lights", "roomId"],
+});
+
+const RoomReferenceSchema = coda.makeReferenceSchemaFromObjectSchema(RoomSchema, "Room");
+
+export const SceneSchema = coda.makeObjectSchema({
+  properties: {
+    name: { type: coda.ValueType.String },
+    type: { type: coda.ValueType.String },
+    lights: { 
+      type: coda.ValueType.Array,
+      items: LightReferenceSchema,
+    },
+    room: RoomReferenceSchema,
+    sceneId: { type: coda.ValueType.String, fromKey: "id" },
+  },
+  displayProperty: "name",
+  idProperty: "sceneId",
+  featuredProperties: ["type", "lights", "room"],
 });

@@ -44,15 +44,36 @@ export async function getRooms(context) {
   });
 }
 
+export async function getScenes(context) {
+  let data = await getResource(context, "scenes");
+  console.log(data);
+  return Object.entries(data).map(([id, value]) => {
+    let scene = value as any;
+    return {
+      ...scene,
+      id,
+      lights: scene.lights?.map(lightId => {
+        return { id: `lights/${lightId}`, name: "Not found" };
+      }),
+      room: scene.group ? { id: `groups/${scene.group}`, name: "Not found" } : null,
+    };
+  });
+}
+
 export async function getResource(context, path, options = {}) {
   let username = getUsername(context.endpoint);
   let url = coda.joinUrl(`https://api.meethue.com/route/api/${username}`, path);
-  let response = await context.fetcher.fetch({
+  let request: coda.FetchRequest = {
     method: "GET",
     url,
     ...options,
-  });
+  };
+  let response = await context.fetcher.fetch(request);
   let data = response.body;
+  let fault = data.fault;
+  if (fault) {
+    throw new Error(fault.faultstring);
+  }
   let error = data?.[0]?.error;
   if (error) {
     throw new Error(error.description);

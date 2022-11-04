@@ -2,8 +2,8 @@ import * as coda from "@codahq/packs-sdk";
 import HueColor from "hue-colors";
 import CSSColorList from "css-named-colors";
 import * as hsl from "hsl-to-hex";
-import { getColorSwatchUri, getLights, getResource, getRooms, setState } from "./helpers";
-import { LightSchema, LightStatusSchema as LightStateSchema, RoomSchema } from "./schemas";
+import { getColorSwatchUri, getLights, getResource, getRooms, getScenes, setState } from "./helpers";
+import { LightSchema, LightStatusSchema as LightStateSchema, RoomSchema, SceneSchema } from "./schemas";
 
 export const pack = coda.newPack();
 
@@ -17,7 +17,7 @@ const MaxAPIBri = 254;
 const LightIdParam = coda.makeParameter({
   type: coda.ParameterType.String,
   name: "lightId",
-  description: "The ID of the light to control.",
+  description: "The ID of the light to control (auto-complete available).",
   autocomplete: async function (context) {
     let lights = await getLights(context);
     return lights.map(light => {
@@ -26,16 +26,31 @@ const LightIdParam = coda.makeParameter({
   },
 });
 
-const LightOrGroupIdParam = coda.makeParameter({
+const RoomIdParam = coda.makeParameter({
+  type: coda.ParameterType.String,
+  name: "roomId",
+  description: "The ID of the room to control (auto-complete available).",
+  autocomplete: async function (context) {
+    let rooms = await getRooms(context);
+    return rooms.map(room => {
+      return { display: room.name, value: room.id };
+    });
+  },
+});
+
+const LightOrRoomIdParam = coda.makeParameter({
   type: coda.ParameterType.String,
   name: "lightOrRoomId",
-  description: "The ID of the light or room to control.",
+  description: "The ID of the light or room to control (auto-complete available).",
   autocomplete: async function (context) {
     let [lights, rooms] = await Promise.all([
       getLights(context),
       getRooms(context),
     ]);
     return [].concat(
+      [
+        { display: "All lights", value: "groups/0" },
+      ],
       lights.map(light => {
         return { display: `${light.name} (Light)`, value: light.id };
       }),
@@ -43,6 +58,21 @@ const LightOrGroupIdParam = coda.makeParameter({
         return { display: `${room.name} (Room)`, value: room.id };
       }),
     );
+  },
+});
+
+const SceneIdParam = coda.makeParameter({
+  type: coda.ParameterType.String,
+  name: "sceneId",
+  description: "The ID of the scene to control (auto-complete available).",
+  autocomplete: async function (context, _, args) {
+    let {roomId} = args;
+    let scenes = await getScenes(context);
+    return scenes
+      .filter(scene => scene.room.id == roomId)
+      .map(scene => {
+        return { display: scene.name, value: scene.id };
+      });
   },
 });
 
@@ -93,7 +123,7 @@ pack.addFormula({
   name: "TurnOn",
   description: "Turns a light or room on.",
   parameters: [
-    LightOrGroupIdParam,
+    LightOrRoomIdParam,
   ],
   resultType: coda.ValueType.String,
   isAction: true,
@@ -114,7 +144,7 @@ pack.addFormula({
   name: "TurnOff",
   description: "Turns a light or room off.",
   parameters: [
-    LightOrGroupIdParam,
+    LightOrRoomIdParam,
   ],
   resultType: coda.ValueType.String,
   isAction: true,
@@ -135,7 +165,7 @@ pack.addFormula({
   name: "SetColor",
   description: "Changes the color of a light or room, given a hue and saturation.",
   parameters: [
-    LightOrGroupIdParam,
+    LightOrRoomIdParam,
     coda.makeParameter({
       type: coda.ParameterType.Number,
       name: "hue",
@@ -178,7 +208,7 @@ pack.addFormula({
   name: "SetColorCSS",
   description: "Changes the color of a light or room, approximating the CSS color string provided.",
   parameters: [
-    LightOrGroupIdParam,
+    LightOrRoomIdParam,
     coda.makeParameter({
       type: coda.ParameterType.String,
       name: "color",
@@ -219,7 +249,7 @@ pack.addFormula({
   name: "SetBrightness",
   description: "Changes the brightness of a light or room.",
   parameters: [
-    LightOrGroupIdParam,
+    LightOrRoomIdParam,
     coda.makeParameter({
       type: coda.ParameterType.Number,
       name: "brightness",
@@ -246,7 +276,7 @@ pack.addFormula({
   name: "Blink",
   description: "Makes a light(s) or blink.",
   parameters: [
-    LightOrGroupIdParam,
+    LightOrRoomIdParam,
     coda.makeParameter({
       type: coda.ParameterType.Boolean,
       name: "long",
@@ -266,6 +296,27 @@ pack.addFormula({
     await setState(context, lightOrRoomId, {
       on: true,
       alert: long ? "lselect" : "select",
+    });
+    return "Done";
+  },
+});
+
+pack.addFormula({
+  name: "SetScene",
+  description: "Sets the lights to the settings determined by a saved scene.",
+  parameters: [
+    RoomIdParam,
+    SceneIdParam,
+  ],
+  resultType: coda.ValueType.String,
+  isAction: true,
+  examples: [
+    { params: ["groups/1", "abc123"], result: "Done" },
+  ],
+  onError: ErrorHandler,
+  execute: async function ([roomId, sceneId], context) {
+    await setState(context, roomId, {
+      scene: sceneId,
     });
     return "Done";
   },
@@ -340,6 +391,24 @@ pack.addSyncTable({
       let rooms = await getRooms(context);
       return {
         result: rooms,
+      };
+    },
+  },
+});
+
+pack.addSyncTable({
+  name: "Scenes",
+  identityName: "Scene",
+  description: "The scenes configured in your bridge.",
+  schema: SceneSchema,
+  formula: {
+    name: "SyncScenes",
+    description: "Sync the scenes.",
+    parameters: [],
+    execute: async function ([], context) {
+      let scenes = await getScenes(context);
+      return {
+        result: scenes,
       };
     },
   },
