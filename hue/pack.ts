@@ -274,7 +274,7 @@ pack.addFormula({
 
 pack.addFormula({
   name: "Blink",
-  description: "Makes a light(s) or blink.",
+  description: "Makes a light or room blink.",
   parameters: [
     LightOrRoomIdParam,
     coda.makeParameter({

@@ -46,7 +46,6 @@ export async function getRooms(context) {
 
 export async function getScenes(context) {
   let data = await getResource(context, "scenes");
-  console.log(data);
   return Object.entries(data).map(([id, value]) => {
     let scene = value as any;
     return {
