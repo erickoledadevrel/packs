@@ -32,6 +32,52 @@ const MakerSchema = coda.makeObjectSchema({
   }
 });
 
+const FormulaSchema = coda.makeObjectSchema({
+  properties: {
+    name: {
+      type: coda.ValueType.String,
+      description: "The name of the formula.",
+    },
+    description: {
+      type: coda.ValueType.String,
+      description: "A description of the formula.",
+    },
+    isAction: {
+      type: coda.ValueType.Boolean,
+      description: "If the formula is an action.",
+    },
+  },
+  displayProperty: "name",
+});
+
+const SyncTableSchema = coda.makeObjectSchema({
+  properties: {
+    name: {
+      type: coda.ValueType.String,
+      description: "The name of the sync table.",
+    },
+    description: {
+      type: coda.ValueType.String,
+      description: "A description of the sync table.",
+    },
+  },
+  displayProperty: "name",
+});
+
+const ColumnFormatSchema = coda.makeObjectSchema({
+  properties: {
+    name: {
+      type: coda.ValueType.String,
+      description: "The name of the column format.",
+    },
+    instructions: {
+      type: coda.ValueType.String,
+      description: "The instructions for the column format.",
+    },
+  },
+  displayProperty: "name",
+});
+
 const PackSchema = coda.makeObjectSchema({
   properties: {
     packId: {
@@ -107,6 +153,21 @@ const PackSchema = coda.makeObjectSchema({
       codaType: coda.ValueHintType.Url,
       description: "The URL to open the Pack in the Pack Studio editor.",
     },
+    formulas: {
+      type: coda.ValueType.Array,
+      items: FormulaSchema,
+      description: "The formulas in the Pack.",
+    },
+    syncTables: {
+      type: coda.ValueType.Array,
+      items: SyncTableSchema,
+      description: "The sync tables in the Pack.",
+    },
+    columnFormats: {
+      type: coda.ValueType.Array,
+      items: ColumnFormatSchema,
+      description: "The column formats in the Pack.",
+    },
   },
   displayProperty: "name",
   idProperty: "packId",
@@ -145,6 +206,7 @@ pack.addFormula({
     let { items } = response.body;
     let item = items[0];
     formatItem(item);
+    await addBuildingBlocks(context, [item]);
     return item;
   },
 });
@@ -192,7 +254,7 @@ pack.addSyncTable({
           excludePublicPacks: !includePublished,
           excludeWorkspaceAcls: !includeWorkspace,
           excludeIndividualAcls: !includePrivate,
-          limit: 50,
+          limit: 30,
         });
       }
       let response = await context.fetcher.fetch({
@@ -203,6 +265,7 @@ pack.addSyncTable({
       for (let item of items) {
        formatItem(item);
       }
+      await addBuildingBlocks(context, items);
       let continuation;
       if (nextPageLink) {
         continuation = { url: nextPageLink };
@@ -224,6 +287,28 @@ function formatItem(item:any) {
   item.bundledWithPlan = item.bundledPackPlan?.pricing?.minimumFeatureSet;
   item.listingUrl = `https://coda.io/packs/${item.packId}`;
   item.studioUrl = `https://coda.io/p/${item.packId}`;
+}
+
+async function addBuildingBlocks(context: coda.ExecutionContext, items: any[]) {
+  let requests = items.map(item => {
+    return context.fetcher.fetch({
+      method: "GET",
+      url: item.externalMetadataUrl,
+      disableAuthentication: true,
+    });
+  });
+  let results = await Promise.allSettled(requests);
+  for (let [i, result] of results.entries()) {
+    let item = items[i];
+    if (result.status == "fulfilled") {
+      let metadata = result.value.body;
+      item.formulas = metadata.formulas;
+      item.syncTables = metadata.syncTables;
+      item.columnFormats = metadata.formats;
+    } else {
+      console.error(result.reason);
+    }
+  }
 }
 
 function getPackId(packIdOrUrl: string): string {
