@@ -3,6 +3,9 @@ export const pack = coda.newPack();
 
 pack.addNetworkDomain("cataas.com");
 
+// How many cats to fetch with each request.
+const PageSize = 1000;
+
 // Tag parameter, shared across multiple formulas.
 const TagParameter = coda.makeParameter({
   type: coda.ParameterType.String,
@@ -148,8 +151,14 @@ pack.addSyncTable({
       TagParameter,
     ],
     execute: async function ([tag], context) {
+      // Load the stored value of "skip" from the last run, or default to zero
+      // if this is the first run.
+      let skip = context.sync.continuation?.skip as number ?? 0;
+
       let url = coda.withQueryParams("https://cataas.com/api/cats", {
         tags: tag,
+        limit: PageSize,
+        skip: skip,
       });
       let response = await context.fetcher.fetch({
         method: "GET",
@@ -159,14 +168,27 @@ pack.addSyncTable({
       let result = [];
       for (let cat of cats) {
         result.push({
-          image: "https://cataas.com/cat/" + cat.id,
+          image: "https://cataas.com/cat/" + cat._id,
           tags: cat.tags,
-          created: cat.created_at,
-          catId: cat.id,
+          created: cat.createdAt,
+          catId: cat._id,
         });
       }
+
+      // Start with an empty continuation (end the sync).
+      let continuation;
+      // If the response contained a full page of cats we should fetch more.
+      if (cats.length == PageSize) {
+        // Create a continuation object (continue the sync).
+        continuation = {
+          // Save inside of it the "skip" value the next execution should use.
+          skip: skip + PageSize,
+        };
+      }
+
       return {
         result: result,
+        continuation: continuation,
       };
     },
   },
