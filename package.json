@@ -2,6 +2,7 @@
   "dependencies": {
     "@codahq/packs-sdk": "^1.2.0",
     "awesome-phonenumber": "^3.1.0",
+    "cheerio": "^1.0.0-rc.12",
     "color-convert": "^2.0.1",
     "css-named-colors": "^1.0.1",
     "email-addresses": "^5.0.0",
@@ -10,6 +11,7 @@
     "hsl-to-hex": "^1.0.0",
     "hue-colors": "^0.5.4",
     "lodash": "^4.17.21",
+    "metadata-scraper": "^0.2.61",
     "mime-types": "^2.1.35",
     "number-abbreviate": "^2.0.0",
     "sql.js": "^1.8.0"

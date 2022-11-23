@@ -15,10 +15,10 @@ function defaultFilename(context: coda.ExecutionContext): string {
     minute: "2-digit",
     second: "2-digit",
   });
-  
+
   // Format the date into individual parts.
   let parts = formatter.formatToParts(date);
-  
+
   let day = parts.find(part => part.type === "day").value;
   let month = parts.find(part => part.type === "month").value;
   let year = parts.find(part => part.type === "year").value;
@@ -57,4 +57,4 @@ pack.addFormula({
     });
     return url;
   },
-})
+});
