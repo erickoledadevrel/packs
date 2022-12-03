@@ -5,8 +5,16 @@ const scraperRules = require("metadata-scraper/lib/rules");
 
 export const pack = coda.newPack();
 
+const OneHourSecs = 1 * 60 * 60;
+const RedirectBaseUrl = "https://us-central1-erickoleda-linkmetadata.cloudfunctions.net/redirect";
+
 const MetadataSchema = coda.makeObjectSchema({
   properties: {
+    label: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Html,
+      description: "The label to show for the web page. Default to the title.",
+    },
     title: {
       type: coda.ValueType.String,
       codaType: coda.ValueHintType.Html,
@@ -91,41 +99,59 @@ const MetadataSchema = coda.makeObjectSchema({
       codaType: coda.ValueHintType.Embed,
       description: "The primary audio of the web page.",
     },
-  }
+  },
+  displayProperty: "label",
 });
 
-pack.addNetworkDomain("httpbin.org");
+pack.addNetworkDomain("cloudfunctions.net");
+
+pack.setSystemAuthentication({
+  type: coda.AuthenticationType.HeaderBearerToken,
+});
 
 pack.addFormula({
-  name: "Metadata",
-  description: "Gets metdata about a specific web page.",
+  name: "WebPageMetadata",
+  description: "Gets metdata (title, icon, etc.) about a specific web page.",
   parameters: [
     coda.makeParameter({
       type: coda.ParameterType.String,
       name: "url",
-      description: "The URL of the webpage to parse."
+      description: "The URL of the web page to inspect. It must be a public URL that doesn't require the user to sign in."
     }),
   ],
   resultType: coda.ValueType.Object,
   schema: MetadataSchema,
+  cacheTtlSecs: OneHourSecs,
   execute: async function (args, context) {
     let [url] = args;
-    let httpbinUrl = coda.withQueryParams("https://httpbin.org/redirect-to", {
+    if (!url.toLocaleLowerCase().startsWith("https://")) {
+      throw new coda.UserVisibleError("The URL must start with 'https://'.");
+    }
+    let redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
       url: url,
     });
-    let response = await context.fetcher.fetch({
-      method: "GET",
-      url: httpbinUrl,
-    });
+    let response;
+    try {
+      response = await context.fetcher.fetch({
+        method: "GET",
+        url: redirectUrl,
+        cacheTtlSecs: OneHourSecs,
+      });
+    } catch (e) {
+      console.error(e);
+      throw new coda.UserVisibleError(`Error accessing URL: ${url}`);
+    }
     let result = getMetdata(url, response.body);
+    result.url = result.url ?? url;
+    result.label = result.title ?? "⚠️ No Title";
     return result;
   },
 });
 
 pack.addColumnFormat({
-  name: "Metadata",
-  formulaName: "Metadata",
-  instructions: "Paste a URL to get metadata about it.",
+  name: "Web Page Metadata",
+  formulaName: "WebPageMetadata",
+  instructions: "Paste a URL of a web page to get its metadata (title, icon, etc).",
 });
 
 function getMetdata(url, html) {
