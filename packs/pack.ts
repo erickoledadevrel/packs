@@ -8,6 +8,11 @@ const PackUrlRegexes = [
   new RegExp("^https://coda.io/packs/(?:\\w+-)*(\\d+)"),
 ];
 
+const MetadataTypes = {
+  blocks: "Building blocks",
+  published: "Published status",
+};
+
 const MakerSchema = coda.makeObjectSchema({
   properties: {
     name: {
@@ -168,6 +173,10 @@ const PackSchema = coda.makeObjectSchema({
       items: ColumnFormatSchema,
       description: "The column formats in the Pack.",
     },
+    published: {
+      type: coda.ValueType.Boolean,
+      description: "If the Pack has been published to the gallery.",
+    },
   },
   displayProperty: "name",
   idProperty: "packId",
@@ -204,9 +213,15 @@ pack.addFormula({
       url: url,
     });
     let { items } = response.body;
+    if (!items?.length) {
+      throw new coda.UserVisibleError(`Pack not found: ${packIdOrUrl}`);
+    }
     let item = items[0];
     formatItem(item);
-    await addBuildingBlocks(context, [item]);
+    await Promise.allSettled([
+      addBuildingBlocks(context, [item]),
+      addPublished(context, [item]),
+    ]);
     return item;
   },
 });
@@ -245,16 +260,25 @@ pack.addSyncTable({
         description: "Include private Packs you created or were shared with your directly.",
         suggestedValue: false,
       }),
+      coda.makeParameter({
+        type: coda.ParameterType.StringArray,
+        name: "metdata",
+        description: "Which additional Pack metadata to include (may increase time to sync).",
+        optional: true,
+        autocomplete: Object.entries(MetadataTypes).map(([key, value]) => ({
+          display: value, value: key,
+        })),
+      }),
     ],
     execute: async function (args, context) {
-      let [includePublished, includeWorkspace, includePrivate] = args;
+      let [includePublished, includeWorkspace, includePrivate, metadata] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
         url = coda.withQueryParams(ListingsUrl, {
           excludePublicPacks: !includePublished,
           excludeWorkspaceAcls: !includeWorkspace,
           excludeIndividualAcls: !includePrivate,
-          limit: 30,
+          limit: 50,
         });
       }
       let response = await context.fetcher.fetch({
@@ -265,7 +289,14 @@ pack.addSyncTable({
       for (let item of items) {
        formatItem(item);
       }
-      await addBuildingBlocks(context, items);
+      let jobs = [];
+      if (metadata?.includes("blocks")) {
+        jobs.push(addBuildingBlocks(context, items));
+      }
+      if (metadata?.includes("published")) {
+        jobs.push(addPublished(context, items),);
+      }
+      await Promise.allSettled(jobs);
       let continuation;
       if (nextPageLink) {
         continuation = { url: nextPageLink };
@@ -279,7 +310,7 @@ pack.addSyncTable({
 });
 
 function formatItem(item:any) {
-  item.categories = item.categories.map(category => category.categoryName);
+  item.categories = item.categories?.map(category => category.categoryName);
   for (let maker of item.makers) {
     maker.profileLink = `https://coda.io/@${maker.slug}`;
   }
@@ -305,6 +336,26 @@ async function addBuildingBlocks(context: coda.ExecutionContext, items: any[]) {
       item.formulas = metadata.formulas;
       item.syncTables = metadata.syncTables;
       item.columnFormats = metadata.formats;
+    } else {
+      console.error(result.reason);
+    }
+  }
+}
+
+async function addPublished(context: coda.ExecutionContext, items: any[]) {
+  let requests = items.map(item => {
+    return context.fetcher.fetch({
+      method: "HEAD",
+      url: `https://coda.io/packs/${item.packId}`,
+      disableAuthentication: true,
+      ignoreRedirects: true,
+    });
+  });
+  let results = await Promise.allSettled(requests);
+  for (let [i, result] of results.entries()) {
+    let item = items[i];
+    if (result.status == "fulfilled") {
+      item.published = result.value.status == 200;
     } else {
       console.error(result.reason);
     }
