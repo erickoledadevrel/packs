@@ -83,18 +83,25 @@ pack.addDynamicSyncTable({
         name: "rowId",
         type: "Row Number",
       });
-      let response = await context.fetcher.fetch({
-        method: "POST",
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(columns),
-      });
-      let items = response.body;
-      return {
-        result: items,
-      };
+      try {
+        let response = await context.fetcher.fetch({
+          method: "POST",
+          url: url,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(columns),
+        });
+        let items = response.body;
+        return {
+          result: items,
+        };
+      } catch (e) {
+        if (e?.body?.error) {
+          throw new coda.UserVisibleError(e.body.error);
+        }
+        throw e;
+      }
     },
   },
 });
