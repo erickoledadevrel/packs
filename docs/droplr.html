@@ -10,25 +10,28 @@
     </style>
   </head>
   <body>
-    <video id="embed" controls preload="auto" onclick="onVideoClick"></video>
+    <video id="embed" controls preload="auto"></video>
     <script>
+      let embed = document.querySelector("#embed");
       let urlParams = new URLSearchParams(window.location.search);
 
       let videoUrl = urlParams.get("video");
       if (!videoUrl) {
         throw new Error("Missing video URL.");
       }
-      document.querySelector("#embed").src = videoUrl;
+      embed.src = videoUrl;
 
       let posterUrl = urlParams.get("poster");
       if (posterUrl) {
-        document.querySelector("#embed").poster = posterUrl;
+        embed.poster = posterUrl;
       }
 
-      function onVideoClick(e) {
-        this.paused ? this.play() : this.pause();
+      embed.addEventListener("click", (e) => {
+        console.log("Click");
+        let embed = e.target;
+        embed.paused ? embed.play() : embed.pause();
         e.preventDefault();
-      }
+      });
     </script>
   </body>
 </html>
