@@ -1,5 +1,18 @@
 import * as coda from "@codahq/packs-sdk";
 
+const AttributionNodes: coda.AttributionNode[] = [
+  {
+    type: coda.AttributionNodeType.Image,
+    imageUrl: "https://openflights.org/img/icon_favicon.png",
+    anchorUrl: "https://openflights.org/",
+  },
+  {
+    type: coda.AttributionNodeType.Link,
+    anchorText: "OpenFlights",
+    anchorUrl: "https://openflights.org/",
+  }
+];
+
 export const AirportSchema = coda.makeObjectSchema({
   properties: {
     name: {
@@ -40,6 +53,7 @@ export const AirportSchema = coda.makeObjectSchema({
     },
   },
   displayProperty: "name",
+  attribution: AttributionNodes,
 });
 
 export const AirlineSchema = coda.makeObjectSchema({
@@ -70,6 +84,7 @@ export const AirlineSchema = coda.makeObjectSchema({
     },
   },
   displayProperty: "name",
+  attribution: AttributionNodes,
 });
 
 export const FlightSchema = coda.makeObjectSchema({
