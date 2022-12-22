@@ -2,9 +2,15 @@
 <html>
   <head>
     <title>Droplr Embed</title>
+    <style>
+      html, body, video {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
   </head>
   <body>
-    <video id="embed" width="100%" height="100%" controls preload="auto"></video>
+    <video id="embed" controls preload="auto"></video>
     <script>
       let urlParams = new URLSearchParams(window.location.search);
 
