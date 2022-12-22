@@ -1,6 +1,6 @@
 import * as coda from "@codahq/packs-sdk";
 import { OneDaySecs } from "./constants";
-import { getAirports, getAirline } from "./helpers";
+import { getAirports, getAirline, getAirlines } from "./helpers";
 import { AirportSchema, AirlineSchema, FlightSchema } from "./schemas";
 var FlightDesignator = require("flight-designator");
 
@@ -155,4 +155,42 @@ pack.addColumnFormat({
   name: "Flight",
   formulaName: "Flight",
   instructions: "Enter the designator (AKA flight number) of a flight to get information about it.",
+});
+
+pack.addSyncTable({
+  name: "Airports",
+  identityName: "Airport",
+  description: "Lists all of the known airports.",
+  schema: AirportSchema,
+  formula: {
+    name: "SyncAirports",
+    description: "Syncs the airports.",
+    parameters: [],
+    execute: async function (args, context) {
+      let airports = await getAirports(context);
+      console.log(airports.length);
+      console.log(airports[0]);
+      return {
+        result: airports,
+      };
+    },
+  },
+});
+
+pack.addSyncTable({
+  name: "Airlines",
+  identityName: "Airline",
+  description: "Lists all of the known airlines.",
+  schema: AirlineSchema,
+  formula: {
+    name: "SyncAirlines",
+    description: "Syncs the airlines.",
+    parameters: [],
+    execute: async function (args, context) {
+      let airlines = await getAirlines(context);
+      return {
+        result: airlines,
+      };
+    },
+  },
 });

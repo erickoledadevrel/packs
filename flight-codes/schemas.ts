@@ -51,8 +51,14 @@ export const AirportSchema = coda.makeObjectSchema({
       type: coda.ValueType.String,
       description: "The timezone idenfier of the timezone the airport is located in.",
     },
+    airportID: {
+      type: coda.ValueType.String,
+      description: "The internal ID for the airport.",
+    },
   },
   displayProperty: "name",
+  idProperty: "airportID",
+  featuredProperties: ["city", "country", "IATA", "ICAO"],
   attribution: AttributionNodes,
 });
 
@@ -82,8 +88,14 @@ export const AirlineSchema = coda.makeObjectSchema({
       type: coda.ValueType.String,
       description: "The callsign of the airline.",
     },
+    airlineID: {
+      type: coda.ValueType.String,
+      description: "The internal ID for the airline.",
+    },
   },
   displayProperty: "name",
+  idProperty: "airlineID",
+  featuredProperties: ["country", "IATA", "ICAO"],
   attribution: AttributionNodes,
 });
 
@@ -91,7 +103,7 @@ export const FlightSchema = coda.makeObjectSchema({
   properties: {
     designator: {
       type: coda.ValueType.String,
-      description: "The designator (flight number) for the flight. This value will be formatted, and so may not match the input extactly.",
+      description: "The designator code (flight number) for the flight. This value will be formatted, and so may not match the input extactly.",
     },
     airline: AirlineSchema,
     number: {

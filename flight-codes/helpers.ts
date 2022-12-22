@@ -40,7 +40,7 @@ export async function getAirports(context: coda.ExecutionContext): Promise<any> 
     url: AirportDataUrl,
     cacheTtlSecs: OneDaySecs,
   });
-  let csv = response.body;
+  let csv = response.body.trim();
   let rows = parse(csv);
   return rows.map(row => {
     let result = {};
@@ -61,7 +61,7 @@ export async function getAirlines(context: coda.ExecutionContext): Promise<any> 
     cacheTtlSecs: OneDaySecs,
   });
   let csv = response.body;
-  csv = csv.replace(/\\\N/g, "");
+  csv = csv.replace(/\\\N/g, "").trim();
   let rows = parse(csv);
   return rows.map(row => {
     let result = {};
