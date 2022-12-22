@@ -93,12 +93,12 @@ pack.addFormula({
 
 pack.addFormula({
   name: "Flight",
-  description: "Parses the flight designator (flight number) into its component parts and gets information about the airline.",
+  description: "Parses the flight designator code (flight number) into its component parts and gets information about the airline.",
   parameters: [
     coda.makeParameter({
       type: coda.ParameterType.String,
-      name: "designator",
-      description: "The designator code for a flight.",
+      name: "code",
+      description: "The designator code (flight number) for a flight.",
     }),
   ],
   resultType: coda.ValueType.Object,
