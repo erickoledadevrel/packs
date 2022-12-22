@@ -10,7 +10,7 @@
     </style>
   </head>
   <body>
-    <video id="embed" controls preload="auto"></video>
+    <video id="embed" controls preload="auto" onclick="onVideoClick"></video>
     <script>
       let urlParams = new URLSearchParams(window.location.search);
 
@@ -23,6 +23,11 @@
       let posterUrl = urlParams.get("poster");
       if (posterUrl) {
         document.querySelector("#embed").poster = posterUrl;
+      }
+
+      function onVideoClick(e) {
+        this.paused ? this.play() : this.pause();
+        e.preventDefault();
       }
     </script>
   </body>
