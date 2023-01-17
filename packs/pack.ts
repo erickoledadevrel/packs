@@ -51,6 +51,10 @@ const FormulaSchema = coda.makeObjectSchema({
       type: coda.ValueType.Boolean,
       description: "If the formula is an action.",
     },
+    isCard: {
+      type: coda.ValueType.Boolean,
+      description: "If the formula returns a card.",
+    },
   },
   displayProperty: "name",
 });
@@ -334,6 +338,13 @@ async function addBuildingBlocks(context: coda.ExecutionContext, items: any[]) {
     if (result.status == "fulfilled") {
       let metadata = result.value.body;
       item.formulas = metadata.formulas;
+      for (let formula of item.formulas) {
+        let schema = formula.schema;
+        formula.isCard =  Boolean(schema) &&
+          schema.type == "object" &&
+          Boolean(schema.displayProperty || schema.titleProperty) &&
+          Boolean(schema.snippetProperty || schema.subtitleProperties || schema.linkProperty);
+      }
       item.syncTables = metadata.syncTables;
       item.columnFormats = metadata.formats;
     } else {
