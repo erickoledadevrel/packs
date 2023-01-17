@@ -3,6 +3,7 @@ export const pack = coda.newPack();
 
 const DefaultIncludeDayOfWeek = false;
 const DefaultHeaderColor = "#E64C3C";
+const DefaultSize = 800;
 const DaySecs = 24 * 60 * 60;
 
 const DateParameter = coda.makeParameter({
@@ -18,6 +19,13 @@ const HeaderColorParameter = coda.makeParameter({
   optional: true,
 });
 
+const SizeParameter = coda.makeParameter({
+  type: coda.ParameterType.Number,
+  name: "size",
+  description: `The size of the image (width and height) in pixels. Default: ${DefaultSize}`,
+  optional: true,
+});
+
 pack.addFormula({
   name: "DateIcon",
   description: "Generate an icon for the given date, including the month, day, and optionally day of the week.",
@@ -30,6 +38,7 @@ pack.addFormula({
       optional: true,
     }),
     HeaderColorParameter,
+    SizeParameter,
   ],
   resultType: coda.ValueType.String,
   codaType: coda.ValueHintType.ImageReference,
@@ -39,6 +48,7 @@ pack.addFormula({
       date,
       includeDayOfWeek = DefaultIncludeDayOfWeek,
       headerColor = DefaultHeaderColor,
+      size = DefaultSize,
     ] = args;
 
     // Create a formatter that outputs a numeric day, month, and year.
@@ -62,6 +72,7 @@ pack.addFormula({
       content: day,
       footer: includeDayOfWeek ? weekday : undefined,
       headerColor: headerColor,
+      size: size,
     });
     // Encode the markup as base64.
     let encoded = Buffer.from(svg.trim()).toString("base64");
@@ -76,6 +87,7 @@ pack.addFormula({
   parameters: [
     DateParameter,
     HeaderColorParameter,
+    SizeParameter,
   ],
   resultType: coda.ValueType.String,
   codaType: coda.ValueHintType.ImageReference,
@@ -84,6 +96,7 @@ pack.addFormula({
     let [
       date,
       headerColor = DefaultHeaderColor,
+      size = DefaultSize,
     ] = args;
 
     // Create a formatter that outputs a numeric day, month, and year.
@@ -104,6 +117,7 @@ pack.addFormula({
       header: month,
       content: year,
       headerColor: headerColor,
+      size: size,
     });
     // Encode the markup as base64.
     let encoded = Buffer.from(svg.trim()).toString("base64");
@@ -118,6 +132,7 @@ function getSvg(options: SvgOptions): string {
     content,
     footer,
     headerColor,
+    size = 800,
   } = options;
   let y = 80;
   let fontSize = 45;
@@ -133,7 +148,7 @@ function getSvg(options: SvgOptions): string {
   }
   return `
     <?xml version="1.0" encoding="utf-8"?>
-    <svg width="800px" height="800px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <svg width="${size}px" height="${size}px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <path fill="#EBEDED" d="M100 95a5 5 0 0 1-5 5H5a5 5 0 0 1-5-5V5a5 5 0 0 1 5-5h90a5 5 0 0 1 5 5v90z"/>
       <path fill="#D4D7DA" d="M95 97H5a5 5 0 0 1-5-5v3a5 5 0 0 0 5 5h90a5 5 0 0 0 5-5v-3a5 5 0 0 1-5 5z"/>
       <path fill="${headerColor}" d="M0 31V5a5 5 0 0 1 5-5h90a5 5 0 0 1 5 5v26H0z"/>
@@ -150,4 +165,5 @@ interface SvgOptions {
   content: string;
   footer?: string;
   headerColor?: string;
+  size?: number;
 }
