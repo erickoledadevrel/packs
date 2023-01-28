@@ -1,6 +1,6 @@
 import * as coda from "@codahq/packs-sdk";
-import { ShortCacheTimeSecs, LongCacheTimeSecs } from "./constants";
-import { getTables, doQuery, parseLoad, prepareSpecs, createTables, validateQuery, base64Encode } from "./helpers";
+import { ShortCacheTimeSecs, LongCacheTimeSecs, DefaultUseRowIds } from "./constants";
+import { getTables, doQuery, prepareSpecs, createTables, validateQuery, parseSpec } from "./helpers";
 const initSqlJs = require('sql.js/dist/sql-asm.js');
 
 export const pack = coda.newPack();
@@ -28,6 +28,13 @@ const ValuesParam = coda.makeParameter({
   optional: true,
 });
 
+const UseRowIdsParam = coda.makeParameter({
+  type: coda.ParameterType.Boolean,
+  name: "useRowIds",
+  description: `When loading the value of a Lookup column, store ID of the refernced row instead of the display value. Default: ${DefaultUseRowIds}.`,
+  optional: true,
+});
+
 const RowSchema = coda.makeObjectSchema({
   properties: {
     "$index": { type: coda.ValueType.Number },
@@ -44,9 +51,28 @@ pack.setUserAuthentication({
 });
 
 pack.addFormula({
-  name: "QueryAsLists",
-  description: "Run a SQL query and return the values as a list of lists.",
-  parameters: [LoadParam, QueryParam, ValuesParam],
+  name: "QuerySingle",
+  description: "Run a SQL query and return a single value (the first column of the first row).",
+  parameters: [LoadParam, QueryParam, ValuesParam, UseRowIdsParam],
+  resultType: coda.ValueType.String,
+  cacheTtlSecs: ShortCacheTimeSecs,
+  examples: [
+    {
+      params: [["People"], `SELECT MAX(Age) FROM People`],
+      result: 35,
+    },
+  ],
+  execute: async function (args, context) {
+    let [load, query, values, useRowIds=DefaultUseRowIds] = args;
+    let rows = await doQuery(context, {load, query, values, useRowIds, asObject: false});
+    return rows?.[0]?.[0];
+  },
+});
+
+pack.addFormula({
+  name: "QueryGrid",
+  description: "Run a SQL query and return a grid of values (list of lists).",
+  parameters: [LoadParam, QueryParam, ValuesParam, UseRowIdsParam],
   resultType: coda.ValueType.Array,
   items: {
     type: coda.ValueType.Array,
@@ -55,7 +81,7 @@ pack.addFormula({
   cacheTtlSecs: ShortCacheTimeSecs,
   examples: [
     {
-      params: ["People", `SELECT "First Name", Age FROM People`],
+      params: [["People"], `SELECT "First Name", Age FROM People`],
       result: [
         ["Alice", 25],
         ["Bob", 35],
@@ -63,22 +89,22 @@ pack.addFormula({
     },
   ],
   execute: async function (args, context) {
-    let [load, query, values] = args;
-    let rows = await doQuery(context, {load, query, values, asObject: false});
+    let [load, query, values, useRowIds=DefaultUseRowIds] = args;
+    let rows = await doQuery(context, {load, query, values, useRowIds, asObject: false});
     rows = rows.map(row => row.map(val => String(val)));
     return rows;
   },
 });
 
 pack.addFormula({
-  name: "QueryAsJSON",
+  name: "QueryJSON",
   description: "Run a SQL query and return the values as JSON.",
-  parameters: [LoadParam, QueryParam, ValuesParam],
+  parameters: [LoadParam, QueryParam, ValuesParam, UseRowIdsParam],
   resultType: coda.ValueType.String,
   cacheTtlSecs: ShortCacheTimeSecs,
   examples: [
     {
-      params: ["People", `SELECT "First Name", Age FROM People`],
+      params: [["People"], `SELECT "First Name", Age FROM People`],
       result: JSON.stringify([
         {
           "First Name": "Alice",
@@ -92,14 +118,14 @@ pack.addFormula({
     },
   ],
   execute: async function (args, context) {
-    let [load, query, values] = args;
-    let rows = await doQuery(context, {load, query, values, asObject: true});
+    let [load, query, values, useRowIds=DefaultUseRowIds] = args;
+    let rows = await doQuery(context, {load, query, values, useRowIds, asObject: true});
     return JSON.stringify(rows, null, 2);
   },
 });
 
 pack.addDynamicSyncTable({
-  name: "Query",
+  name: "QueryTable",
   description: "Run a SQL query and return the values as a table.",
   identityName: "Row",
   listDynamicUrls: async function () {
@@ -121,7 +147,7 @@ pack.addDynamicSyncTable({
     let db = new SQL.Database();
 
     if (load) {
-      let specs = parseLoad(load);
+      let specs = load.map(spec => parseSpec(spec));
       await prepareSpecs(context, specs);
       await createTables(db, context, specs);
     }
@@ -145,10 +171,10 @@ pack.addDynamicSyncTable({
   formula: {
     name: "RunQuery",
     description: "Run the query",
-    parameters: [LoadParam, QueryParam, ValuesParam],
+    parameters: [LoadParam, QueryParam, ValuesParam, UseRowIdsParam],
     execute: async function (args, context) {
-      let [load, query, values] = args;
-      let rows = await doQuery(context, {load, query, values, asObject: true});
+      let [load, query, values, useRowIds=DefaultUseRowIds] = args;
+      let rows = await doQuery(context, {load, query, values, useRowIds, asObject: true});
       for (let [i, row] of rows.entries()) {
         row["$index"] = i + 1;
       }

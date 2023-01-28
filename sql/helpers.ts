@@ -18,14 +18,14 @@ export async function doQuery(context: coda.ExecutionContext, options: QueryOpti
   if (load) {
     specs = load.map(spec => parseSpec(spec));
     await prepareSpecs(context, specs);
-    await createTables(db, context, specs);
+    await createTables(db, context, specs, options);
   }
 
   // Validate query.
   validateQuery(db, query, values);
 
   if (load) {
-    await Promise.all(specs.map(spec => loadRows(db, context, spec)));
+    await Promise.all(specs.map(spec => loadRows(db, context, spec, options)));
   }
 
   let statement = db.prepare(query, values);
@@ -61,7 +61,6 @@ export function parseSpec(spec: string): LoadTableSpec {
 }
 
 export async function prepareSpecs(context: coda.ExecutionContext, specs: LoadTableSpec[]) {
-  // TODO: Resolve table and doc URLs.
   for (let spec of specs) {
     if (!spec.doc) {
       spec.doc = context.invocationLocation.docId;
@@ -88,16 +87,18 @@ export async function createTables(db, context: coda.ExecutionContext, specs: Lo
     let columns = await getColumns(context.fetcher, doc, table);
     let sqlColumns = columns.map(column => {
       return `[${column.name}] ${getColumnType(column)}`;
-    });
+    }).concat([
+      `[_id] TEXT PRIMARY KEY`,
+      `[_display] TEXT`,
+    ]);
     statements.push(`CREATE TABLE [${destination}] (${sqlColumns.join(", ")});`);
   }
 
   let statement = statements.join("\n");
-  console.log(statement);
   db.run(statement);
 }
 
-async function loadRows(db, context: coda.ExecutionContext, spec: LoadTableSpec) {
+async function loadRows(db, context: coda.ExecutionContext, spec: LoadTableSpec, options: QueryOptions) {
   let { doc, table, destination } = spec;
 
   let [columns, rows] = await Promise.all([
@@ -109,7 +110,10 @@ async function loadRows(db, context: coda.ExecutionContext, spec: LoadTableSpec)
     let sqlValues = columns.map(column => {
       let value = values[column.id];
       return formatValue(column, value);
-    });
+    }).concat([
+      row.id,
+      row.name,
+    ]);
     let placeholders = sqlValues.map(_ => "?").join(", ");
     let statement = db.prepare(`INSERT INTO \`${destination}\` VALUES (${placeholders});`);
     statement.run(sqlValues);
@@ -185,7 +189,6 @@ async function getRows(fetcher: coda.Fetcher, docId: string, table: string): Pro
     });
     let items = response.body.items;
     result = result.concat(items);
-    console.log(`Loaded ${items?.length ?? 0} items.`);
     url = response.body.nextPageLink;
   } while (url);
   return result;
@@ -198,12 +201,4 @@ export async function getTables(fetcher: coda.Fetcher, docId: string): Promise<a
     cacheTtlSecs: ShortCacheTimeSecs,
   });
   return response.body.items;
-}
-
-export function base64Encode(value: string): string {
-  return Buffer.from(value).toString("base64");
-}
-
-function base64Dencode(value: string): string {
-  return Buffer.from(value, "base64").toString();
 }

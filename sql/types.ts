@@ -2,6 +2,7 @@ export interface QueryOptions {
   load: string[];
   query: string;
   values?: string[];
+  useRowIds: boolean;
   asObject: boolean;
 }
 

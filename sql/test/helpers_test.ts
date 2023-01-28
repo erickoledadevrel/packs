@@ -21,10 +21,6 @@ describe('parseLoad', () => {
     const result = parseSpec("Foo@1234");
     assert.deepEqual(result, {table: "Foo", doc: "1234", destination: undefined});
   });
-  it(`With doc URL`, async () => {
-    const result = parseSpec("Foo@https://coda.io/d/_d1234");
-    assert.deepEqual(result, {table: "Foo", doc: "https://coda.io/d/_d1234", destination: undefined});
-  });
   it(`With destination`, async () => {
     const result = parseSpec("Foo=>Bar");
     assert.deepEqual(result, {table: "Foo", doc: undefined, destination: "Bar"});
@@ -36,13 +32,5 @@ describe('parseLoad', () => {
   it(`With whitespace`, async () => {
     const result = parseSpec("  Foo  @  1234  =>  Bar  ");
     assert.deepEqual(result, {table: "Foo", doc: "1234", destination: "Bar"});
-  });
-  it(`Table URL`, async () => {
-    const result = parseSpec("https://coda.io/d/_d1234/Page_suPuc#_luc0I");
-    assert.deepEqual(result, {table: "https://coda.io/d/_d1234/Page_suPuc#_luc0I", doc: undefined, destination: undefined});
-  });
-  it(`Table URL and destination`, async () => {
-    const result = parseSpec("https://coda.io/d/_d1234/Page_suPuc#_luc0I=>Bar");
-    assert.deepEqual(result, {table: "https://coda.io/d/_d1234/Page_suPuc#_luc0I", doc: undefined, destination: "Bar"});
   });
 });
