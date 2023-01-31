@@ -18,7 +18,7 @@ export async function doQuery(context: coda.ExecutionContext, options: QueryOpti
   if (load) {
     specs = load.map(spec => parseSpec(spec));
     await prepareSpecs(context, specs);
-    await createTables(db, context, specs, options);
+    await createTables(db, context, specs);
   }
 
   // Validate query.
@@ -101,15 +101,19 @@ export async function createTables(db, context: coda.ExecutionContext, specs: Lo
 async function loadRows(db, context: coda.ExecutionContext, spec: LoadTableSpec, options: QueryOptions) {
   let { doc, table, destination } = spec;
 
-  let [columns, rows] = await Promise.all([
+  let [columns, rows, richRows] = await Promise.all([
     getColumns(context.fetcher, doc, table),
     getRows(context.fetcher, doc, table),
+    options.useRowIds ? getRows(context.fetcher, doc, table, true) : Promise.resolve([]),
   ]);
-  for (let row of rows) {
+
+  for (let [i, row] of rows.entries()) {
     let values = row.values;
+    let richValues = richRows[i]?.values;
     let sqlValues = columns.map(column => {
       let value = values[column.id];
-      return formatValue(column, value);
+      let richValue = richValues?.[column.id];
+      return formatValue(column, value, richValue, options);
     }).concat([
       row.id,
       row.name,
@@ -135,11 +139,13 @@ function getColumnType(column): string {
   }
 }
 
-function formatValue(column, value) {
+function formatValue(column: any, value: any, richValue: any, options: QueryOptions) {
   if (value == null || value == undefined) {
     return null;
   }
   switch (column.format.type) {
+    case "lookup":
+      return options.useRowIds ? richValue.rowId ?? null : value;
     case "percent":
       return Number(value.replace(/[^\d.]/g, "")) / 100;
     case "currency":
@@ -176,9 +182,10 @@ async function getColumns(fetcher: coda.Fetcher, docId: string, table: string): 
   return response.body.items;
 }
 
-async function getRows(fetcher: coda.Fetcher, docId: string, table: string): Promise<any[]> {
+async function getRows(fetcher: coda.Fetcher, docId: string, table: string, rich = false): Promise<any[]> {
   let result = [];
   let url = coda.withQueryParams(`https://coda.io/apis/v1/docs/${docId}/tables/${table}/rows`, {
+    valueFormat: rich ? "rich" : "simple",
     limit: RowPageSize,
   });
   do {
