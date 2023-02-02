@@ -18,6 +18,7 @@
     "metadata-scraper": "^0.2.61",
     "mime-types": "^2.1.35",
     "number-abbreviate": "^2.0.0",
+    "regex-escape": "^3.4.10",
     "seinfeldapi": "github:wdifruscio/seinfeld-api",
     "sql.js": "^1.8.0"
   },
