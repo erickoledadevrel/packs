@@ -7,6 +7,7 @@
     "cheerio": "^1.0.0-rc.12",
     "color-convert": "^2.0.1",
     "css-named-colors": "^1.0.1",
+    "diff": "^5.1.0",
     "email-addresses": "^5.0.0",
     "emoji-dictionary": "^1.0.11",
     "figlet": "^1.5.2",
