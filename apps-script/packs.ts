@@ -178,3 +178,32 @@ pack.addFormula({
     return JSON.stringify(result);
   },
 });
+
+pack.addFormula({
+  name: "JSONBody",
+  description: "Build a JSON object from key-value pairs, to pass in the body of the TriggerWebApp action.",
+  parameters: [],
+  varargParameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "key",
+      description: "A key to add to the object.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "value",
+      description: "The value to store at that key.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  connectionRequirement: coda.ConnectionRequirement.None,
+  execute: async function (args: any[], context) {
+    let result: Record<string, string> = {};
+    while (args.length > 0) {
+      let [name, value, ...rest] = args;
+      result[name] = String(value);
+      args = rest;
+    }
+    return JSON.stringify(result);
+  },
+});
