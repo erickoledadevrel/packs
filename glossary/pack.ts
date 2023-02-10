@@ -4,6 +4,7 @@ const RegexEscape = require("regex-escape");
 export const pack = coda.newPack();
 
 const Keyword = "Glossary";
+const ErrorEndpoint = "https://coda.io/error";
 
 const TermSchema = coda.makeObjectSchema({
   properties: {
@@ -140,7 +141,7 @@ pack.setUserAuthentication({
         if (glossaries.length == 0) {
           return [{
             display: "No glossaries found",
-            value: "https://coda.io/error",
+            value: ErrorEndpoint,
           }];
         }
         return glossaries.map(result => {
@@ -154,7 +155,7 @@ pack.setUserAuthentication({
     }
   ],
   getConnectionName: async function (context) {
-    if (!context.endpoint?.startsWith("https://coda.io/apis/")) {
+    if (!context.endpoint || context.endpoint == ErrorEndpoint) {
       return "Invalid glossary";
     }
     return context.endpoint.split("#")[1];
@@ -173,7 +174,7 @@ function getRegex(key: string): RegExp {
 }
 
 async function getGlossary(context: coda.ExecutionContext) {
-  if (!context.endpoint?.startsWith("https://coda.io/apis/")) {
+  if (context.endpoint == ErrorEndpoint) {
     throw new coda.UserVisibleError("Invalid glossary.");
   }
   let [rows, columns] = await Promise.all([
@@ -198,11 +199,16 @@ async function getRows(context: coda.ExecutionContext) {
   let url = coda.withQueryParams(coda.joinUrl(baseUrl, "/rows"), {
     limit: 100,
   });
-  let response = await context.fetcher.fetch({
-    method: "GET",
-    url: url,
-  });
-  return response.body.items;
+  let result = [];
+  do {
+    let response = await context.fetcher.fetch({
+      method: "GET",
+      url: url,
+    });
+    result = result.concat(response.body.items);
+    url = response.body.nextPageLink;
+  } while (url);
+  return result;
 }
 
 async function getColumns(context: coda.ExecutionContext) {
@@ -229,10 +235,10 @@ async function getGlossaries(context: coda.ExecutionContext) {
 }
 
 async function getGlossaryDocs(context: coda.ExecutionContext) {
-  let url = coda.withQueryParams("https://coda.io/apis/v1/docs", {
-    query: Keyword,
-    limit: 100,
-  });
+  let url = coda.withQueryParams(
+    coda.joinUrl(context.invocationLocation.protocolAndHost, "/apis/v1/docs"),
+    { query: Keyword, limit: 100 }
+  );
   let response = await context.fetcher.fetch({
     method: "GET",
     url: url,
