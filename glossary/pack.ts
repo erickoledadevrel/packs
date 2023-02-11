@@ -10,6 +10,7 @@ const TermSchema = coda.makeObjectSchema({
   properties: {
     term: { type: coda.ValueType.String },
     definition: { type: coda.ValueType.String },
+    source: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
   },
   displayProperty: "term",
 });
@@ -189,7 +190,8 @@ async function getGlossary(context: coda.ExecutionContext) {
   return rows.reduce((result, row) => {
     let term = row.values[termColumnId];
     let definition = row.values[definitionColumnId];
-    result[term.toLowerCase()] = { term, definition };
+    let source = row.browserLink;
+    result[term.toLowerCase()] = { term, definition, source };
     return result;
   }, {});
 }
