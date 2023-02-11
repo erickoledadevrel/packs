@@ -145,7 +145,17 @@ function formatValue(column: any, value: any, richValue: any, options: QueryOpti
   }
   switch (column.format.type) {
     case "lookup":
-      return options.useRowIds ? richValue.rowId ?? null : value;
+      if (!value && !richValue) {
+        return null;
+      }
+      if (options.useRowIds) {
+        if (richValue instanceof Array) {
+          return richValue?.map(item => item.rowId).join(",");
+        } else {
+          return richValue?.rowId;
+        }
+      }
+      return value;
     case "percent":
       return Number(value.replace(/[^\d.]/g, "")) / 100;
     case "currency":

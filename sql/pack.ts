@@ -8,7 +8,9 @@ export const pack = coda.newPack();
 const LoadParam = coda.makeParameter({
   type: coda.ParameterType.StringArray,
   name: "load",
-  description: "The tables to load. For each table pass either its name, ID, or URL, or use the LoadTable formula to load a table from another doc.",
+  description: `The list of tables to load. For each table pass either its name or ID.
+    To load a table from another doc, append the name or ID with an at-sign and the doc ID. Ex: Customers@tD8g6H0zai.
+    To set the name of the resulting SQL table, append it with an arrow and the table name. Ex: Customers=>Cust`,
   autocomplete: async function (context, search) {
     let tables = await getTables(context.fetcher, context.invocationLocation.docId);
     return coda.autocompleteSearchObjects(search, tables, "name", "name");
@@ -18,13 +20,14 @@ const LoadParam = coda.makeParameter({
 const QueryParam = coda.makeParameter({
   type: coda.ParameterType.String,
   name: "query",
-  description: "The SQL query to run. It must be compatible with the SQLite syntax (https://www.sqlite.org/lang.html).",
+  description: "The SQL query to run. It must be compatible with the SQLite syntax.",
 });
 
 const ValuesParam = coda.makeParameter({
   type: coda.ParameterType.StringArray,
   name: "values",
-  description: "Optional values to bind to the query. Use the placeholder '?' in you query where you want a value inserted. Put a number after the question mark to refer to a value by index (starting at 1).",
+  description: `Optional values to bind to the query. Use the placeholder '?' in you query where you want a value inserted.
+    Put a number after the question mark to refer to a value by index (starting at 1).`,
   optional: true,
 });
 
