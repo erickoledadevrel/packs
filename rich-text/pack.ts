@@ -26,10 +26,24 @@ pack.addFormula({
       name: "text",
       description: "The rich text to convert.",
     }),
+    coda.makeParameter({
+      type: coda.ParameterType.Boolean,
+      name: "preserveBlankLines",
+      description: "Preserve blank lines in the text. Default: false.",
+      optional: true,
+    }),
   ],
   resultType: coda.ValueType.String,
-  execute: async function ([text], context) {
-    return text;
+  execute: async function ([text, preserveBlankLines], context) {
+    let result = text;
+    if (preserveBlankLines) {
+      let previous;
+      do {
+        previous = result;
+        result = result.replace(/\n\n/g, "\n&nbsp;\n");
+      } while (previous != result)
+    }
+    return result;
   },
 });
 
