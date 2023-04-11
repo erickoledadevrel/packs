@@ -185,6 +185,13 @@ const PackSchema = coda.makeObjectSchema({
   displayProperty: "name",
   idProperty: "packId",
   featuredProperties: ["tagline", "logo", "makers"],
+  linkProperty: "listingUrl",
+  snippetProperty: "description",
+  subtitleProperties: [
+    { property: "tagline", label: "" },
+    { property: "makers[*].name", label: `By ${coda.PropertyLabelValueTemplate}` },
+  ],
+  imageProperty: "logo",
 });
 
 pack.addNetworkDomain("coda.io");

@@ -93,6 +93,12 @@ const FormulaSchema = coda.makeObjectSchema({
   },
   displayProperty: "label",
   idProperty: "name",
+  snippetProperty: "output",
+  linkProperty: "link",
+  subtitleProperties: [
+    { property: "description", label: "" },
+    "category",
+  ]
 });
 
 pack.addFormula({

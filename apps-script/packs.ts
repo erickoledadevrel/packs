@@ -63,6 +63,7 @@ pack.addFormula({
       ...script,
       files,
       metrics,
+      link: `https://script.google.com/home/projects/${script.scriptId}`,
     };
   },
 });

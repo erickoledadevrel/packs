@@ -40,8 +40,13 @@ export const ScriptSchema = coda.makeObjectSchema({
     updateTime: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime },
     creator: UserSchema,
     lastModifyUser: UserSchema,
+    link: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
   },
   displayProperty: "title",
   idProperty: "scriptId",
   featuredProperties: ["files", "metrics"],
+  subtitleProperties: [
+    { property: "creator.name", label: `By ${coda.PropertyLabelValueTemplate}` },
+  ],
+  linkProperty: "link",
 });

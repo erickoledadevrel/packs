@@ -38,7 +38,7 @@ export async function getFiles(scriptId: string, context: coda.ExecutionContext)
     let extension = Extensions[file.type];
     if (extension) {
       file.name += `.${extension}`;
-    }  
+    }
   }
   return files;
 }
@@ -53,7 +53,7 @@ export async function getMetrics(scriptId: string, context: coda.ExecutionContex
   });
   let metrics = response.body;
   for (let [key, value] of Object.entries(metrics)) {
-    metrics[key] = parseInt(value[0].value) ?? 0;
+    metrics[key] = parseInt(value[0].value) || 0;
   }
   metrics.summary = "Last 7 days: " + Object.entries(metrics)
       .map(([key, value]) => `${value} ${_string.startCase(key)}`)
