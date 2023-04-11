@@ -56,10 +56,7 @@ pack.addFormula({
   isAction: true,
   execute: async function (args, context) {
     let [title, content, publicationId] = args;
-
     content = transformHtml(content);
-    console.log(content);
-
     let fragment;
     if (publicationId) {
       fragment = `publication/${publicationId}`;
