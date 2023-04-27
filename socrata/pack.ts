@@ -85,6 +85,7 @@ pack.setUserAuthentication({
 // A dynamic sync table for the rows of a dataset.
 pack.addDynamicSyncTable({
   name: "PublicDataset",
+  description: "Query and load a public dataset.",
   identityName: "DatasetRow",
   entityName: "Row",
   // If new columns are added later, don't automatically feature them.
