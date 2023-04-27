@@ -1,9 +1,10 @@
 import * as coda from "@codahq/packs-sdk";
 import * as mime from "mime-types";
+const parseDataUri = require("parse-data-uri");
 
 export const pack = coda.newPack();
 
-function defaultFilename(context: coda.ExecutionContext): string {
+function defaultFilename(context: coda.ExecutionContext, ext: string): string {
   let date = new Date();
   let formatter = new Intl.DateTimeFormat("en", {
     timeZone: context.timezone, // Use the doc's timezone (important!)
@@ -26,7 +27,7 @@ function defaultFilename(context: coda.ExecutionContext): string {
   let minute = parts.find(part => part.type === "minute").value;
   let second = parts.find(part => part.type === "second").value;
 
-  return `${year}${month}${day}_${hour}${minute}${second}.txt`;
+  return `${year}${month}${day}_${hour}${minute}${second}.${ext}`;
 }
 
 pack.addFormula({
@@ -48,11 +49,48 @@ pack.addFormula({
   resultType: coda.ValueType.String,
   cacheTtlSecs: 0,
   execute: async function ([content, filename], context) {
-    filename ||= defaultFilename(context);
+    let mimeType = mime.lookup(filename) || "text/plain";
+    let extension  = mime.extension(mimeType);
+    filename ||= defaultFilename(context, extension);
 
     let buffer = Buffer.from(content);
-    let mimeType = mime.lookup(filename) || "text/plain";
     let url = await context.temporaryBlobStorage.storeBlob(buffer, mimeType, {
+      downloadFilename: filename,
+    });
+    return url;
+  },
+});
+
+pack.addFormula({
+  name: "TemporaryFileFromDataUri",
+  description: "Create a temporary file from a data URI and return the URL. The file expires after ~15 minutes.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "dataUri",
+      description: "A data URI to parse."
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "filename",
+      description: "The name of the temporary file. Default: {timestamp}.png",
+      optional: true,
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  cacheTtlSecs: 0,
+  execute: async function ([dataUri, filename], context) {
+    let {mimeType, data} = parseDataUri(dataUri);
+    if (filename) {
+      mimeType = mime.lookup(filename);
+    }
+    if (!mimeType) {
+      mimeType = "image/png";
+    }
+    let extension  = mime.extension(mimeType);
+    filename ||= defaultFilename(context, extension);
+
+    let url = await context.temporaryBlobStorage.storeBlob(data, mimeType, {
       downloadFilename: filename,
     });
     return url;
