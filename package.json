@@ -4,6 +4,7 @@
     "airport-codes": "^1.0.2",
     "awesome-phonenumber": "^3.1.0",
     "but-csv": "^2.0.13",
+    "case": "^1.6.3",
     "cheerio": "^1.0.0-rc.12",
     "color-convert": "^2.0.1",
     "css-named-colors": "^1.0.1",

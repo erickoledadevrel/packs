@@ -74,9 +74,12 @@ pack.addDynamicSyncTable({
     ],
     execute: async function (args, context) {
       let [rawColumns, numRows] = args;
+      let start = context.sync.continuation?.start as number || 0;
+      let count = Math.min(1000, numRows - start);
+
       let baseUrl = "https://api.mockaroo.com/api/generate.json";
       let url = coda.withQueryParams(baseUrl, {
-        count: numRows,
+        count,
       });
       let columns = rawColumns.map(column => parseColumn(column));
       columns.push({
@@ -93,8 +96,17 @@ pack.addDynamicSyncTable({
           body: JSON.stringify(columns),
         });
         let items = response.body;
+        for (let item of items) {
+          item.rowId += start;
+        }
+        start += count;
+        let continuation;
+        if (start < numRows) {
+          continuation = { start };
+        }
         return {
           result: items,
+          continuation,
         };
       } catch (e) {
         if (e?.body?.error) {
