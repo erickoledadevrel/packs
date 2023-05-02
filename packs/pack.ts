@@ -12,6 +12,7 @@ const PackUrlRegexes = [
 const MetadataTypes = {
   blocks: "Building blocks",
   published: "Published status",
+  releases: "Releases",
 };
 
 pack.addNetworkDomain("coda.io");
@@ -52,6 +53,7 @@ pack.addFormula({
     await Promise.allSettled([
       addBuildingBlocks(context, [item]),
       addPublished(context, [item]),
+      addReleases(context, [item]),
     ]);
     return item;
   },
@@ -126,6 +128,9 @@ pack.addSyncTable({
       }
       if (metadata?.includes("published")) {
         jobs.push(addPublished(context, items),);
+      }
+      if (metadata?.includes("releases")) {
+        jobs.push(addReleases(context, items),);
       }
       await Promise.allSettled(jobs);
       let continuation;
@@ -210,6 +215,25 @@ async function addPublished(context: coda.ExecutionContext, items: any[]) {
     let item = items[i];
     if (result.status == "fulfilled") {
       item.published = result.value.status == 200;
+    } else {
+      console.error(result.reason);
+    }
+  }
+}
+
+async function addReleases(context: coda.ExecutionContext, items: any[]) {
+  let requests = items.map(item => {
+    return context.fetcher.fetch({
+      method: "GET",
+      url: `https://coda.io/apis/v1/packs/${item.packId}/releases`,
+    });
+  });
+  let results = await Promise.allSettled(requests);
+  for (let [i, result] of results.entries()) {
+    let item = items[i];
+    if (result.status == "fulfilled") {
+      console.log(result.value.body);
+      item.releases = result.value.body.items;
     } else {
       console.error(result.reason);
     }

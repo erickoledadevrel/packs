@@ -95,6 +95,27 @@ const ColumnFormatSchema = coda.makeObjectSchema({
   displayProperty: "name",
 });
 
+const ReleaseSchema = coda.makeObjectSchema({
+  properties: {
+    created: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.DateTime,
+      fromKey: "createdAt",
+      description: "When the release was created.",
+    },
+    number: {
+      type: coda.ValueType.Number,
+      fromKey: "releaseId",
+      description: "The release number."
+    },
+    notes: {
+      type: coda.ValueType.String,
+      fromKey: "releaseNotes",
+      description: "The notes describing the release.",
+    },
+  }
+})
+
 export const PackSchema = coda.makeObjectSchema({
   properties: {
     packId: {
@@ -130,6 +151,10 @@ export const PackSchema = coda.makeObjectSchema({
       type: coda.ValueType.Number,
       fromKey: "releaseId",
       description: "The current release of the Pack.",
+    },
+    releases: {
+      type: coda.ValueType.Array,
+      items: ReleaseSchema,
     },
     categories: {
       type: coda.ValueType.Array,
