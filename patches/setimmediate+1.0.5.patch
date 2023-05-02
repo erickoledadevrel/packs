@@ -1,0 +1,14 @@
+diff --git a/node_modules/setimmediate/setImmediate.js b/node_modules/setimmediate/setImmediate.js
+index 3c1b06e..309b99f 100644
+--- a/node_modules/setimmediate/setImmediate.js
++++ b/node_modules/setimmediate/setImmediate.js
+@@ -14,7 +14,8 @@
+     function setImmediate(callback) {
+       // Callback can either be a function or a string
+       if (typeof callback !== "function") {
+-        callback = new Function("" + callback);
++        // callback = new Function("" + callback);
++        throw new Error("Not supported.");
+       }
+       // Copy function arguments
+       var args = new Array(arguments.length - 1);
