@@ -3,8 +3,12 @@ import * as mime from "mime-types";
 import JSZip from "jszip";
 const parseDataUri = require("parse-data-uri");
 const contentDisposition = require('content-disposition');
+const urlParse = require('url-parse');
 
-const HostedFileUrlRegex = new RegExp("^https://(?:[^/]*\.)?codahosted.io/.*");
+const HostedDomains = [
+  "codahosted.io",
+  "coda-us-west-2-prod-blobs-upload.s3.us-west-2.amazonaws.com",
+];
 const OneDaySecs = 24 * 60 * 60;
 const FifteenMinutesSecs = 15 * 60;
 
@@ -135,7 +139,7 @@ pack.addFormula({
     }
 
     let jobs: Promise<File>[] = files.map(async fileUrl => {
-      if (!fileUrl.match(HostedFileUrlRegex)) {
+      if (!isHostedUrl(fileUrl)) {
         throw new coda.UserVisibleError("Invalid file URL: " + fileUrl);
       }
       let response = await context.fetcher.fetch({
@@ -181,4 +185,9 @@ function getFilename(headers: Record<string, string | string[]>) {
 interface File {
   name: string;
   content: Buffer;
+}
+
+function isHostedUrl(url: string): boolean {
+  let parsed = urlParse(url);
+  return HostedDomains.some(domain => parsed.host.endsWith(domain));
 }
