@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate a bookmarklet</title>
+</head>
+
+<body>
+  <a id="link"></a>
+  <script>
+    let link = document.getElementById("link");
+    let params = new URLSearchParams(window.location.search);
+    let name = urlParams.get("name");
+    let code = urlParams.get("code");
+    link.innerText = name;
+    link.href = `javascript:${encodeURIComponent(code)}`;
+  </script>
+</body>
+</html>
