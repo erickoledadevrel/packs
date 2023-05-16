@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate a bookmarklet</title>
+</head>
+
+<body style="text-align: center;">
+  <p>👇 Drag to your bookmarks</p>
+  <p><a id="link"></a></p>
+  <script>
+    let link = document.getElementById("link");
+    let params = new URLSearchParams(window.location.search);
+    let name = params.get("name");
+    let code = params.get("code");
+    link.innerText = name;
+    link.href = `javascript:${encodeURIComponent(code)}`;
+  </script>
+</body>
+</html>
