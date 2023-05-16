@@ -113,8 +113,23 @@ const ReleaseSchema = coda.makeObjectSchema({
       fromKey: "releaseNotes",
       description: "The notes describing the release.",
     },
-  }
-})
+  },
+  displayProperty: "number",
+});
+
+const FeaturedDocSchema = coda.makeObjectSchema({
+  properties: {
+    publishedUrl: {
+      type: coda.ValueType.String,
+      description: "The published URL of the doc.",
+    },
+    isPinned: {
+      type: coda.ValueType.Boolean,
+      description: "If the doc is pinned.",
+    },
+  },
+  displayProperty: "publishedUrl",
+});
 
 export const PackSchema = coda.makeObjectSchema({
   properties: {
@@ -151,10 +166,6 @@ export const PackSchema = coda.makeObjectSchema({
       type: coda.ValueType.Number,
       fromKey: "releaseId",
       description: "The current release of the Pack.",
-    },
-    releases: {
-      type: coda.ValueType.Array,
-      items: ReleaseSchema,
     },
     categories: {
       type: coda.ValueType.Array,
@@ -195,25 +206,6 @@ export const PackSchema = coda.makeObjectSchema({
       codaType: coda.ValueHintType.Url,
       description: "The URL to open the Pack in the Pack Studio editor.",
     },
-    formulas: {
-      type: coda.ValueType.Array,
-      items: FormulaSchema,
-      description: "The formulas in the Pack.",
-    },
-    syncTables: {
-      type: coda.ValueType.Array,
-      items: SyncTableSchema,
-      description: "The sync tables in the Pack.",
-    },
-    columnFormats: {
-      type: coda.ValueType.Array,
-      items: ColumnFormatSchema,
-      description: "The column formats in the Pack.",
-    },
-    published: {
-      type: coda.ValueType.Boolean,
-      description: "If the Pack has been published to the gallery.",
-    },
   },
   displayProperty: "name",
   idProperty: "packId",
@@ -226,3 +218,43 @@ export const PackSchema = coda.makeObjectSchema({
   ],
   imageProperty: "logo",
 });
+
+export const BuildingBlockPoperties: coda.ObjectSchemaProperties = {
+  formulas: {
+    type: coda.ValueType.Array,
+    items: FormulaSchema,
+    description: "The formulas in the Pack.",
+  },
+  columnFormats: {
+    type: coda.ValueType.Array,
+    items: ColumnFormatSchema,
+    description: "The column formats in the Pack.",
+  },
+  syncTables: {
+    type: coda.ValueType.Array,
+    items: SyncTableSchema,
+    description: "The sync tables in the Pack.",
+  },
+}
+
+export const PublishedProperties: coda.ObjectSchemaProperties = {
+  published: {
+    type: coda.ValueType.Boolean,
+    description: "If the Pack has been published to the gallery.",
+  },
+}
+
+export const ReleasesProperties: coda.ObjectSchemaProperties = {
+  releases: {
+    type: coda.ValueType.Array,
+    items: ReleaseSchema,
+  },
+}
+
+export const FeaturedDocsProperties: coda.ObjectSchemaProperties = {
+  featuredDocs: {
+    type: coda.ValueType.Array,
+    items: FeaturedDocSchema,
+    description: "The published docs featured in the Pack listing page.",
+  }
+}

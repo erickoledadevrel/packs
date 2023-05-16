@@ -1,5 +1,5 @@
 import * as coda from "@codahq/packs-sdk";
-import { PackSchema } from "./schemas";
+import { BuildingBlockPoperties, FeaturedDocsProperties, PackSchema, PublishedProperties, ReleasesProperties } from "./schemas";
 export const pack = coda.newPack();
 
 const ListingsUrl = "https://coda.io/apis/v1/packs/listings";
@@ -9,10 +9,27 @@ const PackUrlRegexes = [
   new RegExp("^https://coda.io/packs/(?:\\w+-)*(\\d+)"),
 ];
 
-const MetadataTypes = {
-  blocks: "Building blocks",
-  published: "Published status",
-  releases: "Releases",
+const MetadataTypes: Record<string, MetadataSettings> = {
+  blocks: {
+    name: "Building blocks",
+    callback: addBuildingBlocks,
+    properties: BuildingBlockPoperties,
+  },
+  published: {
+    name: "Published status",
+    callback: addPublished,
+    properties: PublishedProperties,
+  },
+  releases: {
+    name: "Releases",
+    callback: addReleases,
+    properties: ReleasesProperties,
+  },
+  featuredDocs: {
+    name: "Featured docs",
+    callback: addFeaturedDocs,
+    properties: FeaturedDocsProperties,
+  },
 };
 
 pack.addNetworkDomain("coda.io");
@@ -33,7 +50,7 @@ pack.addFormula({
     }),
   ],
   resultType: coda.ValueType.Object,
-  schema: PackSchema,
+  schema: extendSchema(Object.keys(MetadataTypes)),
   execute: async function (args, context) {
     let [packIdOrUrl] = args;
     let packId = getPackId(packIdOrUrl);
@@ -50,11 +67,13 @@ pack.addFormula({
     }
     let item = items[0];
     formatItem(item);
-    await Promise.allSettled([
-      addBuildingBlocks(context, [item]),
-      addPublished(context, [item]),
-      addReleases(context, [item]),
-    ]);
+    let jobs = [];
+    let metadata = Object.keys(MetadataTypes);
+    for (let key of metadata) {
+      let settings = getMetdataSettings(key);
+      jobs.push(settings.callback(context, items));
+    }
+    await Promise.allSettled(jobs);
     return item;
   },
 });
@@ -71,6 +90,12 @@ pack.addSyncTable({
   description: "A list of all of the published Packs.",
   identityName: "Pack",
   schema: PackSchema,
+  dynamicOptions: {
+    getSchema: async function (context, search, args) {
+      let metadata = args.metdata ?? [];
+      return extendSchema(metadata);
+    },
+  },
   formula: {
     name: "SyncPacks",
     description: "Sync the Packs.",
@@ -99,19 +124,24 @@ pack.addSyncTable({
         description: "Which additional Pack metadata to include (may increase time to sync).",
         optional: true,
         autocomplete: Object.entries(MetadataTypes).map(([key, value]) => ({
-          display: value, value: key,
+          display: value.name, value: key,
         })),
       }),
     ],
     execute: async function (args, context) {
-      let [includePublished, includeWorkspace, includePrivate, metadata] = args;
+      let [
+        includePublished,
+        includeWorkspace,
+        includePrivate,
+        metadata = [],
+      ] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
         url = coda.withQueryParams(ListingsUrl, {
           excludePublicPacks: !includePublished,
           excludeWorkspaceAcls: !includeWorkspace,
           excludeIndividualAcls: !includePrivate,
-          limit: 50,
+          limit: 20,
         });
       }
       let response = await context.fetcher.fetch({
@@ -123,14 +153,9 @@ pack.addSyncTable({
        formatItem(item);
       }
       let jobs = [];
-      if (metadata?.includes("blocks")) {
-        jobs.push(addBuildingBlocks(context, items));
-      }
-      if (metadata?.includes("published")) {
-        jobs.push(addPublished(context, items),);
-      }
-      if (metadata?.includes("releases")) {
-        jobs.push(addReleases(context, items),);
+      for (let key of metadata) {
+        let settings = getMetdataSettings(key);
+        jobs.push(settings.callback(context, items));
       }
       await Promise.allSettled(jobs);
       let continuation;
@@ -232,8 +257,25 @@ async function addReleases(context: coda.ExecutionContext, items: any[]) {
   for (let [i, result] of results.entries()) {
     let item = items[i];
     if (result.status == "fulfilled") {
-      console.log(result.value.body);
       item.releases = result.value.body.items;
+    } else {
+      console.error(result.reason);
+    }
+  }
+}
+
+async function addFeaturedDocs(context: coda.ExecutionContext, items: any[]) {
+  let requests = items.map(item => {
+    return context.fetcher.fetch({
+      method: "GET",
+      url: `https://coda.io/apis/v1/packs/${item.packId}/featuredDocs`,
+    });
+  });
+  let results = await Promise.allSettled(requests);
+  for (let [i, result] of results.entries()) {
+    let item = items[i];
+    if (result.status == "fulfilled") {
+      item.featuredDocs = result.value.body.items;
     } else {
       console.error(result.reason);
     }
@@ -251,4 +293,36 @@ function getPackId(packIdOrUrl: string): string {
     throw new coda.UserVisibleError(`Invalid Pack ID or URL: ${packIdOrUrl}`);
   }
   return packIdOrUrl;
+}
+
+function extendSchema(metadata: string[]) {
+  let properties = {...PackSchema.properties};
+  let featured: string[] = [...PackSchema.featuredProperties];
+  for (let key of metadata) {
+    let settings = getMetdataSettings(key);
+    properties = {
+      ...properties,
+      ...settings.properties,
+    };
+    featured = featured.concat(Object.keys(settings.properties));
+  }
+  return {
+    ...PackSchema,
+    properties: properties,
+    featuredProperties: featured,
+  };
+}
+
+function getMetdataSettings(key: string): MetadataSettings {
+  let result = MetadataTypes[key];
+  if (!result) {
+    throw new coda.UserVisibleError(`Invalid metadata: ${key}`);
+  }
+  return result;
+}
+
+interface MetadataSettings {
+  name: string;
+  callback: (context: coda.ExecutionContext, items: any[]) => Promise<void>;
+  properties: coda.ObjectSchemaProperties;
 }
