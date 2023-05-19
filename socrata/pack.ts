@@ -419,14 +419,32 @@ function getAttribution(dataset: Dataset): coda.AttributionNode[] {
 async function fetch(context: coda.ExecutionContext, request: coda.FetchRequest) {
   let domain = getDomain(context);
   let url = coda.joinUrl(`https://${domain}`, request.url);
-  return await context.fetcher.fetch({
-    ...request,
-    url: url,
-    headers: {
-      ...request.headers,
-      "X-App-Token": AppToken,
-    },
-  });
+  try {
+    return await context.fetcher.fetch({
+      ...request,
+      url: url,
+      headers: {
+        ...request.headers,
+        "X-App-Token": AppToken,
+      },
+    });
+  } catch (error) {
+    // If the request failed because the server returned a 300+ status code.
+    if (coda.StatusCodeError.isStatusCodeError(error)) {
+      // Cast the error as a StatusCodeError, for better intellisense.
+      let statusError = error as coda.StatusCodeError;
+      // If the API returned an error message in the body, show it to the user.
+      let message = statusError.body?.message;
+      if (message) {
+        let parts = message.split(";");
+        message = parts[1] ?? message;
+        throw new coda.UserVisibleError(message);
+      }
+    }
+    // The request failed for some other reason. Re-throw the error so that it
+    // bubbles up.
+    throw error;
+  }
 }
 
 
