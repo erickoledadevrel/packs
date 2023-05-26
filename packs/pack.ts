@@ -1,60 +1,39 @@
 import * as coda from "@codahq/packs-sdk";
-import { BuildingBlockPoperties, FeaturedDocsProperties, PackSchema, PublishedProperties, ReleasesProperties } from "./schemas";
+import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError } from "./helpers";
+import { MetadataTypes, PackUrlRegexes } from "./constants";
+import { PackSchema } from "./schemas";
+const escape = require('escape-html');
+
 export const pack = coda.newPack();
 
-const ListingsUrl = "https://coda.io/apis/v1/packs/listings";
-
-const PackUrlRegexes = [
-  new RegExp("^https://coda.io/p/(\\d+)"),
-  new RegExp("^https://coda.io/packs/(?:\\w+-)*(\\d+)"),
-];
-
-const MetadataTypes: Record<string, MetadataSettings> = {
-  blocks: {
-    name: "Building blocks",
-    callback: addBuildingBlocks,
-    properties: BuildingBlockPoperties,
-  },
-  published: {
-    name: "Published status",
-    callback: addPublished,
-    properties: PublishedProperties,
-  },
-  releases: {
-    name: "Releases",
-    callback: addReleases,
-    properties: ReleasesProperties,
-  },
-  featuredDocs: {
-    name: "Featured docs",
-    callback: addFeaturedDocs,
-    properties: FeaturedDocsProperties,
-  },
-};
+const PackIdOrUrlParameter = coda.makeParameter({
+  type: coda.ParameterType.String,
+  name: "packIdOrUrl",
+  description: "The ID or URL of the Pack.",
+});
 
 pack.addNetworkDomain("coda.io");
+pack.addNetworkDomain("coda-us-west-2-prod-packs.s3.us-west-2.amazonaws.com");
 
 pack.setUserAuthentication({
   type: coda.AuthenticationType.CodaApiHeaderBearerToken,
   shouldAutoAuthSetup: true,
+  networkDomain: "coda.io",
 });
 
 pack.addFormula({
   name: "Pack",
   description: "Load information about a Pack",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
-      name: "packIdOrUrl",
-      description: "The ID or URL of the Pack.",
-    }),
+    PackIdOrUrlParameter,
   ],
   resultType: coda.ValueType.Object,
   schema: extendSchema(Object.keys(MetadataTypes)),
   execute: async function (args, context) {
     let [packIdOrUrl] = args;
-    let packId = getPackId(packIdOrUrl);
-    let url = coda.withQueryParams(ListingsUrl, {
+    let packId = getPackId(context, packIdOrUrl);
+    let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs/listings");
+    let url = coda.withQueryParams(baseUrl, {
       packIds: packId
     });
     let response = await context.fetcher.fetch({
@@ -66,7 +45,7 @@ pack.addFormula({
       throw new coda.UserVisibleError(`Pack not found: ${packIdOrUrl}`);
     }
     let item = items[0];
-    formatItem(item);
+    formatItem(context, item);
     let jobs = [];
     let metadata = Object.keys(MetadataTypes);
     for (let key of metadata) {
@@ -137,7 +116,8 @@ pack.addSyncTable({
       ] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
-        url = coda.withQueryParams(ListingsUrl, {
+        let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs/listings");
+        url = coda.withQueryParams(baseUrl, {
           excludePublicPacks: !includePublished,
           excludeWorkspaceAcls: !includeWorkspace,
           excludeIndividualAcls: !includePrivate,
@@ -150,7 +130,7 @@ pack.addSyncTable({
       });
       let { items, nextPageLink } = response.body;
       for (let item of items) {
-       formatItem(item);
+       formatItem(context, item);
       }
       let jobs = [];
       for (let key of metadata) {
@@ -170,159 +150,39 @@ pack.addSyncTable({
   },
 });
 
-function formatItem(item:any) {
-  item.categories = item.categories?.map(category => category.categoryName);
-  for (let maker of item.makers) {
-    maker.profileLink = `https://coda.io/@${maker.slug}`;
-  }
-  item.price = item.standardPackPlan?.pricing?.amount;
-  item.bundledWithPlan = item.bundledPackPlan?.pricing?.minimumFeatureSet;
-  item.listingUrl = `https://coda.io/packs/${item.packId}`;
-  item.studioUrl = `https://coda.io/p/${item.packId}`;
-}
-
-async function addBuildingBlocks(context: coda.ExecutionContext, items: any[]) {
-  let requests = items.map(item => {
-    return context.fetcher.fetch({
+pack.addFormula({
+  name: "SourceCode",
+  description: "Gets the source code for a Pack. You must be a Pack Admin of the Pack.",
+  parameters: [
+    PackIdOrUrlParameter,
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "version",
+      description: "Which version of the Pack to get the source code for.",
+      optional: true,
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  codaType: coda.ValueHintType.Html,
+  onError: handleError,
+  execute: async function (args, context) {
+    let [packIdOrUrl, version] = args;
+    let packId = getPackId(context, packIdOrUrl);
+    if (!version) {
+      let versions = await getVersions(context, packId);
+      version = versions[0].packVersion;
+    }
+    let files = await getFiles(context, packId, version);
+    if (!files?.length)  {
+      throw new Error(`No source code found.`);
+    }
+    let file = files[0];
+    let response = await context.fetcher.fetch({
       method: "GET",
-      url: item.externalMetadataUrl,
+      url: file.url,
       disableAuthentication: true,
     });
-  });
-  let results = await Promise.allSettled(requests);
-  for (let [i, result] of results.entries()) {
-    let item = items[i];
-    if (result.status == "fulfilled") {
-      let metadata = result.value.body;
-      item.formulas = metadata.formulas.map(formula => formatFormula(formula));
-      item.syncTables = metadata.syncTables.map(syncTable => formatSyncTable(syncTable));
-      item.columnFormats = metadata.formats.map(columnFormat => formatColumnFormat(columnFormat));
-    } else {
-      console.error(result.reason);
-    }
-  }
-}
-
-function formatFormula(formula) {
-  let result = {...formula};
-  let schema = formula.schema;
-  result.isCard =  Boolean(schema) &&
-    schema.type == "object" &&
-    Boolean(schema.displayProperty || schema.titleProperty) &&
-    Boolean(schema.snippetProperty || schema.subtitleProperties || schema.linkProperty);
-  return result;
-}
-
-function formatSyncTable(syncTable) {
-  let result = {...syncTable};
-  result.canBrowseDatasets = Boolean(syncTable.listDynamicUrls);
-  result.canSearchDatasets = Boolean(syncTable.searchDynamicUrls);
-  return result;
-}
-
-function formatColumnFormat(columnFormat) {
-  let result = {...columnFormat};
-  result.hasMatchers = columnFormat.matchers?.length > 0;
-  return result;
-}
-
-async function addPublished(context: coda.ExecutionContext, items: any[]) {
-  let requests = items.map(item => {
-    return context.fetcher.fetch({
-      method: "HEAD",
-      url: `https://coda.io/packs/${item.packId}`,
-      disableAuthentication: true,
-      ignoreRedirects: true,
-    });
-  });
-  let results = await Promise.allSettled(requests);
-  for (let [i, result] of results.entries()) {
-    let item = items[i];
-    if (result.status == "fulfilled") {
-      item.published = result.value.status == 200;
-    } else {
-      console.error(result.reason);
-    }
-  }
-}
-
-async function addReleases(context: coda.ExecutionContext, items: any[]) {
-  let requests = items.map(item => {
-    return context.fetcher.fetch({
-      method: "GET",
-      url: `https://coda.io/apis/v1/packs/${item.packId}/releases`,
-    });
-  });
-  let results = await Promise.allSettled(requests);
-  for (let [i, result] of results.entries()) {
-    let item = items[i];
-    if (result.status == "fulfilled") {
-      item.releases = result.value.body.items;
-    } else {
-      console.error(result.reason);
-    }
-  }
-}
-
-async function addFeaturedDocs(context: coda.ExecutionContext, items: any[]) {
-  let requests = items.map(item => {
-    return context.fetcher.fetch({
-      method: "GET",
-      url: `https://coda.io/apis/v1/packs/${item.packId}/featuredDocs`,
-    });
-  });
-  let results = await Promise.allSettled(requests);
-  for (let [i, result] of results.entries()) {
-    let item = items[i];
-    if (result.status == "fulfilled") {
-      item.featuredDocs = result.value.body.items;
-    } else {
-      console.error(result.reason);
-    }
-  }
-}
-
-function getPackId(packIdOrUrl: string): string {
-  for (let regex of PackUrlRegexes) {
-    let match = packIdOrUrl.match(regex);
-    if (match) {
-      return match[1];
-    }
-  }
-  if (isNaN(Number.parseInt(packIdOrUrl))) {
-    throw new coda.UserVisibleError(`Invalid Pack ID or URL: ${packIdOrUrl}`);
-  }
-  return packIdOrUrl;
-}
-
-function extendSchema(metadata: string[]) {
-  let properties = {...PackSchema.properties};
-  let featured: string[] = [...PackSchema.featuredProperties];
-  for (let key of metadata) {
-    let settings = getMetdataSettings(key);
-    properties = {
-      ...properties,
-      ...settings.properties,
-    };
-    featured = featured.concat(Object.keys(settings.properties));
-  }
-  return {
-    ...PackSchema,
-    properties: properties,
-    featuredProperties: featured,
-  };
-}
-
-function getMetdataSettings(key: string): MetadataSettings {
-  let result = MetadataTypes[key];
-  if (!result) {
-    throw new coda.UserVisibleError(`Invalid metadata: ${key}`);
-  }
-  return result;
-}
-
-interface MetadataSettings {
-  name: string;
-  callback: (context: coda.ExecutionContext, items: any[]) => Promise<void>;
-  properties: coda.ObjectSchemaProperties;
-}
+    let code = response.body;
+    return `<pre>${escape(code)}</pre>`;
+  },
+});

@@ -248,6 +248,7 @@ export const ReleasesProperties: coda.ObjectSchemaProperties = {
   releases: {
     type: coda.ValueType.Array,
     items: ReleaseSchema,
+    description: "The list of releases for the Pack.",
   },
 }
 
