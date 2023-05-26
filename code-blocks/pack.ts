@@ -1,10 +1,10 @@
 import * as coda from "@codahq/packs-sdk";
 export const pack = coda.newPack();
 
-const BaseEmbedUrl = "https://code-snippets-embed.web.app";
+const BaseEmbedUrl = "https://codeblockembed.com";
 const SupportedLanguages = ['bash', 'c', 'cpp', 'csharp', 'css', 'diff', 'go', 'ini', 'java', 'javascript', 'json', 'kotlin', 'less', 'lua', 'makefile', 'xml', 'markdown', 'objectivec', 'perl', 'php', 'php-template', 'plaintext', 'python', 'python-repl', 'r', 'ruby', 'rust', 'scss', 'shell', 'sql', 'swift', 'typescript', 'vbnet', 'yaml'];
 
-pack.addNetworkDomain("web.app");
+pack.addNetworkDomain("codeblockembed.com");
 
 pack.addFormula({
   name: "CodeBlock",

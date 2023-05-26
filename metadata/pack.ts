@@ -6,7 +6,7 @@ const scraperRules = require("metadata-scraper/lib/rules");
 export const pack = coda.newPack();
 
 const OneHourSecs = 1 * 60 * 60;
-const RedirectBaseUrl = "https://us-central1-erickoleda-linkmetadata.cloudfunctions.net/redirect";
+const RedirectBaseUrl = "https://redirect.erickoleda.com";
 
 const MetadataSchema = coda.makeObjectSchema({
   properties: {
@@ -103,7 +103,7 @@ const MetadataSchema = coda.makeObjectSchema({
   displayProperty: "label",
 });
 
-pack.addNetworkDomain("cloudfunctions.net");
+pack.addNetworkDomain("erickoleda.com");
 
 pack.setSystemAuthentication({
   type: coda.AuthenticationType.HeaderBearerToken,
