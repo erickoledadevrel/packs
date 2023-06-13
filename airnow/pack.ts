@@ -1,4 +1,5 @@
 import * as coda from "@codahq/packs-sdk";
+import { DateTime } from "luxon";
 export const pack = coda.newPack();
 
 const BaseUrl = "https://www.airnowapi.org/aq/observation/zipCode/current/";
@@ -47,6 +48,7 @@ const AQISchema = coda.makeObjectSchema({
     },
     time: {
       type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Time,
       description: "The hour (local time) that the measurement was made.",
     },
     parameter: {
@@ -137,9 +139,8 @@ pack.addFormula({
     }
     let item = items.find(item => item.ParameterName == parameter);
 
-    let hour = item.HourObserved % 12;
-    if (hour == 0) hour = 12;
-    let ampm = item.HourObserved < 12 ? "am": "pm";
+    let timeString = `${item.DateObserved.trim()} ${item.HourObserved} ${item.LocalTimeZone}`;
+    let time = DateTime.fromFormat(timeString, "yyyy-MM-dd H z");
     let link = coda.withQueryParams("https://www.airnow.gov/", {
       reportingArea: item.ReportingArea,
       stateCode: item.StateCode,
@@ -149,7 +150,7 @@ pack.addFormula({
       ...item,
       summary: `${item.AQI} (${item.Category.Name})`,
       location: `${item.ReportingArea}, ${item.StateCode}`,
-      time: `${hour}${ampm}`,
+      time: time.toISO(),
       category: item.Category.Name,
       link: link,
       icon: getImageUrl(item.AQI, item.Category.Number),
@@ -160,7 +161,7 @@ pack.addFormula({
 function getImageUrl(value, categoryNumber) {
   let [backgroundColor, textColor] = CatgegoryColors[categoryNumber];
   let svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="50px">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="50px" height="50px">
     <g>
       <circle style="fill:${backgroundColor}" cx="250" cy="250" r="245"></circle>
       <text x="50%" y="50%" text-anchor="middle" dy=".3em"
