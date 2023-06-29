@@ -1,0 +1,52 @@
+{
+  "packId": 14289,
+  "name": "Favicon - Website Icons",
+  "description": "Icons are nice, but copying and pasting them into your Coda doc is not.\n\nUsing the Favicon Pack and it's cleverly named Favicon() formula, you can easily add an icon to your Coda doc or table for a given website. Simply pass in a domain or full URL to get the associated icon. It's as simple as that!\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Bruno /Germany from Pixabay",
+  "shortDescription": "Easily get the favicon (tab icon) for any website.",
+  "logoUrl": "https://codahosted.io/packs/14289/unversioned/assets/LOGO/35a4fa8e8a6ed232fc8bd5ae1618c65b531d7fe8bd75de94c4260301e9766025e9daebdabb414c9ad92b154b2129b05857491ca6a356015aa9cb535aa75a23d7427d413b76a4a38a554bee6e34b73a1691eb79d878a8abbfde3b8aea05016cd829731867",
+  "coverUrl": "https://codahosted.io/packs/14289/unversioned/assets/COVER/dbefeb598fe626c6ec1f4b408909f7a318f77e9b402e44f38bf6567b6d26cd62e97d36f4bce13692a69a25ed618b54c6d8d2c79efa6cc26981579dc27d87463b3a1bf420223839185c2233ee7e41b5cf7243c86457466f0921f291e3017de6fc403bae2e",
+  "packVersion": "5",
+  "releaseId": 2,
+  "lastReleasedAt": "2022-08-12T00:13:02.482Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/14289/5/metadata/d0c8d2420892915f327e5780e3b07fc7d21eb2e191daa230a58a33f702a75b870dc4a0c09e2f8412f1ba562616a5061cae3801f8809d5760d1ffb0e23b07cff05a9ad0e327aa14e008b31751ab2b4476719bc65547f35082730d9dee647e3e2695e4abef.json",
+  "categories": [
+    {
+      "categoryId": "2ab958ef-6063-461e-9d2f-43e60d546d15",
+      "categoryName": "Marketing",
+      "categorySlug": "marketing"
+    },
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "4728b53c-b51e-4e62-a964-5dca1a2d95aa",
+    "packId": 14289,
+    "createdAt": "2022-08-11T21:43:08.944Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

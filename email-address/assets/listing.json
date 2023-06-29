@@ -1,0 +1,52 @@
+{
+  "packId": 10827,
+  "name": "Email Addresses",
+  "description": "This Pack includes a set of utility formulas that make it easier to work with email addresses.\n\nIsEmail() determines if the input is a valid email.\nEmailAddress() extracts the address portion of an email (\"Alice <alice@example.com>\" => \"alice@example.com\").\nEmailsParts() breaks down an email into an object with a Name, Address, Local, and Domain field.\n\nFor each of the above there is a variant that works for email lists, like those you'd see in a To: field of an email. See the Documentation tab for more information.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Daria Nepriakhina on Unsplash\n  ",
+  "shortDescription": "Utility formulas for working with email addresses.",
+  "logoUrl": "https://codahosted.io/packs/10827/unversioned/assets/LOGO/3dc0f0f6e455620c81cb9aae011953ed601c14db175ba40db58baf97651047745a754fc87a046a4d9d86e982b6503df92a39c45ff960afa2e61eec042cebded0924e3d85d36eba7a61ec213f9fabb547e5a10c5fc73d3574c2089b84ceb3a69637c100bd",
+  "coverUrl": "https://codahosted.io/packs/10827/unversioned/assets/COVER/d818c46ea9cc80dadb72f4dee32b5b18690f92e371e732d8d29aeff3ef98ccc1f32db4eb5a71d2548b58d95081785a89df40e0dd8c0bdfc71ed5d4a7b607af8c1ce453de17c51429c0bebf12ccafefe06656adc5d0977d377a83b980c19f75fbf91b9946",
+  "packVersion": "12",
+  "releaseId": 2,
+  "lastReleasedAt": "2022-08-25T02:03:37.759Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/10827/12/metadata/fd561e82b73f6983bc82c5893c142dbd16ae6c6b9ae74b932f97b90155af923c4c9d96786f8a62ea2ccbacc9e94e0ff0b3e5cab0d17e2252ccb30b4da453270d68c0ded4ab62345dd861196444b131a8ca582fae1448403ec172a644b087f553aba1e04f.json",
+  "categories": [
+    {
+      "categoryId": "109cd66f-eff8-4994-a0ca-9d24e09ef11c",
+      "categoryName": "Communication",
+      "categorySlug": "communication"
+    },
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "b9e2c94a-775f-4cc0-a20b-f38e0c341420",
+    "packId": 10827,
+    "createdAt": "2022-08-03T18:11:26.707Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

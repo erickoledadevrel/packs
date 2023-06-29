@@ -1,0 +1,52 @@
+{
+  "packId": 12434,
+  "name": "Phone Numbers",
+  "description": "This Pack includes a set of utility formulas that make it easier to work with phone numbers.\n\nIsPhoneNumber() determines if the input is a valid phone number.\nFormatPhoneNumber() rewrites the input phone number into a standard format.\nPhoneNumberInfo() returns various information about the phone number, including the type, country code, region code, etc.\n\nCreated using the awesome-phonenumber NPM module.\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by James Sutton on Unsplash",
+  "shortDescription": "Utility formulas for working with phone numbers.",
+  "logoUrl": "https://codahosted.io/packs/12434/unversioned/assets/LOGO/f02fee938d0b0f5178d437c1798dff75046aa1213a9fa46f41032b6d71708325ebf498d9f0cd2234879c54667fe01080acfec70ed52937c20063e976f20398c7c5c6f4f8c3febada95079c7e2579a32e8e1258adbe37bdc9965dfd980da0d01d4a51fbc3",
+  "coverUrl": "https://codahosted.io/packs/12434/unversioned/assets/COVER/008c9f8607d7d9483f41d1733adc2ba25c30db38799c1af2030f4bf54a238a592e499e30bc5cf88b85151429105057a3deb6c68adbddf7ee54eaea73ab2611ec767379154f64b7c623b680db679c50b00cfba5e6138600d6529e59aef3a3bd593c06caf3",
+  "packVersion": "8",
+  "releaseId": 2,
+  "lastReleasedAt": "2022-08-25T01:50:02.352Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/12434/8/metadata/e2744aff392481b10beca534787bf1ddb5d0ed0c9748eece94982e56acc4fd925dc2c7698abd9be2c05fc0776524c8537d6a22eac7575584dc3853d30db67dc1865501cbe68f32813fca981c6f8923d87768659b9c598cc341e0875d981af1b0e2259199.json",
+  "categories": [
+    {
+      "categoryId": "109cd66f-eff8-4994-a0ca-9d24e09ef11c",
+      "categoryName": "Communication",
+      "categorySlug": "communication"
+    },
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "230021d7-d1dc-42f5-bef8-322447eea5b4",
+    "packId": 12434,
+    "createdAt": "2022-06-29T02:23:47.259Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

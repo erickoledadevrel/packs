@@ -1,0 +1,57 @@
+{
+  "packId": 10702,
+  "name": "Imoji",
+  "description": "Ever wanted a big emoji in your doc? I mean a BIG emoji? Using the Imoji Pack you can convert any emoji into an image, at the size of your choosing. Simply pass your emoji into the provided Imoji formula and you're done! 😃\n\n=Imoji(\"😃\") => ↕️😃🖼️\n\nInstead of the character itself, you can also enter the name of the emoji, with or without surrounding colons.\n\n=Imoji(\"smiley\")\n=Imoji(\":smiley:\")\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Domingo Alvarez E on Unsplash.",
+  "shortDescription": "Turn emojis into large images you can embed in your doc.",
+  "logoUrl": "https://codahosted.io/packs/10702/unversioned/assets/LOGO/a50d08d64d1515ebfb7d0ee7499217a708892e7cd4ca32c8a3b05ab8c15145751eb8a497ec3c66a52f6cab697e39aca13dc673e843a125d1b7a115d43cbd6a5a516a9867ad14a053d3043d9430763fb9facab7f56a5800bcb2a7a26edd0b57e22e8257d7",
+  "coverUrl": "https://codahosted.io/packs/10702/unversioned/assets/COVER/e586915eab29d1e864e9e22549447a44d9725f99fbd521408ce09de155c587e1f0e29982fb772f5f9a7bb939632cc4722b0c7c9f30b3da78983df258ae8c78a04b638d628bf527bdcf629e60cb54e11fd7bcf4d80b8870cf72523a87f5d3b83512a3c59a",
+  "packVersion": "12",
+  "releaseId": 4,
+  "lastReleasedAt": "2022-02-23T02:22:51.165Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/10702/12/metadata/c92c3e00d73797872e167978d95d8d57fb41e2ae36e68fe40daf416c3ffee08b90a2fe70b639c8d519114ada996f3ad1169365ffb5cb71b174f0fa16bbc3620128582c6c63638447c3fda24da916f77a07f4df034bff96ff641ab4a2e4aeecf6601f136d.json",
+  "categories": [
+    {
+      "categoryId": "109cd66f-eff8-4994-a0ca-9d24e09ef11c",
+      "categoryName": "Communication",
+      "categorySlug": "communication"
+    },
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "5e87a243-6d99-4197-9d54-fba2c990dc7a",
+      "categoryName": "Entertainment",
+      "categorySlug": "entertainment"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "37acc133-56c7-4b59-8f50-4fc0ef9e9915",
+    "packId": 10702,
+    "createdAt": "2022-08-03T18:11:20.811Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

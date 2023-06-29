@@ -1,0 +1,47 @@
+{
+  "packId": 23267,
+  "name": "Google Safe Browsing",
+  "description": "Safe Browsing is a service that Google's security team built to identify unsafe websites across the web and notify users and website owners of potential harm. This Pack allows you to utilize the service from within a Coda doc, checking URLs for threats such as phishing and malware.\n\nThis Pack was not made by Google. The icon is the property of Google.\nCover Image by Reto Scheiwiller from Pixabay.",
+  "shortDescription": "Identify unsafe websites across the web.",
+  "logoUrl": "https://codahosted.io/packs/23267/unversioned/assets/LOGO/bab32b79a0e5b1995ad5722f70db38e967b3595b64423451db803d4d231ec39390193d11c7e40a317e31671c36bf445ae445e0d3b3d2d82b525f14afe01f07676f4a12e0cbdac0525be61491cb559f4ecb34fd139da276d669e4a38dd22a9dda0b74cde4",
+  "coverUrl": "https://codahosted.io/packs/23267/unversioned/assets/COVER/63d4523157e2327846c709f3a04dd9ee3476dc5730994c93becf2bff41594a5a348142d8711093535727158e61396de1eff2dbbbc785675f0dd5ce12a84d1b9c3b7278c2c5456cf38725ddc1bbd25823e66a4b7b3380be86b447279f20c24bc65a0bec71",
+  "packVersion": "13",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-06-22T03:11:22.530Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/23267/13/metadata/5f67c4cced2204fcfa0bdb044e32806eb2c704515da75e318070c4d10fa292a979970bd85cd36062272b8d07b903394da44619a5b6ff0930cdcc829724484c3e2413b4bdb1a3e1ec2a6977b5707b552b40010a8487cda33f07ce991893813654c2d27e9f.json",
+  "categories": [
+    {
+      "categoryId": "5b2f676a-1700-4feb-bc90-9a6a6715edfd",
+      "categoryName": "IT admins",
+      "categorySlug": "it-admins"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "c7755d71-2e96-461a-98af-135a2e908815",
+    "packId": 23267,
+    "createdAt": "2023-06-21T23:55:28.650Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

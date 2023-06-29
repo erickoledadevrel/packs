@@ -1,0 +1,52 @@
+{
+  "packId": 19440,
+  "name": "Glossary",
+  "description": "\"What's the ETA on the new CTA? We need to dogfood the UGC UX before we run an A/B.\"\n\nSound familiar? Each industry has it's own acronyms and terms, not to mention the internal rituals and codenames used within a company or team. How can you continue to communicate efficiently while making it easy for new team members to follow along?\n\nThe Glossary Pack can help! Define a set of terms and definitions in a shared Coda doc, and then use this Pack to reference them anywhere. You can inject a term from the glossary into free text, and when a user hovers over it they will be shown the definition. There is also the ability to identify and extract glossary terms in a text column, for example in a Dory (Q&A table).\n\nTo get started, copy the doc below to create your own glossary.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Joshua Hoehne on Unsplash.",
+  "shortDescription": "Lookup terms from a team or company glossary, created in a Coda doc.",
+  "logoUrl": "https://codahosted.io/packs/19440/unversioned/assets/LOGO/42a20a4accc1563547c8c2603664dcb19e1339500da08660f81f56b738453420b593a1f6050a1a20000b32d28b212dc99d684cc72dc9179dcd60541e5e1d4b58307768d078d74c0beaede5ad2d15a0be5f123772d630535d03f2ef9c42ae2deaee383590",
+  "coverUrl": "https://codahosted.io/packs/19440/unversioned/assets/COVER/85c7fa90e0549287227fa7111c1752ab7570e6cac27363293aa9ffeda294814260923ee6fbd48530931d51f22422bd233164886d4fb13405781b9f3d00ad1604a90169b2afd3ec0f2e90b19048dd94194184141e25007742ce1ed9df2c9baa3fb938ac91",
+  "packVersion": "33",
+  "releaseId": 4,
+  "lastReleasedAt": "2023-02-10T20:23:35.167Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/19440/33/metadata/e4dcde16de4b9cae895345e23bc6253922de7a0981a2c1b3b5b8aeaa6d61282587388584dac30f25e418e9db21756defd5162d4ec0ed27f3368464f356fc60fbdf52225c89a674528f9231e59d8b8400e8711dee7e093e82bdd705bcffce1b0238151a5b.json",
+  "categories": [
+    {
+      "categoryId": "23938cb0-eee0-4f00-8639-c635f753945f",
+      "categoryName": "Team charters",
+      "categorySlug": "team-charters"
+    },
+    {
+      "categoryId": "109cd66f-eff8-4994-a0ca-9d24e09ef11c",
+      "categoryName": "Communication",
+      "categorySlug": "communication"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "a7a93b0f-307b-4f89-8dcb-8c2bf143e9a7",
+    "packId": 19440,
+    "createdAt": "2023-01-31T18:41:24.283Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "private",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "packId": 21582,
+  "name": "Check Host",
+  "description": "Is your website up and running? Is it accessible in different countries? What's the response time like?\n\nAll these questions and more (not many more) can be answered using the Check Host Pack. This CheckUrl() formula uses the Check-Host.net service to make a request to the website from servers across the world, and then reports back the results.\n\nThis Pack is not affiliated with Check-Host.net.\nThe Icon is property of Check-Host.net.\nCover photo by Lucent_Designs_dinoson20 from Pixabay.",
+  "shortDescription": "Check website access and measure the response times from across the world.",
+  "logoUrl": "https://codahosted.io/packs/21582/unversioned/assets/LOGO/e634ae86bb3376529f8c81f95cf101964616b65110e7871300ebf2e9af483ace3e3bfadfc00a7725c82289131f7650ccd57a753aea813e08f5e7e6275861d961d71c6efcc10719662089b39026f97b1b79fd267d6470b19cdb6034623e41ba5b3f1e206e",
+  "coverUrl": "https://codahosted.io/packs/21582/unversioned/assets/COVER/cb3d869b9af2d6b950010aea322c89409c3bee5adbf6191e1f2f671f4d8d2333f6da8ee41f71106e9f6b93ddcc7dd70923c78c860a5e65dd3b9514a9355547a33769f1a1e600570cbe573ce11c3726f19900099e71da6f9d35fefc8657dedeef8f68be98",
+  "packVersion": "32",
+  "releaseId": 2,
+  "lastReleasedAt": "2023-04-22T14:39:36.494Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/21582/32/metadata/3b63b782675b2589786deca3939bc98fe2f803af57ca19aae663a871c5bd9ef81a89d00fb3967a299e8a37d2c3b6e34374f14612d308ec3b6dce8373617230e2e9bb9ba699d28570cf074119e3b2b64b4c123b9ee59fc316bf3510459f1db655f0d66671.json",
+  "categories": [
+    {
+      "categoryId": "5b2f676a-1700-4feb-bc90-9a6a6715edfd",
+      "categoryName": "IT admins",
+      "categorySlug": "it-admins"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "991e88eb-b8f1-4823-89cc-ce795128fa48",
+    "packId": 21582,
+    "createdAt": "2023-04-12T21:29:14.437Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

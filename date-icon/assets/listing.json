@@ -1,0 +1,47 @@
+{
+  "packId": 18643,
+  "name": "Date Icon",
+  "description": "Couldn't be simpler. Pass a date to the DateIcon() formula, get back an image reminiscent of an old desk calendar with the month and day filled in. There's also a MonthIcon() formula if you just want to show the month and year.\n\nThe icon was adapted from the Flat UI project by Designmodo: https://designmodo.github.io/Flat-UI/",
+  "shortDescription": "Display a date using a simple icon that looks like a calendar.",
+  "logoUrl": "https://codahosted.io/packs/18643/unversioned/assets/LOGO/3014a12f2c3f58602aa218a1199146a3090ca33d2a48da9f41ce2cd552de407f574a2e78f522dac8d5e8e54fe1bf431164f595ef149d63cd60dfcd9d039c55df40bc2609d3670be92f1c95acb69cbbade732b71eb5f6fe063e7d477d1d9c6331a6b58a3b",
+  "coverUrl": "https://codahosted.io/packs/18643/unversioned/assets/COVER/0b0646824122ef923612c83ef45ff864a564ebb07a0739607fa0b818c9c8f80ecb95fd8424232da72e3d65b620e4a6030f6543e9f6fa2ece00ade2a6e3546d36e2d21cfb3fb0a4feaf85910b59575f7c70e40a0f2d50f5a1529a078420c793d34079d833",
+  "packVersion": "13",
+  "releaseId": 4,
+  "lastReleasedAt": "2023-01-17T17:54:34.858Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/18643/13/metadata/0146b79012d6c427fdeda7eb66fbf09de6850f23c6d991d6678c3813d5aedaac2b5ea48d32a61dfc469c55ac1286e78775b6b57d88c7df7a9daba5c2674c097a78db03a27e5cc099ec38bd3c401e39c9679a269fc47abe3d23634aba9a5a9a3faaeaa9b3.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "shared",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "bb0edc45-5ab5-4433-a03d-224752a524ca",
+    "packId": 18643,
+    "createdAt": "2023-01-06T18:53:16.372Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

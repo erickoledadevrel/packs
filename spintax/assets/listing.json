@@ -1,0 +1,47 @@
+{
+  "packId": 23437,
+  "name": "Spintax",
+  "description": "Spintax is a special text format you can use to generate multiple variations of the same message. For example:\n\n\"Hello {World|Earth}! We come in {peace|friendship}.\"\n\nThis spintax string results in four possible combinations:\n\n1. \"Hello World! We come in peace.\"\n2. \"Hello World! We come in friendship.\"\n3. \"Hello Earth! We come in peace.\"\n4. \"Hello Earth! We come in friendship.\"\n\nThis Pack makes it easy to work with spintax strings, allowing you to generate a random variation, a few random variations, or all the variations. It also has a helper method that makes it easy to build spintax strings from a table of options.\n\nCover photo by Josh Frenette on Unsplash.\nIcon created in IconKitchen by Roman Nurik.",
+  "shortDescription": "Generate variations of headlines or ad text using the spintax format.",
+  "logoUrl": "https://codahosted.io/packs/23437/unversioned/assets/LOGO/1062954fba85de2de27c5d4b36d6538e5b8d4b1a1e590da52bad50ea379beb3c0e60856922fe5ea542ac9e3b81524d2d328706602200178db8a18d0f1cc87183bf119a4c1d5ffaa0808b885fbadb65b8c1062e48a1415aaad67fcf8a0da4e54bc507f0e1",
+  "coverUrl": "https://codahosted.io/packs/23437/unversioned/assets/COVER/20ed0e5624bed63a0bd5c9e9c6a44dfd6b08a74dfb55fb568a28682e6db25136072b964bfaebdcd58ea445883d33fc5d72e051abfe0c1069dcf2597e2393737b09b9ec919c27e157d143753fdcb1b07d4298c9d4d037c14d517904cf54cc1bcbb016b7a5",
+  "packVersion": "5",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-06-29T14:12:15.073Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/23437/5/metadata/ccddf6cf1d51ebd25d7cfac91b375f928bd24e8a6ea62a0559542d84d411aad97c6fbda531d80a446a493c981b8a67604566ac8342177880e8e750a2f97e4946abd41d75d3a8a5145e62473b387e4d767b905cc4af94a70463ace3bca56f35f124b75fbb.json",
+  "categories": [
+    {
+      "categoryId": "2ab958ef-6063-461e-9d2f-43e60d546d15",
+      "categoryName": "Marketing",
+      "categorySlug": "marketing"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "c952bc0b-60d5-414c-b6be-f198775fa8f8",
+    "packId": 23437,
+    "createdAt": "2023-06-29T13:34:24.883Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

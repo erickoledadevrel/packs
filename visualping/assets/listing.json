@@ -1,0 +1,38 @@
+{
+  "packId": 23109,
+  "name": "Visualping",
+  "description": "",
+  "shortDescription": "",
+  "logoUrl": "https://cdn.coda.io/assets/5eba36cb9841/img/packs/default-pack-icon.png",
+  "packVersion": "7",
+  "externalMetadataUrl": "https://codahosted.io/packs/23109/7/metadata/7de105127495488378cefe6e8915cdba86f0e9349309449edfa5ff2a513c1c164292f73c3d5b8942188c9ecf69eb97dbb213a8aa4dcbaeccb4ce52dcd578383313ba6adef1f363d8d5394b310d57ec625550d684c53da91a8ebc8e0ac36f350f6e2b83a4.json",
+  "categories": [],
+  "supportEmail": "koleda.eric@gmail.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "fd0ed326-5bf2-4f7a-a80a-382f0b38d8b3",
+    "packId": 23109,
+    "createdAt": "2023-06-14T20:15:22.812Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "private",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

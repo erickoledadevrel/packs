@@ -1,0 +1,47 @@
+{
+  "packId": 18653,
+  "name": "Rich Text Tools",
+  "description": "A set of simple formulas for converting rich text to and from HTML and Markdown.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by cottonbro studio on Pexels.",
+  "shortDescription": "Formulas for working with rich text as HTML and Markdown.",
+  "logoUrl": "https://codahosted.io/packs/18653/unversioned/assets/LOGO/3a6abfc40704be469820a22eca6be237543ae98a0a1af64d38f1281d4448901aedd737474ac3017d1c3a3c404814231818700dc8415eacf25850f1fbe1062d2835659fbcdd345f5bf7eb713d6db9e923d5985227a725ab53fe79cf5501843810f24b3658",
+  "coverUrl": "https://codahosted.io/packs/18653/unversioned/assets/COVER/b9fce1785a7711baa49d584f30f4057697b0a675ce3510082b72bea07a5952bf9df290889dca98f42b98aa8ed3df8151ade14ff7a0cef4ebb91ae24a8ab9e47f9969f3d7b4c77e21b8998d7fefaae327c276021811e7c034c8b3f0516c7fb3f74e5bc86c",
+  "packVersion": "2",
+  "releaseId": 2,
+  "lastReleasedAt": "2023-03-20T19:46:17.471Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/18653/2/metadata/4ff9517bfb7f75e7dbdab265fe7a1ece4f04d19e5af6097be06671a16410f2c01b4427e4cd004be9af0c284a3b3c07a4c7d6be893e2fbf040e0692e87e19d6e75d191830dbfd2da205a466ec7eb516fee0edb100c732f21f582141fdece5fb37bb10ae83.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "7c92eedb-93b2-4c0e-a385-0cf1122ce462",
+    "packId": 18653,
+    "createdAt": "2023-01-07T01:17:57.048Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

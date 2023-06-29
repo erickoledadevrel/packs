@@ -1,0 +1,52 @@
+{
+  "packId": 19507,
+  "name": "Diff",
+  "description": "The only constant is change. And the best way to detect change between two pieces of text is to diff them!\n\nUse the Diff() formula to compare two blocks of text, showing deletions with strikethrough and additions in bold. The UnixDiff() formula does the same basic thing, but outputting a format like that used by the Unix diff command.\n\nCover image by Arek Socha from Pixabay\nIcon created by iconixar - Flaticon",
+  "shortDescription": "Visualize the difference between two pieces of text.",
+  "logoUrl": "https://codahosted.io/packs/19507/unversioned/assets/LOGO/54b374d3f078481cbb15011cf32944be31a0714eac8532e369f2547aa075a947f69d9619bda0d41c64b77ce4a3575565f1e34ea42770d81ecbe4c9e51dd1ada75b9f7b33ba66fabffb4a5b662895f2c393c0f852821b34158b3c4d7450cc5647414f80bd",
+  "coverUrl": "https://codahosted.io/packs/19507/unversioned/assets/COVER/579b70e04e3f193d0ac8be34ee6bd1a338b76679b26c85c8e3146ba6ed7773fa254c9c6869fe72ba4050d814573fcd3993127d9c9fa7c45504f577f716bb013ef65a71a17a7723d9638bf9f18f959231cfa147a82eec3ace28c26fcb35c23501c665c040",
+  "packVersion": "13",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-02-03T00:55:50.683Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/19507/13/metadata/71b4f79530ff007a481c50f7223666000a77fa81a7fab5a051ae6c9536a06d0881101ed617fc2948f90b9f2651564645d5e72d85368ab3a955a9bab0152f6f2c61a7eaf5d57e9efbe7e30308e9a3f7ce134c6d670b8cb8563e46d52eabf98e92b44be188.json",
+  "categories": [
+    {
+      "categoryId": "5b2f676a-1700-4feb-bc90-9a6a6715edfd",
+      "categoryName": "IT admins",
+      "categorySlug": "it-admins"
+    },
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "0ac1a61b-016f-43f3-b74b-2e8df4da9f2f",
+    "packId": 19507,
+    "createdAt": "2023-02-02T15:52:41.388Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

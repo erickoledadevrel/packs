@@ -1,0 +1,62 @@
+{
+  "packId": 12946,
+  "name": "Temp File",
+  "description": "The Coda Formula Language can do many things, but it's typically trapped within the document. Use this Pack to break free and generate and download temporary files using the content of your choice!\n\nThe formula TemporaryFile() takes in text content, saves it to a temporary file, and returns the URL.\n\n= TemporaryFile(\"Hello world\")\n\nCombine this with the built-in OpenWindow() formula to allow users to download the file before it expires.\n\n= OpenWindow(TemporaryFile(\"Hello World\"))\n\nYou can also set the name of the generated file, to match the content within.\n\n= OpenWindow(TemporaryFile(\"<b>Hello World</b>\", \"page.html\"))\n\nThere are two additional formulas for creating temporary files in other ways:\n\n⮞ TemporaryFileFromDataUri - Create a temporary file from a data URI (like \"data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==\")\n\n⮞ TemporaryZipFile - Create a temporary zip file from a list of other files (from a Coda table File column)",
+  "shortDescription": "Generate a temporary file using a formula.",
+  "logoUrl": "https://codahosted.io/packs/12946/unversioned/assets/LOGO/95344327b3338834da191de64ddd36366b24e131239769c3d806771b276b686323fff3e27736ecb03f21a26d78e20c28f7dd2d5d3a15ef75a2507ae7df64b09512b259c32240f2b95613b77fd4d09be8590d0f149f4c47ebc1716b99793bf64c86945827",
+  "coverUrl": "https://codahosted.io/packs/12946/unversioned/assets/COVER/e808a85d89bc2e34fae416c7e481098ae3ffed1384920de7b06544399bc4ed70988fb8d0922bcac6b34ade2b6f5856bf816859603316286f5eecbe4730361716528f0a6eb1534fcf76222a94e8b19ac29c792868b765c0d7b006a923cfaf4f719c0ea702",
+  "packVersion": "21",
+  "releaseId": 5,
+  "lastReleasedAt": "2023-05-04T01:44:52.071Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/12946/21/metadata/d9def7af541b529a139192d307bd71cc61ed10c6365a092721108bab6d5038d3cac4b448ac736b860b8ff41b538f9f37133bcc8611e83daff4edc1684db36215b2463fb16e56d00584cdbd01a312bafa012c4ffed7b5a9d5ba7539cdfa5ce809cfded74e.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "45083e67-1a78-4f12-a925-cc502a138996",
+      "categoryName": "Project management",
+      "categorySlug": "project-management"
+    },
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    },
+    {
+      "categoryId": "7f1004ab-600e-4caf-9977-6f7fea628a4a",
+      "categoryName": "Enterprise",
+      "categorySlug": "enterprise"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "70abb2a3-1922-4cc5-9744-d49fe8e30b03",
+    "packId": 12946,
+    "createdAt": "2022-07-08T02:06:41.230Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

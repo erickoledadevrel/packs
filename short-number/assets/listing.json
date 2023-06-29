@@ -1,0 +1,41 @@
+{
+  "packId": 13400,
+  "name": "Shorten Number",
+  "description": "The best dashboards use short, easy to read numbers like \"20k new subscribers\". However the best dashboards also use real, live data, which can be overly precise like \"20347 new subscribers\".\n\nUse this Pack to easily convert your precise numbers into short abbreviations.\n\nShortNumber(20347) ==> 20k\n\nCreated using the number-abbreviate NPM module.\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Diana Polekhina on Unsplash",
+  "shortDescription": "Abbreviate numbers using letter suffixes (1.2k, 4m, etc)",
+  "logoUrl": "https://codahosted.io/packs/13400/unversioned/assets/LOGO/1523eb8f46fa6a0bfdd845eedd2eb7f05ed91d49b5c2bc304c4b811cd101aabfcf571f9ba0818370fe6678e14c1083626f85eea1f5771ad43d22a22c87525340e784a15ec7107bb3dc84573d1182182303e7a46403751a71a95bc795ab869cc784665089",
+  "coverUrl": "https://codahosted.io/packs/13400/unversioned/assets/COVER/145a04e1ac3197c57349cbd5a8cccb29e4895d992e96de435cbac380374423de58fccd7ad6a04441939f37bf3d7a5ffad115ffc426f65cc62545471ecd684ba8d47a516f5001e06cf0f81f4509be75265df4612275bca341ff5486ce56a25b541c1fdd60",
+  "packVersion": "3",
+  "releaseId": 2,
+  "lastReleasedAt": "2022-07-19T19:12:20.766Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/13400/3/metadata/60efc6dd4423d8a5b41507fc53a962e5b11c715cc666759725e175167d0b04ba0b5f788d9a4411eb33dcd4610e8bb27a26928abbf17fedc933eade5200ae7db951c4e3468765a22e20f655ebd5b40b957d1886ce72a6a5f0937748d4e4212c1b4f303b37.json",
+  "categories": [],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "047eef83-d14b-47e5-8e25-8fe9031c7582",
+    "packId": 13400,
+    "createdAt": "2022-07-19T18:59:37.470Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

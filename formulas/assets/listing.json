@@ -1,0 +1,47 @@
+{
+  "packId": 13219,
+  "name": "Formula Info",
+  "description": "If you're like me, you have a permanent tab open to coda.io/formulas. It contains a wealth of information about all the formulas in the Coda formula language. \n\nBut what if you could have all of that information inside of a Coda doc itself! 🤯\n\nThe Formula Info Pack allows you to do just that. Pull information about a single formula using the Formula() formula, or get a table of all formulas using the Formulas table.",
+  "shortDescription": "Get information about the formulas in the Coda formula language.",
+  "logoUrl": "https://codahosted.io/packs/13219/unversioned/assets/LOGO/421d3e81fba33085b8c50756732f950c06e55e9eb8219a3d2fd7dd3db4cf4b1edaa0964003762a85cebeeb2082d9c1b64b2f9af6d7ad3522e3df3f155507a7d1854ce3151f5952a03e7990539aaf3a5ceeae4e92abfb98249baae5c686b5a6051faea913",
+  "coverUrl": "https://codahosted.io/packs/13219/unversioned/assets/COVER/817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4",
+  "packVersion": "22",
+  "releaseId": 2,
+  "lastReleasedAt": "2023-04-11T01:31:19.972Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/13219/22/metadata/619ecddd85eaebaabcd29aa90e534c2979d0d822aaf8f9a20ec3eb9d35eb275d5b8e14ca3847462bffd130caf4ce6fdd84a5edcabe388ec12b762736b353efd4ed92a0dfb1898eaf2aa4a9ec5a6a26fdbd025d6abda975825d522198f9406197b2d8b6f6.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "ca52d0cb-c92b-40d3-8364-b8592e97a191",
+    "packId": 13219,
+    "createdAt": "2022-08-03T20:38:14.968Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "packId": 20891,
+  "name": "Medium",
+  "description": "If you are like me you spend more time moving your blog to new platforms than you do actually writing blog posts. Break the cycle! \n\nUsing the this Pack you can author your content in a doc and publish it to Medium with a single click. Take advantage of the great collaborative features that Coda provides without needing to worry about copy and paste.\n\nNote: This Pack was not made by Medium. It uses the Medium API, which the company no longer maintains.",
+  "shortDescription": "Create drafts in Medium from your Coda docs.",
+  "logoUrl": "https://codahosted.io/packs/20891/unversioned/assets/LOGO/04d213f48141df28b95f2181aa4ffb64f5e4d823550392708c54f61fae7f28ef9a03f58ceec60d4358811a43a2b6c79dd153abffb8b4ae66eb66c85ee9381c302a2a68bc3857e6b09041962403233a33a2db7256e423e0072d00036977b6facb437472a7",
+  "coverUrl": "https://codahosted.io/packs/20891/unversioned/assets/COVER/f80fc008af2f00fdf0071ac7e55c3e0ddc330a2fe334de13371a3813aece6ff4f73ee2b21228843e65ec722e3a9df13245daea3bb5834eea77c484347ba1d442f78a2ccbead5777d48ff082085318066e90f003184653c25f54d591d94db63e7cd433104",
+  "packVersion": "9",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-03-17T14:16:51.544Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/20891/9/metadata/fa4921e156c360e8af820b8ae589b473068df97cd8429a69f7a489bae5054bb46fae8051ff91a573f48bb664c139f1863e6bba55862d9307d3b8286215d117e9c20f2d0475934d3413de1883a36f2b6f209fe37df6d1bd5f3cb78ea697e8807be1db23ac.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "109cd66f-eff8-4994-a0ca-9d24e09ef11c",
+      "categoryName": "Communication",
+      "categorySlug": "communication"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "095263a2-d9d5-419a-a74a-64f907d5ced9",
+    "packId": 20891,
+    "createdAt": "2023-03-17T00:53:37.637Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

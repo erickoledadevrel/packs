@@ -1,0 +1,47 @@
+{
+  "packId": 21950,
+  "name": "Socrata",
+  "description": "Socrata is used to host open data by governments and organizations across the world. Using this Pack you can connect to a Socrata-hosted dataset, query it, and sync the data directly to your Coda doc.\n\nWhen installing the Pack you'll be prompted to provide the Socrata-powered website to connect to. Some examples:\n\n- https://finances.worldbank.org\n- https://healthdata.gov\n- https://data.ny.gov\n- https://www.dallasopendata.com\n\nTo connect to multiple sites connect additional accounts to the Pack.\n\nThis Pack is not affiliated with Socrata or Tyler Technologies. The icon and cover photo are the property of Tyler Technologies.",
+  "shortDescription": "Query and load open data in your Coda docs.",
+  "logoUrl": "https://codahosted.io/packs/21950/unversioned/assets/LOGO/9677ace8e9b61f0531b80f2626bdbcb2a8ecd21b3eb324c5f7f1339d3e177a54614312839f3e121323906c211306443ee110daf79567d33b9296ca8d3fbf7b4f58c2ef7a7b4b8e170a644e27b10f3e35c9f0e03ce5f5e93e2f016b6948ba85ef65bb9544",
+  "coverUrl": "https://codahosted.io/packs/21950/unversioned/assets/COVER/0e293b797b784f1a6a983a2b282a7f95fce9a6231e50036150ecace15666a8af3f8e1eb94e7b19bee169e21a396a3d22fb1fe7d85c6952e78cc5bd5d89376a4c9b561d1d52e60dc61ecc09230f45415b66be3cdbc72c3b16cb24b9f093eaf7a32572eb30",
+  "packVersion": "17",
+  "releaseId": 2,
+  "lastReleasedAt": "2023-05-19T01:07:27.128Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/21950/17/metadata/1668f5e2e395428ccf6ba57525eaaeeac37d988c135ef76d9bee71974baeb15c070ba4eca527e2bdc9ffdfa990bcda416e4b48296f2cfa04b7d55568fd2c8522de6ed32a29e37390058dac0463ebfdacf446a9e22c8022f98829e8cfeaf0c376cdd7c5b7.json",
+  "categories": [
+    {
+      "categoryId": "8c2c2fa7-0602-49b4-abc0-1d958efe6205",
+      "categoryName": "Education",
+      "categorySlug": "education"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "59c748f0-5e24-42cb-be19-d92ec3cf43ae",
+    "packId": 21950,
+    "createdAt": "2023-04-27T00:38:58.671Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

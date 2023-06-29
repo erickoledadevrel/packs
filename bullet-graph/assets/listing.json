@@ -1,0 +1,41 @@
+{
+  "packId": 20912,
+  "name": "Bullet Graph",
+  "description": "If a picture is worth a thousand words, a good chart is worth at least a couple hundred. A bullet graph is a special kind of bar chart that includes not only the current value of a metric, but also the target value and qualitative ranges.\n\nThis Pack includes a BulletGraph() formula you can use to easily add these charts to your Coda docs.\n\nIcon created by Freepik - Flaticon\nCover photo by Lukas - Pexels",
+  "shortDescription": "Generate bullet graphs from the data in your Coda doc.",
+  "logoUrl": "https://codahosted.io/packs/20912/unversioned/assets/LOGO/80dda80a0961a6ebf6e93bbb324ef6ad03c76763acdf4686b6fc26bd69ef363cc21153c1c8ab158e023501d8f388ea875923ea55c200ea178a462e3baeb5b171b79d66d7f6aaffec9d2d8252c2c31be9be1e7a3b67a05e676ddf326ffd4292dd37f13949",
+  "coverUrl": "https://codahosted.io/packs/20912/unversioned/assets/COVER/aa79febf5f559d8480a6ad724c40b74602692304f12ebd2dee1c160eb6c27e254bbce3b9e3b514b5c4bb56ee0877299d830339c66273d3729b2bc7e096d0c19f95c420e4afaaeec6566c6536e4d5d592eb03216858e745fddcb6445f7a3e40f7c4f58b10",
+  "packVersion": "28",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-03-24T18:40:07.834Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/20912/28/metadata/dd1d2e30cb023c55700cf4885dd46383fd6c574e3e0d6eabacd78b8aa0aeca7e2a08c304328b33b824ffda8b7caaa5e0685e459ece9b67ecc789c0de1a3c089a9f6921a98d9b9788bcc9a5f137bc9ab3ce8384d3ed935ca7f53bebd16a6cdab810ca86d4.json",
+  "categories": [],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "f53a58ab-0e73-4f58-9f62-c94e329c3aea",
+    "packId": 20912,
+    "createdAt": "2023-03-17T20:22:51.385Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

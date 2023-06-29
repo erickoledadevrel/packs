@@ -1,0 +1,47 @@
+{
+  "packId": 17106,
+  "name": "Mockaroo",
+  "description": "Ever try coming up with a bunch of fake names and addresses? It's harder than it looks! The Mockaroo service makes it easy to generate mock data, including a wide variety of data types.\n\nSimply add a new MockData table to your doc, select the columns of mock data to include as well as the number of rows to generate, and you are done! The MockColumn() helper formula is for advanced use cases where you want to specify additional options for your columns.\n\nYou'll need to supply your own Mockaroo API key to use this Pack, but you can sign up for free and it comes with a generous amount of free usage per day.\n\nThis Pack is not affiliated with Mockaroo, LLC or Tonic, The Fake Data Company™.",
+  "shortDescription": "Quickly generate tables of mock (fake) data.",
+  "logoUrl": "https://codahosted.io/packs/17106/unversioned/assets/LOGO/7cbd67027cf426a9207bbb6d2b31b7a0fc55464ee643137c70e8d09c4f49a096c1a170d01722e51c8aa608331bf27dcc911d7703b725f6173018d0f8b7efd096133b333e16935cab543704bad565951483f4eef8ded843dad29c5ecf99796bc556e26b47",
+  "coverUrl": "https://codahosted.io/packs/17106/unversioned/assets/COVER/c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62",
+  "packVersion": "29",
+  "releaseId": 3,
+  "lastReleasedAt": "2023-03-23T18:22:05.400Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/17106/29/metadata/c3eedcc9c2a3ad597889f948cd66e69f6455cfa5ee9261272f9f902f73de53ba71eb0cc92e1530ccaf269aac67ea0cf4d49ea07604e8a91fa5c8413b7b8a1e574bd2f52f3ff7a5d67433ff3dec2bfbdde070f185d9bf584b6c2f9a0000fda512a21e3e63.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "f60a814d-c1c5-43de-a5e1-99a46231187f",
+    "packId": 17106,
+    "createdAt": "2022-11-22T19:15:41.214Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

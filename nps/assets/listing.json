@@ -1,0 +1,57 @@
+{
+  "packId": 14223,
+  "name": "Net Promoter Score - NPS",
+  "description": "Net Promoter Score®, or NPS®, is a popular way of quantifying how users feel about a given product or service. It’s fairly straightforward to calculate the NPS in native Coda Formula Language, if you aren’t doing it regularly it can take some time to remember the rules and equations.\n\nThis Pack makes it easy to calculate the NPS for a set of survey results using the NPS() formula. The additional Category() formula allows your display the category (Promoter, Detractor, Passive) for a given rating.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Image by Paul from Pixabay\n\nNet Promoter®, NPS®, NPS Prism®, and the NPS-related emoticons are registered trademarks of Bain & Company, Inc., Satmetrix Systems, Inc., and Fred Reichheld. Net Promoter Score℠ and Net Promoter System℠ are service marks of Bain & Company, Inc., Satmetrix Systems, Inc., and Fred Reichheld.",
+  "shortDescription": "Calculate the Net Promoter Score® (NPS®) from survey results.",
+  "logoUrl": "https://codahosted.io/packs/14223/unversioned/assets/LOGO/0d5706021bced4ff7f7a3ab5632fd6eded9d9cab936362b7ae461633178ba79642dbc83c37edc11be69f56245f1763a4e475e4aa684b1286d00d714584b31c85c861b0bd5d4ad79c19afdb8f9f2c410c579cfa1dfdba8fac837eb80dfbb090ad97776045",
+  "coverUrl": "https://codahosted.io/packs/14223/unversioned/assets/COVER/8f66837a4290dc7ce9d19285af3411f3acdcfa7bbe81111de29d976e56a1ce271957150a47432db8c63165c2bf1e1711bd71c36159c7ef2a4729854a8a8b242d4de85fd720a3e2cea956ed9367d97ca1efaf92c02fbc158ce76148eb1dc10859855efd6c",
+  "packVersion": "2",
+  "releaseId": 1,
+  "lastReleasedAt": "2022-08-10T02:51:43.679Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/14223/2/metadata/c40803737caad6918c35ce1b1dec17385d26e1fa1cc9d881c661840696a8e1676f56352dbdc748134e3a6e8082da1774d1a7bf05225edb86b03b4fb280786126a5c8a502fc7070319c522155e2546b928e35abd756af9f7343d02bbd8a03dce0e639610c.json",
+  "categories": [
+    {
+      "categoryId": "2ab958ef-6063-461e-9d2f-43e60d546d15",
+      "categoryName": "Marketing",
+      "categorySlug": "marketing"
+    },
+    {
+      "categoryId": "c0d883d8-1aaa-4c21-98b8-f7d4830f2a0c",
+      "categoryName": "Product design",
+      "categorySlug": "product-design"
+    },
+    {
+      "categoryId": "40492ed0-0566-4c10-b51f-69f30bda5159",
+      "categoryName": "Product development",
+      "categorySlug": "product-development"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "9c5d80e5-be5a-4fd5-8d22-defa4c5cafeb",
+    "packId": 14223,
+    "createdAt": "2022-08-10T01:49:08.298Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

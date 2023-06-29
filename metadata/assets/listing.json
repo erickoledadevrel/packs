@@ -1,0 +1,47 @@
+{
+  "packId": 17088,
+  "name": "Web Page Metadata",
+  "description": "Hidden in the HTML of a web page is a wealth of metadata about what lies within, and this Pack is the key that unlocks it. 🔑\n\nSimply enter a URL into the \"WebPageMetadata\" formula (or column format) and you'll get back the following information:\n\n⮞ Title\n⮞ Description\n⮞ Language\n⮞ Keywords\n⮞ Author\n⮞ Date published & modified\n⮞ Contact information (Email, Twitter handle, Facebook page)\n⮞ Image\n⮞ Icon\n⮞ Video\nAnd more!\n\nNote that not every web page has all of this data, but the Pack will return what it finds.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Amanda George on Pexels",
+  "shortDescription": "Get the title, icon, and other metadata for any URL.",
+  "logoUrl": "https://codahosted.io/packs/17088/unversioned/assets/LOGO/c44e5552eecc081b8b364546b33d47140256fec4150ae380aec1d88753e42cd38a298ccd6be6913ccfc55771fb6fdaabed17d724cfa625b6491dae48ccef10e6434c1dd073fd5fa52da7d79a9cc94346aa0cc648e719f87c952649823b0e6126ba883153",
+  "coverUrl": "https://codahosted.io/packs/17088/unversioned/assets/COVER/213b2b0d301b6003f358d2e363e23e62e0f30e8358e3ebfacdf617c61c8b161e74ca562e081b023cd29f49e760f3bc58846732cd44625f39e9f9493591849cde22a4a08d1c76477a7edb9e4f82587c8a7e038595c5724514f30f0962ba1786b7d933a45a",
+  "packVersion": "11",
+  "releaseId": 2,
+  "lastReleasedAt": "2023-05-20T19:15:45.842Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/17088/11/metadata/ed409572234ea14276fbef68f5372399ed08fdb7df7fafc69f634579486a5a02b7a2d00ac28d2ab0ffb10bf34a382a0ca44dc1cd87a500a28fb5063dbcf4c0b436d89de72256a730ef1307a8509b269a99e8ee339813c2be8f94ca557d1f954c43b0961e.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "a5e81941-52f2-433b-9e3c-1b6cfec9165c",
+    "packId": 17088,
+    "createdAt": "2022-11-22T02:15:53.672Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

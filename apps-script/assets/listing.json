@@ -1,0 +1,48 @@
+{
+  "packId": 14470,
+  "name": "Apps Script",
+  "description": "Google Apps Script is the VBA of Google Workspace, a flexible scripting language that allows you to connect to and build integrations for multiple Google products.\n\nThis Pack allows you to retrieve information about your Apps Script projects, including basic metadata, their code, and usage metrics.",
+  "shortDescription": "Get information about your Google Apps Script projects.",
+  "logoUrl": "https://codahosted.io/packs/14470/unversioned/assets/LOGO/7203bddef04c69f3accd8fe46232ebbd701f183f4f5c6fe38f755ec268c47f72666d0ce0eb1549fd85e7354186027565e4e17aa27582f2cff57382b732302e042552d3bfc887b48ef084ae4331287733195f92709aeca2ea0224aca16cb1bd932f7afc73",
+  "coverUrl": "https://codahosted.io/packs/14470/unversioned/assets/COVER/03f3d1887a3379587c3ef2e0ff35efe309bfb5d390167ca77b13ad00e60594be1ad15f2f77c7a37328f6e36e6614e3efd86ff018a21f35ee130e25b144e9f40fe48d1937fe1915afd65a756b3a806ea634037f9fc6c42a0dcf4837b6b2f41e1acabe83f8",
+  "packVersion": "19",
+  "releaseId": 6,
+  "lastReleasedAt": "2023-04-11T01:30:54.013Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/14470/19/metadata/ec8ae37e8ed908ab0868c253a42e055fe026e4870c5e6831d082376d2edd0c148a7d0efef7c86a99f91d2fbe1d212afc7fd5f1b6f2e4f4b23ed1f06bf8bdce5d6b8966d71a4b7e753c35beeb498a5da5c33cb1db68984abe9869e16cd0caccc75afcd8c1.json",
+  "categories": [
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "privacyPolicyUrl": "https://coda.io/@eric-koleda/apps-script-pack/privacy-policy-2",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "5663cf38-35ff-4c13-a9ec-d7f2faf58f67",
+    "packId": 14470,
+    "createdAt": "2022-08-18T01:52:46.876Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

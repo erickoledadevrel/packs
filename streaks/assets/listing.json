@@ -1,0 +1,57 @@
+{
+  "packId": 19066,
+  "name": "Streaks",
+  "description": "Sometimes it takes a little extra motivation to keep up with your routine and meet your goals. Knowing you are on a streak, and avoiding breaking it, is often just the push you need.\n\nCalculating streaks in Coda tables used to be quite complicated, but with the Streaks Pack it's as simple as calling the Streaks() formula!\n\n=Streaks(Table.Date, Table.Checkbox).Nth(Table.Find(thisRow))\n\nRead more about it and check out a demo at the doc linked below.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Richard Bartz from Pexels",
+  "shortDescription": "Quickly calculate how long you've been on a streak.",
+  "logoUrl": "https://codahosted.io/packs/19066/unversioned/assets/LOGO/cf1292bc910d04e75d4e7aa37232d3794e6cbdd94cc9ead2faf58c3c2590f84ce1dab6531a3c462c6ff6daf189f9af14061c642a55adf073db3ebf4ac8e23aa1cd86ca20d12d52d791fe6ab5f00c9a6fb509fcd0b2b0cff213cff5c7842fe7c5e0408423",
+  "coverUrl": "https://codahosted.io/packs/19066/unversioned/assets/COVER/9aef584dcf95b58fd9b69da07bb63cab3faf8a617edd3c25b61fd81478d9e9093085e554bfbfa6e7491f77343b3e7aef1ebd984c5ccfe05377dfebd768b4951092742f6c0e23153bc00537dc0dce1d865e2d99da5025e0838ae56075ffa23cff1f0c8d25",
+  "packVersion": "6",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-01-21T03:01:16.510Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/19066/6/metadata/314e785ea23e12d8d0e953ae64b3f827864cc01b8141f6e103ef4dd50aac190ca2f84a3bde2e094110f3df6bb09a1c20dd99fb3770b568e61a396dd32d114244a61b55c6c1c889e510e29ed94ae51da3ec4423f708a3189c11862c8b54da6da601c74bd1.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "dd3f291c-fba6-410b-8ca3-f34deaa3586f",
+      "categoryName": "Fitness",
+      "categorySlug": "fitness"
+    },
+    {
+      "categoryId": "639149bb-840f-49d1-8bb2-531b664aa43c",
+      "categoryName": "Timelines",
+      "categorySlug": "timelines"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "2973475d-f7f7-4239-b285-fd4a00299d8f",
+    "packId": 19066,
+    "createdAt": "2023-01-20T13:27:00.330Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

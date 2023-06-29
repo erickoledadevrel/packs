@@ -1,0 +1,52 @@
+{
+  "packId": 10744,
+  "name": "ASCIIfy",
+  "description": "Long ago, when DOS still roamed the earth, the only way to create interesting graphics was to carefully rearrange obscure characters on the screen. This became known as ASCII art, and it was super hard to do by hand. Luckily you have the ASCIIfy Pack, which will automatically convert text into ASCII art using one of hundreds of available fonts. Install it to add a splash of that 80s feel into your doc.\n\nPowered by the figlet NPM module.",
+  "shortDescription": "Create ASCII art out of any text.",
+  "logoUrl": "https://codahosted.io/packs/10744/unversioned/assets/LOGO/c0e0800257aca11878724899665e761caad59708b5a259d03669dc4e8d3a43f7028d502094c96fa00d8d46a28d814f12af217c520ba0958785b2b8e1a729dc1c5c5c8277148720ce9000ea171fd4eadcca647fe7c3cad0033aefb0dfefacba4cd8dfd164",
+  "coverUrl": "https://codahosted.io/packs/10744/unversioned/assets/COVER/87c1a410d4a49e8295d890082e73345575ffbcc0f9ce1cd5a655071ad325a0f41f5b883657b8e921e5e2b9722eeacf68c1465ab2a7b0b8efbd1afa041793a404f4b9091a0fe15ed4792608fa93fb97eabd8c88252d01306f31cb4eb6c19808599f6a9e2c",
+  "packVersion": "32",
+  "releaseId": 3,
+  "lastReleasedAt": "2022-04-04T00:59:37.415Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/10744/32/metadata/cfcb64ca90d88abb9f049d86b36ea87c5d68faab5e38cf5fbd0861a2ba46f091253d26cd41d98f291d7c28b27b034655faf6da8977fcf0bacada38518856d02dffb0d5c765f9bb0a1e07b39de792bb9be76cd88a7e6c3e04fe7492f0e5d53a0a1e2dc440.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "109cd66f-eff8-4994-a0ca-9d24e09ef11c",
+      "categoryName": "Communication",
+      "categorySlug": "communication"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "b28a1509-59db-4df2-86e9-8056206365cb",
+    "packId": 10744,
+    "createdAt": "2022-08-03T18:11:21.428Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

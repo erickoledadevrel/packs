@@ -1,0 +1,57 @@
+{
+  "packId": 22954,
+  "name": "AirNow",
+  "description": "This Pack lets you get access to Air Quality Index (AQI) data for your area (US only). This includes the standard measurements of PM2.5, PM10, and O3 levels. \n\nSimple drag in the \"Latest AQI\" card and enter your zipcode. You can also use it as a formula, \"=LatestAQI()\", to work with the data in more detail.\n\nTo get the data to refresh automatically, go to the \"Settings\" tab of this Pack and change the \"Default Refresh Rate\".\n\nThe data is provided by AirNow.gov, but this Pack is not associated with that organization.\nThe logo and cover image are the property of AirNow.gov.",
+  "shortDescription": "Get the latest Air Quality Index (AQI) information for your area.",
+  "logoUrl": "https://codahosted.io/packs/22954/unversioned/assets/LOGO/bb5a792b5a7439ffd2c5094888bc8837e8cb5de3537a89755144a8c2b078cafabf0b49cbfc2c3b5588ea36230e2f9e0b4d9d7fb180bf6c246979fcb3d2b1a31752402160a322937735907a90ad145346617a4870d444533214618c4f28ba052b15b88716",
+  "coverUrl": "https://codahosted.io/packs/22954/unversioned/assets/COVER/570068389de33df7b18ccc4002e079f2e0178c295ec3967893abdb76d8e1adf046407f53a8a8cd61845d714161b4dcd5ed4cde4ee53922ab55fd272826df02e584394ab87ac6a4dcddc22db7216cff7b6c85ee43f136305cced09e98bea91307cbb49b70",
+  "packVersion": "24",
+  "releaseId": 3,
+  "lastReleasedAt": "2023-06-08T15:58:34.213Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/22954/24/metadata/e2e84d930e9061b6bd568300007cb98e678e49de0ccb9ee59cbf633a6cd64ea955accc4ecf006d9f5d63264b6273412661791017c5c073b3ffe381e226fb0ce4d1d4c3b2ade078eae50fac6a2fba9015a04b67ac4729f698874a32c4696ce65fd2afa621.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "dd3f291c-fba6-410b-8ca3-f34deaa3586f",
+      "categoryName": "Fitness",
+      "categorySlug": "fitness"
+    },
+    {
+      "categoryId": "452d8f0c-d5c0-4fb7-a8e0-933b7ce45511",
+      "categoryName": "Travel",
+      "categorySlug": "travel"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "2821b531-ecca-46b9-b61b-dd6599dcc629",
+    "packId": 22954,
+    "createdAt": "2023-06-08T01:06:53.041Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "packId": 20970,
+  "name": "Cases",
+  "description": "Coda comes with Upper() and Lower() built in, but there are a ton of other cases you may want to use. This Pack provides a suite of additional formulas for other case options.\n\nSnake() for snake_case\nPascal() fro PascalCase\nCamel() for camelCase\nKebab() for kebab-case\nHeader() for header-case\nConstant() for CONSTANT_CASE\nTitle() for Title Case\nSentence() for Sentence case\n\nUses the NPM package \"case\".\nIcon created by Freepik - Flaticon.\nCover image by Stefan Schweihofer from Pixabay.",
+  "shortDescription": "Convert text to other cases, like snake, camel, and title.",
+  "logoUrl": "https://codahosted.io/packs/20970/unversioned/assets/LOGO/33bf23f84245a4eb12cd426483a3e8029e8eeddda3474d6dd519f645fc94f384845deee272002c6227378313c630de95f2665dd2d08901b8c8e9673eaf649d9518cd482ac251463749f11dbb6ce47378eaf98bbeef0fb5c8da821ac01e188e275e91cab4",
+  "coverUrl": "https://codahosted.io/packs/20970/unversioned/assets/COVER/4a87baf888be6060e9464f6e0d39420f080995116020fa9ef5390976e71c4ef33b12881e82c32f8086c3d7450d187e358d0f518fe81f1e42d7c87992ce9f81a056d78d7780eb56d05d959010e25c92e4c9a588b0d183b5bec685440db2b415c78be9d7c2",
+  "packVersion": "1",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-03-20T21:08:35.028Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/20970/1/metadata/d32d848aef0b0b73f9777341e854fbaf628ab017e48e0299128ef4faa5e29984d7ba2421a6e02bae2f40fe1d1c10577dc472faec700131aed7ed559c9ee48602ea404a9ed3c8e1e967e6c351dfaf28db641e0c269969eee795c248a03f8b279de0fd6585.json",
+  "categories": [
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "7ef9d3ee-a18a-4c1e-b0d8-7fb798f672ae",
+    "packId": 20970,
+    "createdAt": "2023-03-20T20:45:57.813Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

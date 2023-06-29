@@ -1,0 +1,52 @@
+{
+  "packId": 11251,
+  "name": "Cat Photos",
+  "description": "This doc, that doc, the other doc, blah blah blah. It blends together with the hum of the florescent lights to gently lull you into a daze. 🥱\n\nBut then you see it, right next to Q3 earning projects: a cute cat photo! 😸 For a brief moment you feel joy again, all thanks to the Cat Photos Pack!\n\nUse this Pack to easily add cat photos to your docs, with a few different options:\n\n1️⃣ A CatPhoto() formula, that pulls a random cat photo into your doc. There are a bunch of optional parameters you can use to adjust the size, apply filters, etc.\n\n2️⃣ A \"Cat Photo\" column type. Apply this to a column in any Coda table and the text you enter into that column will be overlaid on top of a random cat photo. How fun!\n\n3️⃣ A \"Cats\" Pack table that lists every cat photo available, along with relevant metadata.\n\nCat photos provided by Cats as a service (cataas.com).\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0\nCover photo by Photo by Andriyko Podilnyk on Unsplash\nBased on sample code from the Packs SDK (https://coda.io/packs/build/latest/samples/full/cats/)",
+  "shortDescription": "What every Coda doc needs: more cat photos!",
+  "logoUrl": "https://codahosted.io/packs/11251/unversioned/assets/LOGO/4cda71862ee2f2a2b6bf60c7b7dfed1ea21d01bd4a84fc87ec280da30c5c045d79f3ebafd2de5054d8410ecc95b9f194f9ee9ac8c2e5a1ac0caab024d28329c711c9a417db3654f73103f5ba58305c56b525156c522b6577be4df6485cae16bb538cd3c8",
+  "coverUrl": "https://codahosted.io/packs/11251/unversioned/assets/COVER/afe1f611c04d83c1c4067bbfd38326fe01fc60bc9437f9a98d976019b37a77f7daaa9711c11a8055214de4f0dc5b4cb27c156aec1e44f00db958ca30b1e4fb1bac2d36c00cadb84e70ac434620d36202490ad4b61e457c7ca8eae04e59c2a2dea134150d",
+  "packVersion": "14",
+  "releaseId": 2,
+  "lastReleasedAt": "2023-01-31T02:40:07.061Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/11251/14/metadata/58b505eef96a123e6b82963ed80d369f87a7f4d6f6197add6d97d9d5af5729a5a8bad242c9a1d19d11e8c8295ed8ee14756b5dc680d691abfea738a0f2e0c18ecc18af0ebd8613d98b8ef688f37db042d103e122e894abdceadd66b8de92dabde1e93c3e.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "5e87a243-6d99-4197-9d54-fba2c990dc7a",
+      "categoryName": "Entertainment",
+      "categorySlug": "entertainment"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "eae78493-b51b-49a3-9baf-2986ab04b6aa",
+    "packId": 11251,
+    "createdAt": "2022-08-03T18:11:46.610Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}

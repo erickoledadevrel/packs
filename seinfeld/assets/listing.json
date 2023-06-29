@@ -1,0 +1,52 @@
+{
+  "packId": 19321,
+  "name": "Seinfeld Quotes",
+  "description": "Seinfeld is the greatest show in television history, and while it's been off the air for decades that doesn't mean you still can't enjoy it. Use this Pack to add random Seinfeld quotes to your doc, or just sync down all of them.\n\nThis Pack gets quotes from the Seinfeld API: https://github.com/wdifruscio/seinfeld-api/.\nCover image by Andre Carrotflower, CC by-sa 3.0.",
+  "shortDescription": "\"Would it kill you not to be so funny all the time?\"",
+  "logoUrl": "https://codahosted.io/packs/19321/unversioned/assets/LOGO/4ae8ba605048d1f902cac3438508517ca55c4326b24fdcf2ff67a7c5faeb21f52ea61e344f98ef76525b4caa7d208b7abf7c21e0bc3dc5b6920f6ac3c50513063ee94724bfade889459c9a536cfe5b021c44e80708cdcf575e691a31c3be23511ceb8796",
+  "coverUrl": "https://codahosted.io/packs/19321/unversioned/assets/COVER/8505834672f8e201211d961d154ce492a41250781759512f3bbc64d4f5d007321ef7b8808ebd5d4d6c1c1a6b8d64c5b68eb18a8ecf183e5b8e5ff860038346af78f932039555ca0afb57bff4a5f7745039e52286965cae8b226a935feaf5e0a9973ab567",
+  "packVersion": "6",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-01-27T21:05:28.136Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/19321/6/metadata/8a9927f602ff6d179940c7f0b591bfb4660ca093471314edd8d7b965bd4abb7931cd61f0dfe7bdaed4d0360adfba8c490e2fe0c9302f538617c81c00ad6f8768d055d7a749225c140a35e97303cedde2e0b17383e2e419779f13b23aec4eb9f8993b1ff2.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "5e87a243-6d99-4197-9d54-fba2c990dc7a",
+      "categoryName": "Entertainment",
+      "categorySlug": "entertainment"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "f2088780-8637-45d6-b6ec-5bd7181d9225",
+    "packId": 19321,
+    "createdAt": "2023-01-27T19:34:24.116Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}
