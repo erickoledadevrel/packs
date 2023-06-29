@@ -11,6 +11,7 @@ const HostedDomains = [
 ];
 const OneDaySecs = 24 * 60 * 60;
 const FifteenMinutesSecs = 15 * 60;
+const FileSizeLimit = "4MB";
 
 export const pack = coda.newPack();
 
@@ -118,7 +119,7 @@ pack.addFormula({
     coda.makeParameter({
       type: coda.ParameterType.SparseFileArray,
       name: "files",
-      description: "The files to zip."
+      description: `The files to zip. The total size of all files must be under ${FileSizeLimit}.`,
     }),
     coda.makeParameter({
       type: coda.ParameterType.String,
@@ -153,27 +154,45 @@ pack.addFormula({
         content: response.body,
       };
     });
-    let results = await Promise.all(jobs);
+    let results = await Promise.allSettled(jobs);
+    for (let [i, result] of results.entries()) {
+      if (result.status == "rejected") {
+        let message = result.reason.toString();
+        if (message.includes("content size") && message.includes("over limit")) {
+          throw new coda.UserVisibleError(`File #${i+1} is over the size limit (${FileSizeLimit}).`);
+        }
+        throw new coda.UserVisibleError(`Error fetching file #${i+1}.`);
+      }
+    }
 
     let zip = new JSZip();
     for (let result of results) {
-      zip.file(result.name, result.content);
+      if (result.status == "fulfilled") {
+        zip.file(result.value.name, result.value.content);
+      }
     }
     let b64 = await zip.generateAsync({type:"base64"});
     let buffer = Buffer.from(b64, 'base64');
 
-    let url = await context.temporaryBlobStorage.storeBlob(buffer, "application/zip", {
-      downloadFilename: filename,
-      expiryMs: FifteenMinutesSecs * 1000,
-    });
-    return url;
+    try {
+      let url = await context.temporaryBlobStorage.storeBlob(buffer, "application/zip", {
+        downloadFilename: filename,
+        expiryMs: FifteenMinutesSecs * 1000,
+      });
+      return url;
+    } catch (error) {
+      console.log(error);
+      throw new coda.UserVisibleError("Error creating zip file.");
+    }
   },
 });
 
 function getFilename(headers: Record<string, string | string[]>) {
-  let filename = contentDisposition.parse(headers["content-disposition"]).parameters.filename;
-  if (filename) {
-    return decodeURIComponent(filename);
+  if (headers["content-disposition"]) {
+    let filename = contentDisposition.parse(headers["content-disposition"]).parameters.filename;
+    if (filename) {
+      return decodeURIComponent(filename);
+    }
   }
   let mimeType = headers["content-type"];
   let extension  = mime.extension(mimeType);
