@@ -6,11 +6,13 @@ import * as mime from "mime-types";
 
 const DefaultIcon = "https://cdn.coda.io/assets/5eba36cb9841/img/packs/default-pack-icon.png";
 
-async function run() {
+async function run(packName) {
   let apiKey = JSON.parse(fs.readFileSync(".coda.json").toString()).apiKey;
   let packs = await glob("**/.coda-pack.json");
   packs.sort();
   for (let pack of packs) {
+    let name = path.basename(path.dirname(pack));
+    if (packName && packName !== name) continue;
     let packId = JSON.parse(fs.readFileSync(pack).toString()).packId;
     let url = `https://coda.io/apis/v1/packs/${packId}/listing`;
     let response = await fetch(url, {
@@ -50,4 +52,5 @@ async function backupImage(url, dir, name) {
   fs.writeFileSync(path.join(dir, `${name}.${extension}`), buffer);
 }
 
-run();
+let [n, f, packName] = process.argv;
+run(packName);

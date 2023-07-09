@@ -37,7 +37,7 @@ pack.setUserAuthentication({
 
 pack.addSyncTable({
   name: "Jobs",
-  description: "TODO",
+  description: "Lists the jobs you have configured in Visualping.",
   identityName: "Job",
   schema: JobSchema,
   formula: {
@@ -60,6 +60,7 @@ pack.addSyncTable({
       });
       let {jobs, totalPages} = response.body;
       for (let job of jobs) {
+        job.link = `https://visualping.io/jobs/${job.id}`;
         job.faviconPath = coda.joinUrl("https://visualping.io", job.faviconPath);
       }
       let continuation;
@@ -76,7 +77,7 @@ pack.addSyncTable({
 
 pack.addDynamicSyncTable({
   name: "Changes",
-  description: "",
+  description: "Lists the changes recorded for a job.",
   identityName: "Change",
   listDynamicUrls: async function (context, search) {
     let token = await getToken(context);
