@@ -34,7 +34,7 @@ const ThreatSchema = coda.makeObjectSchema({
     threatType: { type: coda.ValueType.String },
     platformType: { type: coda.ValueType.String },
   },
-  displayProperty: "url",
+  displayProperty: "threatType",
 });
 
 pack.setSystemAuthentication({
@@ -59,6 +59,12 @@ pack.addFormula({
   resultType: coda.ValueType.Boolean,
   cacheTtlSecs: 300,
   onError: onError,
+  examples: [
+    { params: ["https://coda.io"], result: false },
+    { params: ["https://testsafebrowsing.appspot.com/s/malware.html"], result: true },
+    { params: ["https://testsafebrowsing.appspot.com/s/malware.html", "SOCIAL_ENGINEERING"], result: false },
+    { params: ["https://testsafebrowsing.appspot.com/s/malware.html", null, "ANDROID"], result: false },
+  ],
   execute: async function (args, context) {
     let [
       url,
@@ -86,6 +92,21 @@ pack.addFormula({
   resultType: coda.ValueType.Array,
   items: ThreatSchema,
   onError: onError,
+  examples: [
+    { params: [["https://coda.io", "https://wikipedia.org"]], result: [] },
+    {
+      params: [["https://coda.io", "https://testsafebrowsing.appspot.com/s/malware.html"]],
+      result: [{ Url: "https://testsafebrowsing.appspot.com/s/malware.html", ThreatType: "MALWARE", PlatformType: "ALL_PLATFORMS"}],
+    },
+    {
+      params: [["https://coda.io", "https://testsafebrowsing.appspot.com/s/malware.html"], "SOCIAL_ENGINEERING"],
+      result: [],
+    },
+    {
+      params: [["https://coda.io", "https://testsafebrowsing.appspot.com/s/malware.html"], null, "ANDROID"],
+      result: [],
+    },
+  ],
   execute: async function (args, context) {
     let [
       urls,
