@@ -187,7 +187,10 @@ pack.addFormula({
   },
 });
 
-function getFilename(headers: Record<string, string | string[]>) {
+function getFilename(headers: Record<string, string | string[]>): string {
+  if (headers["x-amz-meta-filename"]) {
+    return headers["x-amz-meta-filename"] as string;
+  }
   if (headers["content-disposition"]) {
     let filename = contentDisposition.parse(headers["content-disposition"]).parameters.filename;
     if (filename) {
