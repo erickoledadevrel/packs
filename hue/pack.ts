@@ -2,8 +2,8 @@ import * as coda from "@codahq/packs-sdk";
 import HueColor from "hue-colors";
 import CSSColorList from "css-named-colors";
 import * as hsl from "hsl-to-hex";
-import { getColorSwatchUri, getLights, getResource, getRooms, getScenes, setState } from "./helpers";
-import { LightSchema, LightStatusSchema as LightStateSchema, RoomSchema, SceneSchema } from "./schemas";
+import { formatAutomation, getAutomations, getColorSwatchUri, getLights, getResource, getResourceV2, getRooms, getScenes, getTimeParts, setState, setTimePoint } from "./helpers";
+import { AutomationSchema, LightSchema, LightStatusSchema as LightStateSchema, RoomSchema, SceneSchema } from "./schemas";
 
 export const pack = coda.newPack();
 
@@ -13,6 +13,7 @@ const HexRegex = /^#?[0-9a-f]{6}$/;
 const MaxAPIHue = 65535;
 const MaxAPISat = 254;
 const MaxAPIBri = 254;
+const TimePointTypes = ["time", "sunrise", "sunset"];
 
 const LightIdParam = coda.makeParameter({
   type: coda.ParameterType.String,
@@ -75,6 +76,40 @@ const SceneIdParam = coda.makeParameter({
       });
   },
 });
+
+const AutomationIdParam = coda.makeParameter({
+  type: coda.ParameterType.String,
+  name: "automationId",
+  description: "The ID of the automation to operate on.",
+  autocomplete: async function (context) {
+    let automations = await getAutomations(context);
+    return automations.map(automation => {
+      return { display: automation.name, value: automation.id };
+    });
+  },
+});
+
+const AutomationTimePointParams: coda.ParamDefs = [
+  AutomationIdParam,
+  coda.makeParameter({
+    type: coda.ParameterType.String,
+    name: "type",
+    description: "The type of time point.",
+    autocomplete: TimePointTypes,
+  }),
+  coda.makeParameter({
+    type: coda.ParameterType.Date,
+    name: "time",
+    description: `The specific time. Only set if the type is "time".`,
+    optional: true,
+  }),
+  coda.makeParameter({
+    type: coda.ParameterType.Number,
+    name: "offset",
+    description: `The time offset. Only set if the type is "sunrise" or "sunset".`,
+    optional: true,
+  }),
+];
 
 const ErrorHandler = function(error) {
   if (error.status == 504) {
@@ -411,5 +446,49 @@ pack.addSyncTable({
         result: scenes,
       };
     },
+  },
+});
+
+pack.addSyncTable({
+  name: "Automations",
+  identityName: "Automation",
+  description: "The automations configured in your bridge.",
+  schema: AutomationSchema,
+  formula: {
+    name: "SyncAutomations",
+    description: "Sync the automations.",
+    parameters: [],
+    execute: async function ([], context) {
+      let automations = await getAutomations(context);
+      return {
+        result: automations,
+      };
+    },
+  },
+});
+
+pack.addFormula({
+  name: "SetStart",
+  description: "Set the start of an automation.",
+  parameters: AutomationTimePointParams,
+  resultType: coda.ValueType.Object,
+  schema: coda.withIdentity(AutomationSchema, "Automation"),
+  isAction: true,
+  execute: async function (args, context) {
+    let [automationId, type, time, offset] = args;
+    return setTimePoint(context, automationId as string, "start_at", type, time, offset);
+  },
+});
+
+pack.addFormula({
+  name: "SetEnd",
+  description: "Set the end of an automation.",
+  parameters: AutomationTimePointParams,
+  resultType: coda.ValueType.Object,
+  schema: coda.withIdentity(AutomationSchema, "Automation"),
+  isAction: true,
+  execute: async function (args, context) {
+    let [automationId, type, time, offset] = args;
+    return setTimePoint(context, automationId as string, "end_at", type, time, offset);
   },
 });

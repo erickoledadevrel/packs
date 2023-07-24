@@ -34,7 +34,7 @@ export const RoomSchema = coda.makeObjectSchema({
   properties: {
     name: { type: coda.ValueType.String, required: true },
     type: { type: coda.ValueType.String, fromKey: "class" },
-    lights: { 
+    lights: {
       type: coda.ValueType.Array,
       items: LightReferenceSchema,
     },
@@ -51,7 +51,7 @@ export const SceneSchema = coda.makeObjectSchema({
   properties: {
     name: { type: coda.ValueType.String },
     type: { type: coda.ValueType.String },
-    lights: { 
+    lights: {
       type: coda.ValueType.Array,
       items: LightReferenceSchema,
     },
@@ -61,4 +61,27 @@ export const SceneSchema = coda.makeObjectSchema({
   displayProperty: "name",
   idProperty: "sceneId",
   featuredProperties: ["type", "lights", "room"],
+});
+
+const TimePointSchema = coda.makeObjectSchema({
+  properties: {
+    summary: { type: coda.ValueType.String },
+    type: { type: coda.ValueType.String },
+    time: { type: coda.ValueType.String },
+    offset: { type: coda.ValueType.Number },
+  },
+  displayProperty: "summary",
+})
+
+export const AutomationSchema = coda.makeObjectSchema({
+  properties: {
+    name: { type: coda.ValueType.String },
+    automationId: { type: coda.ValueType.String, fromKey: "id" },
+    enabled: { type: coda.ValueType.Boolean },
+    start: TimePointSchema,
+    end: TimePointSchema,
+  },
+  displayProperty: "name",
+  idProperty: "automationId",
+  featuredProperties: ["enabled", "start", "end"],
 });

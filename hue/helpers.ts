@@ -59,6 +59,55 @@ export async function getScenes(context) {
   });
 }
 
+export async function getAutomations(context: coda.ExecutionContext) {
+  let data = await getResourceV2(context, "behavior_instance");
+  return data.map(automation => formatAutomation(automation));
+}
+
+export async function setTimePoint(context: coda.ExecutionContext, automationId: string, key: "start_at" | "end_at", type: string, time?: Date, offset?: number) {
+  if (!automationId) throw new coda.UserVisibleError("The automation ID must be provided.");
+  let timePoint: any;
+  switch (type) {
+    case "time":
+      if (!time) throw new coda.UserVisibleError("The time must be provided.");
+      timePoint = {
+        type,
+        time: getTimeParts(context, time),
+      };
+      break;
+    case "sunrise":
+    case "sunset":
+      timePoint = { type };
+      if (offset) {
+        timePoint.offset = { minutes: offset };
+      }
+      break;
+    default:
+      throw new coda.UserVisibleError(`Invalid type: ${type}`);
+  }
+  let path = coda.joinUrl("behavior_instance", automationId as string)
+  let [automation] = await getResourceV2(context, path, {
+    cacheTtlSecs: 0,
+  });
+  let {configuration} = automation;
+  configuration.when_extended[key] = {
+    time_point: timePoint,
+  };
+  await getResourceV2(context, path, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      configuration,
+    }),
+  });
+  let [updated] = await getResourceV2(context, path, {
+    cacheTtlSecs: 0,
+  });
+  return formatAutomation(updated);
+}
+
 export async function getResource(context, path, options = {}) {
   let username = getUsername(context.endpoint);
   let url = coda.joinUrl(`https://api.meethue.com/route/api/${username}`, path);
@@ -80,6 +129,27 @@ export async function getResource(context, path, options = {}) {
   return data;
 }
 
+export async function getResourceV2(context, path, options: any = {}) {
+  let username = getUsername(context.endpoint);
+  let url = coda.joinUrl(`https://api.meethue.com/route/clip/v2/resource/`, path);
+  let request: coda.FetchRequest = {
+    method: "GET",
+    url,
+    ...options,
+    headers: {
+      ...options?.headers,
+      "hue-application-key": username,
+    },
+  };
+  let response = await context.fetcher.fetch(request);
+  let data = response.body;
+  let errors = data.errors;
+  if (errors?.length) {
+    throw new coda.UserVisibleError(errors.map(error => error.description).join("\n"));
+  }
+  return data.data;
+}
+
 function getUsername(endpoint) {
   if (!endpoint) {
     throw new coda.UserVisibleError("Account setup failed. Please sign into your Philips Hue account again.");
@@ -95,4 +165,60 @@ export function getColorSwatchUri(color) {
   `.trim();
   let encoded = Buffer.from(svg).toString("base64");
   return coda.SvgConstants.DataUrlPrefix + encoded;
+}
+
+export function formatAutomation(automation) {
+  let {metadata, configuration} = automation;
+  return {
+    ...automation,
+    name: metadata.name,
+    start: formatTimePoint(configuration.when_extended.start_at?.time_point),
+    end: formatTimePoint(configuration.when_extended.end_at?.time_point),
+  };
+}
+
+function formatTimePoint(timePoint) {
+  if (!timePoint) return undefined;
+  let result = {
+    ...timePoint,
+  };
+  switch (timePoint.type) {
+    case "time":
+      let {hour, minute} = timePoint.time;
+      result.time = `${hour}:${minute}`;
+      let date = new Date(0);
+      date.setHours(hour);
+      date.setMinutes(minute);
+      result.summary = date.toLocaleTimeString("en", {hour: 'numeric', minute:'2-digit'});
+      break;
+    case "sunrise":
+    case "sunset":
+      result.summary = timePoint.type;
+      let offset = timePoint.offset?.minutes;
+      if (offset) {
+        result.offset = offset;
+        let modifier = offset > 0 ? "after" : "before";
+        result.summary = `${Math.abs(offset)} mins ${modifier} ${timePoint.type}`;
+      }
+      break;
+  }
+  return result;
+}
+
+export function getTimeParts(context: coda.ExecutionContext, time: Date) {
+  let formatter = new Intl.DateTimeFormat("en", {
+    timeZone: context.timezone,
+    hourCycle: "h24",
+    hour: "numeric",
+    minute: "numeric",
+  });
+
+  // Format the date into individual parts.
+  let parts = formatter.formatToParts(time);
+
+  // Find the day, month, and year parts.
+  let hour = parts.find(part => part.type === "hour").value;
+  let minute = parts.find(part => part.type === "minute").value;
+
+  return { hour: Number(hour), minute: Number(minute) };
 }
