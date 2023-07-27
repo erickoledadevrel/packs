@@ -90,9 +90,15 @@ export async function setTimePoint(context: coda.ExecutionContext, automationId:
     cacheTtlSecs: 0,
   });
   let {configuration} = automation;
-  configuration.when_extended[key] = {
-    time_point: timePoint,
-  };
+  if (configuration.when_extended) {
+    configuration.when_extended[key] = {
+      time_point: timePoint,
+    };
+  } else if (configuration.when && key == "start_at") {
+    configuration.when.time_point = timePoint;
+  } else {
+    throw new coda.UserVisibleError("Unable to set time.");
+  }
   await getResourceV2(context, path, {
     method: "PUT",
     headers: {
@@ -172,8 +178,8 @@ export function formatAutomation(automation) {
   return {
     ...automation,
     name: metadata.name,
-    start: formatTimePoint(configuration.when_extended.start_at?.time_point),
-    end: formatTimePoint(configuration.when_extended.end_at?.time_point),
+    start: formatTimePoint(configuration.when_extended?.start_at?.time_point || configuration.when?.time_point),
+    end: formatTimePoint(configuration.when_extended?.end_at?.time_point),
   };
 }
 
