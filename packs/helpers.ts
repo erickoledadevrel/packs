@@ -30,6 +30,7 @@ export async function addBuildingBlocks(context: coda.ExecutionContext, items: a
       item.formulas = metadata.formulas.map(formula => formatFormula(formula));
       item.syncTables = metadata.syncTables.map(syncTable => formatSyncTable(syncTable));
       item.columnFormats = metadata.formats.map(columnFormat => formatColumnFormat(columnFormat));
+      item.authentication = metadata.authentication;
     } else {
       console.error(result.reason);
     }
@@ -50,6 +51,7 @@ function formatSyncTable(syncTable) {
   let result = { ...syncTable };
   result.canBrowseDatasets = Boolean(syncTable.listDynamicUrls);
   result.canSearchDatasets = Boolean(syncTable.searchDynamicUrls);
+  result.canEdit = syncTable.getter?.supportsUpdates;
   return result;
 }
 

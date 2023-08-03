@@ -69,6 +69,10 @@ const SyncTableSchema = coda.makeObjectSchema({
       type: coda.ValueType.Boolean,
       description: "For dynamic sync tables, if the user can search for their dataset (has searchDynamicUrls).",
     },
+    canEdit: {
+      type: coda.ValueType.Boolean,
+      description: "If it supports edits (two-way sync).",
+    }
   },
   displayProperty: "name",
 });
@@ -129,6 +133,16 @@ const FeaturedDocSchema = coda.makeObjectSchema({
     },
   },
   displayProperty: "publishedUrl",
+});
+
+const AuthenticationSchema = coda.makeObjectSchema({
+  properties: {
+    type: {
+      type: coda.ValueType.String,
+      description: "The type of authentication.",
+    },
+  },
+  displayProperty: "type",
 });
 
 export const PackSchema = coda.makeObjectSchema({
@@ -234,6 +248,10 @@ export const BuildingBlockPoperties: coda.ObjectSchemaProperties = {
     type: coda.ValueType.Array,
     items: SyncTableSchema,
     description: "The sync tables in the Pack.",
+  },
+  authentication: {
+    ...AuthenticationSchema,
+    description: "The authentication the Pack uses.",
   },
 }
 
