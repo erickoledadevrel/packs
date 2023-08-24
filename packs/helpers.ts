@@ -3,15 +3,26 @@ import { PackSchema } from "./schemas";
 import { PackUrlRegexes, MetadataTypes } from "./constants";
 
 export function formatItem(context: coda.ExecutionContext, item: any) {
+  if (!item.packId && item.id) {
+    item.packId = item.id;
+  }
   let host = context.invocationLocation.protocolAndHost;
   item.categories = item.categories?.map(category => category.categoryName);
-  for (let maker of item.makers) {
-    maker.profileLink = coda.joinUrl(host, `/@${maker.slug}`);
+  if (item.makers) {
+    for (let maker of item.makers) {
+      maker.profileLink = coda.joinUrl(host, `/@${maker.slug}`);
+    }
   }
   item.price = item.standardPackPlan?.pricing?.amount;
   item.bundledWithPlan = item.bundledPackPlan?.pricing?.minimumFeatureSet;
   item.listingUrl = coda.joinUrl(host, `/packs/${item.packId}`);
   item.studioUrl = coda.joinUrl(host, `/p/${item.packId}`);
+  return item;
+}
+
+export function unformatItem(item: any) {
+  // Nothing needed yet.
+  return item;
 }
 
 export async function addBuildingBlocks(context: coda.ExecutionContext, items: any[]) {
@@ -185,6 +196,38 @@ export async function getFiles(context: coda.ExecutionContext, packId: string, v
     url: coda.joinUrl(host, `/apis/v1/packs/${packId}/versions/${version}/sourceCode`),
   });
   return response.body.files;
+}
+
+export async function getCategories(context: coda.ExecutionContext): Promise<string[]> {
+  let host = context.invocationLocation.protocolAndHost;
+  let response = await context.fetcher.fetch({
+    method: "GET",
+    url: coda.joinUrl(host, "apis/v1/categories"),
+  });
+  return response.body.items.map(item => item.name);
+}
+
+export async function addCategory(context: coda.ExecutionContext, packId: number, category: string) {
+  let host = context.invocationLocation.protocolAndHost;
+  let payload = {
+    categoryName: category,
+  };
+  await context.fetcher.fetch({
+    method: "POST",
+    url: coda.joinUrl(host, "apis/v1/packs", String(packId), "category"),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+}
+
+export async function removeCategory(context: coda.ExecutionContext, packId: number, category: string) {
+  let host = context.invocationLocation.protocolAndHost;
+  await context.fetcher.fetch({
+    method: "DELETE",
+    url: coda.joinUrl(host, "apis/v1/packs", String(packId), "category", category),
+  });
 }
 
 export function handleError(e) {

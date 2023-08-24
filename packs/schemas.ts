@@ -145,7 +145,7 @@ const AuthenticationSchema = coda.makeObjectSchema({
   displayProperty: "type",
 });
 
-export const PackSchema = coda.makeObjectSchema({
+export const BasePackSchema = coda.makeObjectSchema({
   properties: {
     packId: {
       type: coda.ValueType.Number,
@@ -154,15 +154,18 @@ export const PackSchema = coda.makeObjectSchema({
     name: {
       type: coda.ValueType.String,
       description: "The name of the Pack.",
+      mutable: true,
     },
     tagline: {
       type: coda.ValueType.String,
       fromKey: "shortDescription",
       description: "A short description of the Pack.",
+      mutable: true,
     },
     description: {
       type: coda.ValueType.String,
       description: "A longer description of the Pack.",
+      mutable: true,
     },
     logo: {
       type: coda.ValueType.String,
@@ -176,20 +179,45 @@ export const PackSchema = coda.makeObjectSchema({
       fromKey: "coverUrl",
       description: "The cover image of the Pack.",
     },
-    release: {
-      type: coda.ValueType.Number,
-      fromKey: "releaseId",
-      description: "The current release of the Pack.",
-    },
     categories: {
       type: coda.ValueType.Array,
-      items: { type: coda.ValueType.String },
+      items: { 
+        type: coda.ValueType.String,
+        codaType: coda.ValueHintType.SelectList,
+        options: coda.OptionsType.Dynamic,
+      },
       description: "Which categories (of the Coda Gallery) the Pack applies to.",
+      mutable: true,
     },
     supportEmail: {
       type: coda.ValueType.String,
       codaType: coda.ValueHintType.Email,
       description: "The email address to contact for support questions about the Pack.",
+      mutable: true,
+    },
+    listingUrl: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Url,
+      description: "The URL of the Pack's listing page.",
+    },
+    studioUrl: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Url,
+      description: "The URL to open the Pack in the Pack Studio editor.",
+    },
+  },
+  displayProperty: "name",
+  idProperty: "packId",
+});
+
+export const PackSchema = coda.makeObjectSchema({
+  ...BasePackSchema,
+  properties: {
+    ...BasePackSchema.properties,
+    release: {
+      type: coda.ValueType.Number,
+      fromKey: "releaseId",
+      description: "The current release of the Pack.",
     },
     certified: {
       type: coda.ValueType.Boolean,
@@ -210,20 +238,8 @@ export const PackSchema = coda.makeObjectSchema({
       type: coda.ValueType.String,
       description: "Which Coda pricing plan the Pack is bundled with, if any.",
     },
-    listingUrl: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Url,
-      description: "The URL of the Pack's listing page.",
-    },
-    studioUrl: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Url,
-      description: "The URL to open the Pack in the Pack Studio editor.",
-    },
   },
-  displayProperty: "name",
-  idProperty: "packId",
-  featuredProperties: ["tagline", "logo", "makers"],
+  featuredProperties: ["logo", "tagline", "makers"],
   linkProperty: "listingUrl",
   snippetProperty: "description",
   subtitleProperties: [
@@ -231,6 +247,11 @@ export const PackSchema = coda.makeObjectSchema({
     { property: "makers[*].name", label: `By ${coda.PropertyLabelValueTemplate}` },
   ],
   imageProperty: "logo",
+});
+
+export const MyPackSchema = coda.makeObjectSchema({
+  ...BasePackSchema,
+  featuredProperties: ["logo", "tagline", "description", "categories"],
 });
 
 export const BuildingBlockPoperties: coda.ObjectSchemaProperties = {
