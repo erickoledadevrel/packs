@@ -1,7 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
-import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError } from "./helpers";
+import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError, getCategories, unformatItem, removeCategory, addCategory } from "./helpers";
 import { MetadataTypes, PackUrlRegexes } from "./constants";
-import { PackSchema } from "./schemas";
+import { MyPackSchema, PackSchema } from "./schemas";
 const escape = require('escape-html');
 
 export const pack = coda.newPack();
@@ -66,13 +66,21 @@ pack.addColumnFormat({
 
 pack.addSyncTable({
   name: "Packs",
-  description: "A list of all of the published Packs.",
+  description: "Lists of all of the Packs you have access to.",
   identityName: "Pack",
   schema: PackSchema,
   dynamicOptions: {
     getSchema: async function (context, search, args) {
       let metadata = args.metdata ?? [];
       return extendSchema(metadata);
+    },
+    propertyOptions: async function (context) {
+      switch (context.propertyName) {
+        case "categories":
+          return await getCategories(context);
+        default:
+          throw new coda.UserVisibleError(`Unknown property: ${context.propertyName}`);
+      }
     },
   },
   formula: {
@@ -130,7 +138,7 @@ pack.addSyncTable({
       });
       let { items, nextPageLink } = response.body;
       for (let item of items) {
-       formatItem(context, item);
+        formatItem(context, item);
       }
       let jobs = [];
       for (let key of metadata) {
@@ -145,6 +153,93 @@ pack.addSyncTable({
       return {
         result: items,
         continuation,
+      };
+    },
+  },
+});
+
+pack.addSyncTable({
+  name: "MyPacks",
+  description: "Lists the Packs that you can edit. Only includes basic information about each Pack.",
+  identityName: "MyPack",
+  schema: MyPackSchema,
+  dynamicOptions: {
+    entityName: "Pack",
+    propertyOptions: async function (context) {
+      switch (context.propertyName) {
+        case "categories":
+          return await getCategories(context);
+        default:
+          throw new coda.UserVisibleError(`Unknown property: ${context.propertyName}`);
+      }
+    },
+  },
+  formula: {
+    name: "SyncMyPacks",
+    description: "Sync the MyPacks.",
+    parameters: [],
+    execute: async function (args, context) {
+      let url = context.sync.continuation?.url as string;
+      if (!url) {
+        let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs");
+        url = coda.withQueryParams(baseUrl, {
+          accessTypes: "edit,admin",
+          limit: 20,
+        });
+      }
+      let response = await context.fetcher.fetch({
+        method: "GET",
+        url: url,
+      });
+      let { items, nextPageLink } = response.body;
+      for (let item of items) {
+        formatItem(context, item);
+      }
+      let continuation;
+      if (nextPageLink) {
+        continuation = { url: nextPageLink };
+      }
+      return {
+        result: items,
+        continuation,
+      };
+    },
+    executeUpdate: async function (args, updates, context) {
+      let host = context.invocationLocation.protocolAndHost;
+      let update = updates[0];
+      let pack = update.newValue;
+
+      if (update.updatedFields.includes("categories")) {
+        let jobs = [];
+        for (let category of update.previousValue.categories) {
+          if (!update.newValue.categories.includes(category)) {
+            jobs.push(removeCategory(context, pack.packId, category));
+          }
+        }
+        for (let category of update.newValue.categories) {
+          if (!update.previousValue.categories.includes(category)) {
+            jobs.push(addCategory(context, pack.packId, category));
+          }
+        }
+        await Promise.all(jobs);
+      }
+
+      unformatItem(pack);
+      let body = Object.fromEntries(
+        Object.entries(update.newValue).filter(
+          ([key, value]) => update.updatedFields.includes(key)));
+      let response = await context.fetcher.fetch({
+        method: "PATCH",
+        url: coda.joinUrl(host, "apis/v1/packs", String(pack.packId)),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      let final = response.body;
+      formatItem(context, final);
+      return {
+        result: [final],
       };
     },
   },
@@ -173,7 +268,7 @@ pack.addFormula({
       version = versions[0].packVersion;
     }
     let files = await getFiles(context, packId, version);
-    if (!files?.length)  {
+    if (!files?.length) {
       throw new Error(`No source code found.`);
     }
     let file = files[0];
