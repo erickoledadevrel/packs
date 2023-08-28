@@ -6,6 +6,7 @@ import { ScriptSchema } from "./schemas";
 const DefaultRequestMethod = "GET";
 const SupportedRequestMethods = ["GET", "POST"];
 const DefaultRequestContentType = "text/plain";
+const WebAppUrlRegex = new RegExp("^https://script.google.com/(a/)?macros/([^/]+/)?s/([^/]+)/exec");
 
 export const pack = coda.newPack();
 
@@ -122,6 +123,9 @@ pack.addFormula({
     ] = args;
     if (!SupportedRequestMethods.includes(method)) {
       throw new coda.UserVisibleError(`Invalid method: ${method}`);
+    }
+    if (!url || !url.match(WebAppUrlRegex)) {
+      throw new coda.UserVisibleError(`Invalid web app URL: ${url}`);
     }
     if (parameters) {
       let parsed;
