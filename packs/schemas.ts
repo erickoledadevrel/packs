@@ -72,7 +72,11 @@ const SyncTableSchema = coda.makeObjectSchema({
     canEdit: {
       type: coda.ValueType.Boolean,
       description: "If it supports edits (two-way sync).",
-    }
+    },
+    hasDynamicSchema: {
+      type: coda.ValueType.Boolean,
+      description: "If the sync table is a dynamic schema.",
+    },
   },
   displayProperty: "name",
 });

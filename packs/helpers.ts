@@ -52,6 +52,7 @@ function formatSyncTable(syncTable) {
   result.canBrowseDatasets = Boolean(syncTable.listDynamicUrls);
   result.canSearchDatasets = Boolean(syncTable.searchDynamicUrls);
   result.canEdit = syncTable.getter?.supportsUpdates;
+  result.hasDynamicSchema = Boolean(syncTable.getSchema);
   return result;
 }
 
