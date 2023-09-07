@@ -1,0 +1,47 @@
+{
+  "packId": 24959,
+  "name": "College Football Data",
+  "description": "Use this Pack to get basic information about American college football, including the teams, the schedule, and the scores.\n\nThis Pack has no direct affiliation to the NCAA, its member conferences, or its member teams. All data is unofficial and subject to change at any time. No guarantees are made regarding the accuracy of any data.\n\nData courtesy of CollegeFootballData.com.\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0\nCover photo by Gene Gallin on Unsplash.",
+  "shortDescription": "Get information, stats, and scores about college football games.",
+  "logoUrl": "https://codahosted.io/packs/24959/unversioned/assets/LOGO/3143618f94a17e66ff7d4be28086e716d3551eb6a8d52bebd2f08da9ef30baeeec4f59e19d992a61a270902fa1d135bc71915a3c1ce70b5573b35e26859fe743daa1abf21749500d1816b81e9876275b88a3396b4306b669216017811a489c1fe1347ae6",
+  "coverUrl": "https://codahosted.io/packs/24959/unversioned/assets/COVER/695b7f190bf7601ff1c9ba1777f00d59acccd4f25ac3a8b7dfe0ba2ce38fe559e7f86f79e84f17d3df03c76f564573fddff4c3a182c0ced346d311d613a7af4e9221c7ffcac900fcc613a6ad4b5c9edfee02d84be1ce032a037a693689d329382eb8a44d",
+  "packVersion": "19",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-09-06T20:21:10.452Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/24959/19/metadata/3b856dd7c1c793f1edf42889d77c51842802d264e9130d53e3334d4f24c1bc49d6bcbd86be4d948b64b0ed6f6e70a0ddc4b532774beac34f7a86c071dc34c4f85b660947b98d62f945afc33f335c11ac47b8a432dc25cdf0a2ceca062d17f000f6552537.json",
+  "categories": [
+    {
+      "categoryId": "9c10c0de-1003-44aa-be69-4111b3bb0a74",
+      "categoryName": "Sports",
+      "categorySlug": "sports"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "bb523fec-7a2e-4ec9-82a9-563b02ec0e08",
+    "packId": 24959,
+    "createdAt": "2023-09-06T17:20:37.188Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}
