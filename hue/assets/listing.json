@@ -5,10 +5,10 @@
   "shortDescription": "Control your Philips Hue smart lights from a Coda doc.",
   "logoUrl": "https://codahosted.io/packs/15849/unversioned/assets/LOGO/80ec1b00f0deedff20010aece5b7625999ddc1f9018bbee29e2ad3870e615b37539c3d2b96c9d2a43ddb09d75aea720dab4d0db12529f975264a59952a571803b18fb2e213e8bc05cbc608af4fc46b726d710acc4fd220fcae3b2e299296ec36a9098d18",
   "coverUrl": "https://codahosted.io/packs/15849/unversioned/assets/COVER/a3621751cec33e202a00ee4608dfae9eddcdd1b09216b417a9dbf55df303f4ef5a5fdbb6f6c088a1c379e65423b9e2724391542cb691017e4db7885d3010bf32c1d8137a5bf9e44681eca56d2ad1c89344c4e0768267d6fb9ca0557900d4f4d85900d8b0",
-  "packVersion": "50",
-  "releaseId": 4,
-  "lastReleasedAt": "2022-11-07T13:58:59.658Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/15849/50/metadata/d272b160fbce5c9ef5b4f4a7891c5faefed35222dd1e57bf0d22a5eb4057f8e2a712c91d4c93858f34ce477b8687cd28d67b57fe5aae2ae6bdf0b78f972394adf731d6eec7fdae4fe09622c37163d1de43642305250224a236bca3df221aa7ba1bd4604b.json",
+  "packVersion": "64",
+  "releaseId": 6,
+  "lastReleasedAt": "2023-07-27T14:30:38.457Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/15849/64/metadata/21889f43c4cd9ac24bca2ebbbc68cc8e3a6baf951088cca1375ff0825983d9d6a4d986029db782a73a4e500a8d7ef4a16e30cc2ffcd57931f173dfaa134b4daacff072019ce5ffcfa0ad0e430ad975bf9562cf5c9af859b69cbec340c5d2c79d8fccd095.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",

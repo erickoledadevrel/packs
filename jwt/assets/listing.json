@@ -1,12 +1,13 @@
 {
-  "packId": 16718,
-  "name": "Fitbit",
+  "packId": 24109,
+  "name": "JWT",
   "description": "",
   "shortDescription": "",
   "logoUrl": "https://cdn.coda.io/assets/7f36f793e4e1/img/packs/default-pack-icon.png",
-  "packVersion": "30",
-  "externalMetadataUrl": "https://codahosted.io/packs/16718/30/metadata/6a371eba4f0ee3d043edad2307278eaa4ad9cba6c62f2658a9febff7b2827dc7980975d0db906e4551449651d0cdf4fff30d0a188edbc37a4b07f5e3caeb572de75fe13f0672a76855f59250ded0c147714f49c43d677641a7a7590a5f0ad0083df22c6a.json",
+  "packVersion": "9",
+  "externalMetadataUrl": "https://codahosted.io/packs/24109/9/metadata/0c40d1317710756265f12d71d7e8fd93f54038a7cd9cbdac6c76f0bb2093914210eaa2d8f472f09cc43c5b975e96315f023f0971b12b83d527ea241b88be01a5b5a0b18c2971105833275be9b201ce3db8cdb8f9db7150a20e1549a520d298ec3145cc4e.json",
   "categories": [],
+  "supportEmail": "koleda.eric@gmail.com",
   "sourceCodeVisibility": "private",
   "makers": [
     {
@@ -18,9 +19,9 @@
     }
   ],
   "standardPackPlan": {
-    "packPlanId": "64d0b34b-2c43-4b83-b9a0-502995d0ce1c",
-    "packId": 16718,
-    "createdAt": "2022-11-10T14:04:46.961Z",
+    "packPlanId": "37799882-74e4-4815-ab77-0fcc39a09fc8",
+    "packId": 24109,
+    "createdAt": "2023-07-27T21:48:47.240Z",
     "pricing": {
       "type": "Free"
     }

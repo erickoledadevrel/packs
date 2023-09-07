@@ -6,6 +6,8 @@
   "logoUrl": "https://codahosted.io/packs/23291/unversioned/assets/LOGO/134345988da315d67de6e9c0c09497b3c8fb65a044902e7a774e155667f8284e1bf2018922a141aa40f24294305fcec8cca76e23605defcb2d7fa83d744597cd8a13300477006cf444222cd63b784a95969079700c213cac9451be4146ca0a1ec708b5df",
   "coverUrl": "https://codahosted.io/packs/23291/unversioned/assets/COVER/43de7c9c9abc901b906e4ccc1eefd9b46aa9d92b456eef289746ffcfef4602fcd3c98e0e29a09f7984bf583d1973f48b840b5494f860a52ef4a505248fdb5a3f8bd29a9b48c36962c5d612db43e0c9add6e5f58d03a2dca839658705d1a2ca776e122cb5",
   "packVersion": "6",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-07-10T00:16:33.020Z",
   "externalMetadataUrl": "https://codahosted.io/packs/23291/6/metadata/14f5d527899fb59aa69dba890c693638914f25adf7f8dc43bd3013ac5ef73e8b752b2e7350938b5b087f1e730281eefee87dd6117740ee72a60293a55eba7f733acf2eb0c3bf0f4fef79e54d8506214d2708c4c549a31fe19b94fb22dce36a68aa2305b1.json",
   "categories": [
     {
@@ -33,7 +35,7 @@
       "type": "Free"
     }
   },
-  "discoverability": "private",
+  "discoverability": "public",
   "userAccess": {
     "canEdit": true,
     "canInstall": false,

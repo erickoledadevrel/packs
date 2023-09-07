@@ -4,7 +4,7 @@ import { glob } from "glob";
 import fetch from "node-fetch";
 import * as mime from "mime-types";
 
-const DefaultIcon = "https://cdn.coda.io/assets/5eba36cb9841/img/packs/default-pack-icon.png";
+const DefaultIcon = "default-pack-icon.png";
 
 async function run(packName) {
   let apiKey = JSON.parse(fs.readFileSync(".coda.json").toString()).apiKey;
@@ -32,7 +32,7 @@ async function run(packName) {
     let file = path.join(dir, "listing.json");
     fs.writeFileSync(file, JSON.stringify(listing, null, 2));
 
-    if (listing.logoUrl && listing.logoUrl !== DefaultIcon) {
+    if (listing.logoUrl && !listing.logoUrl.endsWith(DefaultIcon)) {
       backupImage(listing.logoUrl, dir, "icon");
     }
     if (listing.coverUrl) {

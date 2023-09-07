@@ -5,10 +5,10 @@
   "shortDescription": "It's a Pack that gets information about Packs. 🤯",
   "logoUrl": "https://codahosted.io/packs/16745/unversioned/assets/LOGO/ee27584b6d99f80e55ec682d37c438c7b46ba6185dc74d99058b8ac4ae8bab2d416a279dadac248734a27894492f94098e6ad4a7651db671c78daed2f61c88a362fd91db50e336c4818eab9d93b2eb129c45921eeb55c66378021464a0ffaa668e7abc20",
   "coverUrl": "https://codahosted.io/packs/16745/unversioned/assets/COVER/09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6",
-  "packVersion": "46",
-  "releaseId": 13,
-  "lastReleasedAt": "2023-05-26T20:39:57.760Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/16745/46/metadata/726491bbd85d07bf8ea483e6bf52c655f6e9e177e0c2f38457c5d478ca8242e5e548e155e2243ed0fe0103e8c77701aaf97e305cfc3c544da0ede1a9f1434ce4f1d67b9a62831e0c112f697c7e69982e730c04108c3de4689ddbbe2a9b4c43e52c9ca087.json",
+  "packVersion": "62",
+  "releaseId": 17,
+  "lastReleasedAt": "2023-08-24T20:04:00.950Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/16745/62/metadata/30fa6178528a3c1f4a033e98666c444940b244c11cb21380e972e6e4104220f64b7c3abec8cd96d2725700665eddbb5df6aef1fa4da4eb1084dac3e4c02e7ba3344a909446a5d23642165b83c7bf446cc70fd1abf230626f04e7b9ffd8f0abdefb3c2f04.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",

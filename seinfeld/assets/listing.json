@@ -5,10 +5,10 @@
   "shortDescription": "\"Would it kill you not to be so funny all the time?\"",
   "logoUrl": "https://codahosted.io/packs/19321/unversioned/assets/LOGO/4ae8ba605048d1f902cac3438508517ca55c4326b24fdcf2ff67a7c5faeb21f52ea61e344f98ef76525b4caa7d208b7abf7c21e0bc3dc5b6920f6ac3c50513063ee94724bfade889459c9a536cfe5b021c44e80708cdcf575e691a31c3be23511ceb8796",
   "coverUrl": "https://codahosted.io/packs/19321/unversioned/assets/COVER/8505834672f8e201211d961d154ce492a41250781759512f3bbc64d4f5d007321ef7b8808ebd5d4d6c1c1a6b8d64c5b68eb18a8ecf183e5b8e5ff860038346af78f932039555ca0afb57bff4a5f7745039e52286965cae8b226a935feaf5e0a9973ab567",
-  "packVersion": "6",
-  "releaseId": 1,
-  "lastReleasedAt": "2023-01-27T21:05:28.136Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/19321/6/metadata/8a9927f602ff6d179940c7f0b591bfb4660ca093471314edd8d7b965bd4abb7931cd61f0dfe7bdaed4d0360adfba8c490e2fe0c9302f538617c81c00ad6f8768d055d7a749225c140a35e97303cedde2e0b17383e2e419779f13b23aec4eb9f8993b1ff2.json",
+  "packVersion": "7",
+  "releaseId": 2,
+  "lastReleasedAt": "2023-08-03T19:41:34.909Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/19321/7/metadata/9aebfd10209fed334cbcf0df03e9f9ce4126580c139dbd071480ffdbe90d2c51d73055e6592fa822de267446e171a5693e243351218f7cec40481d1b4174b3521b2339d713134cf4c0da852c7f936222887fcb10d452e10942dd737ed2163ca455378095.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",

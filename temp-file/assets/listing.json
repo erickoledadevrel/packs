@@ -5,10 +5,10 @@
   "shortDescription": "Generate a temporary file using a formula.",
   "logoUrl": "https://codahosted.io/packs/12946/unversioned/assets/LOGO/95344327b3338834da191de64ddd36366b24e131239769c3d806771b276b686323fff3e27736ecb03f21a26d78e20c28f7dd2d5d3a15ef75a2507ae7df64b09512b259c32240f2b95613b77fd4d09be8590d0f149f4c47ebc1716b99793bf64c86945827",
   "coverUrl": "https://codahosted.io/packs/12946/unversioned/assets/COVER/e808a85d89bc2e34fae416c7e481098ae3ffed1384920de7b06544399bc4ed70988fb8d0922bcac6b34ade2b6f5856bf816859603316286f5eecbe4730361716528f0a6eb1534fcf76222a94e8b19ac29c792868b765c0d7b006a923cfaf4f719c0ea702",
-  "packVersion": "21",
-  "releaseId": 5,
-  "lastReleasedAt": "2023-05-04T01:44:52.071Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/12946/21/metadata/d9def7af541b529a139192d307bd71cc61ed10c6365a092721108bab6d5038d3cac4b448ac736b860b8ff41b538f9f37133bcc8611e83daff4edc1684db36215b2463fb16e56d00584cdbd01a312bafa012c4ffed7b5a9d5ba7539cdfa5ce809cfded74e.json",
+  "packVersion": "26",
+  "releaseId": 7,
+  "lastReleasedAt": "2023-07-15T01:44:10.258Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/12946/26/metadata/2ab024e7b247bd6001e26dae86beb6ce325e0b4db72b63a35cfc097934b66a7e31c3e4e3dcb8c10085cc1f451742b3d710c52238ca1e1c3106ad47c6f15918d0369b7c49c0d0b693d14f2a6f5c5473a84951c0aab17b09b47cce9b29d42462b16d6f8307.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
