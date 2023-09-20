@@ -73,7 +73,6 @@ const UserSchema = coda.makeObjectSchema({
 
 const WeightEntrySchema = coda.makeObjectSchema({
   properties: {
-    label: { type: coda.ValueType.String },
     user: UserSchema,
     date: { type: coda.ValueType.String, codaType: coda.ValueHintType.Date },
     time: { type: coda.ValueType.String, codaType: coda.ValueHintType.Time },
@@ -82,22 +81,21 @@ const WeightEntrySchema = coda.makeObjectSchema({
     fat: { type: coda.ValueType.Number, codaType: coda.ValueHintType.Percent, precision: 2 },
     logId: { type: coda.ValueType.String },
   },
-  displayProperty: "label",
+  displayProperty: "date",
   idProperty: "logId",
   featuredProperties: ["weight", "fat", "bmi"],
 });
 
 const StepsEntrySchema = coda.makeObjectSchema({
   properties: {
-    label: { type: coda.ValueType.String },
     user: UserSchema,
     date: { type: coda.ValueType.String, codaType: coda.ValueHintType.Date, fromKey: "dateTime" },
     steps: { type: coda.ValueType.Number, fromKey: "value" },
     logId: { type: coda.ValueType.String },
   },
-  displayProperty: "label",
+  displayProperty: "date",
   idProperty: "logId",
-  featuredProperties: ["date", "steps"],
+  featuredProperties: ["steps"],
 });
 
 pack.addSyncTable({
@@ -129,7 +127,6 @@ pack.addSyncTable({
       let items: any[] = response.body.weight ?? [];
       for (let item of items) {
         item.user = profile;
-        item.label = `${item.date} - ${profile.fullName}`;
         item.fat = item.fat ? item.fat / 100 : undefined;
         item.logId = String(item.logId);
       }
@@ -194,7 +191,6 @@ pack.addSyncTable({
       for (let item of items) {
         item.value = parseInt(item.value);
         item.user = profile;
-        item.label = `${item.dateTime} - ${profile.fullName}`;
         item.logId = `${item.dateTime}-${profile.encodedId}`;
       }
       return {
