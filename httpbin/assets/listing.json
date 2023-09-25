@@ -1,0 +1,47 @@
+{
+  "packId": 10766,
+  "name": "httpbin",
+  "description": "This Pack can be used to make requests to the HTTP testing service httpbin.org. It's not really useful for anything other than diagnosing issues with the Packs platform.\n\nCover photo by Miguel Á. Padriñán via Pexels.\nIcon designed by OpenMoji – the open-source emoji and icon project.",
+  "shortDescription": "Make requests to a testing endpoint.",
+  "logoUrl": "https://codahosted.io/packs/10766/unversioned/assets/LOGO/5da14a5617066caee669be8eb8e9ad11c798158dfd272ccbc68dd607e3ca252b7b64fa40f138afc2cf37f68ea4c05a1cf2049b1b16fa2fc1761a900147b25c4ecee6b0f5cc798b749db1b64492cb9eb78d170627a17f890379b89d7262ced846b90107a5",
+  "coverUrl": "https://codahosted.io/packs/10766/unversioned/assets/COVER/e0e56b0473877940184b711168f8480029d9875a5691eff9dbb0bfca95d7e4e99fdd0f0309d05ac5609ee7e4779d292a6335c58eb229e9d95256543a2e79c82d75584ef1fb8e6495daac2735e10e567b9c3e502af9370e6e89cf6a1d72e13b677a5442de",
+  "packVersion": "7",
+  "releaseId": 1,
+  "lastReleasedAt": "2023-09-25T15:38:06.884Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/10766/7/metadata/22b4267d29bfee058fb219959f3cb402642f2f9b8d0902a6a26b2ad1dd6bc719020d5e2479074ce09d14589b6b8d02e87c3d542f5b75ade55e40c245b425cb42c13e345555b16388be0c56a0848e2db73b122f34babac146434e16b9cc1d976915e2ebc7.json",
+  "categories": [
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "987c7e1c-418d-4651-8bb9-7a82a4e98400",
+    "packId": 10766,
+    "createdAt": "2022-08-03T18:11:21.755Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}
