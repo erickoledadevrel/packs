@@ -154,11 +154,13 @@ export const BasePackSchema = coda.makeObjectSchema({
     packId: {
       type: coda.ValueType.Number,
       description: "The ID of the Pack.",
+      required: true,
     },
     name: {
       type: coda.ValueType.String,
       description: "The name of the Pack.",
       mutable: true,
+      required: true,
     },
     tagline: {
       type: coda.ValueType.String,
@@ -185,7 +187,7 @@ export const BasePackSchema = coda.makeObjectSchema({
     },
     categories: {
       type: coda.ValueType.Array,
-      items: { 
+      items: {
         type: coda.ValueType.String,
         codaType: coda.ValueHintType.SelectList,
         options: coda.OptionsType.Dynamic,
@@ -253,10 +255,36 @@ export const PackSchema = coda.makeObjectSchema({
   imageProperty: "logo",
 });
 
+const SimpleStatsSchema = coda.makeObjectSchema({
+  properties: {
+    since: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Date,
+    },
+    until: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Date,
+    },
+    docInstalls: {
+      type: coda.ValueType.Number,
+    },
+    workspaceInstalls: {
+      type: coda.ValueType.Number,
+    },
+  },
+  displayProperty: "until",
+});
+
 export const MyPackSchema = coda.makeObjectSchema({
   ...BasePackSchema,
+  properties: {
+    ...BasePackSchema.properties,
+    stats: SimpleStatsSchema,
+  },
   featuredProperties: ["logo", "tagline", "description", "categories"],
 });
+
+const MyPackReferenceSchema = coda.makeReferenceSchemaFromObjectSchema(MyPackSchema, "MyPack");
 
 export const BuildingBlockPoperties: coda.ObjectSchemaProperties = {
   formulas: {
@@ -302,3 +330,98 @@ export const FeaturedDocsProperties: coda.ObjectSchemaProperties = {
     description: "The published docs featured in the Pack listing page.",
   }
 }
+
+export const StatsSchema = coda.makeObjectSchema({
+  properties: {
+    label: {
+      type: coda.ValueType.String,
+    },
+    statsId: {
+      type: coda.ValueType.String,
+    },
+    pack: MyPackReferenceSchema,
+    numFormulaInvocations: {
+      type: coda.ValueType.Number,
+    },
+    numActionInvocations: {
+      type: coda.ValueType.Number,
+    },
+    numSyncInvocations: {
+      type: coda.ValueType.Number,
+    },
+    numMetadataInvocations: {
+      type: coda.ValueType.Number,
+    },
+    revenueUsd: {
+      type: coda.ValueType.Number,
+      codaType: coda.ValueHintType.Currency,
+    },
+    date: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Date,
+    },
+    docInstalls: {
+      type: coda.ValueType.Number,
+    },
+    workspaceInstalls: {
+      type: coda.ValueType.Number,
+    },
+    docsActivelyUsing: {
+      type: coda.ValueType.Number,
+    },
+    docsActivelyUsing7Day: {
+      type: coda.ValueType.Number,
+    },
+    docsActivelyUsing30Day: {
+      type: coda.ValueType.Number,
+    },
+    docsActivelyUsing90Day: {
+      type: coda.ValueType.Number,
+    },
+    docsActivelyUsingAllTime: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyUsing: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyUsing7Day: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyUsing30Day: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyUsing90Day: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyUsingAllTime: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyTrialing: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyTrialing7Day: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyTrialing30Day: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyTrialing90Day: {
+      type: coda.ValueType.Number,
+    },
+    workspacesActivelyTrialingAllTime: {
+      type: coda.ValueType.Number,
+    },
+    workspacesWithActiveSubscriptions: {
+      type: coda.ValueType.Number,
+    },
+    workspacesNewlySubscribed: {
+      type: coda.ValueType.Number,
+    },
+    workspacesWithSuccessfulTrials: {
+      type: coda.ValueType.Number,
+    },
+  },
+  displayProperty: "label",
+  idProperty: "statsId",
+  featuredProperties: ["date", "pack", "docInstalls", "docsActivelyUsing", "workspaceInstalls", "workspacesActivelyUsing"],
+});

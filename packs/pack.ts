@@ -1,7 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
-import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError, getCategories, unformatItem, removeCategory, addCategory } from "./helpers";
+import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError, getCategories, unformatItem, removeCategory, addCategory, addStats } from "./helpers";
 import { MetadataTypes, PackUrlRegexes } from "./constants";
-import { MyPackSchema, PackSchema } from "./schemas";
+import { MyPackSchema, PackSchema, StatsSchema } from "./schemas";
 const escape = require('escape-html');
 
 export const pack = coda.newPack();
@@ -195,6 +195,7 @@ pack.addSyncTable({
       for (let item of items) {
         formatItem(context, item);
       }
+      await addStats(context, items);
       let continuation;
       if (nextPageLink) {
         continuation = { url: nextPageLink };
@@ -240,6 +241,72 @@ pack.addSyncTable({
       formatItem(context, final);
       return {
         result: [final],
+      };
+    },
+  },
+});
+
+pack.addSyncTable({
+  name: "Stats",
+  description: "Usage stats for all the Packs that you can edit.",
+  identityName: "Stats",
+  schema: StatsSchema,
+  formula: {
+    name: "SyncStats",
+    description: "Sync the stats.",
+    parameters: [
+      coda.makeParameter({
+        type: coda.ParameterType.DateArray,
+        name: "dateRange",
+        description: "The date range of stats to retrieve.",
+        suggestedValue: coda.PrecannedDateRange.Last90Days,
+      }),
+      coda.makeParameter({
+        type: coda.ParameterType.StringArray,
+        name: "packIds",
+        description: "If specified, only the stats for these Packs will be included.",
+        optional: true,
+      }),
+    ],
+    execute: async function (args, context) {
+      let [dateRange, packIds] = args;
+      let url = context.sync.continuation?.url as string;
+      if (!url) {
+        let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/analytics/packs");
+        url = coda.withQueryParams(baseUrl, {
+          sinceDate: dateRange[0].toISOString().split("T")[0],
+          untilDate: dateRange[1].toISOString().split("T")[0],
+          scale: "daily",
+          limit: 200,
+          packIds: packIds?.length ? packIds.join(",") : undefined,
+        });
+      }
+      let response = await context.fetcher.fetch({
+        method: "GET",
+        url: url,
+      });
+      let { items, nextPageLink } = response.body;
+      let stats = [];
+      for (let item of items) {
+        for (let metric of item.metrics) {
+          let stat = {
+            ...item,
+            ...metric,
+          };
+          stat.label = `${stat.pack.name} @ ${stat.date}`;
+          stat.statsId = `${stat.date}-${stat.pack.id}`;
+          stat.pack.packId = stat.pack.id;
+          stat.revenueUsd = stat.revenueUsd ? Number(stat.revenueUsd) : undefined;
+          stats.push(stat);
+        }
+      }
+      let continuation;
+      if (nextPageLink) {
+        continuation = { url: nextPageLink };
+      }
+      return {
+        result: stats,
+        continuation,
       };
     },
   },

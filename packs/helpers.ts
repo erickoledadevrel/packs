@@ -237,3 +237,35 @@ export function handleError(e) {
   }
   throw e;
 }
+
+export async function addStats(context: coda.ExecutionContext, packs: any[]) {
+  let until = new Date();
+  let since = new Date(until);
+  since.setDate(since.getDate() - 30);
+  let untilDate = until.toISOString().split("T")[0];
+  let sinceDate = since.toISOString().split("T")[0];
+  let packIds = packs.map(pack => pack.id);
+  let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/analytics/packs");
+  let url = coda.withQueryParams(baseUrl, {
+    sinceDate,
+    untilDate,
+    scale: "cumulative",
+    limit: packIds.length,
+    packIds: packIds.join(","),
+  });
+  let response = await context.fetcher.fetch({
+    method: "GET",
+    url: url,
+  });
+  let stats = response.body.items;
+  let mapped = Object.fromEntries(stats.map(stat => {
+    let key = stat.pack.id;
+    let value = stat.metrics[0];
+    value.since = sinceDate;
+    value.until = untilDate;
+    return [key, value];
+  }));
+  for (let pack of packs) {
+    pack.stats = mapped[pack.id];
+  }
+}
