@@ -18,8 +18,8 @@ pack.setUserAuthentication({
 const MinDate = "2009-01-01";
 const HourSecs = 60 * 60;
 const DaySecs = 24 * HourSecs;
-const MaxDateRangeDays = 90;
 const PageSizeDays = 30;
+const LargePageSizeDays = 1095;
 
 const ValidUnits = {
   US: "en_US",
