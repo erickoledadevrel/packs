@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coda HTML Embed</title>
+  </head>
+  <body>
+    <script>
+      let urlParams = new URLSearchParams(window.location.search);
+
+      let url = urlParams.get("url");
+      if (!url) {
+        throw new Error("Missing embed URL.");
+      }
+      embed(url);
+
+      async function embed(url) {
+        let proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(url);
+        let response = await fetch(proxyUrl);
+        let html = await response.text();
+
+        document.open();
+        document.write(html);
+        document.close();
+      }
+    </script>
+  </body>
+</html>
