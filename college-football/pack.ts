@@ -1,4 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
+import { TeamSchema, GameSchema, LineSchema } from "./schemas";
+import { getConferences, getGames, getGameLines } from "./helpers";
+import { GamesOptions } from "./types";
 
 export const pack = coda.newPack();
 
@@ -36,72 +39,6 @@ const ConferencesParameter = coda.makeParameter({
     }
     return coda.autocompleteSearchObjects(search, conferences, "name", "name");
   }
-});
-
-const Attribution: coda.AttributionNode[] = [
-  {
-    type: coda.AttributionNodeType.Image,
-    imageUrl: "https://collegefootballdata.com/LetterLogo.png",
-    anchorUrl: "https://collegefootballdata.com"
-  },
-  {
-    type: coda.AttributionNodeType.Link,
-    anchorText: "CollegeFootballData.com",
-    anchorUrl: "https://collegefootballdata.com",
-  },
-];
-
-const TeamSchema = coda.makeObjectSchema({
-  properties: {
-    school: { type: coda.ValueType.String, required: true },
-    id: { type: coda.ValueType.Number, required: true },
-    mascot: { type: coda.ValueType.String },
-    abbreviation: { type: coda.ValueType.String },
-    division: { type: coda.ValueType.String, fromKey: "classification" },
-    conference: { type: coda.ValueType.String },
-    color: { type: coda.ValueType.String },
-    alt_color: { type: coda.ValueType.String },
-    logo: { type: coda.ValueType.String, codaType: coda.ValueHintType.ImageReference },
-    // TODO: location
-  },
-  displayProperty: "school",
-  idProperty: "id",
-  featuredProperties: [
-    "logo", "abbreviation", "conference", "mascot"
-  ],
-  attribution: Attribution,
-});
-
-const TeamReferenceSchema = coda.makeReferenceSchemaFromObjectSchema(TeamSchema, "Team");
-
-const GameSchema = coda.makeObjectSchema({
-  properties: {
-    title: { type: coda.ValueType.String },
-    id: { type: coda.ValueType.Number },
-    home: TeamReferenceSchema,
-    away: TeamReferenceSchema,
-    start: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime, fromKey: "start_date" },
-    week: { type: coda.ValueType.String },
-    completed: { type: coda.ValueType.Boolean },
-    conference_game: { type: coda.ValueType.Boolean },
-    // TODO: venue
-    home_points: { type: coda.ValueType.Number },
-    home_line_scores: {
-      type: coda.ValueType.Array,
-      items: { type: coda.ValueType.Number },
-    },
-    away_points: { type: coda.ValueType.Number },
-    away_line_scores: {
-      type: coda.ValueType.Array,
-      items: { type: coda.ValueType.Number },
-    },
-  },
-  displayProperty: "title",
-  idProperty: "id",
-  featuredProperties: [
-    "week", "away", "away_points", "home", "home_points"
-  ],
-  attribution: Attribution,
 });
 
 pack.addSyncTable({
@@ -158,18 +95,9 @@ pack.addSyncTable({
     ],
     execute: async function (args, context) {
       let [year, division, conferences] = args;
-      let url = coda.withQueryParams("https://api.collegefootballdata.com/games", {
-        year: year,
-        division: division?.toLocaleLowerCase(),
+      let games = await getGames(context, {
+        year, division, conferences
       });
-      let response = await context.fetcher.fetch({
-        method: "GET",
-        url: url,
-      });
-      let games = response.body;
-      if (conferences) {
-        games = games.filter(game => conferences.includes(game.home_conference) || conferences.includes(game.away_conference));
-      }
       for (let game of games) {
         game.title = `${game.away_team} @ ${game.home_team}`;
         game.home = {
@@ -188,11 +116,53 @@ pack.addSyncTable({
   },
 });
 
-async function getConferences(context: coda.ExecutionContext) {
-  let response = await context.fetcher.fetch({
-    method: "GET",
-    url: "https://api.collegefootballdata.com/conferences",
-  });
-  let conferences = response.body;
-  return conferences;
-}
+
+pack.addSyncTable({
+  name: "Odds",
+  description: "List the betting odds and money lines for the games.",
+  identityName: "Line",
+  schema: LineSchema,
+  formula: {
+    name: "SyncLines",
+    description: "Syncs the data.",
+    parameters: [
+      YearParameter,
+      DivisionParameter,
+      ConferencesParameter,
+    ],
+    execute: async function (args, context) {
+      let [year, division, conferences] = args;
+      let options: GamesOptions = {
+        year, division, conferences
+      };
+      let [games, gameLines] = await Promise.all([
+        getGames(context, options),
+        getGameLines(context, options),
+      ]);
+      let gameIds = games.map(game => game.id);
+      gameLines = gameLines.filter(item => gameIds.includes(item.id));
+
+      let lines = [];
+      for (let item of gameLines) {
+        for (let line of item.lines) {
+          lines.push({
+            ...line,
+            spread: Number(line.spread),
+            spreadOpen: Number(line.spreadOpen),
+            overUnder: Number(line.overUnder),
+            overUnderOpen: Number(line.overUnderOpen),
+            game: {
+              id: item.id,
+              title: `${item.awayTeam} @ ${item.homeTeam}`,
+            },
+            week: item.week,
+            id: `${item.id}-${line.provider}`,
+          });
+        }
+      }
+      return {
+        result: lines,
+      };
+    },
+  },
+});
