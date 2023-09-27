@@ -1,17 +1,32 @@
 {
   "packId": 16718,
   "name": "Fitbit",
-  "description": "",
-  "shortDescription": "",
-  "logoUrl": "https://cdn.coda.io/assets/7f36f793e4e1/img/packs/default-pack-icon.png",
-  "packVersion": "30",
-  "externalMetadataUrl": "https://codahosted.io/packs/16718/30/metadata/6a371eba4f0ee3d043edad2307278eaa4ad9cba6c62f2658a9febff7b2827dc7980975d0db906e4551449651d0cdf4fff30d0a188edbc37a4b07f5e3caeb572de75fe13f0672a76855f59250ded0c147714f49c43d677641a7a7590a5f0ad0083df22c6a.json",
-  "categories": [],
+  "description": "Fitbit products can capture a wealth of biometric data, but how can you leverage that data to make healthier decisions? You can use this Pack to sync your weight and step data into a Coda doc, allowing you to build custom charts, dashboards, and automations around it.\n\nThis Pack is not affiliated with Fitbit or Google.\nThe Fitbit symbol and graphics used in this Pack's listing page are the property of Fitbit.\nFitbit® is a registered trademark of Fitbit LLC and/or its affiliates in the United States and other countries.",
+  "shortDescription": "Connect to your Fitbit products to track your steps, weight, and other data.",
+  "logoUrl": "https://codahosted.io/packs/16718/unversioned/assets/LOGO/31ee9e9af9f2ec8bdd6931798c405a72aea1907c3530ca883ee7578695adc5a327b716e79465300ba113cac8546425ceb682976078be34081fdf449248f03f541b2d540622539afd3c5577ccb51403554797215885fb20017a2988881db23d65b1fc77c9",
+  "coverUrl": "https://codahosted.io/packs/16718/unversioned/assets/COVER/3811ab17ef465980baa03125201ec562a27b3268e8f5005d99d870fb364b117314d9d4f825f493ed2d13bcd27da0ef0b6520bd9c4f4e1d19be3c2fdff57d6d6cf1bcacc31840b14999381313dfc58c94b45f6cd2c8626a1511e6de217cca023a9e939bdc",
+  "packVersion": "39",
+  "releaseId": 3,
+  "lastReleasedAt": "2023-09-27T02:12:37.308Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/16718/39/metadata/4e9459df02a41d7ccbdf22fee843428a8b145dc42dceee2f16ff87777f3f231dd17a8dcd7ee7ed05d9bfd660982a99aa4f0a0c6b6c4f4aecc413b415de40afa540bbbb6b6c79a2ca6d2d2cc7fdc0488b3b18b1446e563024517b842b237d9fe08ade50ff.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "dd3f291c-fba6-410b-8ca3-f34deaa3586f",
+      "categoryName": "Fitness",
+      "categorySlug": "fitness"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
   "sourceCodeVisibility": "private",
   "makers": [
     {
       "name": "Eric Koleda",
-      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
       "employer": "Coda",
       "jobTitle": "Developer Advocate",
       "slug": "eric-koleda"
@@ -25,7 +40,7 @@
       "type": "Free"
     }
   },
-  "discoverability": "private",
+  "discoverability": "public",
   "userAccess": {
     "canEdit": true,
     "canInstall": false,

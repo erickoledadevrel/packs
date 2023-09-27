@@ -1,4 +1,8 @@
 import * as coda from "@codahq/packs-sdk";
+import * as console from "console";
+import { url } from "inspector";
+import { DateTime } from "luxon";
+
 export const pack = coda.newPack();
 
 pack.addNetworkDomain("fitbit.com");
@@ -19,7 +23,7 @@ const MinDate = "2009-01-01";
 const HourSecs = 60 * 60;
 const DaySecs = 24 * HourSecs;
 const PageSizeDays = 30;
-const LargePageSizeDays = 1095;
+const LargePageSizeDays = 365;
 
 const ValidUnits = {
   US: "en_US",
@@ -110,12 +114,13 @@ pack.addSyncTable({
       DateRangeParameter,
       UnitsParameter,
     ],
-    execute: async function ([[fromDate, toDate], units], context) {
-      let { timezone } = context;
+    execute: async function (args, context) {
+      let [dateRange, units] = args;
+      let [fromDate, toDate] = dateRange;
       let profile = await getProfile(context);
-      let date = new Date(context.sync.continuation?.date as string ?? toDate);
-      let language = await getLanguageHeader(units, "weightUnit", context);
-      let url = `https://api.fitbit.com/1/user/-/body/log/weight/date/${formatDate(date, timezone)}/${PageSizeDays}d.json`;
+      let language = getLanguageHeader(units, "weightUnit", profile);
+      let {start, end, continuation} = getDatePage(context, fromDate, toDate, PageSizeDays);
+      let url = `https://api.fitbit.com/1/user/-/body/log/weight/date/${start}/${end}.json`;
       let response = await context.fetcher.fetch({
         method: "GET",
         url: url,
@@ -125,22 +130,13 @@ pack.addSyncTable({
         cacheTtlSecs: HourSecs,
       });
       let items: any[] = response.body.weight ?? [];
+
       for (let item of items) {
         item.user = profile;
         item.fat = item.fat ? item.fat / 100 : undefined;
         item.logId = String(item.logId);
       }
-      items = items.filter(item => {
-        return formatDate(fromDate, timezone) <= item.date && item.date <= formatDate(toDate, timezone);
-      });
-      items = items.reverse();
-      date.setTime(date.getTime() - PageSizeDays * DaySecs * 1000);
-      let continuation;
-      if (date > fromDate) {
-        continuation = {
-          date: date.toISOString(),
-        };
-      }
+
       return {
         result: items,
         continuation,
@@ -160,20 +156,13 @@ pack.addSyncTable({
     parameters: [
       DateRangeParameter,
     ],
-    execute: async function ([[fromDate, toDate]], context) {
-      let { timezone } = context;
+    execute: async function (args, context) {
+      let [dateRange] = args;
+      let [fromDate, toDate] = dateRange;
       let profile = await getProfile(context);
-      let now = new Date();
-      let todayStr = formatDate(now, timezone);
-      let fromStr = formatDate(fromDate, timezone);
-      let toStr = formatDate(toDate, timezone);
-      if (fromStr < MinDate) {
-        fromStr = MinDate;
-      }
-      if (toStr > todayStr) {
-        toStr = todayStr;
-      }
-      let url = `https://api.fitbit.com/1/user/-/activities/steps/date/${fromStr}/${toStr}.json`;
+
+      let {start, end, continuation} = getDatePage(context, fromDate, toDate, LargePageSizeDays);
+      let url = `https://api.fitbit.com/1/user/-/activities/steps/date/${start}/${end}.json`;
       let response: coda.FetchResponse;
       try {
         response = await context.fetcher.fetch({
@@ -188,28 +177,20 @@ pack.addSyncTable({
         throw error;
       }
       let items = response.body["activities-steps"];
+
       for (let item of items) {
         item.value = parseInt(item.value);
         item.user = profile;
         item.logId = `${item.dateTime}-${profile.encodedId}`;
       }
+
       return {
         result: items,
+        continuation,
       };
     },
   },
 });
-
-async function getLanguageHeader(units, unitType, context): Promise<string> {
-  if (units) {
-    if (!Object.keys(ValidUnits).includes(units)) {
-      throw new coda.UserVisibleError(`Unsupported units system: ${units}`);
-    }
-    return ValidUnits[units];
-  }
-  let profile = await getProfile(context);
-  return profile[unitType];
-}
 
 async function getProfile(context: coda.ExecutionContext): Promise<any> {
   let response = await context.fetcher.fetch({
@@ -220,20 +201,48 @@ async function getProfile(context: coda.ExecutionContext): Promise<any> {
   return response.body.user;
 }
 
-function formatDate(date: Date, timezone: string): string {
-  let formatter = new Intl.DateTimeFormat("en", {
-    timeZone: timezone,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
+function getLanguageHeader(units, unitType, profile): string {
+  if (units) {
+    if (!Object.keys(ValidUnits).includes(units)) {
+      throw new coda.UserVisibleError(`Unsupported units system: ${units}`);
+    }
+    return ValidUnits[units];
+  }
+  return profile[unitType];
+}
 
-  // Format the date into individual parts.
-  let parts = formatter.formatToParts(date);
+function getDatePage(context: coda.ExecutionContext, fromDate: Date, toDate: Date, pageSizeDays: number) {
+  let {timezone} = context;
+  let fromDateTime = DateTime.fromJSDate(fromDate, {zone: timezone}).startOf("day");
+  let toDateTime = DateTime.fromJSDate(toDate, {zone: timezone}).startOf("day");
 
-  // Find the day, month, and year parts.
-  let day = parts.find(part => part.type === "day").value;
-  let month = parts.find(part => part.type === "month").value;
-  let year = parts.find(part => part.type === "year").value;
-  return `${year.padStart(4, "0")}-${month}-${day}`;
+  // Clamp the from date time.
+  let minDateTime = DateTime.fromFormat(MinDate, "yyyy-MM-dd", {zone: timezone}).startOf("day");
+  if (fromDateTime < minDateTime) {
+    fromDateTime = minDateTime;
+  }
+
+  // Clamp the to date time.
+  let maxDateTime = DateTime.now().setZone(timezone).startOf("day");
+  if (toDateTime > maxDateTime) {
+    toDateTime = maxDateTime;
+  }
+
+  // Determine the start date for this execution.
+  let startDateTime = fromDateTime;
+  if (context.sync.continuation?.date) {
+    startDateTime = DateTime.fromISO(context.sync.continuation.date as string, {zone: timezone}).startOf("day");
+  }
+
+  // Determine the end date for this execution.
+  let endDateTime = startDateTime.plus({days: pageSizeDays}).startOf("day");
+  if (endDateTime > toDateTime) {
+    endDateTime = toDateTime;
+  }
+
+  return {
+    start: startDateTime.toFormat("yyyy-MM-dd"),
+    end: endDateTime.toFormat("yyyy-MM-dd"),
+    continuation: endDateTime < toDateTime ? {date: endDateTime.toISO()} : undefined,
+  };
 }
