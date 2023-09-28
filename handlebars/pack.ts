@@ -1,7 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
-import { data } from "cheerio/lib/api/attributes";
 import * as Handlebars from "handlebars";
 const cheerio = require('cheerio');
+const escape = require('escape-html');
 
 export const pack = coda.newPack();
 
@@ -33,7 +33,7 @@ pack.addFormula({
       },
     }),
     coda.makeParameter({
-      type: coda.ParameterType.String,
+      type: coda.ParameterType.Html,
       name: "value",
       description: "The value of the placeholder.",
     }),
@@ -48,12 +48,13 @@ pack.addFormula({
     while (vars.length > 0) {
       let [key, value, ...more] = vars;
       if (value !== "") {
-        variables[key] = value;
+        variables[key] = cleanHtml(value);
       }
       vars = more;
     }
     let compiled = Handlebars.compile(template, {
       strict: true,
+      noEscape: true,
     });
     return compiled(variables);
   },
@@ -86,10 +87,13 @@ pack.addFormula({
 });
 
 function cleanHtml(html: string): string {
+  if (!html.startsWith("<")) {
+    return convertToHtml(html);
+  }
   let $ = cheerio.load(html);
-  let changed = false;
+
   // Remove the "http://prefix"
-  $("a").each((i, a) => {
+  $("a").each((_i, a) => {
     let href = $(a).attr("href");
     let regex = /^http\:\/\/($|\{)/;
     if (href.match(regex)) {
@@ -100,13 +104,37 @@ function cleanHtml(html: string): string {
       } else {
         $(a).attr("href", href.replace(regex, "$1"));
       }
-      changed = true;
     }
   });
-  if (changed) {
-    return $.html();
+
+  // Fix newline spacing.
+  $("body > div").each((_i, div) => {
+    let children = $(div).contents();
+    // For visual parity, "<div><br></div>"" must be replaced with "<div> </div>".
+    if (children.length == 1 && children[0].tagName == "br") {
+      $(div).html(" ");
+    }
+  });
+
+  // If there is only one line (outer div) then unwrap it.
+  let divs = $("body").contents();
+  console.log(divs.length);
+  if (divs.length == 1) {
+    return $(divs[0]).html();
   }
-  return html;
+  return $("body").html();
+}
+
+function convertToHtml(html) {
+  let original = html;
+  html = html.split("\n").map(line => escape(line)).join("\n");
+  if (html.includes("\n")) {
+    html = `<div>${html.replace(/\n/g, "</div><div>")}</p>`;
+  }
+  if (html != original) {
+    return html;
+  }
+  return original;
 }
 
 function getPlaceholders(template: string): string[] {
