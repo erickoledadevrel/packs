@@ -1,0 +1,45 @@
+{
+  "packId": 25453,
+  "name": "Handlebars Templates",
+  "description": "The Substitue() or RegexReplace() formulas are great for simple replacements, but when you have a ton of placeholders in your text they can get a bit cumbersome.\n\nThis Pack uses the Handlebars templating engine to make it easier to replace placeholders in templated text. Simply wrap your placeholders with double curly braces (like \"{{name}}\", etc) and then feel the values into the Template() formula to do the replacements.\n\n=Template(\"Hello {{name}}\", \"name\", \"World\") 🠮 \"Hello World\"\n\nIn addition to simple placeholder replacements, you can also use \"if\" statements to render text conditionally.\n\n    Hello {{name}. {{#if day}} Happy {{day}}! {{/if}}\n\nSee the documentation at https://handlebarsjs.com/ for more information about the templating language.\n\nIcon property of the Handlebars project.\nCover photo from Photo by Alan Hardman on Unsplash.\nPowered by the handlebars NPM library.",
+  "shortDescription": "Use the Handlebars templating engine to replace placeholders in text.",
+  "logoUrl": "https://codahosted.io/packs/25453/unversioned/assets/LOGO/414faf9576ead40dc677c62c7341d6e4803c82e3adef09fd5a77bd2c23f27db8b9139fc726c98ce719623278985f52078860aafbe26fa17cf7d0c948278a5027ec04d21ae1a59861b89a7a73eff1c5acbaf202498a921130dd0e54f36ea56d8949a834a0",
+  "coverUrl": "https://codahosted.io/packs/25453/unversioned/assets/COVER/f9085a2622596c410a1b45b6d5a480147bb4f00673a75a34953757f1841beb4548f2b35d020543d2babb0d50a7f409705683d96058283d842b581d479edfaf3b986b112967541afd333db972abe0d3578a12cc23df7844bd8f915a2bea03bb0049b609a1",
+  "packVersion": "13",
+  "externalMetadataUrl": "https://codahosted.io/packs/25453/13/metadata/28ec9459154fdafbf5c44d7124dae5b0ce55ef4ca602febd887dd6096bfab4e21120cc8fa4fc937045bd8f23e2b5974fc76ac4f84fe3dc2258107f0bf29232873c02869e9f3f9248bf06d8fdd903408829dbbee111c9bc060910665f9449b82a9b937286.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "04af4238-96aa-46b7-ad3d-89f48b1c0dd3",
+    "packId": 25453,
+    "createdAt": "2023-09-28T14:50:05.064Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "discoverability": "private",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}
