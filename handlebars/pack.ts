@@ -6,8 +6,8 @@ const escape = require('escape-html');
 export const pack = coda.newPack();
 
 pack.addFormula({
-  name: "Template",
-  description: "Replace placeholders in a template.",
+  name: "TemplateReplace",
+  description: "Replace placeholders in a Handlebars template.",
   examples: [
     {params: ["Hello {{name}}", "name", "World"], result: "Hello World"},
     {params: ["{{name}} is {{feeling}}", "name", "Alice", "feeling", "happy"], result: "Alice is happy"},
@@ -18,14 +18,14 @@ pack.addFormula({
     coda.makeParameter({
       type: coda.ParameterType.Html,
       name: "template",
-      description: "The template text (Handlebars syntax).",
+      description: `The template text, with placeholders in the Handlesbars syntax. Ex: "Hello {{name}}"`,
     }),
   ],
   varargParameters: [
     coda.makeParameter({
       type: coda.ParameterType.String,
       name: "name",
-      description: "The name of the placeholder.",
+      description: `The name of a placeholder. Ex: "name"`,
       autocomplete: async function (context, search, args) {
         let {template} = args;
         template = cleanHtml(template);
@@ -35,7 +35,7 @@ pack.addFormula({
     coda.makeParameter({
       type: coda.ParameterType.Html,
       name: "value",
-      description: "The value of the placeholder.",
+      description: `The value of the placeholder. Ex: "Alice"`,
     }),
   ],
   resultType: coda.ValueType.String,
@@ -58,6 +58,13 @@ pack.addFormula({
     });
     return compiled(variables);
   },
+});
+
+// Backwards compatibility.
+pack.formulas.push({
+  ...pack.formulas[0],
+  name: "Template",
+  isExperimental: true,
 });
 
 pack.addFormula({
@@ -118,7 +125,6 @@ function cleanHtml(html: string): string {
 
   // If there is only one line (outer div) then unwrap it.
   let divs = $("body").contents();
-  console.log(divs.length);
   if (divs.length == 1) {
     return $(divs[0]).html();
   }
