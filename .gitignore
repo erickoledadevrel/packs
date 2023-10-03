@@ -2,5 +2,4 @@
 .coda-credentials.json
 scratch
 node_modules
-package-lock.json
 credentials.ts
