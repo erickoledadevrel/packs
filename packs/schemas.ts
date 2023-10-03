@@ -121,6 +121,10 @@ const ReleaseSchema = coda.makeObjectSchema({
       fromKey: "releaseNotes",
       description: "The notes describing the release.",
     },
+    sdkVersion: {
+      type: coda.ValueType.String,
+      description: "The version of the SDK this release of the Pack was built with.",
+    }
   },
   displayProperty: "number",
 });
@@ -244,6 +248,10 @@ export const PackSchema = coda.makeObjectSchema({
       type: coda.ValueType.String,
       description: "Which Coda pricing plan the Pack is bundled with, if any.",
     },
+    sdkVersion: {
+      type: coda.ValueType.String,
+      description: "The version of the SDK the current release of the Pack was built with.",
+    }
   },
   featuredProperties: ["logo", "tagline", "makers"],
   linkProperty: "listingUrl",
