@@ -5,17 +5,19 @@
   </head>
   <body>
     <script>
-      let urlParams = new URLSearchParams(window.location.search);
+      function run() {
+        let urlParams = new URLSearchParams(window.location.search);
 
-      let url = urlParams.get("url");
-      let html = urlParams.get("html");
-      if (url) {
-        return embedUrl(url);
+        let url = urlParams.get("url");
+        let html = urlParams.get("html");
+        if (url) {
+          return embedUrl(url);
+        }
+        if (html) {
+          return embedHtml(html);
+        }
+        throw new Error("Missing embed URL or HTML.");
       }
-      if (html) {
-        return embedHtml(html);
-      }
-      throw new Error("Missing embed URL or HTML.");
 
       async function embedUrl(url) {
         let proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(url);
@@ -29,6 +31,8 @@
         document.write(html);
         document.close();
       }
+
+      run();
     </script>
   </body>
 </html>
