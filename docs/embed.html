@@ -8,16 +8,23 @@
       let urlParams = new URLSearchParams(window.location.search);
 
       let url = urlParams.get("url");
-      if (!url) {
-        throw new Error("Missing embed URL.");
+      let html = urlParams.get("html");
+      if (url) {
+        return embedUrl(url);
       }
-      embed(url);
+      if (html) {
+        return embedHtml(html);
+      }
+      throw new Error("Missing embed URL or HTML.");
 
-      async function embed(url) {
+      async function embedUrl(url) {
         let proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(url);
         let response = await fetch(proxyUrl);
         let html = await response.text();
+        embedHtml(html);
+      }
 
+      async function embedHtml(html) {
         document.open();
         document.write(html);
         document.close();
