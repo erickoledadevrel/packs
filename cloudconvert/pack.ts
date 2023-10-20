@@ -1,10 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
+import { DetectFormat, FormatUsageTypes, doExport, getFormatCodes, getFormatOptions, onError, optionsToAutocomplete } from "./helpers";
 
 export const pack = coda.newPack();
-
-const OneDaySecs = 24 * 60 * 60;
-const DetectFormat = "*detect*";
-const FormatUsageTypes = ["input", "output"];
 
 pack.addNetworkDomain("cloudconvert.com");
 
@@ -46,7 +43,7 @@ pack.addFormula({
       description: "The file format to convert to.",
       autocomplete: async function (context, _, args) {
         let { from } = args;
-        return getFormatCodes(context, "input", from);
+        return getFormatCodes(context, "output", from);
       },
     }),
   ],
@@ -61,18 +58,7 @@ pack.addFormula({
           return [];
         }
         let options = await getFormatOptions(context, from, to);
-        return options.map(option => {
-          let display = option.name;
-          if (option.type == "enum") {
-            display += ` (${option.possible_values.join(", ")})`;
-          } else if (option.type == "boolean") {
-            display += ` (true, false)`;
-          }
-          return {
-            display,
-            value: option.name,
-          };
-        });
+        return optionsToAutocomplete(options);
       },
     }),
     coda.makeParameter({
@@ -93,55 +79,78 @@ pack.addFormula({
       throw new coda.UserVisibleError("Only one file can be converted at a time.");
     }
     let fileUrl = fileUrls[0];
-    let conversion: Record<string, string> = {
-      operation: "convert",
-      input: "import",
-      output_format: toFormat,
+    let importTask = {
+      operation: "import/url",
+      url: fileUrl,
     };
-    if (fromFormat != DetectFormat) {
-      conversion.input_format = fromFormat;
-    }
-    while (options.length) {
-      let [option, value, ...rest] = options;
-      conversion[option] = value;
-      options = rest;
-    }
-    let payload = {
-      tasks: {
-        import: {
-          operation: "import/url",
-          url: fileUrl,
-        },
-        convert: conversion,
-        export: {
-          operation: "export/url",
-          input: "convert",
-        },
+    return await doExport(context, importTask, fromFormat, toFormat, undefined, options);
+  },
+});
+
+pack.addFormula({
+  name: "ConvertPage",
+  description: "Convert a page or other text content to a file.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.Html,
+      name: "page",
+      description: "The file to convert (from a File or Image column).",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "to",
+      description: "The file format to convert to.",
+      autocomplete: async function (context, _, args) {
+        return getFormatCodes(context, "output", "html");
       },
-      tag: context.invocationToken,
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "filename",
+      description: "The desired name of the output file.",
+    }),
+  ],
+  varargParameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "option",
+      description: `The name of ad additional conversion option to set. Not available if the source file format is set to "${DetectFormat}".`,
+      autocomplete: async function (context, _, args) {
+        let { to } = args;
+        if (!to) {
+          return [];
+        }
+        let options = await getFormatOptions(context, "html", to);
+        return optionsToAutocomplete(options);
+      },
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "value",
+      description: "The value of the conversion option.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  isAction: true,
+  onError: onError,
+  execute: async function (args, context) {
+    let [pageHtml, toFormat, filename, ...options] = args;
+    if (!pageHtml.includes("<html")) {
+      pageHtml = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="UTF-8">
+          </head>
+        <body>${pageHtml}</body>
+      </html>`
+    }
+    let importTask = {
+      operation: "import/raw",
+      file: pageHtml,
+      filename: "page.html",
     };
-    let response = await context.fetcher.fetch({
-      method: "POST",
-      url: "https://sync.api.cloudconvert.com/v2/jobs",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-    let job = response.body.data;
-    let result;
-    for (let task of job.tasks.reverse()) {
-      if (task.status == "error") {
-        throw new coda.UserVisibleError(task.message);
-      }
-      if (task.operation == "export/url") {
-        result = task.result.files[0].url;
-      }
-    }
-    if (!result) {
-      throw new Error("Export task result not present.");
-    }
-    return result;
+    return await doExport(context, importTask, "html", toFormat, filename, options);
   },
 });
 
@@ -177,56 +186,3 @@ pack.addFormula({
   },
 });
 
-async function getFormatCodes(context: coda.ExecutionContext, usage: string, otherFormat?: string): Promise<string[]> {
-  let formats = await getFormats(context);
-  if (otherFormat && otherFormat != DetectFormat) {
-    formats = formats.filter(format => usage == "input" ?
-      format.output_format == otherFormat :
-      format.input_format == otherFormat);
-  }
-  let result = formats.map(format => usage == "input" ?
-    format.input_format :
-    format.output_format).filter(onlyUnique).sort();
-  if (usage == "input") {
-    result.unshift(DetectFormat);
-  }
-  return result;
-}
-
-async function getFormats(context: coda.ExecutionContext) {
-  let url = "https://api.cloudconvert.com/v2/convert/formats";
-  let response = await context.fetcher.fetch({
-    method: "GET",
-    url: url,
-    cacheTtlSecs: OneDaySecs,
-  });
-  return response.body.data;
-}
-
-async function getFormatOptions(context: coda.ExecutionContext, from: string, to: string) {
-  let url = coda.withQueryParams("https://api.cloudconvert.com/v2/convert/formats", {
-    "filter[input_format]": from,
-    "filter[output_format]": to,
-    include: "options",
-  });
-  let response = await context.fetcher.fetch({
-    method: "GET",
-    url: url,
-    cacheTtlSecs: OneDaySecs,
-  });
-  return response.body.data[0].options;
-}
-
-function onlyUnique(value, index, array) {
-  return array.indexOf(value) === index;
-}
-
-function onError(error) {
-  if (coda.StatusCodeError.isStatusCodeError(error)) {
-    let message = error.body.message;
-    if (message) {
-      throw new coda.UserVisibleError(message);
-    }
-  }
-  throw error;
-}
