@@ -32,7 +32,11 @@
       }
 
       async function embedMarkdown(markdown) {
-        let converter = new showdown.Converter();
+        let converter = new showdown.Converter({
+          strikethrough: true,
+          tables: true,
+          tasklists: true,
+        });
         let html = converter.makeHtml(markdown);
         embedHtml(html);
       }
