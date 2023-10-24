@@ -42,7 +42,7 @@
       }
 
       async function embedHtml(html) {
-        document.querySelector("#preview").src = `data:text/html;charset=utf-8,${html}`;
+        document.querySelector("#preview").srcdoc = html;
       }
 
       run();
