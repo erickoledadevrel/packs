@@ -33,7 +33,7 @@ MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAErxixU+jZ9XWp7U+yBb3sEsO2FoTZRctc
         let markdown = urlParams.get("m");
 
         if (!html && !markdown) {
-          return embedHtml("Error: Missing embed HTML or markdown.");
+          return;
         }
 
         if (!signature) {
