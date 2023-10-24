@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Markup Preview</title>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/<version tag>/showdown.min.js"></script>
+    <script>
+      function run() {
+        let urlParams = new URLSearchParams(window.location.search);
+
+        let html = urlParams.get("h");
+        let markdown = urlParams.get("m");
+        if (html) {
+          return embedHtml(html);
+        }
+        if (markdown) {
+          return embedMarkdown(markdown);
+        }
+        document.write("Missing embed HTML or markdown.");
+      }
+
+      async function embedMarkdown(markdown) {
+        let converter = new showdown.Converter();
+        let html = converter.makeHtml(markdown);
+        embedHtml(html);
+      }
+
+      async function embedHtml(html) {
+        html = html.replace(/\n/g, "");
+        window.location = `data:text/html,${html}`;
+      }
+
+      run();
+    </script>
+  </body>
+</html>
