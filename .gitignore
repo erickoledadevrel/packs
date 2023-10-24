@@ -3,3 +3,4 @@
 scratch
 node_modules
 credentials.ts
+*.pem
