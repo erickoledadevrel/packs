@@ -56,7 +56,7 @@ MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAErxixU+jZ9XWp7U+yBb3sEsO2FoTZRctc
       function verify(signature, content) {
         console.log(content);
         console.log(signature);
-        let sig = new KJUR.crypto.Signature({alg: "SHA256withECDSA"});
+        let sig = new KJUR.crypto.Signature({alg: "SHA512withECDSA"});
         sig.init(PublicKeyPEM);
         sig.updateString(content);
         return sig.verify(base64ToHex(signature));
