@@ -1,0 +1,53 @@
+{
+  "packId": 26363,
+  "name": "BigQuery Pack for Coda",
+  "description": "This Pack is currently in public beta.",
+  "shortDescription": "Query your Google Cloud BigQuery tables in Coda.",
+  "logoUrl": "https://codahosted.io/packs/26363/unversioned/assets/LOGO/a5c57ea47f8523b967464112705fbea0a5e35b549716c94b1015188a4611ad34eb779f47590d253deeaf2299511a5e6652b63c3b8dc5c0caa9990d56861b9eadf773c39c4c41ff7e28e6a50e5f6d9aff7a07973dcdcac633336dd8575f5545f771b45955",
+  "packVersion": "47",
+  "releaseId": 2,
+  "lastReleasedAt": "2023-11-10T14:47:56.137Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/26363/47/metadata/66422ca87b4d12e588fa75d24a3c1366fc2eed67744f8c46cbf17697b54409af5292174464969c566f78994e9af8a785e41a21f3ec990987d9d30c258fe10d7972b221d99326326a38e9add8735fc3f472dafbe083025200f240c439f14c5758721709a3.json",
+  "categories": [
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    },
+    {
+      "categoryId": "5b2f676a-1700-4feb-bc90-9a6a6715edfd",
+      "categoryName": "IT admins",
+      "categorySlug": "it-admins"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "privacyPolicyUrl": "https://coda.io/@eric-koleda/get-started-with-the-bigquery-pack-for-coda/privacy-policy-2",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "47fc1249-2e9f-4b05-8b61-0b014a2f8f77",
+    "packId": 26363,
+    "createdAt": "2023-11-04T13:17:55.869Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.0",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false
+  }
+}
