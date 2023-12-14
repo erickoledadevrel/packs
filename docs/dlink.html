@@ -6,7 +6,10 @@
 
 <body style="text-align: center;">
   <h1>Open /d link bookmarklet</h1>
+  <h2>Setup</h2>
   <p>👇 Drag to your bookmarks</p>
   <p><a href="javascript:(function(){const docId = window.formInitContext?.parentDocId || window.documentInitContext?.docId;if (!docId) return;const url = `https://coda.io/d/_d${docId}`;window.open(url)})()">Open /d link</a></p>
+  <h2>Usage</h2>
+  <p>Navigate to a published Coda doc and click the bookmark you created above.<br/>The source doc (<code>/d</code> link) should open in a new tab.</p>
 </body>
 </html>
