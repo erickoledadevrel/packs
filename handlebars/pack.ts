@@ -5,6 +5,8 @@ const escape = require('escape-html');
 
 export const pack = coda.newPack();
 
+const OneDaySecs = 24 * 60 * 60;
+
 pack.addFormula({
   name: "TemplateReplace",
   description: "Replace placeholders in a Handlebars template.",
@@ -40,6 +42,7 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.String,
   codaType: coda.ValueHintType.Html,
+  cacheTtlSecs: OneDaySecs,
   onError: onError,
   execute: async function (args, context) {
     let [template, ...vars] = args;
@@ -85,6 +88,7 @@ pack.addFormula({
   items: {
     type: coda.ValueType.String,
   },
+  cacheTtlSecs: OneDaySecs,
   onError: onError,
   execute: async function (args, context) {
     let [template] = args;
