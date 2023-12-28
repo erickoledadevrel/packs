@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@codahq/packs-sdk": "^1.5.1",
+    "@codahq/packs-sdk": "^1.7.3",
     "airport-codes": "^1.0.2",
     "awesome-phonenumber": "^3.1.0",
     "but-csv": "^2.0.13",
