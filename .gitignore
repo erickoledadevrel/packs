@@ -5,3 +5,4 @@ node_modules
 credentials.ts
 *.pem
 service-account.json
+*.bak
