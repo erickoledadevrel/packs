@@ -1,66 +1,11 @@
 import * as coda from "@codahq/packs-sdk";
-import { getProjectId, randomId, getSchema, formatObjectValue, getHash, maybeParseJsonList } from "./helpers";
+import { randomId, getSchema, formatObjectValue, getHash, maybeParseJsonList } from "./helpers";
 import { BigQueryApi } from "./api";
 import { BaseQueryRowSchema, RowIdKey, RowIndexKey } from "./schemas";
 
 export const pack = coda.newPack();
 
-const ListProjectsPageSize = 100;
-const OneDaySecs = 24 * 60 * 60;
-
 pack.addNetworkDomain("googleapis.com");
-
-pack.setUserAuthentication({
-  type: coda.AuthenticationType.OAuth2,
-  authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth",
-  tokenUrl: "https://oauth2.googleapis.com/token",
-  scopes: [
-    "profile",
-    "https://www.googleapis.com/auth/bigquery.readonly",
-    "https://www.googleapis.com/auth/cloudplatformprojects.readonly",
-  ],
-  additionalParams: {
-    access_type: "offline",
-    prompt: "consent",
-  },
-  postSetup: [
-    {
-      type: coda.PostSetupType.SetEndpoint,
-      name: "SelectProject",
-      description: "Select the Google Cloud Console project to use for queries.",
-      getOptions: async function (context) {
-        let url = coda.withQueryParams("https://cloudresourcemanager.googleapis.com/v1/projects", {
-          filter: "lifecycleState:ACTIVE",
-          pageSize: ListProjectsPageSize,
-        });
-        let response = await context.fetcher.fetch({
-          method: "GET",
-          url: url,
-        });
-        let data = response.body;
-        return data.projects.map(project => {
-          return {
-            display: `${project.name} (${project.projectId})`,
-            value: `https://www.googleapis.com/#${project.projectId}`,
-          };
-        });
-      },
-    },
-  ],
-  getConnectionName: async function (context) {
-    if (!context.endpoint) {
-      return "Incomplete";
-    }
-    let projectId = getProjectId(context);
-    let response = await context.fetcher.fetch({
-      method: "GET",
-      url: "https://www.googleapis.com/oauth2/v1/userinfo",
-      cacheTtlSecs: OneDaySecs,
-    });
-    let user = response.body;
-    return `${projectId} (${user.name})`;
-  },
-});
 
 pack.addDynamicSyncTable({
   name: "Query",
@@ -78,12 +23,12 @@ pack.addDynamicSyncTable({
     return "Query results";
   },
   getSchema: async function (context, _, args) {
-    let { query, parameters } = args;
+    let { projectId, query, parameters } = args;
     parameters = maybeParseJsonList(parameters);
     if (!query) {
       return BaseQueryRowSchema;
     }
-    let helper = new BigQueryApi(context);
+    let helper = new BigQueryApi(context, projectId);
     let data = await helper.runQuery(args.query, true, parameters);
     return getSchema(data.schema, BaseQueryRowSchema);
   },
@@ -96,6 +41,11 @@ pack.addDynamicSyncTable({
     parameters: [
       coda.makeParameter({
         type: coda.ParameterType.String,
+        name: "projectId",
+        description: "The ID of the Google Cloud project to bill the queries to.",
+      }),
+      coda.makeParameter({
+        type: coda.ParameterType.String,
         name: "query",
         description: "The query to use (in the Standard SQL dialect).",
       }),
@@ -105,11 +55,11 @@ pack.addDynamicSyncTable({
         description: "Which columns, if their values are combined, will form a unique ID for the row.",
         optional: true,
         autocomplete: async function (context, _, args) {
-          let { query } = args;
+          let { projectId, query } = args;
           if (!query) {
             return [];
           }
-          let helper = new BigQueryApi(context);
+          let helper = new BigQueryApi(context, projectId);
           let data = await helper.runQuery(args.query, true);
           return data.schema.fields.map(field => field.name);
         }
@@ -117,19 +67,19 @@ pack.addDynamicSyncTable({
       coda.makeParameter({
         type: coda.ParameterType.StringArray,
         name: "parameters",
-        description: "A list of paremeters, for use with parameterized queries. Use the <Type>Parameter formulas to construct the parameters.",
+        description: "A list of parameters, for use with parameterized queries. Use the <Type>Parameter formulas to construct the parameters.",
         optional: true,
       }),
     ],
     execute: async function (args, context) {
-      let [query, uniqueColumns, parameters] = args;
+      let [projectId, query, uniqueColumns, parameters] = args;
       parameters = maybeParseJsonList(parameters);
 
       let jobId = context.sync.continuation?.jobId as string;
       let pageToken = context.sync.continuation?.pageToken as string;
       let startRowIndex = context.sync.continuation?.startRowIndex as number ?? 0;
 
-      let bigQuery = new BigQueryApi(context);
+      let bigQuery = new BigQueryApi(context, projectId);
 
       let job;
       if (jobId) {

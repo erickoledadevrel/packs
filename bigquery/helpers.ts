@@ -88,13 +88,17 @@ export function randomId() {
   return Math.random().toString(36).substring(2);
 }
 
-export function getProjectId(context: coda.ExecutionContext) {
-  return context.endpoint.split("#").pop();
-}
-
 export function onError(error: Error) {
+  console.log("onError");
   if (coda.StatusCodeError.isStatusCodeError(error) && error.statusCode != 401 && error.body?.error?.message) {
-    throw new coda.UserVisibleError(error.body.error.message);
+    console.log(JSON.stringify(error.body));
+    let message = error.body.error.message;
+    console.log(message);
+    if (message.includes("CloudRegion")) {
+      console.log("match");
+      message = "Invalid project ID, or access hasn't been granted.";
+    }
+    throw new coda.UserVisibleError(message);
   }
   throw error;
 }
