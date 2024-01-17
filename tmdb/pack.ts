@@ -18,8 +18,8 @@ pack.addFormula({
   parameters: [
     coda.makeParameter({
       type: coda.ParameterType.String,
-      name: "name",
-      description: "The name of the movie.",
+      name: "titleOrUrl",
+      description: "The title of the movie, or its URL on TMDB.",
     }),
     coda.makeParameter({
       type: coda.ParameterType.String,
@@ -37,16 +37,18 @@ pack.addFormula({
   schema: schemas.MovieSchema,
   cacheTtlSecs: constants.OneDaySecs,
   execute: async function (args, context) {
-    let [name, country = constants.DefaultCountryCode] = args;
+    let [titleOrUrl, country = constants.DefaultCountryCode] = args;
     let api = new Api(context);
 
-    let movieId = name.match(constants.MovieUrlRegex)?.[1];
+    let movieId = titleOrUrl.match(constants.MovieUrlRegex)?.[1];
     if (!movieId) {
-      let {results} = await api.searchMovies(name);
+      let {results} = await api.searchMovies(titleOrUrl);
       movieId = results?.[0]?.id;
     }
     if (!movieId) {
-      throw new coda.UserVisibleError("Movie not found.");
+      return {
+        title: "Movie not found",
+      };
     }
     let [movie, configuration] = await Promise.all([
       api.getMovie(movieId),
@@ -59,9 +61,33 @@ pack.addFormula({
 
 pack.addColumnFormat({
   name: "Movie",
-  instructions: "Type the name of the movie.",
+  instructions: "Enter the title of the movie, or its URL on TMDB.",
   formulaName: "Movie",
   matchers: [constants.MovieUrlRegex],
+});
+
+pack.addFormula({
+  name: "SearchMovies",
+  description: "Find a movie in the database.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "title",
+      description: "The title of the movie.",
+    }),
+  ],
+  resultType: coda.ValueType.Array,
+  items: schemas.MovieSchema,
+  cacheTtlSecs: constants.OneDaySecs,
+  execute: async function (args, context) {
+    let [name] = args;
+    let api = new Api(context);
+    let [search, configuration] = await Promise.all([
+      api.searchMovies(name),
+      api.getConfiguration(),
+    ]);
+    return search.results.map(movie => helpers.formatMovieForSchema(movie, constants.DefaultCountryCode, configuration));
+  },
 });
 
 pack.addFormula({
@@ -70,24 +96,26 @@ pack.addFormula({
   parameters: [
     coda.makeParameter({
       type: coda.ParameterType.String,
-      name: "name",
-      description: "The name of the TV show.",
+      name: "nameOrUrl",
+      description: "The name of the TV show, or its URL on TMDB.",
     }),
   ],
   resultType: coda.ValueType.Object,
   schema: schemas.ShowSchema,
   cacheTtlSecs: constants.OneDaySecs,
   execute: async function (args, context) {
-    let [name, country = constants.DefaultCountryCode] = args;
+    let [nameOrUrl, country = constants.DefaultCountryCode] = args;
     let api = new Api(context);
 
-    let id = name.match(constants.ShowUrlRegex)?.[1];
+    let id = nameOrUrl.match(constants.ShowUrlRegex)?.[1];
     if (!id) {
-      let {results} = await api.searchShows(name);
+      let {results} = await api.searchShows(nameOrUrl);
       id = results?.[0]?.id;
     }
     if (!id) {
-      throw new coda.UserVisibleError("TV show not found.");
+      return {
+        name: "TV Show not found",
+      };
     }
     let [show, configuration] = await Promise.all([
       api.getShow(id),
@@ -103,4 +131,28 @@ pack.addColumnFormat({
   instructions: "Type the name of the TV show.",
   formulaName: "TVShow",
   matchers: [constants.ShowUrlRegex],
+});
+
+pack.addFormula({
+  name: "SearchTVShows",
+  description: "Find a TV show in the database.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "name",
+      description: "The name of the show.",
+    }),
+  ],
+  resultType: coda.ValueType.Array,
+  items: schemas.ShowSchema,
+  cacheTtlSecs: constants.OneDaySecs,
+  execute: async function (args, context) {
+    let [name] = args;
+    let api = new Api(context);
+    let [search, configuration] = await Promise.all([
+      api.searchShows(name),
+      api.getConfiguration(),
+    ]);
+    return search.results.map(show => helpers.formatShowForSchema(show, constants.DefaultCountryCode, configuration));
+  },
 });

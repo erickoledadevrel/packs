@@ -6,19 +6,21 @@ export function formatMovieForSchema(movie, country: string, configuration) {
   if (movie.runtime) {
     movie.runtime = movie.runtime + " mins";
   }
-  movie.rating = movie.release_dates.results
+  movie.rating = movie.release_dates?.results
     ?.find(releasesByCountry => releasesByCountry.iso_3166_1 == country)
     ?.release_dates
     .sort((a, b) => a.release_date.localeCompare(b.release_date))
     [0].certification;
+  return movie;
 }
 
 export function formatShowForSchema(show, country: string, configuration) {
   formatCommonForSchema(show, configuration);
   show.link = `https://www.themoviedb.org/tv/${show.id}`;
-  show.rating = show.content_ratings.results
+  show.rating = show.content_ratings?.results
     ?.find(ratingByCountry => ratingByCountry.iso_3166_1 == country)
     ?.rating;
+  return show;
 }
 
 function formatCommonForSchema(common, configuration) {
@@ -40,6 +42,7 @@ function formatCommonForSchema(common, configuration) {
   if (common.backdrop_path) {
     common.backdrop_path = coda.joinUrl(baseUrl, getLargestStandardSize(configuration.images.backdrop_sizes), common.backdrop_path);
   }
+  return common;
 }
 
 function getLargestStandardSize(sizes: string[]): string {
