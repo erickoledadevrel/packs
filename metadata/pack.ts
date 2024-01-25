@@ -171,21 +171,33 @@ function getMetdata(url, html) {
       let [query, func] = rule;
       let elem = $(query).get(0);
       if (elem) {
-        elem.getAttribute = getAttribute;
+        upgradeElement(elem, $);
         value = func(elem);
         if (value) {
-          if (config.processor) {
-            value = config.processor(value, context);
-          }
           break;
         }
       }
+    }
+    if (!value && config.defaultValue) {
+      value = config.defaultValue(context);
+    }
+    if (value && config.processor) {
+      value = config.processor(value, context);
     }
     result[key] = value;
   }
   return result;
 }
 
-function getAttribute (name) {
-  return this.attribs[name];
+function upgradeElement(elem, $) {
+  // Add elem.getAttribute("foo")
+  elem.getAttribute = function (name) {
+    return this.attribs[name];
+  };
+  // Add elem.text
+  Object.defineProperty(elem, "text", {
+    get() {
+      return $(elem).text();
+    }
+  });
 }
