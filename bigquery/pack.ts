@@ -148,3 +148,60 @@ pack.addFormula({
     return JSON.stringify(parameter);
   },
 });
+
+pack.addFormula({
+  name: "NumberParameter",
+  description: "Define a number parameter, for use in parameterized queries.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "name",
+      description: "The name of the parameter.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.Number,
+      name: "value",
+      description: "The value of the parameter.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  connectionRequirement: coda.ConnectionRequirement.None,
+  execute: async function (args, context) {
+    let [name, value] = args;
+    let type = value % 1 === 0 ? "INT64" : "FLOAT64";
+    let parameter = {
+      name,
+      parameterType: {type},
+      parameterValue: {value},
+    };
+    return JSON.stringify(parameter);
+  },
+});
+
+pack.addFormula({
+  name: "BooleanParameter",
+  description: "Define a boolean parameter, for use in parameterized queries.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "name",
+      description: "The name of the parameter.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.Boolean,
+      name: "value",
+      description: "The value of the parameter.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  connectionRequirement: coda.ConnectionRequirement.None,
+  execute: async function (args, context) {
+    let [name, value] = args;
+    let parameter = {
+      name,
+      parameterType: {type: "BOOL"},
+      parameterValue: {value},
+    };
+    return JSON.stringify(parameter);
+  },
+});
