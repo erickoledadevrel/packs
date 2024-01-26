@@ -11,5 +11,7 @@ export const redirect = functions.https.onRequest(async (request, response) => {
     response.status(400).send("Missing parameter: url");
     return;
   }
+  console.log("User-Agent: %s, IP Address: %s, URL: %s",
+      request.headers["user-agent"], request.ip, url);
   response.redirect(url);
 });
