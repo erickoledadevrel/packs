@@ -40,6 +40,7 @@
       "type": "Free"
     }
   },
+  "sdkVersion": "1.5.1",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,
@@ -47,6 +48,7 @@
     "canTest": true,
     "canView": true,
     "canPurchase": false,
-    "requiresTrial": false
+    "requiresTrial": false,
+    "canConnectAccount": true
   }
 }

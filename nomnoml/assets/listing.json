@@ -1,0 +1,54 @@
+{
+  "packId": 28266,
+  "name": "nomnoml",
+  "description": "A picture is worth a thousand words, but with nomnoml you can create one with far fewer! Using a custom markup syntax you can easily draw diagrams from plain text.\n\n[egg] -> [caterpillar] -> [butterfly]\n\nSimply pass some markup into the Diagram() formula to get a pretty diagram! Check out the user guide below to get more information about the markup language and try it out.\n\nPowered by the nomnoml library created by Daniel Kallin.",
+  "shortDescription": "Draw UML diagrams based on a simple syntax.",
+  "logoUrl": "https://codahosted.io/packs/28266/unversioned/assets/LOGO/c3b9e79e3670b4668ec35bb9986b09cece62df5f869ad054e3484ec876bf7f072208a604489a43b3fc58938b7886819cba86ce6b7102f62c4576b9d653a0b49aed70ccb130a4d2cc41f626f9485ab585da6e009bec83cf08d444fe2fedadae054d8e511e",
+  "coverUrl": "https://codahosted.io/packs/28266/unversioned/assets/COVER/359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a",
+  "packVersion": "2",
+  "releaseId": 1,
+  "lastReleasedAt": "2024-02-01T18:10:55.339Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/28266/2/metadata/5eef5a217d5767f9846d4143fe003ef304b33840ac0451a132f1bdb5a3343ac250b78273abce333f1b794d9c640051d470763be7b84c5b3bf6344e4e2326604123cf21bef1502938da43ad4ca893b1541662e9dca3b98cba69247470f5cc04dd6a55c957.json",
+  "categories": [
+    {
+      "categoryId": "5b2f676a-1700-4feb-bc90-9a6a6715edfd",
+      "categoryName": "IT admins",
+      "categorySlug": "it-admins"
+    },
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "611068c2-1aee-41b7-98b5-3e04ff52aea2",
+    "packId": 28266,
+    "createdAt": "2024-02-01T01:59:29.093Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.4",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

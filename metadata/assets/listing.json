@@ -5,10 +5,10 @@
   "shortDescription": "Get the title, icon, and other metadata for any URL.",
   "logoUrl": "https://codahosted.io/packs/17088/unversioned/assets/LOGO/c44e5552eecc081b8b364546b33d47140256fec4150ae380aec1d88753e42cd38a298ccd6be6913ccfc55771fb6fdaabed17d724cfa625b6491dae48ccef10e6434c1dd073fd5fa52da7d79a9cc94346aa0cc648e719f87c952649823b0e6126ba883153",
   "coverUrl": "https://codahosted.io/packs/17088/unversioned/assets/COVER/213b2b0d301b6003f358d2e363e23e62e0f30e8358e3ebfacdf617c61c8b161e74ca562e081b023cd29f49e760f3bc58846732cd44625f39e9f9493591849cde22a4a08d1c76477a7edb9e4f82587c8a7e038595c5724514f30f0962ba1786b7d933a45a",
-  "packVersion": "11",
-  "releaseId": 2,
-  "lastReleasedAt": "2023-05-20T19:15:45.842Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/17088/11/metadata/ed409572234ea14276fbef68f5372399ed08fdb7df7fafc69f634579486a5a02b7a2d00ac28d2ab0ffb10bf34a382a0ca44dc1cd87a500a28fb5063dbcf4c0b436d89de72256a730ef1307a8509b269a99e8ee339813c2be8f94ca557d1f954c43b0961e.json",
+  "packVersion": "12",
+  "releaseId": 3,
+  "lastReleasedAt": "2024-01-25T18:45:28.693Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/17088/12/metadata/b12499167d95c24a8be338ae3415e9b70add5072fa53078660ca39138e4265375367a60c38666992aeb66f7ea5b907e8bf2e8d395bee7d4d30f01b7c488ec709bf696f228383c6998b0d3441f0d7fd824c6ca5cd2d2c82606d1ee0247c5aa8a38f712fc9.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
@@ -21,7 +21,7 @@
   "makers": [
     {
       "name": "Eric Koleda",
-      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
       "employer": "Coda",
       "jobTitle": "Developer Advocate",
       "slug": "eric-koleda"
@@ -35,6 +35,7 @@
       "type": "Free"
     }
   },
+  "sdkVersion": "1.7.4",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,
@@ -42,6 +43,7 @@
     "canTest": true,
     "canView": true,
     "canPurchase": false,
-    "requiresTrial": false
+    "requiresTrial": false,
+    "canConnectAccount": true
   }
 }

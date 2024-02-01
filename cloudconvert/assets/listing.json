@@ -5,10 +5,10 @@
   "shortDescription": "Use an online file convert convert files and images to different formats.",
   "logoUrl": "https://codahosted.io/packs/25653/unversioned/assets/LOGO/646a02617d730f7cfb0ac3951cd7bd1185362a18ea311e80c581c5c4fc76c81ae7308b13b41ba47575a662136ffc0c135ec4b3be2133052accdc41401115a575ef60ab7dbbeec63c30174393a67e906a60d43e1de8872934d1218f957700c97812ebf464",
   "coverUrl": "https://codahosted.io/packs/25653/unversioned/assets/COVER/150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86",
-  "packVersion": "30",
-  "releaseId": 1,
-  "lastReleasedAt": "2023-10-06T21:36:12.711Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/25653/30/metadata/458c31e012e1b7348fa4f6530d21c5e9ab9b39b97bc6470fc70a9640f625c5a2b894fcea2508dccfe0fb6e707e007b41d40d76931efa0b41ad5ff24d624ba1dd159e28e8cd1e4807d8804f54bb7c3d22a974d05b0f887fdf20e777b1aa71cbda892bc7ee.json",
+  "packVersion": "40",
+  "releaseId": 3,
+  "lastReleasedAt": "2023-10-20T18:50:57.135Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/25653/40/metadata/6a2ac492be87eda16048302f920a0968c88d3f2fb53cb468144f90db438d249b0aa137ba5395beba024eb5321b98475820b4705ff9bc7a7b526f1de0deb1d39aa66dcae0959948a5e121564b681e1a35a79d2bb13120b8e57fd0f3bb5d954856d419505e.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
@@ -43,6 +43,7 @@
     "canTest": true,
     "canView": true,
     "canPurchase": false,
-    "requiresTrial": false
+    "requiresTrial": false,
+    "canConnectAccount": true
   }
 }

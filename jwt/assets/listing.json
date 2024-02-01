@@ -3,7 +3,7 @@
   "name": "JWT",
   "description": "",
   "shortDescription": "",
-  "logoUrl": "https://cdn.coda.io/assets/7f36f793e4e1/img/packs/default-pack-icon.png",
+  "logoUrl": "https://cdn.coda.io/assets/a740893f0aa7/img/packs/default-pack-icon.png",
   "packVersion": "9",
   "externalMetadataUrl": "https://codahosted.io/packs/24109/9/metadata/0c40d1317710756265f12d71d7e8fd93f54038a7cd9cbdac6c76f0bb2093914210eaa2d8f472f09cc43c5b975e96315f023f0971b12b83d527ea241b88be01a5b5a0b18c2971105833275be9b201ce3db8cdb8f9db7150a20e1549a520d298ec3145cc4e.json",
   "categories": [],
@@ -12,7 +12,7 @@
   "makers": [
     {
       "name": "Eric Koleda",
-      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
       "employer": "Coda",
       "jobTitle": "Developer Advocate",
       "slug": "eric-koleda"
@@ -26,6 +26,7 @@
       "type": "Free"
     }
   },
+  "sdkVersion": "1.4.0",
   "discoverability": "private",
   "userAccess": {
     "canEdit": true,
@@ -33,6 +34,7 @@
     "canTest": true,
     "canView": true,
     "canPurchase": false,
-    "requiresTrial": false
+    "requiresTrial": false,
+    "canConnectAccount": true
   }
 }

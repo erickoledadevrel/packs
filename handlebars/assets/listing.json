@@ -1,12 +1,14 @@
 {
   "packId": 25453,
   "name": "Handlebars Templates",
-  "description": "The Substitue() or RegexReplace() formulas are great for simple replacements, but when you have a ton of placeholders in your text they can get a bit cumbersome.\n\nThis Pack uses the Handlebars templating engine to make it easier to replace placeholders in templated text. Simply wrap your placeholders with double curly braces (like \"{{name}}\", etc) and then feel the values into the Template() formula to do the replacements.\n\n=Template(\"Hello {{name}}\", \"name\", \"World\") 🠮 \"Hello World\"\n\nIn addition to simple placeholder replacements, you can also use \"if\" statements to render text conditionally.\n\n    Hello {{name}. {{#if day}} Happy {{day}}! {{/if}}\n\nSee the documentation at https://handlebarsjs.com/ for more information about the templating language.\n\nIcon property of the Handlebars project.\nCover photo from Photo by Alan Hardman on Unsplash.\nPowered by the handlebars NPM library.",
+  "description": "The Substitue(), RegexReplace(), and Format() formulas are great for simple replacements, and the Compose column makes templated text easy, but for some really complex use cases you need something more.\n\nThis Pack uses the Handlebars templating engine to make it easier to replace placeholders in templated text. Simply wrap your placeholders with double curly braces (like \"{{name}}\", etc) and then feed the values into the Template() formula to do the replacements.\n\n=Template(\"Hello {{name}}\", \"name\", \"World\") 🠮 \"Hello World\"\n\nIn addition to simple placeholder replacements, you can also use \"if\" statements to render text conditionally.\n\n    Hello {{name}. {{#if day}} Happy {{day}}! {{/if}}\n\nSee the documentation at https://handlebarsjs.com/ for more information about the templating language.\n\nIcon property of the Handlebars project.\nCover photo from Photo by Alan Hardman on Unsplash.\nPowered by the handlebars NPM library.",
   "shortDescription": "Use the Handlebars templating engine to replace placeholders in text.",
   "logoUrl": "https://codahosted.io/packs/25453/unversioned/assets/LOGO/414faf9576ead40dc677c62c7341d6e4803c82e3adef09fd5a77bd2c23f27db8b9139fc726c98ce719623278985f52078860aafbe26fa17cf7d0c948278a5027ec04d21ae1a59861b89a7a73eff1c5acbaf202498a921130dd0e54f36ea56d8949a834a0",
   "coverUrl": "https://codahosted.io/packs/25453/unversioned/assets/COVER/f9085a2622596c410a1b45b6d5a480147bb4f00673a75a34953757f1841beb4548f2b35d020543d2babb0d50a7f409705683d96058283d842b581d479edfaf3b986b112967541afd333db972abe0d3578a12cc23df7844bd8f915a2bea03bb0049b609a1",
-  "packVersion": "13",
-  "externalMetadataUrl": "https://codahosted.io/packs/25453/13/metadata/28ec9459154fdafbf5c44d7124dae5b0ce55ef4ca602febd887dd6096bfab4e21120cc8fa4fc937045bd8f23e2b5974fc76ac4f84fe3dc2258107f0bf29232873c02869e9f3f9248bf06d8fdd903408829dbbee111c9bc060910665f9449b82a9b937286.json",
+  "packVersion": "31",
+  "releaseId": 5,
+  "lastReleasedAt": "2023-12-27T16:35:07.859Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/25453/31/metadata/6885790094b600512271afdeb1141ab804ca4bb1f4e7e3fb68680ac97160d944368273858846c42639df9f51d34d3c35f1e51a8f826abd092ef6718def537ab491a34a45cdbda5dabd9782c354eabfd88e419d7e8098569b723415ddcfb03a353a5d8d0d.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
@@ -33,13 +35,15 @@
       "type": "Free"
     }
   },
-  "discoverability": "private",
+  "sdkVersion": "1.7.3",
+  "discoverability": "public",
   "userAccess": {
     "canEdit": true,
     "canInstall": false,
     "canTest": true,
     "canView": true,
     "canPurchase": false,
-    "requiresTrial": false
+    "requiresTrial": false,
+    "canConnectAccount": true
   }
 }

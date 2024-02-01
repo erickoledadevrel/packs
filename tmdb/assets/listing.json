@@ -1,0 +1,49 @@
+{
+  "packId": 27791,
+  "name": "The Movie Database",
+  "description": "The Movie Database (TMDB) is a community built movie and TV database. Using this Pack you can quickly load key information about any movie or TV show in the collection simply by entering it's name.\n\nLogo and cover photo are the property of The Movie Database.",
+  "shortDescription": "Look up the details of your favorite movies and television shows.",
+  "logoUrl": "https://codahosted.io/packs/27791/unversioned/assets/LOGO/02a07668f1246fabe052c9c66a28c118432dc4862e79549c7fb86c566304af3a6cfeb37656ee2011ecdd085ddd57ecd4ca5fe5516b20cb404aa4125b80a0de6b20bb2777927b4fb386dfa806be39ff552441c6bfeb937f7f9680c4e6fb1bfc5421a2b9da",
+  "coverUrl": "https://codahosted.io/packs/27791/unversioned/assets/COVER/8640db39c2f512888516711580e552e84885c743508cb2b71bea271583918c4e38c424b20238107f1faf3873b4314e924b4dad033e0c64c5ca9862be67fb7412246a320743b058f78a0c570fd50f522c009c172c4c26180537fbb3661bbb13d96bc8707b",
+  "packVersion": "20",
+  "releaseId": 2,
+  "lastReleasedAt": "2024-01-17T14:22:34.278Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/27791/20/metadata/03a437b2de562e5a49c5da8707a282d185c6bf93e4282f3c05fcb42b5a84b3fde4b460f728d1a420062aaf9217524ac7d4e653de15a87782b4ccc472485c227a5102e5155e8a405a25ab641639b9e2df52297c155f9e6bdfabba628957ef90456a92c11f.json",
+  "categories": [
+    {
+      "categoryId": "5e87a243-6d99-4197-9d54-fba2c990dc7a",
+      "categoryName": "Entertainment",
+      "categorySlug": "entertainment"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "6c224c94-f27b-42b6-ab96-017e70871ef0",
+    "packId": 27791,
+    "createdAt": "2024-01-09T18:50:39.696Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.4",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

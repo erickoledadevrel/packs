@@ -1,27 +1,25 @@
 {
-  "packId": 26363,
-  "name": "BigQuery Pack for Coda",
-  "description": "This Pack is currently in public beta.",
+  "packId": 27680,
+  "name": "BigQuery",
+  "description": "TODO\n\nIcon property of Google LLC.\nCover photo by JJ Ying on Unsplash.\n  ",
   "shortDescription": "Query your Google Cloud BigQuery tables in Coda.",
-  "logoUrl": "https://codahosted.io/packs/26363/unversioned/assets/LOGO/a5c57ea47f8523b967464112705fbea0a5e35b549716c94b1015188a4611ad34eb779f47590d253deeaf2299511a5e6652b63c3b8dc5c0caa9990d56861b9eadf773c39c4c41ff7e28e6a50e5f6d9aff7a07973dcdcac633336dd8575f5545f771b45955",
-  "packVersion": "47",
-  "releaseId": 2,
-  "lastReleasedAt": "2023-11-10T14:47:56.137Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/26363/47/metadata/66422ca87b4d12e588fa75d24a3c1366fc2eed67744f8c46cbf17697b54409af5292174464969c566f78994e9af8a785e41a21f3ec990987d9d30c258fe10d7972b221d99326326a38e9add8735fc3f472dafbe083025200f240c439f14c5758721709a3.json",
+  "logoUrl": "https://codahosted.io/packs/27680/unversioned/assets/LOGO/e99ab04eece68536e86468d88eb6a60933d5f71857122343d9e5f1f5a369b091c96ac318ce7727526c8c6536d76203b97aeff07c6902855a2674ab2021f505bd3a828cae593b4a4738e6060539b33338099ce26c0c5ebd88b94e3881ab52f73be820ca83",
+  "coverUrl": "https://codahosted.io/packs/27680/unversioned/assets/COVER/17885894ddca81f42d0c79415abb36898e704866b826a67f47c222b8568176085243306646c81310bc8e7fdebc396c57a686dd644393e44bac5cf7a3912e42f8c2e232ff6506080687b871cc3bcf8bac54545138a4737c24a970c6c471eeb86dea6bc5a2",
+  "packVersion": "8",
+  "externalMetadataUrl": "https://codahosted.io/packs/27680/8/metadata/2362d00d3c762564279a65be49d644dc6346cef29bf94bf26dfea540d5b6ec268d348ff9a256202dd4bd58da76d09b399e524dbf5a5c139d6f75c1b9fe851f3c5e3a45f940e5054caea6a74966abd238d5a75614814c3e11df57371d9a1b7ce70e05d794.json",
   "categories": [
-    {
-      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
-      "categoryName": "Engineering",
-      "categorySlug": "engineering"
-    },
     {
       "categoryId": "5b2f676a-1700-4feb-bc90-9a6a6715edfd",
       "categoryName": "IT admins",
       "categorySlug": "it-admins"
+    },
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
     }
   ],
   "supportEmail": "packs@erickoleda.com",
-  "privacyPolicyUrl": "https://coda.io/@eric-koleda/get-started-with-the-bigquery-pack-for-coda/privacy-policy-2",
   "sourceCodeVisibility": "private",
   "makers": [
     {
@@ -33,21 +31,22 @@
     }
   ],
   "standardPackPlan": {
-    "packPlanId": "47fc1249-2e9f-4b05-8b61-0b014a2f8f77",
-    "packId": 26363,
-    "createdAt": "2023-11-04T13:17:55.869Z",
+    "packPlanId": "c61f0f92-95cc-4a6d-a3cc-71df8d47aebd",
+    "packId": 27680,
+    "createdAt": "2024-01-05T00:41:24.855Z",
     "pricing": {
       "type": "Free"
     }
   },
-  "sdkVersion": "1.7.0",
-  "discoverability": "public",
+  "sdkVersion": "1.7.3",
+  "discoverability": "private",
   "userAccess": {
     "canEdit": true,
     "canInstall": false,
     "canTest": true,
     "canView": true,
     "canPurchase": false,
-    "requiresTrial": false
+    "requiresTrial": false,
+    "canConnectAccount": true
   }
 }

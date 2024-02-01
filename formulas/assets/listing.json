@@ -1,7 +1,7 @@
 {
   "packId": 13219,
-  "name": "Formula Info",
-  "description": "If you're like me, you have a permanent tab open to coda.io/formulas. It contains a wealth of information about all the formulas in the Coda formula language. \n\nBut what if you could have all of that information inside of a Coda doc itself! 🤯\n\nThe Formula Info Pack allows you to do just that. Pull information about a single formula using the Formula() formula, or get a table of all formulas using the Formulas table.",
+  "name": "Formula Metadata",
+  "description": "If you're like me, you have a permanent tab open to coda.io/formulas. It contains a wealth of information about all the formulas in the Coda formula language. \n\nBut what if you could have all of that information inside of a Coda doc itself! 🤯\n\nThe Formula Metadata Pack allows you to do just that. Pull information about a single formula using the Formula() formula, or get a table of all formulas using the Formulas table.",
   "shortDescription": "Get information about the formulas in the Coda formula language.",
   "logoUrl": "https://codahosted.io/packs/13219/unversioned/assets/LOGO/421d3e81fba33085b8c50756732f950c06e55e9eb8219a3d2fd7dd3db4cf4b1edaa0964003762a85cebeeb2082d9c1b64b2f9af6d7ad3522e3df3f155507a7d1854ce3151f5952a03e7990539aaf3a5ceeae4e92abfb98249baae5c686b5a6051faea913",
   "coverUrl": "https://codahosted.io/packs/13219/unversioned/assets/COVER/817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4",
@@ -21,7 +21,7 @@
   "makers": [
     {
       "name": "Eric Koleda",
-      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtdRzs8QW-zHag3Y1T6V201Efu2tuZf2s5hHf-WR65P5mds%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=1d0630e7e48d4605fd8abfd19a143ae7",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
       "employer": "Coda",
       "jobTitle": "Developer Advocate",
       "slug": "eric-koleda"
@@ -35,6 +35,7 @@
       "type": "Free"
     }
   },
+  "sdkVersion": "1.3.1",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,
@@ -42,6 +43,7 @@
     "canTest": true,
     "canView": true,
     "canPurchase": false,
-    "requiresTrial": false
+    "requiresTrial": false,
+    "canConnectAccount": true
   }
 }
