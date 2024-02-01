@@ -26,6 +26,7 @@
     "metadata-scraper": "^0.2.61",
     "mime-types": "^2.1.35",
     "node-spintax": "^1.0.4",
+    "nomnoml": "^1.6.2",
     "number-abbreviate": "^2.0.0",
     "parse-data-uri": "^0.2.0",
     "regex-escape": "^3.4.10",
