@@ -1,0 +1,14 @@
+diff --git a/node_modules/ajv/dist/compile/index.js b/node_modules/ajv/dist/compile/index.js
+index b125ecd..74d89cd 100644
+--- a/node_modules/ajv/dist/compile/index.js
++++ b/node_modules/ajv/dist/compile/index.js
+@@ -86,7 +86,8 @@ function compileSchema(sch) {
+         if (this.opts.code.process)
+             sourceCode = this.opts.code.process(sourceCode, sch);
+         // console.log("\n\n\n *** \n", sourceCode)
+-        const makeValidate = new Function(`${names_1.default.self}`, `${names_1.default.scope}`, sourceCode);
++        const F = () => Function
++        const makeValidate = new (F())(`${names_1.default.self}`, `${names_1.default.scope}`, sourceCode);
+         const validate = makeValidate(this, this.scope.get());
+         this.scope.value(validateName, { ref: validate });
+         validate.errors = null;

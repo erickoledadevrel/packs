@@ -1,0 +1,12 @@
+diff --git a/node_modules/@dicebear/converter/package.json b/node_modules/@dicebear/converter/package.json
+index 7c707b0..7816e3b 100644
+--- a/node_modules/@dicebear/converter/package.json
++++ b/node_modules/@dicebear/converter/package.json
+@@ -19,7 +19,6 @@
+   "main": "./lib/node/index.js",
+   "browser": "./lib/index.js",
+   "exports": {
+-    "node": "./lib/node/index.js",
+     "default": "./lib/index.js"
+   },
+   "types": "./lib/index.d.ts",
