@@ -1,10 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
 import * as rs from "jsrsasign";
 
-export const pack = coda.newPack();
-
 const OneDaySecs = 24 * 60 * 60;
-
 const Algorithms = [
   "HS256",
   "HS384",
@@ -27,6 +24,8 @@ const JWTSchema = coda.makeObjectSchema({
   },
   displayProperty: "payload",
 });
+
+export const pack = coda.newPack();
 
 pack.addFormula({
   name: "JWT",
@@ -66,37 +65,6 @@ pack.addFormula({
   execute: async function (args, context) {
     let [header, payload, algorithm, key, passcode] = args;
     return rs.jws.JWS.sign(algorithm, header, payload, key, passcode);
-  },
-});
-
-pack.addFormula({
-  name: "JSONObject",
-  description: "Create a JSON object from key value pairs. Can be used as the JWT header or payload.",
-  parameters: [],
-  varargParameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
-      name: "key",
-      description: "The key in the object.",
-    }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
-      name: "value",
-      description: "The value to store under that key.",
-    }),
-  ],
-  resultType: coda.ValueType.String,
-  cacheTtlSecs: OneDaySecs,
-  onError: onError,
-  execute: async function (args, context) {
-    let input = [...args];
-    let result: Record<string, string> = {};
-    while (input.length > 0) {
-      let [key, value, ...rest] = input;
-      result[key] = value;
-      input = rest;
-    }
-    return JSON.stringify(result);
   },
 });
 
@@ -186,6 +154,38 @@ pack.addFormula({
   },
 });
 
+pack.addFormula({
+  name: "JSONObject",
+  description: "Create a JSON object from key value pairs. Can be used as the JWT header or payload.",
+  parameters: [],
+  varargParameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "key",
+      description: "The key in the object.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "value",
+      description: "The value to store under that key.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  cacheTtlSecs: OneDaySecs,
+  onError: onError,
+  execute: async function (args, context) {
+    let input = [...args];
+    let result: Record<string, string> = {};
+    while (input.length > 0) {
+      let [key, value, ...rest] = input;
+      result[key] = value;
+      input = rest;
+    }
+    return JSON.stringify(result);
+  },
+});
+
 function onError(e) {
   throw new coda.UserVisibleError(e);
 }
+
