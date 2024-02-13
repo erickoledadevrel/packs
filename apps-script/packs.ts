@@ -106,7 +106,7 @@ pack.addFormula({
     coda.makeParameter({
       type: coda.ParameterType.String,
       name: "contentType",
-      description: `The MIME type of the body content, avalable in Apps Script at "e.postData.type". Only supported when the method is "POST" and a body is specified. Default: "${DefaultRequestContentType}".`,
+      description: `The MIME type of the body content, available in Apps Script at "e.postData.type". Only supported when the method is "POST" and a body is specified. Default: "${DefaultRequestContentType}".`,
       optional: true,
     }),
   ],
