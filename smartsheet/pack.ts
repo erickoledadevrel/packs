@@ -134,7 +134,7 @@ pack.addDynamicSyncTable({
     });
     for (let column of sheet.columns) {
       if (selectedColumnIds && !selectedColumnIds.includes(column.id)) continue;
-      let propertyName = column.title;
+      let propertyName = `${column.title} Col${String(column.id)}`;
       let converter = getConverter(column, sheet, settings);
       schema.properties[propertyName] = converter.getSchema();
       schema.featuredProperties.push(propertyName);
@@ -160,7 +160,7 @@ pack.addDynamicSyncTable({
       coda.makeParameter({
         type: coda.ParameterType.String,
         name: "filter",
-        description: "The filter (ID) to apply.",
+        description: "The filter to apply.",
         optional: true,
         autocomplete: async function (context) {
           let sheet = await getSheet(context, context.sync.dynamicUrl);
@@ -170,7 +170,7 @@ pack.addDynamicSyncTable({
       coda.makeParameter({
         type: coda.ParameterType.StringArray,
         name: "columns",
-        description: "The columns (IDs) to include.",
+        description: "The columns to include.",
         optional: true,
         autocomplete: async function (context) {
           let sheet = await getSheet(context, context.sync.dynamicUrl);

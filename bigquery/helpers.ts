@@ -34,7 +34,7 @@ function getColumnValue(field, value) {
   }
 }
 
-function getColumnSchema(field): coda.Schema {
+function getColumnSchema(field): coda.Schema & coda.ObjectSchemaProperty {
   if (field.mode == "REPEATED") {
     return {
       type: coda.ValueType.Array,
@@ -72,6 +72,7 @@ export function getSchema(schema, baseSchema?): coda.GenericObjectSchema {
   });
   for (let field of schema.fields) {
     let propertySchema = getColumnSchema(field);
+    propertySchema.displayName = field.name;
     result.properties[field.name] = propertySchema;
   }
   return result;

@@ -47,6 +47,8 @@ abstract class ColumnConverter<T, C> {
     schema.fixedId = String(this.column.id);
     schema.fromKey = String(this.column.id);
     schema.mutable = !this.column.systemColumnType;
+    schema.displayName = this.column.title;
+    schema.description = this.column.description;
     return schema;
   }
 

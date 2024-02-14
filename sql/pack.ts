@@ -163,7 +163,10 @@ pack.addDynamicSyncTable({
       let statement = validateQuery(db, query, values);
       let columns = statement.getColumnNames();
       for (let column of columns) {
-        properties[column] = { type: coda.ValueType.String };
+        properties[column] = {
+          type: coda.ValueType.String,
+          displayName: column,
+        };
       }
     }
     return coda.makeObjectSchema({

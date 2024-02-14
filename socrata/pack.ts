@@ -167,7 +167,6 @@ pack.addDynamicSyncTable({
     for (let column of dataset.columns) {
       let fieldName = column.fieldName;
       let dataType = column.dataTypeName;
-      let description = column.description;
 
       if (fieldName.startsWith(":")) {
         // Skip internal fields.
@@ -181,7 +180,9 @@ pack.addDynamicSyncTable({
 
       schema.properties[fieldName] = {
         ...fieldSchema,
-        description: description,
+        displayName: column.name,
+        description: column.description,
+        fixedId: String(column.id),
       };
     }
 
@@ -466,6 +467,7 @@ interface Dataset {
 
 // A dataset column definition.
 interface DatasetColumn {
+  id: number;
   name: string;
   description: string;
   fieldName: string;

@@ -36,7 +36,10 @@ pack.addDynamicSyncTable({
     };
     let featuredProperties = [];
     for (let column of columns) {
-      properties[column.name] = getColumnSchema(column.type);
+      let prop = getColumnSchema(column.type);
+      prop.fixedId = column.name;
+      prop.displayName = column.name;
+      properties[column.name] = prop;
       featuredProperties.push(column.name);
     }
     let idProperty = "rowId";
@@ -175,7 +178,7 @@ function parseColumn(column: string): any {
   }
 }
 
-function getColumnSchema(columnType: string): coda.Schema {
+function getColumnSchema(columnType: string): coda.Schema & coda.ObjectSchemaProperty {
   switch (columnType) {
     case "Airport Elevation (Feet)":
     case "Airport Latitude":
