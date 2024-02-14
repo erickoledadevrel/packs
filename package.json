@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@codahq/packs-sdk": "^1.7.4",
+    "@codahq/packs-sdk": "^1.7.5",
     "@dicebear/collection": "^7.0.4",
     "@dicebear/core": "^7.0.4",
     "airport-codes": "^1.0.2",
