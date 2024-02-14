@@ -89,6 +89,27 @@ pack.addDynamicSyncTable({
     }
     return results;
   },
+  searchDynamicUrls: async function (context, search) {
+    let url = coda.withQueryParams("https://api.smartsheet.com/2.0/search", {
+      query: search,
+      scopes: "sheetNames",
+    })
+    let response = await context.fetcher.fetch({
+      method: "GET",
+      url: url,
+    });
+    let items = response.body.results ?? [];
+    return items
+      .filter(item => item.objectType == "sheet")
+      .map(item => {
+        let label = item.text;
+        if (item.contextData?.length > 0) {
+          label += ` (${item.contextData[0]})`;
+        }
+        let url = `https://api.smartsheet.com/2.0/sheets/${item.objectId}`;
+        return {display: label, value: url};
+      });
+  },
   getName: async function (context) {
     let sheetUrl = context.sync.dynamicUrl;
     let response = await context.fetcher.fetch({
