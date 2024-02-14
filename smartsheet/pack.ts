@@ -1,7 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
 import { getConverter } from "./convert";
-import { Attachment, CodaRow, Row, Sheet, SheetFormatSettings } from "./types";
-import { getSheet, syncSheet, updateRows, getRows, getAttachment } from "./api";
+import { CodaRow, Row, Sheet, SheetFormatSettings } from "./types";
+import { getSheet, syncSheet, updateRows, getRows } from "./api";
 
 export const pack = coda.newPack();
 
@@ -9,7 +9,6 @@ const HomeUrl = "https://api.smartsheet.com/2.0/folders/personal";
 const WorkspacesUrl = "https://api.smartsheet.com/2.0/workspaces";
 export const PageSize = 100;
 const IdParameterRegex = /^.*\((\d+)\)$/;
-const AttachmentsPropertyKey = "attachments";
 
 const BaseRowSchema = coda.makeObjectSchema({
   properties: {
@@ -101,7 +100,7 @@ pack.addDynamicSyncTable({
   },
   getSchema: async function (context, _, args) {
     let sheetUrl = context.sync.dynamicUrl;
-    let {columns, useColumnTypes, includeAttachments} = args;
+    let {columns, useColumnTypes} = args;
     let selectedColumnIds = columns?.map(column => parseIdParameter(column));
     let settings: SheetFormatSettings = {useColumnTypes};
 
@@ -112,15 +111,6 @@ pack.addDynamicSyncTable({
         ...BaseRowSchema.properties,
       }
     });
-    if (includeAttachments) {
-      schema.properties[AttachmentsPropertyKey] = {
-        type: coda.ValueType.Array,
-        items: {
-          type: coda.ValueType.String,
-          codaType: coda.ValueHintType.Attachment,
-        },
-      };
-    }
     for (let column of sheet.columns) {
       if (selectedColumnIds && !selectedColumnIds.includes(column.id)) continue;
       let propertyName = column.title;
@@ -173,19 +163,13 @@ pack.addDynamicSyncTable({
         optional: true,
         suggestedValue: true,
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.Boolean,
-        name: "includeAttachments",
-        description: "Whether or not to download files attached to the rows.",
-        optional: true,
-      }),
     ],
     execute: async function (args, context) {
-      let [filter, columns, useColumnTypes = false, includeAttachments = false] = args;
+      let [filter, columns, useColumnTypes = false] = args;
       let filterId = parseIdParameter(filter);
       let columnIds = columns?.map(column => parseIdParameter(column));
       let page = context.sync.continuation?.page as number ?? 1;
-      let settings: SheetFormatSettings = {filterId, columnIds, useColumnTypes, includeAttachments, page};
+      let settings: SheetFormatSettings = {filterId, columnIds, useColumnTypes, page};
       let sheetUrl = context.sync.dynamicUrl;
       let sheet = await syncSheet(context, sheetUrl, settings);
       let result = await Promise.all(sheet.rows.map(row => {
@@ -203,8 +187,8 @@ pack.addDynamicSyncTable({
     maxUpdateBatchSize: PageSize,
     executeUpdate: async function (args, updates, context) {
       let sheetUrl = context.sync.dynamicUrl;
-      let [_filter, _columns, useColumnTypes = false, includeAttachments = false] = args;
-      let settings: SheetFormatSettings = {useColumnTypes, includeAttachments};
+      let [_filter, _columns, useColumnTypes = false] = args;
+      let settings: SheetFormatSettings = {useColumnTypes};
       let sheet = await getSheet(context, sheetUrl);
       let rows = updates.map(update => {
         let row = Object.fromEntries(
@@ -242,12 +226,6 @@ async function formatRowForSchema(context: coda.ExecutionContext, row: Row, shee
     id: String(row.id),
     rowNumber: row.rowNumber,
   };
-
-  if (settings.includeAttachments && row.attachments) {
-    let attachments = row.attachments.filter(att => att.attachmentType == "FILE");
-    attachments = await Promise.all(attachments.map(att => getAttachment(context, sheetUrl, att.id)));
-    result.attachments = attachments.map(att => att.url);
-  }
 
   for (let cell of row.cells ?? []) {
     let column = sheet.columns.find(c => c.id == cell.columnId);

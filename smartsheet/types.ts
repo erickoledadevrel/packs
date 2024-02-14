@@ -8,7 +8,6 @@ export interface Row {
   id: number;
   rowNumber?: number;
   cells: Cell<any>[];
-  attachments?: Attachment[];
 }
 
 export interface Column {
@@ -35,20 +34,9 @@ export interface Sheet {
   filteredRowCount: number;
 }
 
-export interface Attachment {
-  id: number;
-  attachmentType: "BOX_COM" | "DROPBOX*" | "EGNYTE*" | "EVERNOTE*" | "FILE" | "GOOGLE_DRIVE" | "LINK" | "ONEDRIVE";
-  mimeType: string;
-  name: string;
-  url: string;
-  parentType: string;
-  parentId: number;
-}
-
 export interface CodaRow extends Record<string, any> {
   id: string;
   rowNumber: number;
-  attachments?: string[];
 }
 
 export interface CodaPerson {
@@ -60,6 +48,5 @@ export interface SheetFormatSettings {
   filterId?: number;
   columnIds?: number[];
   useColumnTypes?: boolean;
-  includeAttachments?: boolean;
   page?: number;
 }
