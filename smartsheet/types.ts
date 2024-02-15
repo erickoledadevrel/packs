@@ -7,6 +7,7 @@ export interface Cell<T> {
 export interface Row {
   id: number;
   rowNumber?: number;
+  permalink?: string;
   cells: Cell<any>[];
 }
 

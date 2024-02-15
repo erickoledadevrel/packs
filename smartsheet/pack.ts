@@ -21,6 +21,11 @@ const BaseRowSchema = coda.makeObjectSchema({
       type: coda.ValueType.Number,
       description: "The order of the row in the sheet. Useful for sorting."
     },
+    rowLink: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Url,
+      description: "A permalink to this row in the Smartsheet application.",
+    }
   },
   idProperty: "rowId",
   displayProperty: undefined,
@@ -241,11 +246,10 @@ pack.addDynamicSyncTable({
 });
 
 async function formatRowForSchema(context: coda.ExecutionContext, row: Row, sheet: Sheet, settings: SheetFormatSettings): Promise<CodaRow> {
-  let sheetUrl = context.sync.dynamicUrl;
-
   let result: CodaRow = {
     id: String(row.id),
     rowNumber: row.rowNumber,
+    rowLink: row.permalink,
   };
 
   for (let cell of row.cells ?? []) {

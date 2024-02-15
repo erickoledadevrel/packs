@@ -21,6 +21,7 @@ export async function syncSheet(context: coda.ExecutionContext, sheetUrl: string
     filterId: settings.filterId,
     exclude: 'filteredOutRows',
     columnIds: settings.columnIds,
+    include: "rowPermalink",
   });
   let response = await context.fetcher.fetch({
     method: "GET",
