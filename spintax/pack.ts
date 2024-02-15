@@ -122,7 +122,6 @@ pack.addFormula({
     },
   ],
   execute: async function (args, context) {
-    // TODO: Unpack the parameter values.
     let [format, ...allOptions] = args;
     for (let [i, options] of allOptions.entries()) {
       format = format.replace(new RegExp(`\\{${i + 1}\\}`, "g"), `{${options.filter(Boolean).join("|")}}`)
