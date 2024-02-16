@@ -1,5 +1,5 @@
 import * as coda from "@codahq/packs-sdk";
-import { parse } from 'but-csv';
+import { parse } from "but-csv";
 import { OneDaySecs } from "./constants";
 
 const AirportDataUrl = "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat";
