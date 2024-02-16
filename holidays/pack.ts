@@ -114,6 +114,10 @@ pack.addFormula({
     TypesParameter,
   ],
   resultType: coda.ValueType.Boolean,
+  examples: [
+    { params: [new Date("2024-12-25"), "US"], result: true },
+    { params: [new Date("2024-01-03"), "US"], result: false },
+  ],
   execute: async function (args, context) {
     let [
       date,
