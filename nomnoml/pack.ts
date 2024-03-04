@@ -25,3 +25,9 @@ pack.addFormula({
     return coda.SvgConstants.DataUrlPrefix + encoded;
   },
 });
+
+pack.addColumnFormat({
+  name: "Diagram",
+  instructions: "Enter nomnoml markup and it will be rendered as a diagram.",
+  formulaName: "Diagram",
+});
