@@ -22,6 +22,7 @@
     "handlebars": "^4.7.8",
     "hsl-to-hex": "^1.0.0",
     "hue-colors": "^0.5.4",
+    "ical-generator": "^6.0.1",
     "jsrsasign": "^10.8.6",
     "jszip": "^3.10.1",
     "lodash": "^4.17.21",
@@ -35,6 +36,7 @@
     "regex-escape": "^3.4.10",
     "seinfeldapi": "github:wdifruscio/seinfeld-api",
     "sql.js": "^1.8.0",
+    "text-encoding": "^0.7.0",
     "url-parse": "^1.5.10",
     "url-polyfill": "^1.1.12"
   },
