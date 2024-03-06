@@ -7,3 +7,4 @@ credentials.ts
 service-account.json
 *.bak
 bigquery/.coda-pack.json
+bigquery/assets
