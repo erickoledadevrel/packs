@@ -6,3 +6,4 @@ credentials.ts
 *.pem
 service-account.json
 *.bak
+bigquery/.coda-pack.json
