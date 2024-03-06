@@ -1,7 +1,11 @@
 import * as coda from "@codahq/packs-sdk";
-const crypto = require("crypto");
+import * as crypto from "crypto";
 import { ObjectTypeKey } from "./schemas";
 import { BaseQueryObjectSchema } from "./schemas";
+
+export function getProjectId(context: coda.ExecutionContext) {
+  return context.endpoint.split("#").pop();
+}
 
 export function formatObjectValue(obj, schema) {
   let result: Record<string, any> = {};
@@ -90,11 +94,9 @@ export function randomId() {
 }
 
 export function onError(error: Error) {
-  console.log("onError");
+  console.error(error)
   if (coda.StatusCodeError.isStatusCodeError(error) && error.statusCode != 401 && error.body?.error?.message) {
-    console.log(JSON.stringify(error.body));
     let message = error.body.error.message;
-    console.log(message);
     if (message.includes("CloudRegion")) {
       console.log("match");
       message = "Invalid project ID, or access hasn't been granted.";
