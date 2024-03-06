@@ -1,4 +1,6 @@
 import * as coda from "@codahq/packs-sdk";
+import * as emojidict from "emoji-dictionary";
+
 export const pack = coda.newPack();
 
 pack.addFormula({
@@ -73,10 +75,21 @@ pack.addFormula({
       name: "markdown",
       description: "The markdown to render.",
     }),
+    coda.makeParameter({
+      type: coda.ParameterType.Boolean,
+      name: "supportEmojiShortcodes",
+      description: `Render emoji shortcodes as the equivalent emoji. For example, :heart_eyes: => 😍.  Default: false.`,
+      optional: true,
+    }),
   ],
   resultType: coda.ValueType.String,
   codaType: coda.ValueHintType.Markdown,
-  execute: async function ([markdown], context) {
+  execute: async function ([markdown, supportEmojiShortcodes = false], context) {
+    if (supportEmojiShortcodes) {
+      for (let name of emojidict.names) {
+        markdown = markdown.replaceAll(`:${name}:`, emojidict.getUnicode(name))
+      }
+    }
     return markdown;
   },
 });
