@@ -1,7 +1,6 @@
 import * as coda from "@codahq/packs-sdk";
 import { PackSchema } from "./schemas";
 import { PackUrlRegexes, MetadataTypes } from "./constants";
-import { isNullOrUndefined } from "util";
 
 export function formatItem(context: coda.ExecutionContext, item: any) {
   if (!item.packId && item.id) {
@@ -72,7 +71,7 @@ function formatSyncTable(syncTable) {
 
 function formatParameter(parameter) {
   let result = { ...parameter };
-  result.type = coda.Type[result.type];
+  result.type = typeof result.type === 'number' ? coda.Type[result.type] : `array:${coda.Type[result.type.items]}`;
   result.isOptional = Boolean(parameter.optional);
   result.hasAutocomplete = Boolean(parameter.autocomplete);
   result.hasSuggestedValue = parameter.suggestedValue !== null && parameter.suggestedValue !== undefined;
