@@ -71,10 +71,19 @@ function formatSyncTable(syncTable) {
 
 function formatParameter(parameter) {
   let result = { ...parameter };
-  result.type = coda.Type[result.type];
-  result.isOptional = parameter.optional;
-  result.hasAutocomplete = parameter.autocomplete;
-  result.hasSuggestedValue = parameter.suggestedValue;
+  if (typeof result.type === 'number') {
+    result.type = coda.Type[result.type];
+  }  else if (typeof result.type === 'object' && result.type.type === "array") {
+    result.type = `Array:${coda.Type[result.type.items]}`
+    if (result.type.allowEmpty) {
+      result.type = 'Sparse'+result.type;
+    }
+  } else {
+    result.type = 'unknown'
+  }
+  result.isOptional = Boolean(parameter.optional);
+  result.hasAutocomplete = Boolean(parameter.autocomplete);
+  result.hasSuggestedValue = parameter.suggestedValue !== null && parameter.suggestedValue !== undefined;
   return result;
 }
 
