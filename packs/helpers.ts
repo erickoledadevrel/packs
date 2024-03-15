@@ -71,20 +71,27 @@ function formatSyncTable(syncTable) {
 
 function formatParameter(parameter) {
   let result = { ...parameter };
-  if (typeof result.type === 'number') {
-    result.type = coda.Type[result.type];
-  }  else if (typeof result.type === 'object' && result.type.type === "array") {
-    result.type = `Array:${coda.Type[result.type.items]}`
-    if (result.type.allowEmpty) {
-      result.type = 'Sparse'+result.type;
-    }
-  } else {
-    result.type = 'unknown'
-  }
+  result.type = getParameterType(result.type);
   result.isOptional = Boolean(parameter.optional);
   result.hasAutocomplete = Boolean(parameter.autocomplete);
   result.hasSuggestedValue = parameter.suggestedValue !== null && parameter.suggestedValue !== undefined;
   return result;
+}
+
+function getParameterType(type: number | coda.ArrayType<number>): string {
+  if (typeof type === 'number') {
+    return getTypeName(type);
+  }
+  let result = `${getTypeName(type.items)}Array`;
+  if (type.allowEmpty) {
+    result = 'Sparse' + result;
+  }
+  return result;
+}
+
+function getTypeName(type: number) {
+  let name = coda.Type[type];
+  return name.slice(0, 1).toUpperCase() + name.slice(1);
 }
 
 function formatColumnFormat(columnFormat) {
