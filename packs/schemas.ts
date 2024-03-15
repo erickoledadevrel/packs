@@ -25,6 +25,21 @@ const MakerSchema = coda.makeObjectSchema({
   displayProperty: "name",
 });
 
+const ParameterSchema = coda.makeObjectSchema({
+  properties: {
+    name: {type: coda.ValueType.String},
+    description: {type: coda.ValueType.String},
+    type: {
+      type: coda.ValueType.String,
+      description: "The data type of the parameter.",
+    },
+    isOptional: {type: coda.ValueType.Boolean},
+    hasAutocomplete: {type: coda.ValueType.Boolean},
+    hasSuggestedValue: {type: coda.ValueType.Boolean},
+  },
+  displayProperty: "name",
+});
+
 const FormulaSchema = coda.makeObjectSchema({
   properties: {
     name: {
@@ -43,6 +58,7 @@ const FormulaSchema = coda.makeObjectSchema({
       type: coda.ValueType.Boolean,
       description: "If the formula returns a card.",
     },
+    parameters: {type: coda.ValueType.Array, items: ParameterSchema},
   },
   displayProperty: "name",
 });
@@ -77,6 +93,7 @@ const SyncTableSchema = coda.makeObjectSchema({
       type: coda.ValueType.Boolean,
       description: "If the sync table is a dynamic schema.",
     },
+    parameters: {type: coda.ValueType.Array, items: ParameterSchema},
   },
   displayProperty: "name",
 });

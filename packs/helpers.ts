@@ -51,6 +51,7 @@ export async function addBuildingBlocks(context: coda.ExecutionContext, items: a
 function formatFormula(formula) {
   let result = { ...formula };
   let schema = formula.schema;
+  result.parameters = (formula.parameters ?? []).map(parameter => formatParameter(parameter));
   result.isCard = Boolean(schema) &&
     schema.type == "object" &&
     Boolean(schema.displayProperty || schema.titleProperty) &&
@@ -64,6 +65,16 @@ function formatSyncTable(syncTable) {
   result.canSearchDatasets = Boolean(syncTable.searchDynamicUrls);
   result.canEdit = syncTable.getter?.supportsUpdates;
   result.hasDynamicSchema = Boolean(syncTable.getSchema);
+  result.parameters = (syncTable.getter?.parameters ?? []).map(parameter => formatParameter(parameter));
+  return result;
+}
+
+function formatParameter(parameter) {
+  let result = { ...parameter };
+  result.type = coda.Type[result.type];
+  result.isOptional = parameter.optional;
+  result.hasAutocomplete = parameter.autocomplete;
+  result.hasSuggestedValue = parameter.suggestedValue;
   return result;
 }
 
