@@ -5,6 +5,14 @@
   "shortDescription": "Quickly calculate how long you've been on a streak.",
   "logoUrl": "https://codahosted.io/packs/19066/unversioned/assets/LOGO/cf1292bc910d04e75d4e7aa37232d3794e6cbdd94cc9ead2faf58c3c2590f84ce1dab6531a3c462c6ff6daf189f9af14061c642a55adf073db3ebf4ac8e23aa1cd86ca20d12d52d791fe6ab5f00c9a6fb509fcd0b2b0cff213cff5c7842fe7c5e0408423",
   "coverUrl": "https://codahosted.io/packs/19066/unversioned/assets/COVER/9aef584dcf95b58fd9b69da07bb63cab3faf8a617edd3c25b61fd81478d9e9093085e554bfbfa6e7491f77343b3e7aef1ebd984c5ccfe05377dfebd768b4951092742f6c0e23153bc00537dc0dce1d865e2d99da5025e0838ae56075ffa23cff1f0c8d25",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/19066/unversioned/assets/EXAMPLE/408c32afaf912506afe7fb903412d10fa8acaeec215a5223a950862fae268105fe3bbbdfae408e84dc296182462ce9c5de2baa194dd2f8dc8b72e6a60a37ed56df15caedac0445d1a6d8668afac36c32ca6189889c272ad29c18b3de0cb9372864cc9e64",
+      "filename": "pexels-richard-bartz-6299307 (Cover photo).jpg",
+      "mimeType": "image/jpeg",
+      "assetId": "408c32afaf912506afe7fb903412d10fa8acaeec215a5223a950862fae268105fe3bbbdfae408e84dc296182462ce9c5de2baa194dd2f8dc8b72e6a60a37ed56df15caedac0445d1a6d8668afac36c32ca6189889c272ad29c18b3de0cb9372864cc9e64"
+    }
+  ],
   "packVersion": "6",
   "releaseId": 1,
   "lastReleasedAt": "2023-01-21T03:01:16.510Z",

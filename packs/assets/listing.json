@@ -1,14 +1,21 @@
 {
   "packId": 16745,
   "name": "Packs Metadata",
-  "description": "It's a Pack called \"Packs\" with a sync table called \"Packs\" that lists all of the Packs, including itself, the Packs Pack.\n\nThere's also a formula called \"Pack\" and a column format called \"Pack\" that load information about a single Pack, such as the aforementioned Packs Pack.\n\nPACKS!\n\nIcon designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0\nCover photo by SHVETS production (via Pexels)",
+  "description": "It's a Pack with a sync table called \"Packs\" that lists all of the Packs, including itself.\n\nThere's also a formula called \"Pack\" and a column format called \"Pack\" that load information about a single Pack, including itself.\n\nPACKS!\n\nIcon designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0\nCover photo by SHVETS production (via Pexels)",
   "shortDescription": "It's a Pack that gets information about Packs. 🤯",
   "logoUrl": "https://codahosted.io/packs/16745/unversioned/assets/LOGO/ee27584b6d99f80e55ec682d37c438c7b46ba6185dc74d99058b8ac4ae8bab2d416a279dadac248734a27894492f94098e6ad4a7651db671c78daed2f61c88a362fd91db50e336c4818eab9d93b2eb129c45921eeb55c66378021464a0ffaa668e7abc20",
   "coverUrl": "https://codahosted.io/packs/16745/unversioned/assets/COVER/09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6",
-  "packVersion": "73",
-  "releaseId": 19,
-  "lastReleasedAt": "2023-10-03T20:14:19.337Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/16745/73/metadata/a3f70d85b6cd09664689f5fc070b86fa9a191619f4b312184268e4a66e752ccf91ea1b8c0da672c468cb42d8ee4b05fb1aa749d28e2d90d00a3a8723fd1124c333aa9f53107b472605d3be4abf04aa3548b06cbf680fe2e7122cd5cd5ab0ad904bc4e280.json",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/16745/unversioned/assets/EXAMPLE/09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6",
+      "filename": "Cover photo",
+      "assetId": "09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6"
+    }
+  ],
+  "packVersion": "75",
+  "releaseId": 21,
+  "lastReleasedAt": "2024-03-15T21:49:40.630Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/16745/75/metadata/2f230c35863d392da22a9e5ecb5166f697b1291c7119bd3ff177e812308a98f82bf7be915d8e284088c3c97db9b023652ef811dd12495274892395b216bb6d1ade131f29fc8570ceca9975d87812939a7ef21e03a0e98c11888562a5ed44b41228de0287.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
@@ -35,7 +42,7 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.5.1",
+  "sdkVersion": "1.7.5",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

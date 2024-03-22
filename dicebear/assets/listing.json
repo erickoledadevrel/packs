@@ -1,0 +1,61 @@
+{
+  "packId": 28372,
+  "name": "DiceBear",
+  "description": "Have you ever found yourself looking for a way to generate a user avatar in a Coda doc? Almost certainly not. But there are a few use cases I can think of:\n\n1) Creating a demo document, which you want to populate with some fake users.\n2) Building a team trivia game, where it would be fun for users to pick a player avatar.\n\nThis Pack uses the DiceBear API to generate random avatars based on a \"seed\" value, with a variety of options supported to allow you to customize the output.\n\nBe aware that the individual icon styles each have their own licensing terms, which you'll need to comply with.\n\nThis Pack is not affiliated with DiceBear.\nIcon property of DiceBear.",
+  "shortDescription": "The avatar library you've always been looking for.",
+  "logoUrl": "https://codahosted.io/packs/28372/unversioned/assets/LOGO/f8336d085ea07908459d85a033734c3c220c60684e04b929c5c7ec8fd3e37e10bd6270d1c1cdea1219d543f93f83e19a6108e9dc6ef010943d766dcd582a1eb8b820b59d17781734c6aab2c9fde08383f1fa842bf48e687b85c0bbc82dcd11ca29027d53",
+  "coverUrl": "https://codahosted.io/packs/28372/unversioned/assets/COVER/b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/28372/unversioned/assets/EXAMPLE/b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b",
+      "filename": "Cover photo",
+      "assetId": "b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b"
+    }
+  ],
+  "packVersion": "34",
+  "releaseId": 2,
+  "lastReleasedAt": "2024-02-07T21:32:32.647Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/28372/34/metadata/8f5833347d2a6af77f4b6e95721fdfcc8930ddfe9d98b1babe7faeb2ffad76769e9b2e5d97e084451432c8eccce60a1514358ea85fa31c104eacca042902b6d3ee8c095b7bad3c6091fb2585a365a658a84a6f69d7cf03a828477466232f68e8206f89f4.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "c0d883d8-1aaa-4c21-98b8-f7d4830f2a0c",
+      "categoryName": "Product design",
+      "categorySlug": "product-design"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "15377236-6296-4adb-80e1-3fac4c073e63",
+    "packId": 28372,
+    "createdAt": "2024-02-06T15:33:06.691Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.4",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

@@ -5,6 +5,13 @@
   "shortDescription": "Utility formulas for working with email addresses.",
   "logoUrl": "https://codahosted.io/packs/10827/unversioned/assets/LOGO/3dc0f0f6e455620c81cb9aae011953ed601c14db175ba40db58baf97651047745a754fc87a046a4d9d86e982b6503df92a39c45ff960afa2e61eec042cebded0924e3d85d36eba7a61ec213f9fabb547e5a10c5fc73d3574c2089b84ceb3a69637c100bd",
   "coverUrl": "https://codahosted.io/packs/10827/unversioned/assets/COVER/d818c46ea9cc80dadb72f4dee32b5b18690f92e371e732d8d29aeff3ef98ccc1f32db4eb5a71d2548b58d95081785a89df40e0dd8c0bdfc71ed5d4a7b607af8c1ce453de17c51429c0bebf12ccafefe06656adc5d0977d377a83b980c19f75fbf91b9946",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/10827/unversioned/assets/EXAMPLE/d818c46ea9cc80dadb72f4dee32b5b18690f92e371e732d8d29aeff3ef98ccc1f32db4eb5a71d2548b58d95081785a89df40e0dd8c0bdfc71ed5d4a7b607af8c1ce453de17c51429c0bebf12ccafefe06656adc5d0977d377a83b980c19f75fbf91b9946",
+      "filename": "Cover photo",
+      "assetId": "d818c46ea9cc80dadb72f4dee32b5b18690f92e371e732d8d29aeff3ef98ccc1f32db4eb5a71d2548b58d95081785a89df40e0dd8c0bdfc71ed5d4a7b607af8c1ce453de17c51429c0bebf12ccafefe06656adc5d0977d377a83b980c19f75fbf91b9946"
+    }
+  ],
   "packVersion": "12",
   "releaseId": 2,
   "lastReleasedAt": "2022-08-25T02:03:37.759Z",

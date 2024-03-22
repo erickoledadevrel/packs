@@ -5,10 +5,17 @@
   "shortDescription": "Query tables across your Coda docs using SQL.",
   "logoUrl": "https://codahosted.io/packs/16509/unversioned/assets/LOGO/11abeccc98a68f6f4bc0fc8973dae38c5a93e0ea0850de906f5198b167c2d36ff78d48f032cb2cfe5cd25595385179bb6853c1d01dab6e6c33a1fa1e85361536012403efe83c208e7fc36c15cd617ba6c4fe1f955718063f0ce3a98557f8bfb513c20fda",
   "coverUrl": "https://codahosted.io/packs/16509/unversioned/assets/COVER/787c4e0fca9bd0b2dbed67bd0b0735c9fb9e35c63e4b5c920adfb27cbebabecb1f9bfb962d5ad58c6af1cf6b317876341e640155c830404c97570dc18c215140d3ab06e8f1a280ffdc151c52218511feed7edd14900fe4cfb0c07e4599296982f85c4b12",
-  "packVersion": "16",
-  "releaseId": 1,
-  "lastReleasedAt": "2023-02-11T00:42:48.608Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/16509/16/metadata/2211852f720375202d2f3cc59dfb91aa8607efc65e3ba86f2c196a789f4ac19505f98a151fab3c1bbed8c3a001f1fde26aa0b8c0001fcaa7b137f35fbddd28b39863acfc5e614facd69c349754848c87506ccbc39552d821dd83f852540bf78ee9968eba.json",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/16509/unversioned/assets/EXAMPLE/787c4e0fca9bd0b2dbed67bd0b0735c9fb9e35c63e4b5c920adfb27cbebabecb1f9bfb962d5ad58c6af1cf6b317876341e640155c830404c97570dc18c215140d3ab06e8f1a280ffdc151c52218511feed7edd14900fe4cfb0c07e4599296982f85c4b12",
+      "filename": "Cover photo",
+      "assetId": "787c4e0fca9bd0b2dbed67bd0b0735c9fb9e35c63e4b5c920adfb27cbebabecb1f9bfb962d5ad58c6af1cf6b317876341e640155c830404c97570dc18c215140d3ab06e8f1a280ffdc151c52218511feed7edd14900fe4cfb0c07e4599296982f85c4b12"
+    }
+  ],
+  "packVersion": "18",
+  "releaseId": 2,
+  "lastReleasedAt": "2024-02-14T21:59:32.581Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/16509/18/metadata/b6d3502504a9211e68f36a80bc68b1b98e9c2a6106aa00f43ad378af6321848ec2357f66634d175e98e53bc7610be91af210460af38acfa81570fd004b75ed165c685969bf2e842bed90178a04d583b7b65966ca9a1556f0eadcf42883ccdefd4947d2d4.json",
   "categories": [
     {
       "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
@@ -37,7 +44,7 @@
       "currency": "USD"
     }
   },
-  "sdkVersion": "1.2.3",
+  "sdkVersion": "1.7.5",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

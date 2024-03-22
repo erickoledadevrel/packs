@@ -5,10 +5,17 @@
   "shortDescription": "Draw UML diagrams based on a simple syntax.",
   "logoUrl": "https://codahosted.io/packs/28266/unversioned/assets/LOGO/c3b9e79e3670b4668ec35bb9986b09cece62df5f869ad054e3484ec876bf7f072208a604489a43b3fc58938b7886819cba86ce6b7102f62c4576b9d653a0b49aed70ccb130a4d2cc41f626f9485ab585da6e009bec83cf08d444fe2fedadae054d8e511e",
   "coverUrl": "https://codahosted.io/packs/28266/unversioned/assets/COVER/359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a",
-  "packVersion": "2",
-  "releaseId": 1,
-  "lastReleasedAt": "2024-02-01T18:10:55.339Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/28266/2/metadata/5eef5a217d5767f9846d4143fe003ef304b33840ac0451a132f1bdb5a3343ac250b78273abce333f1b794d9c640051d470763be7b84c5b3bf6344e4e2326604123cf21bef1502938da43ad4ca893b1541662e9dca3b98cba69247470f5cc04dd6a55c957.json",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/28266/unversioned/assets/EXAMPLE/359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a",
+      "filename": "Cover photo",
+      "assetId": "359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a"
+    }
+  ],
+  "packVersion": "7",
+  "releaseId": 3,
+  "lastReleasedAt": "2024-03-15T15:25:17.433Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/28266/7/metadata/fa8e068a85e6a176d22dabf34f29051553ded06fe25e09f105d94058c99d27ae898aa4da998b000659173f391250881df34ba0a44c868afb94af7dee41582ae77e8e5cb50d349e80591579c524bf1be8b040775422ae739f42275e9792f1f4c5e93b25fe.json",
   "categories": [
     {
       "categoryId": "5b2f676a-1700-4feb-bc90-9a6a6715edfd",
@@ -40,7 +47,7 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.7.4",
+  "sdkVersion": "1.7.5",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

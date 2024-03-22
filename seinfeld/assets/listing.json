@@ -5,6 +5,13 @@
   "shortDescription": "\"Would it kill you not to be so funny all the time?\"",
   "logoUrl": "https://codahosted.io/packs/19321/unversioned/assets/LOGO/4ae8ba605048d1f902cac3438508517ca55c4326b24fdcf2ff67a7c5faeb21f52ea61e344f98ef76525b4caa7d208b7abf7c21e0bc3dc5b6920f6ac3c50513063ee94724bfade889459c9a536cfe5b021c44e80708cdcf575e691a31c3be23511ceb8796",
   "coverUrl": "https://codahosted.io/packs/19321/unversioned/assets/COVER/8505834672f8e201211d961d154ce492a41250781759512f3bbc64d4f5d007321ef7b8808ebd5d4d6c1c1a6b8d64c5b68eb18a8ecf183e5b8e5ff860038346af78f932039555ca0afb57bff4a5f7745039e52286965cae8b226a935feaf5e0a9973ab567",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/19321/unversioned/assets/EXAMPLE/8505834672f8e201211d961d154ce492a41250781759512f3bbc64d4f5d007321ef7b8808ebd5d4d6c1c1a6b8d64c5b68eb18a8ecf183e5b8e5ff860038346af78f932039555ca0afb57bff4a5f7745039e52286965cae8b226a935feaf5e0a9973ab567",
+      "filename": "Cover photo",
+      "assetId": "8505834672f8e201211d961d154ce492a41250781759512f3bbc64d4f5d007321ef7b8808ebd5d4d6c1c1a6b8d64c5b68eb18a8ecf183e5b8e5ff860038346af78f932039555ca0afb57bff4a5f7745039e52286965cae8b226a935feaf5e0a9973ab567"
+    }
+  ],
   "packVersion": "7",
   "releaseId": 2,
   "lastReleasedAt": "2023-08-03T19:41:34.909Z",

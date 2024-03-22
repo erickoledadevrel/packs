@@ -5,6 +5,13 @@
   "shortDescription": "Abbreviate numbers using letter suffixes (1.2k, 4m, etc)",
   "logoUrl": "https://codahosted.io/packs/13400/unversioned/assets/LOGO/1523eb8f46fa6a0bfdd845eedd2eb7f05ed91d49b5c2bc304c4b811cd101aabfcf571f9ba0818370fe6678e14c1083626f85eea1f5771ad43d22a22c87525340e784a15ec7107bb3dc84573d1182182303e7a46403751a71a95bc795ab869cc784665089",
   "coverUrl": "https://codahosted.io/packs/13400/unversioned/assets/COVER/145a04e1ac3197c57349cbd5a8cccb29e4895d992e96de435cbac380374423de58fccd7ad6a04441939f37bf3d7a5ffad115ffc426f65cc62545471ecd684ba8d47a516f5001e06cf0f81f4509be75265df4612275bca341ff5486ce56a25b541c1fdd60",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/13400/unversioned/assets/EXAMPLE/145a04e1ac3197c57349cbd5a8cccb29e4895d992e96de435cbac380374423de58fccd7ad6a04441939f37bf3d7a5ffad115ffc426f65cc62545471ecd684ba8d47a516f5001e06cf0f81f4509be75265df4612275bca341ff5486ce56a25b541c1fdd60",
+      "filename": "Cover photo",
+      "assetId": "145a04e1ac3197c57349cbd5a8cccb29e4895d992e96de435cbac380374423de58fccd7ad6a04441939f37bf3d7a5ffad115ffc426f65cc62545471ecd684ba8d47a516f5001e06cf0f81f4509be75265df4612275bca341ff5486ce56a25b541c1fdd60"
+    }
+  ],
   "packVersion": "3",
   "releaseId": 2,
   "lastReleasedAt": "2022-07-19T19:12:20.766Z",

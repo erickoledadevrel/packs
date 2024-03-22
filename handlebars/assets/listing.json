@@ -5,6 +5,14 @@
   "shortDescription": "Use the Handlebars templating engine to replace placeholders in text.",
   "logoUrl": "https://codahosted.io/packs/25453/unversioned/assets/LOGO/414faf9576ead40dc677c62c7341d6e4803c82e3adef09fd5a77bd2c23f27db8b9139fc726c98ce719623278985f52078860aafbe26fa17cf7d0c948278a5027ec04d21ae1a59861b89a7a73eff1c5acbaf202498a921130dd0e54f36ea56d8949a834a0",
   "coverUrl": "https://codahosted.io/packs/25453/unversioned/assets/COVER/f9085a2622596c410a1b45b6d5a480147bb4f00673a75a34953757f1841beb4548f2b35d020543d2babb0d50a7f409705683d96058283d842b581d479edfaf3b986b112967541afd333db972abe0d3578a12cc23df7844bd8f915a2bea03bb0049b609a1",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/25453/unversioned/assets/EXAMPLE/1bcd7283f2c54cdf42c39e73ead66f62845ac829a06b450641f35929300c2a0c74ad0867b3c8c832be05fdb3664bfbdcda1ad73c883c37b53f58f2d55452b220bc58e99e0eb626807a4cb997d54364fa66cefd8a9c7da57fd60c11b2fa6979539747b06e",
+      "filename": "alan-hardman-Y-hl3rx5fr8-unsplash (Custom).jpg",
+      "mimeType": "image/jpeg",
+      "assetId": "1bcd7283f2c54cdf42c39e73ead66f62845ac829a06b450641f35929300c2a0c74ad0867b3c8c832be05fdb3664bfbdcda1ad73c883c37b53f58f2d55452b220bc58e99e0eb626807a4cb997d54364fa66cefd8a9c7da57fd60c11b2fa6979539747b06e"
+    }
+  ],
   "packVersion": "31",
   "releaseId": 5,
   "lastReleasedAt": "2023-12-27T16:35:07.859Z",

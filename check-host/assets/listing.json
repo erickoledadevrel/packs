@@ -5,6 +5,13 @@
   "shortDescription": "Check website access and measure the response times from across the world.",
   "logoUrl": "https://codahosted.io/packs/21582/unversioned/assets/LOGO/e634ae86bb3376529f8c81f95cf101964616b65110e7871300ebf2e9af483ace3e3bfadfc00a7725c82289131f7650ccd57a753aea813e08f5e7e6275861d961d71c6efcc10719662089b39026f97b1b79fd267d6470b19cdb6034623e41ba5b3f1e206e",
   "coverUrl": "https://codahosted.io/packs/21582/unversioned/assets/COVER/cb3d869b9af2d6b950010aea322c89409c3bee5adbf6191e1f2f671f4d8d2333f6da8ee41f71106e9f6b93ddcc7dd70923c78c860a5e65dd3b9514a9355547a33769f1a1e600570cbe573ce11c3726f19900099e71da6f9d35fefc8657dedeef8f68be98",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/21582/unversioned/assets/EXAMPLE/cb3d869b9af2d6b950010aea322c89409c3bee5adbf6191e1f2f671f4d8d2333f6da8ee41f71106e9f6b93ddcc7dd70923c78c860a5e65dd3b9514a9355547a33769f1a1e600570cbe573ce11c3726f19900099e71da6f9d35fefc8657dedeef8f68be98",
+      "filename": "Cover photo",
+      "assetId": "cb3d869b9af2d6b950010aea322c89409c3bee5adbf6191e1f2f671f4d8d2333f6da8ee41f71106e9f6b93ddcc7dd70923c78c860a5e65dd3b9514a9355547a33769f1a1e600570cbe573ce11c3726f19900099e71da6f9d35fefc8657dedeef8f68be98"
+    }
+  ],
   "packVersion": "32",
   "releaseId": 2,
   "lastReleasedAt": "2023-04-22T14:39:36.494Z",

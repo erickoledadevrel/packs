@@ -5,6 +5,13 @@
   "shortDescription": "Create ASCII art out of any text.",
   "logoUrl": "https://codahosted.io/packs/10744/unversioned/assets/LOGO/c0e0800257aca11878724899665e761caad59708b5a259d03669dc4e8d3a43f7028d502094c96fa00d8d46a28d814f12af217c520ba0958785b2b8e1a729dc1c5c5c8277148720ce9000ea171fd4eadcca647fe7c3cad0033aefb0dfefacba4cd8dfd164",
   "coverUrl": "https://codahosted.io/packs/10744/unversioned/assets/COVER/87c1a410d4a49e8295d890082e73345575ffbcc0f9ce1cd5a655071ad325a0f41f5b883657b8e921e5e2b9722eeacf68c1465ab2a7b0b8efbd1afa041793a404f4b9091a0fe15ed4792608fa93fb97eabd8c88252d01306f31cb4eb6c19808599f6a9e2c",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/10744/unversioned/assets/EXAMPLE/87c1a410d4a49e8295d890082e73345575ffbcc0f9ce1cd5a655071ad325a0f41f5b883657b8e921e5e2b9722eeacf68c1465ab2a7b0b8efbd1afa041793a404f4b9091a0fe15ed4792608fa93fb97eabd8c88252d01306f31cb4eb6c19808599f6a9e2c",
+      "filename": "Cover photo",
+      "assetId": "87c1a410d4a49e8295d890082e73345575ffbcc0f9ce1cd5a655071ad325a0f41f5b883657b8e921e5e2b9722eeacf68c1465ab2a7b0b8efbd1afa041793a404f4b9091a0fe15ed4792608fa93fb97eabd8c88252d01306f31cb4eb6c19808599f6a9e2c"
+    }
+  ],
   "packVersion": "32",
   "releaseId": 3,
   "lastReleasedAt": "2022-04-04T00:59:37.415Z",

@@ -5,6 +5,13 @@
   "shortDescription": "Get information, stats, and scores about college football games.",
   "logoUrl": "https://codahosted.io/packs/24959/unversioned/assets/LOGO/3143618f94a17e66ff7d4be28086e716d3551eb6a8d52bebd2f08da9ef30baeeec4f59e19d992a61a270902fa1d135bc71915a3c1ce70b5573b35e26859fe743daa1abf21749500d1816b81e9876275b88a3396b4306b669216017811a489c1fe1347ae6",
   "coverUrl": "https://codahosted.io/packs/24959/unversioned/assets/COVER/695b7f190bf7601ff1c9ba1777f00d59acccd4f25ac3a8b7dfe0ba2ce38fe559e7f86f79e84f17d3df03c76f564573fddff4c3a182c0ced346d311d613a7af4e9221c7ffcac900fcc613a6ad4b5c9edfee02d84be1ce032a037a693689d329382eb8a44d",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/24959/unversioned/assets/EXAMPLE/695b7f190bf7601ff1c9ba1777f00d59acccd4f25ac3a8b7dfe0ba2ce38fe559e7f86f79e84f17d3df03c76f564573fddff4c3a182c0ced346d311d613a7af4e9221c7ffcac900fcc613a6ad4b5c9edfee02d84be1ce032a037a693689d329382eb8a44d",
+      "filename": "Cover photo",
+      "assetId": "695b7f190bf7601ff1c9ba1777f00d59acccd4f25ac3a8b7dfe0ba2ce38fe559e7f86f79e84f17d3df03c76f564573fddff4c3a182c0ced346d311d613a7af4e9221c7ffcac900fcc613a6ad4b5c9edfee02d84be1ce032a037a693689d329382eb8a44d"
+    }
+  ],
   "packVersion": "19",
   "releaseId": 1,
   "lastReleasedAt": "2023-09-06T20:21:10.452Z",

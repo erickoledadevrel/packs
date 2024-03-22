@@ -5,6 +5,13 @@
   "shortDescription": "Generate placeholder images with customizable sizes, text, and colors.",
   "logoUrl": "https://codahosted.io/packs/15514/unversioned/assets/LOGO/9b0444ccd42d24e152cf0644997907e751e6f669800a2902ad863581087e115103c9fda891fed8e0d75ef083d7b5205327744f8b22138f0d97760574bed333faf8d6367293db52f1410a20e03f6f4cab1c1a274d7a6c869b810e9cba74892730f0a6f0f9",
   "coverUrl": "https://codahosted.io/packs/15514/unversioned/assets/COVER/e95251f9ed71049c1962b989423f85a8389cd2b5ebfd024e5c8f22c7b17caaa0c900201d2aad88c4f3d5e3052a3c9894963ca4c4e04b9dcff4419409218aa3b42c5108ebbd6796bacedcd61e2ede26ee6f24276f048078e34e2828759e7f72f23c8fedee",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/15514/unversioned/assets/EXAMPLE/e95251f9ed71049c1962b989423f85a8389cd2b5ebfd024e5c8f22c7b17caaa0c900201d2aad88c4f3d5e3052a3c9894963ca4c4e04b9dcff4419409218aa3b42c5108ebbd6796bacedcd61e2ede26ee6f24276f048078e34e2828759e7f72f23c8fedee",
+      "filename": "Cover photo",
+      "assetId": "e95251f9ed71049c1962b989423f85a8389cd2b5ebfd024e5c8f22c7b17caaa0c900201d2aad88c4f3d5e3052a3c9894963ca4c4e04b9dcff4419409218aa3b42c5108ebbd6796bacedcd61e2ede26ee6f24276f048078e34e2828759e7f72f23c8fedee"
+    }
+  ],
   "packVersion": "9",
   "releaseId": 1,
   "lastReleasedAt": "2022-09-29T00:08:37.041Z",

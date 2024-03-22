@@ -5,6 +5,13 @@
   "shortDescription": "Get information about your Google Apps Script projects.",
   "logoUrl": "https://codahosted.io/packs/14470/unversioned/assets/LOGO/7203bddef04c69f3accd8fe46232ebbd701f183f4f5c6fe38f755ec268c47f72666d0ce0eb1549fd85e7354186027565e4e17aa27582f2cff57382b732302e042552d3bfc887b48ef084ae4331287733195f92709aeca2ea0224aca16cb1bd932f7afc73",
   "coverUrl": "https://codahosted.io/packs/14470/unversioned/assets/COVER/03f3d1887a3379587c3ef2e0ff35efe309bfb5d390167ca77b13ad00e60594be1ad15f2f77c7a37328f6e36e6614e3efd86ff018a21f35ee130e25b144e9f40fe48d1937fe1915afd65a756b3a806ea634037f9fc6c42a0dcf4837b6b2f41e1acabe83f8",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/14470/unversioned/assets/EXAMPLE/03f3d1887a3379587c3ef2e0ff35efe309bfb5d390167ca77b13ad00e60594be1ad15f2f77c7a37328f6e36e6614e3efd86ff018a21f35ee130e25b144e9f40fe48d1937fe1915afd65a756b3a806ea634037f9fc6c42a0dcf4837b6b2f41e1acabe83f8",
+      "filename": "Cover photo",
+      "assetId": "03f3d1887a3379587c3ef2e0ff35efe309bfb5d390167ca77b13ad00e60594be1ad15f2f77c7a37328f6e36e6614e3efd86ff018a21f35ee130e25b144e9f40fe48d1937fe1915afd65a756b3a806ea634037f9fc6c42a0dcf4837b6b2f41e1acabe83f8"
+    }
+  ],
   "packVersion": "20",
   "releaseId": 7,
   "lastReleasedAt": "2023-08-28T19:34:05.258Z",

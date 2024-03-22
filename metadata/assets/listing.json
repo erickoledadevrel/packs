@@ -5,6 +5,14 @@
   "shortDescription": "Get the title, icon, and other metadata for any URL.",
   "logoUrl": "https://codahosted.io/packs/17088/unversioned/assets/LOGO/c44e5552eecc081b8b364546b33d47140256fec4150ae380aec1d88753e42cd38a298ccd6be6913ccfc55771fb6fdaabed17d724cfa625b6491dae48ccef10e6434c1dd073fd5fa52da7d79a9cc94346aa0cc648e719f87c952649823b0e6126ba883153",
   "coverUrl": "https://codahosted.io/packs/17088/unversioned/assets/COVER/213b2b0d301b6003f358d2e363e23e62e0f30e8358e3ebfacdf617c61c8b161e74ca562e081b023cd29f49e760f3bc58846732cd44625f39e9f9493591849cde22a4a08d1c76477a7edb9e4f82587c8a7e038595c5724514f30f0962ba1786b7d933a45a",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/17088/unversioned/assets/EXAMPLE/df76e14bca006d8b232fec91a927c104d7ab041628e9d611ad666954d45c589a851994d3c8d5395d73af8238bf1814092ce55dfbd8ff7bcc4c857c9f39ad4417c5707401f6490ff05ba55604d56865440b12f73dca9b810d742ab1f8ce95016de8e05ba0",
+      "filename": "pexels-amanda-george-2978800 (1) (Custom) (Cover photo).jpg",
+      "mimeType": "image/jpeg",
+      "assetId": "df76e14bca006d8b232fec91a927c104d7ab041628e9d611ad666954d45c589a851994d3c8d5395d73af8238bf1814092ce55dfbd8ff7bcc4c857c9f39ad4417c5707401f6490ff05ba55604d56865440b12f73dca9b810d742ab1f8ce95016de8e05ba0"
+    }
+  ],
   "packVersion": "12",
   "releaseId": 3,
   "lastReleasedAt": "2024-01-25T18:45:28.693Z",

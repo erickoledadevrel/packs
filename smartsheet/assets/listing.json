@@ -1,0 +1,66 @@
+{
+  "packId": 28295,
+  "name": "Smartsheet",
+  "description": "Spend all day in Coda but need collaborate on some important data in Smartsheet? No worries, use the Smartsheet Pack for Coda to sync that data into your Coda docs where you can view and edit it just like every other Coda table.\n\nThis Pack is not associated with Smartsheet Inc.\nThe logo and icon are the property of Smartsheet Inc.",
+  "shortDescription": "View and edit your sheets from within Coda.",
+  "logoUrl": "https://codahosted.io/packs/28295/unversioned/assets/LOGO/6d1625f65a01e3689972a441af447e54807ae757d38bdcd3e5889fc468f52847ff967cae26ef9e777df7357a850ad787e20d21985d3e769bfb887ee800fb513c47686aca5cf6c0441aedfe43702d9f92bab1de096cbb0440a5f77f7368873047b6950008",
+  "coverUrl": "https://codahosted.io/packs/28295/unversioned/assets/COVER/e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/28295/unversioned/assets/EXAMPLE/e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec",
+      "filename": "Cover photo",
+      "assetId": "e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec"
+    }
+  ],
+  "packVersion": "86",
+  "releaseId": 1,
+  "lastReleasedAt": "2024-02-15T14:22:03.665Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/28295/86/metadata/684274d510d7aac1508c3e14ce319cef29cf704e75c4ff2448b1e96f47e004500063f5ac979159d3a15d3333cf3e1b748ae5fe9dd8ea44873f7e9e05851f200ed55240978754eeee542fed4851d830b2e947a40447e88c9c4353912014dd4cb5aa2baab3.json",
+  "categories": [
+    {
+      "categoryId": "45083e67-1a78-4f12-a925-cc502a138996",
+      "categoryName": "Project management",
+      "categorySlug": "project-management"
+    },
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "b45b39b4-f1d7-4329-8064-31ec550c00da",
+    "packId": 28295,
+    "createdAt": "2024-02-02T00:15:40.935Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.5",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

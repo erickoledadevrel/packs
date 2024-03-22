@@ -5,6 +5,13 @@
   "shortDescription": "Utility formulas for working with phone numbers.",
   "logoUrl": "https://codahosted.io/packs/12434/unversioned/assets/LOGO/f02fee938d0b0f5178d437c1798dff75046aa1213a9fa46f41032b6d71708325ebf498d9f0cd2234879c54667fe01080acfec70ed52937c20063e976f20398c7c5c6f4f8c3febada95079c7e2579a32e8e1258adbe37bdc9965dfd980da0d01d4a51fbc3",
   "coverUrl": "https://codahosted.io/packs/12434/unversioned/assets/COVER/008c9f8607d7d9483f41d1733adc2ba25c30db38799c1af2030f4bf54a238a592e499e30bc5cf88b85151429105057a3deb6c68adbddf7ee54eaea73ab2611ec767379154f64b7c623b680db679c50b00cfba5e6138600d6529e59aef3a3bd593c06caf3",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/12434/unversioned/assets/EXAMPLE/008c9f8607d7d9483f41d1733adc2ba25c30db38799c1af2030f4bf54a238a592e499e30bc5cf88b85151429105057a3deb6c68adbddf7ee54eaea73ab2611ec767379154f64b7c623b680db679c50b00cfba5e6138600d6529e59aef3a3bd593c06caf3",
+      "filename": "Cover photo",
+      "assetId": "008c9f8607d7d9483f41d1733adc2ba25c30db38799c1af2030f4bf54a238a592e499e30bc5cf88b85151429105057a3deb6c68adbddf7ee54eaea73ab2611ec767379154f64b7c623b680db679c50b00cfba5e6138600d6529e59aef3a3bd593c06caf3"
+    }
+  ],
   "packVersion": "8",
   "releaseId": 2,
   "lastReleasedAt": "2022-08-25T01:50:02.352Z",

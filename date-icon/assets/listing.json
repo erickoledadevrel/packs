@@ -5,6 +5,13 @@
   "shortDescription": "Display a date using a simple icon that looks like a calendar.",
   "logoUrl": "https://codahosted.io/packs/18643/unversioned/assets/LOGO/3014a12f2c3f58602aa218a1199146a3090ca33d2a48da9f41ce2cd552de407f574a2e78f522dac8d5e8e54fe1bf431164f595ef149d63cd60dfcd9d039c55df40bc2609d3670be92f1c95acb69cbbade732b71eb5f6fe063e7d477d1d9c6331a6b58a3b",
   "coverUrl": "https://codahosted.io/packs/18643/unversioned/assets/COVER/0b0646824122ef923612c83ef45ff864a564ebb07a0739607fa0b818c9c8f80ecb95fd8424232da72e3d65b620e4a6030f6543e9f6fa2ece00ade2a6e3546d36e2d21cfb3fb0a4feaf85910b59575f7c70e40a0f2d50f5a1529a078420c793d34079d833",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/18643/unversioned/assets/EXAMPLE/0b0646824122ef923612c83ef45ff864a564ebb07a0739607fa0b818c9c8f80ecb95fd8424232da72e3d65b620e4a6030f6543e9f6fa2ece00ade2a6e3546d36e2d21cfb3fb0a4feaf85910b59575f7c70e40a0f2d50f5a1529a078420c793d34079d833",
+      "filename": "Cover photo",
+      "assetId": "0b0646824122ef923612c83ef45ff864a564ebb07a0739607fa0b818c9c8f80ecb95fd8424232da72e3d65b620e4a6030f6543e9f6fa2ece00ade2a6e3546d36e2d21cfb3fb0a4feaf85910b59575f7c70e40a0f2d50f5a1529a078420c793d34079d833"
+    }
+  ],
   "packVersion": "13",
   "releaseId": 4,
   "lastReleasedAt": "2023-01-17T17:54:34.858Z",

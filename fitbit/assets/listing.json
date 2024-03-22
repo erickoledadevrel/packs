@@ -5,6 +5,13 @@
   "shortDescription": "Connect to your Fitbit products to track your steps, weight, and other data.",
   "logoUrl": "https://codahosted.io/packs/16718/unversioned/assets/LOGO/31ee9e9af9f2ec8bdd6931798c405a72aea1907c3530ca883ee7578695adc5a327b716e79465300ba113cac8546425ceb682976078be34081fdf449248f03f541b2d540622539afd3c5577ccb51403554797215885fb20017a2988881db23d65b1fc77c9",
   "coverUrl": "https://codahosted.io/packs/16718/unversioned/assets/COVER/3811ab17ef465980baa03125201ec562a27b3268e8f5005d99d870fb364b117314d9d4f825f493ed2d13bcd27da0ef0b6520bd9c4f4e1d19be3c2fdff57d6d6cf1bcacc31840b14999381313dfc58c94b45f6cd2c8626a1511e6de217cca023a9e939bdc",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/16718/unversioned/assets/EXAMPLE/3811ab17ef465980baa03125201ec562a27b3268e8f5005d99d870fb364b117314d9d4f825f493ed2d13bcd27da0ef0b6520bd9c4f4e1d19be3c2fdff57d6d6cf1bcacc31840b14999381313dfc58c94b45f6cd2c8626a1511e6de217cca023a9e939bdc",
+      "filename": "Cover photo",
+      "assetId": "3811ab17ef465980baa03125201ec562a27b3268e8f5005d99d870fb364b117314d9d4f825f493ed2d13bcd27da0ef0b6520bd9c4f4e1d19be3c2fdff57d6d6cf1bcacc31840b14999381313dfc58c94b45f6cd2c8626a1511e6de217cca023a9e939bdc"
+    }
+  ],
   "packVersion": "39",
   "releaseId": 3,
   "lastReleasedAt": "2023-09-27T02:12:37.308Z",

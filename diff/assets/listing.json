@@ -5,6 +5,13 @@
   "shortDescription": "Visualize the difference between two pieces of text.",
   "logoUrl": "https://codahosted.io/packs/19507/unversioned/assets/LOGO/54b374d3f078481cbb15011cf32944be31a0714eac8532e369f2547aa075a947f69d9619bda0d41c64b77ce4a3575565f1e34ea42770d81ecbe4c9e51dd1ada75b9f7b33ba66fabffb4a5b662895f2c393c0f852821b34158b3c4d7450cc5647414f80bd",
   "coverUrl": "https://codahosted.io/packs/19507/unversioned/assets/COVER/579b70e04e3f193d0ac8be34ee6bd1a338b76679b26c85c8e3146ba6ed7773fa254c9c6869fe72ba4050d814573fcd3993127d9c9fa7c45504f577f716bb013ef65a71a17a7723d9638bf9f18f959231cfa147a82eec3ace28c26fcb35c23501c665c040",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/19507/unversioned/assets/EXAMPLE/579b70e04e3f193d0ac8be34ee6bd1a338b76679b26c85c8e3146ba6ed7773fa254c9c6869fe72ba4050d814573fcd3993127d9c9fa7c45504f577f716bb013ef65a71a17a7723d9638bf9f18f959231cfa147a82eec3ace28c26fcb35c23501c665c040",
+      "filename": "Cover photo",
+      "assetId": "579b70e04e3f193d0ac8be34ee6bd1a338b76679b26c85c8e3146ba6ed7773fa254c9c6869fe72ba4050d814573fcd3993127d9c9fa7c45504f577f716bb013ef65a71a17a7723d9638bf9f18f959231cfa147a82eec3ace28c26fcb35c23501c665c040"
+    }
+  ],
   "packVersion": "13",
   "releaseId": 1,
   "lastReleasedAt": "2023-02-03T00:55:50.683Z",

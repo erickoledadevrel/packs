@@ -1,10 +1,17 @@
 {
   "packId": 11298,
-  "name": "[Deprecated] Code Blocks",
+  "name": "[Deprecated]",
   "description": "[Deprecated] This Pack will continue to work, but you shouldn't use it. Coda now has built-in support for code blocks with syntax highlighting (horray!) so this Pack isn't neccessary.\n\nIcon designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0\nCover photo by Walkator on Unsplash.",
-  "shortDescription": "Coda now has native support for syntax highlighting, don't use this Pack!",
+  "shortDescription": "DON'T USE THIS PACK: Coda now has native support for syntax highlighting.",
   "logoUrl": "https://codahosted.io/packs/11298/unversioned/assets/LOGO/3dc4799f75bbb54b8af9c1acc61175877d1a4a930af91332d363ea365a246be0e838bc0ffac83dcce72dc8f024046cef4a8ec9595394deec6a16100c842dbef5b422473d59a91b7df540b0bba7c7056df181bae1c45b765a46c54034748e03d8a8938ba9",
   "coverUrl": "https://codahosted.io/packs/11298/unversioned/assets/COVER/85d6d624a49ff2c2bfe46f2d7ee41da455eadf0f15f99f026cb77c746b085476f6156e7fe7cc5b56f982a5ad3f3d27b0184e8d70cab16acf0f09f17a89e39adfe607c2ee7c9b77249adf7e43fd03a63d55b83173e1b054929663debb44824d3a0cd2d63b",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/11298/unversioned/assets/EXAMPLE/85d6d624a49ff2c2bfe46f2d7ee41da455eadf0f15f99f026cb77c746b085476f6156e7fe7cc5b56f982a5ad3f3d27b0184e8d70cab16acf0f09f17a89e39adfe607c2ee7c9b77249adf7e43fd03a63d55b83173e1b054929663debb44824d3a0cd2d63b",
+      "filename": "Cover photo",
+      "assetId": "85d6d624a49ff2c2bfe46f2d7ee41da455eadf0f15f99f026cb77c746b085476f6156e7fe7cc5b56f982a5ad3f3d27b0184e8d70cab16acf0f09f17a89e39adfe607c2ee7c9b77249adf7e43fd03a63d55b83173e1b054929663debb44824d3a0cd2d63b"
+    }
+  ],
   "packVersion": "49",
   "releaseId": 3,
   "lastReleasedAt": "2023-05-20T17:22:07.745Z",

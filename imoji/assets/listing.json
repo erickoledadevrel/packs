@@ -5,6 +5,13 @@
   "shortDescription": "Turn emojis into large images you can embed in your doc.",
   "logoUrl": "https://codahosted.io/packs/10702/unversioned/assets/LOGO/a50d08d64d1515ebfb7d0ee7499217a708892e7cd4ca32c8a3b05ab8c15145751eb8a497ec3c66a52f6cab697e39aca13dc673e843a125d1b7a115d43cbd6a5a516a9867ad14a053d3043d9430763fb9facab7f56a5800bcb2a7a26edd0b57e22e8257d7",
   "coverUrl": "https://codahosted.io/packs/10702/unversioned/assets/COVER/e586915eab29d1e864e9e22549447a44d9725f99fbd521408ce09de155c587e1f0e29982fb772f5f9a7bb939632cc4722b0c7c9f30b3da78983df258ae8c78a04b638d628bf527bdcf629e60cb54e11fd7bcf4d80b8870cf72523a87f5d3b83512a3c59a",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/10702/unversioned/assets/EXAMPLE/e586915eab29d1e864e9e22549447a44d9725f99fbd521408ce09de155c587e1f0e29982fb772f5f9a7bb939632cc4722b0c7c9f30b3da78983df258ae8c78a04b638d628bf527bdcf629e60cb54e11fd7bcf4d80b8870cf72523a87f5d3b83512a3c59a",
+      "filename": "Cover photo",
+      "assetId": "e586915eab29d1e864e9e22549447a44d9725f99fbd521408ce09de155c587e1f0e29982fb772f5f9a7bb939632cc4722b0c7c9f30b3da78983df258ae8c78a04b638d628bf527bdcf629e60cb54e11fd7bcf4d80b8870cf72523a87f5d3b83512a3c59a"
+    }
+  ],
   "packVersion": "12",
   "releaseId": 4,
   "lastReleasedAt": "2022-02-23T02:22:51.165Z",

@@ -5,6 +5,13 @@
   "shortDescription": "Use an online file convert convert files and images to different formats.",
   "logoUrl": "https://codahosted.io/packs/25653/unversioned/assets/LOGO/646a02617d730f7cfb0ac3951cd7bd1185362a18ea311e80c581c5c4fc76c81ae7308b13b41ba47575a662136ffc0c135ec4b3be2133052accdc41401115a575ef60ab7dbbeec63c30174393a67e906a60d43e1de8872934d1218f957700c97812ebf464",
   "coverUrl": "https://codahosted.io/packs/25653/unversioned/assets/COVER/150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/25653/unversioned/assets/EXAMPLE/150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86",
+      "filename": "Cover photo",
+      "assetId": "150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86"
+    }
+  ],
   "packVersion": "40",
   "releaseId": 3,
   "lastReleasedAt": "2023-10-20T18:50:57.135Z",

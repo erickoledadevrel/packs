@@ -1,13 +1,29 @@
 {
   "packId": 24109,
   "name": "JWT",
-  "description": "",
-  "shortDescription": "",
-  "logoUrl": "https://cdn.coda.io/assets/a740893f0aa7/img/packs/default-pack-icon.png",
-  "packVersion": "9",
-  "externalMetadataUrl": "https://codahosted.io/packs/24109/9/metadata/0c40d1317710756265f12d71d7e8fd93f54038a7cd9cbdac6c76f0bb2093914210eaa2d8f472f09cc43c5b975e96315f023f0971b12b83d527ea241b88be01a5b5a0b18c2971105833275be9b201ce3db8cdb8f9db7150a20e1549a520d298ec3145cc4e.json",
-  "categories": [],
-  "supportEmail": "koleda.eric@gmail.com",
+  "description": "A JSON Web Token (JWT, pronounced \"jot\") is an industry standard method for representing claims securely between two parties. You rarely need to craft them on your own, and even more rarely need to do so in a Coda doc. BUT if you are that rare, poor soul that must then this Pack is for you.\n\nIcon property of jwt.io.\nCover photo by GuHyeok Jeong from Pixabay.",
+  "shortDescription": "Create, validate, and parse JSON Web Tokens.",
+  "logoUrl": "https://codahosted.io/packs/24109/unversioned/assets/LOGO/479a83b4acbf2804480e5361815e8a03d03fcaf21d500082d6edd865ec7d4469531dc445a7c33750e768f02a48e38eac54529951039c7747cda1c19af6c4079f171c9542b1841bb721cab8c13f3bd935ebaf9b405924a45d42894b7c8f03b7eff26c82cc",
+  "coverUrl": "https://codahosted.io/packs/24109/unversioned/assets/COVER/2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/24109/unversioned/assets/EXAMPLE/2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14",
+      "filename": "Cover photo",
+      "assetId": "2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14"
+    }
+  ],
+  "packVersion": "10",
+  "releaseId": 1,
+  "lastReleasedAt": "2024-02-08T02:10:42.306Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/24109/10/metadata/e333665fe814186f774113f1af8e81ce9a9ea5ee7127f446912a80df5e6a26c75e86271f58b8f3657c9584a66b95ede335a2efa002bf3c36b682b333fec57a18d7a1f9eacee1478ae9ae753878a6efe638c28b61fc0b107237fec98abc5146e074f37bb5.json",
+  "categories": [
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
   "sourceCodeVisibility": "private",
   "makers": [
     {
@@ -26,8 +42,8 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.4.0",
-  "discoverability": "private",
+  "sdkVersion": "1.7.4",
+  "discoverability": "public",
   "userAccess": {
     "canEdit": true,
     "canInstall": false,

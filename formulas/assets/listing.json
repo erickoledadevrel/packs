@@ -5,6 +5,13 @@
   "shortDescription": "Get information about the formulas in the Coda formula language.",
   "logoUrl": "https://codahosted.io/packs/13219/unversioned/assets/LOGO/421d3e81fba33085b8c50756732f950c06e55e9eb8219a3d2fd7dd3db4cf4b1edaa0964003762a85cebeeb2082d9c1b64b2f9af6d7ad3522e3df3f155507a7d1854ce3151f5952a03e7990539aaf3a5ceeae4e92abfb98249baae5c686b5a6051faea913",
   "coverUrl": "https://codahosted.io/packs/13219/unversioned/assets/COVER/817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/13219/unversioned/assets/EXAMPLE/817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4",
+      "filename": "Cover photo",
+      "assetId": "817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4"
+    }
+  ],
   "packVersion": "22",
   "releaseId": 2,
   "lastReleasedAt": "2023-04-11T01:31:19.972Z",

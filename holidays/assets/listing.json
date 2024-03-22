@@ -5,6 +5,13 @@
   "shortDescription": "Determine which holidays fall on a date, and list all of the holidays for the year.",
   "logoUrl": "https://codahosted.io/packs/22009/unversioned/assets/LOGO/e7c9edb70a039f0d2566f1a996e8be8246814cf97e7cbb174c80eb728e5ad3360c8944f16f053ea8a35395070100e746c8b935e55916a80c0459876de9d13ff9a484412477a80887600c51729b463729eb6d575ef3f3e0965676634fc680d32ab713fdb0",
   "coverUrl": "https://codahosted.io/packs/22009/unversioned/assets/COVER/1292e67b3ea56cc3a797c738a22d52cbf2c10652e1f20d24cffc1f28a3ffe5d0961c49fbcf19d072c7b870dee63806f35f3c37f4986f9ad4bda2e8e55df875e6cbceba172a8192d16fb3fb82f38d2f6fdaa41534a56d5bc7dd4603e9081e9d2b31ccdef0",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/22009/unversioned/assets/EXAMPLE/1292e67b3ea56cc3a797c738a22d52cbf2c10652e1f20d24cffc1f28a3ffe5d0961c49fbcf19d072c7b870dee63806f35f3c37f4986f9ad4bda2e8e55df875e6cbceba172a8192d16fb3fb82f38d2f6fdaa41534a56d5bc7dd4603e9081e9d2b31ccdef0",
+      "filename": "Cover photo",
+      "assetId": "1292e67b3ea56cc3a797c738a22d52cbf2c10652e1f20d24cffc1f28a3ffe5d0961c49fbcf19d072c7b870dee63806f35f3c37f4986f9ad4bda2e8e55df875e6cbceba172a8192d16fb3fb82f38d2f6fdaa41534a56d5bc7dd4603e9081e9d2b31ccdef0"
+    }
+  ],
   "packVersion": "22",
   "releaseId": 1,
   "lastReleasedAt": "2023-04-30T00:59:08.471Z",

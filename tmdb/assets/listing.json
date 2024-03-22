@@ -5,6 +5,13 @@
   "shortDescription": "Look up the details of your favorite movies and television shows.",
   "logoUrl": "https://codahosted.io/packs/27791/unversioned/assets/LOGO/02a07668f1246fabe052c9c66a28c118432dc4862e79549c7fb86c566304af3a6cfeb37656ee2011ecdd085ddd57ecd4ca5fe5516b20cb404aa4125b80a0de6b20bb2777927b4fb386dfa806be39ff552441c6bfeb937f7f9680c4e6fb1bfc5421a2b9da",
   "coverUrl": "https://codahosted.io/packs/27791/unversioned/assets/COVER/8640db39c2f512888516711580e552e84885c743508cb2b71bea271583918c4e38c424b20238107f1faf3873b4314e924b4dad033e0c64c5ca9862be67fb7412246a320743b058f78a0c570fd50f522c009c172c4c26180537fbb3661bbb13d96bc8707b",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/27791/unversioned/assets/EXAMPLE/8640db39c2f512888516711580e552e84885c743508cb2b71bea271583918c4e38c424b20238107f1faf3873b4314e924b4dad033e0c64c5ca9862be67fb7412246a320743b058f78a0c570fd50f522c009c172c4c26180537fbb3661bbb13d96bc8707b",
+      "filename": "Cover photo",
+      "assetId": "8640db39c2f512888516711580e552e84885c743508cb2b71bea271583918c4e38c424b20238107f1faf3873b4314e924b4dad033e0c64c5ca9862be67fb7412246a320743b058f78a0c570fd50f522c009c172c4c26180537fbb3661bbb13d96bc8707b"
+    }
+  ],
   "packVersion": "20",
   "releaseId": 2,
   "lastReleasedAt": "2024-01-17T14:22:34.278Z",

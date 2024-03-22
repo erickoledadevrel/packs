@@ -5,6 +5,13 @@
   "shortDescription": "Print files from a Coda doc with the press of a button.",
   "logoUrl": "https://codahosted.io/packs/26008/unversioned/assets/LOGO/617c1a1f19e62ecee70f6b0dd917ab1ea15f81b64f9cec92927b00e538a9e7ace326cf5996df81ba730bfcd8920423387f5804f08248b1b45022f8d5ecf18d48e6f3b6254fc2ba2ecf95dfb83c8aedaaa15ea6fa54cd2ad1c2405493c4839ede83b3b599",
   "coverUrl": "https://codahosted.io/packs/26008/unversioned/assets/COVER/78fb8b4780985c24abeceef1bdeac413eaf9dcc52875e78ddb740ab3896f1ddc8ccc33f6ae9b79d95d3ad4d4027cd926fc0433d06c86c69c331fd43efd9cf2fd7c985a6b3345eadc7f98a3b4f2d11ca235bce6049b7761764a3616b70d2c70a82bdf4af3",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/26008/unversioned/assets/EXAMPLE/78fb8b4780985c24abeceef1bdeac413eaf9dcc52875e78ddb740ab3896f1ddc8ccc33f6ae9b79d95d3ad4d4027cd926fc0433d06c86c69c331fd43efd9cf2fd7c985a6b3345eadc7f98a3b4f2d11ca235bce6049b7761764a3616b70d2c70a82bdf4af3",
+      "filename": "Cover photo",
+      "assetId": "78fb8b4780985c24abeceef1bdeac413eaf9dcc52875e78ddb740ab3896f1ddc8ccc33f6ae9b79d95d3ad4d4027cd926fc0433d06c86c69c331fd43efd9cf2fd7c985a6b3345eadc7f98a3b4f2d11ca235bce6049b7761764a3616b70d2c70a82bdf4af3"
+    }
+  ],
   "packVersion": "56",
   "releaseId": 1,
   "lastReleasedAt": "2023-10-25T14:54:12.354Z",

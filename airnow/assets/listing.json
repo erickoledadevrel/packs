@@ -1,10 +1,18 @@
 {
   "packId": 22954,
   "name": "AirNow",
-  "description": "This Pack lets you get access to Air Quality Index (AQI) data for your area (US only). This includes the standard measurements of PM2.5, PM10, and O3 levels. \nSimply drag in the \"Latest AQI\" card and enter your zipcode. You can also use it as a formula, \"=LatestAQI()\", to work with the data in more detail.\nTo get the data to refresh automatically, go to the \"Settings\" tab of this Pack and change the \"Default Refresh Rate\".\nThe data is provided by AirNow.gov, but this Pack is not associated with that organization.\nThe logo and cover photo are the property of AirNow.gov.",
+  "description": "This Pack lets you get access to Air Quality Index (AQI) data for your area (US only). This includes the standard measurements of PM2.5, PM10, and O3 levels. \nSimply drag in the \"Latest AQI\" card and enter your zipcode. You can also use it as a formula, \"=LatestAQI()\", to work with the data in more detail.\nTo get the data to refresh automatically, go to the \"Settings\" tab of this Pack and change the \"Default Refresh Rate\".\n\nThe data is provided by AirNow.gov, but this Pack is not associated with that organization.\nThe logo is the property of AirNow.gov.\nCover photo by Photo by Vlad Kutepov on Unsplash.",
   "shortDescription": "Get the latest Air Quality Index (AQI) information for your area.",
   "logoUrl": "https://codahosted.io/packs/22954/unversioned/assets/LOGO/bb5a792b5a7439ffd2c5094888bc8837e8cb5de3537a89755144a8c2b078cafabf0b49cbfc2c3b5588ea36230e2f9e0b4d9d7fb180bf6c246979fcb3d2b1a31752402160a322937735907a90ad145346617a4870d444533214618c4f28ba052b15b88716",
   "coverUrl": "https://codahosted.io/packs/22954/unversioned/assets/COVER/570068389de33df7b18ccc4002e079f2e0178c295ec3967893abdb76d8e1adf046407f53a8a8cd61845d714161b4dcd5ed4cde4ee53922ab55fd272826df02e584394ab87ac6a4dcddc22db7216cff7b6c85ee43f136305cced09e98bea91307cbb49b70",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/22954/unversioned/assets/EXAMPLE/106491b6ecf626a510cd009eb32114191186076c1f2cfde1892b5468b2f92880bdc3c4547ea2f6a6737ead084b4d3531273fbda2a770e4cab735dff3d0b89e18f839e1380a7f0bab4d831db304141456183dd03d0214b6440d84f500a3b23fc1d1219e4c",
+      "filename": "airnow.png",
+      "mimeType": "image/png",
+      "assetId": "106491b6ecf626a510cd009eb32114191186076c1f2cfde1892b5468b2f92880bdc3c4547ea2f6a6737ead084b4d3531273fbda2a770e4cab735dff3d0b89e18f839e1380a7f0bab4d831db304141456183dd03d0214b6440d84f500a3b23fc1d1219e4c"
+    }
+  ],
   "packVersion": "24",
   "releaseId": 3,
   "lastReleasedAt": "2023-06-08T15:58:34.213Z",

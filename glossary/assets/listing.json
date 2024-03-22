@@ -5,6 +5,13 @@
   "shortDescription": "Lookup terms from a team or company glossary, created in a Coda doc.",
   "logoUrl": "https://codahosted.io/packs/19440/unversioned/assets/LOGO/42a20a4accc1563547c8c2603664dcb19e1339500da08660f81f56b738453420b593a1f6050a1a20000b32d28b212dc99d684cc72dc9179dcd60541e5e1d4b58307768d078d74c0beaede5ad2d15a0be5f123772d630535d03f2ef9c42ae2deaee383590",
   "coverUrl": "https://codahosted.io/packs/19440/unversioned/assets/COVER/85c7fa90e0549287227fa7111c1752ab7570e6cac27363293aa9ffeda294814260923ee6fbd48530931d51f22422bd233164886d4fb13405781b9f3d00ad1604a90169b2afd3ec0f2e90b19048dd94194184141e25007742ce1ed9df2c9baa3fb938ac91",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/19440/unversioned/assets/EXAMPLE/85c7fa90e0549287227fa7111c1752ab7570e6cac27363293aa9ffeda294814260923ee6fbd48530931d51f22422bd233164886d4fb13405781b9f3d00ad1604a90169b2afd3ec0f2e90b19048dd94194184141e25007742ce1ed9df2c9baa3fb938ac91",
+      "filename": "Cover photo",
+      "assetId": "85c7fa90e0549287227fa7111c1752ab7570e6cac27363293aa9ffeda294814260923ee6fbd48530931d51f22422bd233164886d4fb13405781b9f3d00ad1604a90169b2afd3ec0f2e90b19048dd94194184141e25007742ce1ed9df2c9baa3fb938ac91"
+    }
+  ],
   "packVersion": "37",
   "releaseId": 5,
   "lastReleasedAt": "2023-10-07T16:31:23.452Z",

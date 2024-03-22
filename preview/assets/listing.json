@@ -5,6 +5,14 @@
   "shortDescription": "Generate a preview of HTML or markdown content.",
   "logoUrl": "https://codahosted.io/packs/26080/unversioned/assets/LOGO/d540b5fa7286a34d278ecc7dc21ee775cf6a770a8a1818c316b54047642b55bba251f5bb61497d77285c5eb59b78744a1594b5bad5dbdceb06b896e633c7069577637995389101433eed5405816098410839d14e1bbb68774b6770b4ab92eee496fb47ee",
   "coverUrl": "https://codahosted.io/packs/26080/unversioned/assets/COVER/00e2e9363b3a8fbe2f1fc837fc5d0ecaada302e25c9e8a8d076237e647d3ab77b2c64912a3e796a8af5134a77f0a030973ecd8052e6d8dc86c535ff4c028ff1e555ce34e75bd2fec3e0ae457771caec2bf4c3156d4faf72411c750ccb9fe84827851f4ec",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/26080/unversioned/assets/EXAMPLE/ad327db3984f722614c8fd2cf54fb9bb6bd554dc53e0e7dc219cca690bf64111f5f571c128a1a8bbf9fc09fbdaa873e8b32c58c756ebd0b77998b62b25ec4a54227314c1e992b75fdc75776dcef44c61754d6658338eca8092eb6b6106353cb9664f70c1",
+      "filename": "preview.jpg",
+      "mimeType": "image/jpeg",
+      "assetId": "ad327db3984f722614c8fd2cf54fb9bb6bd554dc53e0e7dc219cca690bf64111f5f571c128a1a8bbf9fc09fbdaa873e8b32c58c756ebd0b77998b62b25ec4a54227314c1e992b75fdc75776dcef44c61754d6658338eca8092eb6b6106353cb9664f70c1"
+    }
+  ],
   "packVersion": "10",
   "releaseId": 1,
   "lastReleasedAt": "2023-10-24T17:41:13.224Z",

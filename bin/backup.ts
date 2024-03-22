@@ -35,8 +35,10 @@ async function run(packName) {
     if (listing.logoUrl && !listing.logoUrl.endsWith(DefaultIcon)) {
       backupImage(listing.logoUrl, dir, "icon");
     }
-    if (listing.coverUrl) {
-      backupImage(listing.coverUrl, dir, "cover");
+    if (listing.exampleImages?.length) {
+      for (let i = 0; i < listing.exampleImages.length; i++) {
+        backupImage(listing.exampleImages[i].imageUrl, dir, "example" + i);
+      }
     }
 
     console.log("Backed up listing " + file);

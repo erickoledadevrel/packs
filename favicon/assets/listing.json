@@ -5,6 +5,13 @@
   "shortDescription": "Easily get the favicon (tab icon) for any website.",
   "logoUrl": "https://codahosted.io/packs/14289/unversioned/assets/LOGO/35a4fa8e8a6ed232fc8bd5ae1618c65b531d7fe8bd75de94c4260301e9766025e9daebdabb414c9ad92b154b2129b05857491ca6a356015aa9cb535aa75a23d7427d413b76a4a38a554bee6e34b73a1691eb79d878a8abbfde3b8aea05016cd829731867",
   "coverUrl": "https://codahosted.io/packs/14289/unversioned/assets/COVER/dbefeb598fe626c6ec1f4b408909f7a318f77e9b402e44f38bf6567b6d26cd62e97d36f4bce13692a69a25ed618b54c6d8d2c79efa6cc26981579dc27d87463b3a1bf420223839185c2233ee7e41b5cf7243c86457466f0921f291e3017de6fc403bae2e",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/14289/unversioned/assets/EXAMPLE/dbefeb598fe626c6ec1f4b408909f7a318f77e9b402e44f38bf6567b6d26cd62e97d36f4bce13692a69a25ed618b54c6d8d2c79efa6cc26981579dc27d87463b3a1bf420223839185c2233ee7e41b5cf7243c86457466f0921f291e3017de6fc403bae2e",
+      "filename": "Cover photo",
+      "assetId": "dbefeb598fe626c6ec1f4b408909f7a318f77e9b402e44f38bf6567b6d26cd62e97d36f4bce13692a69a25ed618b54c6d8d2c79efa6cc26981579dc27d87463b3a1bf420223839185c2233ee7e41b5cf7243c86457466f0921f291e3017de6fc403bae2e"
+    }
+  ],
   "packVersion": "5",
   "releaseId": 2,
   "lastReleasedAt": "2022-08-12T00:13:02.482Z",

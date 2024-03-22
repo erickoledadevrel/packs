@@ -5,6 +5,14 @@
   "shortDescription": "Generate variations of headlines or ad text using the spintax format.",
   "logoUrl": "https://codahosted.io/packs/23437/unversioned/assets/LOGO/1062954fba85de2de27c5d4b36d6538e5b8d4b1a1e590da52bad50ea379beb3c0e60856922fe5ea542ac9e3b81524d2d328706602200178db8a18d0f1cc87183bf119a4c1d5ffaa0808b885fbadb65b8c1062e48a1415aaad67fcf8a0da4e54bc507f0e1",
   "coverUrl": "https://codahosted.io/packs/23437/unversioned/assets/COVER/20ed0e5624bed63a0bd5c9e9c6a44dfd6b08a74dfb55fb568a28682e6db25136072b964bfaebdcd58ea445883d33fc5d72e051abfe0c1069dcf2597e2393737b09b9ec919c27e157d143753fdcb1b07d4298c9d4d037c14d517904cf54cc1bcbb016b7a5",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/23437/unversioned/assets/EXAMPLE/83e7a732e27485125e03bffae91c2144330dd7ace047e88d9735cec1f3ec07c5950c5f0ff6faaf4e1a29c47dc11636279f14f45e2001940b8161b60cdc45a7c82152a66ba78e1607e52ca157348664a4b5871523ce0151846c5b5ea5ef87da818d64ddd8",
+      "filename": "josh-frenette-ZxfMGjeUW70-unsplash2 (Cover photo).jpg",
+      "mimeType": "image/jpeg",
+      "assetId": "83e7a732e27485125e03bffae91c2144330dd7ace047e88d9735cec1f3ec07c5950c5f0ff6faaf4e1a29c47dc11636279f14f45e2001940b8161b60cdc45a7c82152a66ba78e1607e52ca157348664a4b5871523ce0151846c5b5ea5ef87da818d64ddd8"
+    }
+  ],
   "packVersion": "5",
   "releaseId": 1,
   "lastReleasedAt": "2023-06-29T14:12:15.073Z",

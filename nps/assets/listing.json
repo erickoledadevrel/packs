@@ -5,6 +5,14 @@
   "shortDescription": "Calculate the Net Promoter Score® (NPS®) from survey results.",
   "logoUrl": "https://codahosted.io/packs/14223/unversioned/assets/LOGO/0d5706021bced4ff7f7a3ab5632fd6eded9d9cab936362b7ae461633178ba79642dbc83c37edc11be69f56245f1763a4e475e4aa684b1286d00d714584b31c85c861b0bd5d4ad79c19afdb8f9f2c410c579cfa1dfdba8fac837eb80dfbb090ad97776045",
   "coverUrl": "https://codahosted.io/packs/14223/unversioned/assets/COVER/8f66837a4290dc7ce9d19285af3411f3acdcfa7bbe81111de29d976e56a1ce271957150a47432db8c63165c2bf1e1711bd71c36159c7ef2a4729854a8a8b242d4de85fd720a3e2cea956ed9367d97ca1efaf92c02fbc158ce76148eb1dc10859855efd6c",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/14223/unversioned/assets/EXAMPLE/d90a1bac3264d377da74465502ed47a717b7890bb1e0fec9120705e523d55dcf0cc34d66645ffb30d0046ee302397a3c3233535125aac6b191792f2c924e309ba45840cd772bfed90a198e6d19db6108b9bf4a715879772098dd9f78263c092ea9e723f0",
+      "filename": "stars-1128772_1920 (Custom).jpg",
+      "mimeType": "image/jpeg",
+      "assetId": "d90a1bac3264d377da74465502ed47a717b7890bb1e0fec9120705e523d55dcf0cc34d66645ffb30d0046ee302397a3c3233535125aac6b191792f2c924e309ba45840cd772bfed90a198e6d19db6108b9bf4a715879772098dd9f78263c092ea9e723f0"
+    }
+  ],
   "packVersion": "2",
   "releaseId": 1,
   "lastReleasedAt": "2022-08-10T02:51:43.679Z",

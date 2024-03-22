@@ -5,6 +5,13 @@
   "shortDescription": "Get basic information about Taylor Swift's albums, songs, and lyrics.",
   "logoUrl": "https://codahosted.io/packs/24705/unversioned/assets/LOGO/80bbc4086df52ac0ee2d89273f487db11e95c62381260abe09f8025505a8cb50fbdf19cb3f387dfa964510595983b4dca625ca3eed09ca80bb4b0a55706ff9baaa3a39eea00540995db0eaa069e58ffb27dfb16eaeb6e7938a0b14e3fad035ee0e40b879",
   "coverUrl": "https://codahosted.io/packs/24705/unversioned/assets/COVER/74259404df0edc77ee434d3e4d5bb1d242b537b8409c5ad2b65e4a2d7e9edfa06c39bdd788920816fa2d0995d7ca0ed1e0dba0cc4951f70c80b50c65e39cf73ca3eda75a1d2d59418afa031404cf05a18bf13d0e515ac58a48094986f704db98c4df40ac",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/24705/unversioned/assets/EXAMPLE/74259404df0edc77ee434d3e4d5bb1d242b537b8409c5ad2b65e4a2d7e9edfa06c39bdd788920816fa2d0995d7ca0ed1e0dba0cc4951f70c80b50c65e39cf73ca3eda75a1d2d59418afa031404cf05a18bf13d0e515ac58a48094986f704db98c4df40ac",
+      "filename": "Cover photo",
+      "assetId": "74259404df0edc77ee434d3e4d5bb1d242b537b8409c5ad2b65e4a2d7e9edfa06c39bdd788920816fa2d0995d7ca0ed1e0dba0cc4951f70c80b50c65e39cf73ca3eda75a1d2d59418afa031404cf05a18bf13d0e515ac58a48094986f704db98c4df40ac"
+    }
+  ],
   "packVersion": "8",
   "releaseId": 1,
   "lastReleasedAt": "2023-08-24T21:25:40.641Z",

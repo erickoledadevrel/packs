@@ -5,6 +5,13 @@
   "shortDescription": "What every Coda doc needs: more cat photos!",
   "logoUrl": "https://codahosted.io/packs/11251/unversioned/assets/LOGO/4cda71862ee2f2a2b6bf60c7b7dfed1ea21d01bd4a84fc87ec280da30c5c045d79f3ebafd2de5054d8410ecc95b9f194f9ee9ac8c2e5a1ac0caab024d28329c711c9a417db3654f73103f5ba58305c56b525156c522b6577be4df6485cae16bb538cd3c8",
   "coverUrl": "https://codahosted.io/packs/11251/unversioned/assets/COVER/afe1f611c04d83c1c4067bbfd38326fe01fc60bc9437f9a98d976019b37a77f7daaa9711c11a8055214de4f0dc5b4cb27c156aec1e44f00db958ca30b1e4fb1bac2d36c00cadb84e70ac434620d36202490ad4b61e457c7ca8eae04e59c2a2dea134150d",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/11251/unversioned/assets/EXAMPLE/afe1f611c04d83c1c4067bbfd38326fe01fc60bc9437f9a98d976019b37a77f7daaa9711c11a8055214de4f0dc5b4cb27c156aec1e44f00db958ca30b1e4fb1bac2d36c00cadb84e70ac434620d36202490ad4b61e457c7ca8eae04e59c2a2dea134150d",
+      "filename": "Cover photo",
+      "assetId": "afe1f611c04d83c1c4067bbfd38326fe01fc60bc9437f9a98d976019b37a77f7daaa9711c11a8055214de4f0dc5b4cb27c156aec1e44f00db958ca30b1e4fb1bac2d36c00cadb84e70ac434620d36202490ad4b61e457c7ca8eae04e59c2a2dea134150d"
+    }
+  ],
   "packVersion": "14",
   "releaseId": 2,
   "lastReleasedAt": "2023-01-31T02:40:07.061Z",

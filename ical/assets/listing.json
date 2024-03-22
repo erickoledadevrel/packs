@@ -1,0 +1,67 @@
+{
+  "packId": 28876,
+  "name": "iCalendar",
+  "description": "The iCalendar format is a standard way to transmit information about events and calendars between different applications. Use this Pack to export event information from a Coda doc to Google Calendar, Microsoft Outlooks, Apple Calendar, etc.\n\nTo use the Pack, create a button using the \"Open hyperlink\" action and then generate the URL using the ExportEvent() or ExportCalendar() formulas. When exporting a calendar, pass an entire columns of data at once.\n\nPowered by the ical-generator NPM library.\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Sigmund on Unsplash.",
+  "shortDescription": "Export events in iCal format to easily add them to your favorite calendar apps.",
+  "logoUrl": "https://codahosted.io/packs/28876/unversioned/assets/LOGO/9982487c9096b33fbc605ebc347438c134997dae6149c3aed56fd04279a740323569b9bb22ab87561af1402ec819fe115fc2d94e0f1da322775550e76d54001c9aad7cba48b01e795341193ba1a9960071e2915503506bc4c6990f72ba3019a7328a7a79",
+  "coverUrl": "https://codahosted.io/packs/28876/unversioned/assets/COVER/555a9086781264ded8917d37853d7209f041bc7de4a69326b1d11cbf5d88b74105ad31cd7c9a6205373254539ca54cc149349ac199840e2a2b3ff6531062e92949f08f31a3394dfdd49e1dd766f5af8793254c0a814b472f83631f25b963490ca0b6dde9",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/28876/unversioned/assets/EXAMPLE/5ca8dfc212427b2eb782c30199f6f18f4a27e491ce920708f5dcd618c02cb35b97d6d6311079ead176cb376643ea65f16b8a3e404426ffd17fa8c0965f6ad7217048ca662228ca9bad31a44004c6b100e75c13054cc9a1f20467cf59c6fe31d9efda9e5e",
+      "filename": "sigmund-ZLst8z_M6_8-unsplash_rotate (1) (Custom).jpg",
+      "mimeType": "image/jpeg",
+      "assetId": "5ca8dfc212427b2eb782c30199f6f18f4a27e491ce920708f5dcd618c02cb35b97d6d6311079ead176cb376643ea65f16b8a3e404426ffd17fa8c0965f6ad7217048ca662228ca9bad31a44004c6b100e75c13054cc9a1f20467cf59c6fe31d9efda9e5e"
+    }
+  ],
+  "packVersion": "14",
+  "releaseId": 1,
+  "lastReleasedAt": "2024-03-04T15:53:16.612Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/28876/14/metadata/ed66f008e29152ab4f88ab1efce6c467dd199be18f3d7c12dc601eba5ead154fcdea28d89775b98ae8b7a4fc23c4978e89c797189bfb61852d5876e0f93f86bdd055a2044d77b403f4b4c292f6e2776fecf17333c6db87106cec4e4bcae42cc9451b7ea9.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "45083e67-1a78-4f12-a925-cc502a138996",
+      "categoryName": "Project management",
+      "categorySlug": "project-management"
+    },
+    {
+      "categoryId": "983dcadb-ff02-476d-afea-a01760521e56",
+      "categoryName": "Events",
+      "categorySlug": "events"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "e3de59e6-8b1e-4fb6-ba28-913f4c91270a",
+    "packId": 28876,
+    "createdAt": "2024-02-26T16:53:59.777Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.5",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

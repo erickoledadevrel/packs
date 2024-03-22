@@ -5,6 +5,13 @@
   "shortDescription": "Create drafts in Medium from your Coda docs.",
   "logoUrl": "https://codahosted.io/packs/20891/unversioned/assets/LOGO/04d213f48141df28b95f2181aa4ffb64f5e4d823550392708c54f61fae7f28ef9a03f58ceec60d4358811a43a2b6c79dd153abffb8b4ae66eb66c85ee9381c302a2a68bc3857e6b09041962403233a33a2db7256e423e0072d00036977b6facb437472a7",
   "coverUrl": "https://codahosted.io/packs/20891/unversioned/assets/COVER/f80fc008af2f00fdf0071ac7e55c3e0ddc330a2fe334de13371a3813aece6ff4f73ee2b21228843e65ec722e3a9df13245daea3bb5834eea77c484347ba1d442f78a2ccbead5777d48ff082085318066e90f003184653c25f54d591d94db63e7cd433104",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/20891/unversioned/assets/EXAMPLE/f80fc008af2f00fdf0071ac7e55c3e0ddc330a2fe334de13371a3813aece6ff4f73ee2b21228843e65ec722e3a9df13245daea3bb5834eea77c484347ba1d442f78a2ccbead5777d48ff082085318066e90f003184653c25f54d591d94db63e7cd433104",
+      "filename": "Cover photo",
+      "assetId": "f80fc008af2f00fdf0071ac7e55c3e0ddc330a2fe334de13371a3813aece6ff4f73ee2b21228843e65ec722e3a9df13245daea3bb5834eea77c484347ba1d442f78a2ccbead5777d48ff082085318066e90f003184653c25f54d591d94db63e7cd433104"
+    }
+  ],
   "packVersion": "9",
   "releaseId": 1,
   "lastReleasedAt": "2023-03-17T14:16:51.544Z",

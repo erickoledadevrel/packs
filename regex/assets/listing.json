@@ -5,6 +5,13 @@
   "shortDescription": "Advanced regular expression formulas that can be used to extract and escape text.",
   "logoUrl": "https://codahosted.io/packs/20705/unversioned/assets/LOGO/a0cd3ac55ae2725bf5db041d294a25ce91261f3589778ce628f58293797982c50c43754307ef406762ec799b3bac4bf9e5ecf4a5058f9d1c00077f641866d35e89898ee412308dea615355ee78ed4ce473fe4c8f42975a6c6baa1623dc3670b9f3a0ccb0",
   "coverUrl": "https://codahosted.io/packs/20705/unversioned/assets/COVER/9a81830116329e6d5fb27412505d94ab36295c1e3fe3d0662600da07ee93fd5e041420cd3d2d1b7f0602ac29124802e9e4d3db22df63f9b0b0532ad802634323c27802c09677a6f5b250661ae283c052049f4d13e4439e60ac12096fff280ca97a35f718",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/20705/unversioned/assets/EXAMPLE/9a81830116329e6d5fb27412505d94ab36295c1e3fe3d0662600da07ee93fd5e041420cd3d2d1b7f0602ac29124802e9e4d3db22df63f9b0b0532ad802634323c27802c09677a6f5b250661ae283c052049f4d13e4439e60ac12096fff280ca97a35f718",
+      "filename": "Cover photo",
+      "assetId": "9a81830116329e6d5fb27412505d94ab36295c1e3fe3d0662600da07ee93fd5e041420cd3d2d1b7f0602ac29124802e9e4d3db22df63f9b0b0532ad802634323c27802c09677a6f5b250661ae283c052049f4d13e4439e60ac12096fff280ca97a35f718"
+    }
+  ],
   "packVersion": "1",
   "releaseId": 1,
   "lastReleasedAt": "2023-03-10T14:39:27.565Z",

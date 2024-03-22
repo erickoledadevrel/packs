@@ -5,10 +5,17 @@
   "shortDescription": "Quickly generate tables of mock (fake) data.",
   "logoUrl": "https://codahosted.io/packs/17106/unversioned/assets/LOGO/7cbd67027cf426a9207bbb6d2b31b7a0fc55464ee643137c70e8d09c4f49a096c1a170d01722e51c8aa608331bf27dcc911d7703b725f6173018d0f8b7efd096133b333e16935cab543704bad565951483f4eef8ded843dad29c5ecf99796bc556e26b47",
   "coverUrl": "https://codahosted.io/packs/17106/unversioned/assets/COVER/c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62",
-  "packVersion": "29",
-  "releaseId": 3,
-  "lastReleasedAt": "2023-03-23T18:22:05.400Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/17106/29/metadata/c3eedcc9c2a3ad597889f948cd66e69f6455cfa5ee9261272f9f902f73de53ba71eb0cc92e1530ccaf269aac67ea0cf4d49ea07604e8a91fa5c8413b7b8a1e574bd2f52f3ff7a5d67433ff3dec2bfbdde070f185d9bf584b6c2f9a0000fda512a21e3e63.json",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/17106/unversioned/assets/EXAMPLE/c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62",
+      "filename": "Cover photo",
+      "assetId": "c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62"
+    }
+  ],
+  "packVersion": "43",
+  "releaseId": 4,
+  "lastReleasedAt": "2024-02-14T21:55:58.657Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/17106/43/metadata/4dfc4ce5f99570d8b60ec65192ba839a988af897ce6b5f7a8949135a65a2791e91a5beca4546fb175ed8cc915c06b4b0ad77047da85d2daf445b09e202472e77ced8c49bf479ed258362e41067c328f41be50ef5d449854ae5b55d4ae79c38d91a779554.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
@@ -35,7 +42,7 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.3.0",
+  "sdkVersion": "1.7.5",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

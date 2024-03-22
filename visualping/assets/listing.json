@@ -5,6 +5,13 @@
   "shortDescription": "We monitor website changes ...so you don’t have to!",
   "logoUrl": "https://codahosted.io/packs/23109/unversioned/assets/LOGO/64610c652d87cc41ca01bc0bdf522851fc617a802b19fc783c71adf25d11b8c2458a9e1534ab8ed2b59882899f15de385fa34f2682115d34985881fbad22b0bf8f8507407ae7e1e6f4809269c225d00d3d0f41baf6f98cc061978df7f4c0401056de5a59",
   "coverUrl": "https://codahosted.io/packs/23109/unversioned/assets/COVER/d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/23109/unversioned/assets/EXAMPLE/d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d",
+      "filename": "Cover photo",
+      "assetId": "d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d"
+    }
+  ],
   "packVersion": "9",
   "releaseId": 1,
   "lastReleasedAt": "2023-07-09T21:17:29.630Z",
