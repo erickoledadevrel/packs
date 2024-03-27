@@ -198,9 +198,26 @@ pack.addFormula({
   examples: [
     { params: ["+1 916-445-1254"], result: "+1 916-445-1254" },
     { params: ["+1 9164451254"], result: "+1 916-445-1254" },
+    { params: ["+48 225-239-000"], result: "+48 22 523 90 00" },
   ],
   execute: async function ([input], context) {
     return formatNumber(input, undefined, "international");
+  },
+});
+
+pack.addFormula({
+  name: "FormatPhoneNumberLocal",
+  description: "Returns an international phone number in the local format for that region. It must include a plus and the country code. Returns an error if the input is not a valid phone number.",
+  parameters: [
+    InputParameter,
+  ],
+  resultType: coda.ValueType.String,
+  examples: [
+    { params: ["+1 916-445-1254"], result: "(916) 445-1254" },
+    { params: ["+48 225-239-000"], result: "22 523 90 00" },
+  ],
+  execute: async function ([input], context) {
+    return formatNumber(input, undefined, "national");
   },
 });
 
@@ -214,6 +231,12 @@ pack.addColumnFormat({
   name: "International Phone Number",
   formulaName: "FormatPhoneNumberIntl",
   instructions: "Paste in an international phone number (include plus and country code) and it will be formatted.",
+});
+
+pack.addColumnFormat({
+  name: "Local Phone Number",
+  formulaName: "FormatPhoneNumberLocal",
+  instructions: "Paste in an international phone number (include plus and country code) and it will be formatted in the local format for that region.",
 });
 
 function formatNumber(input: string, region: string, format: string) {
