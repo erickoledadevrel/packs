@@ -19,6 +19,7 @@
     "escape-html": "^1.0.3",
     "figlet": "^1.5.2",
     "flight-designator": "^3.1.1",
+    "form-data": "^4.0.0",
     "handlebars": "^4.7.8",
     "hsl-to-hex": "^1.0.0",
     "hue-colors": "^0.5.4",
