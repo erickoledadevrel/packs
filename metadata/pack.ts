@@ -130,18 +130,8 @@ pack.addFormula({
     let redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
       url: url,
     });
-    let response;
-    try {
-      response = await context.fetcher.fetch({
-        method: "GET",
-        url: redirectUrl,
-        cacheTtlSecs: OneHourSecs,
-      });
-    } catch (e) {
-      console.error(e);
-      throw new coda.UserVisibleError(`Error accessing URL: ${url}`);
-    }
-    let result = getMetdata(url, response.body);
+    let html = await fetch(context, url);
+    let result = getMetdata(url, html);
     result.url = result.url ?? url;
     result.label = result.title ?? "⚠️ No Title";
     return result;
@@ -153,6 +143,37 @@ pack.addColumnFormat({
   formulaName: "WebPageMetadata",
   instructions: "Paste a URL of a web page to get its metadata (title, icon, etc).",
 });
+
+async function fetch(context: coda.ExecutionContext, url: string): Promise<string> {
+  let redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
+    url: url,
+  });
+  let response;
+  try {
+    response = await context.fetcher.fetch({
+      method: "GET",
+      url: redirectUrl,
+      cacheTtlSecs: OneHourSecs,
+    });
+    return response.body;
+  } catch (e) {
+    // Fallback to the Google Cache.
+    let cacheUrl = "https://webcache.googleusercontent.com/search?q=cache:" + encodeURIComponent(url);
+    redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
+      url: cacheUrl,
+    });
+    try {
+      response = await context.fetcher.fetch({
+        method: "GET",
+        url: redirectUrl,
+        cacheTtlSecs: OneHourSecs,
+      });
+      return response.body;
+    } catch (e) {
+      throw new coda.UserVisibleError(`Error accessing URL: ${url}`);
+    }
+  }
+}
 
 function getMetdata(url, html) {
   let $ = cheerio.load(html);
