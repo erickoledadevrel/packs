@@ -91,9 +91,10 @@ const SyncTableSchema = coda.makeObjectSchema({
     },
     hasDynamicSchema: {
       type: coda.ValueType.Boolean,
-      description: "If the sync table is a dynamic schema.",
+      description: "If the sync table has a dynamic schema.",
     },
     parameters: {type: coda.ValueType.Array, items: ParameterSchema},
+    supportsRowPermissions: { type: coda.ValueType.Boolean, fromKey: "supportsGetPermissions" },
   },
   displayProperty: "name",
 });
