@@ -79,7 +79,7 @@ pack.addDynamicSyncTable({
     });
     for (let column of table.structure) {
       let converter = getConverter(column);
-      let propertySchemas = converter.getSchemas();
+      let propertySchemas = converter.getSchema();
       for (let propertySchema of propertySchemas) {
         let propertyName = propertySchema.displayName;
         schema.properties[propertyName] = propertySchema;
@@ -107,7 +107,7 @@ pack.addDynamicSyncTable({
         label: choice.label,
         value: choice.value,
       };
-    })
+    });
   },
   formula: {
     name: "SyncTable",
@@ -196,9 +196,13 @@ pack.addSyncTable({
       let offset = context.sync.continuation?.offset as number ?? 0;
       let {items, total} = await getMembers(context, PageSize, offset);
       let result: CodaMember[] = items.map(member => {
+        let name = member.full_name.sys_root;
+        let email = member.email?.[0];
         return {
           ...member,
-          name: member.full_name.sys_root,
+          name: name,
+          email: email,
+          codaAccount: email ? {name, email} : undefined,
         };
       });
       let continuation;
@@ -223,7 +227,7 @@ function formatRecordForSchema(record: SmartSuiteRecord, table: Table): CodaRow 
     let key = column.slug;
     let value = converter.formatValueForSchema(record[key]);
     let keys = converter.getPropertyKeys();
-    let values = Array.isArray(value) ? value : [value];
+    let values = keys.length > 1 ? value : [value];
     for (let [i, k] of keys.entries()) {
       let v = values[i];
       result[k] = v;
@@ -236,6 +240,7 @@ function formatRowForApi(row: CodaRow, table: Table): SmartSuiteRecord {
   let result: SmartSuiteRecord = {
     id: row.id,
   };
+  Object.assign
   for (let [key, value] of Object.entries(row)) {
     if (key == "id" || !value) continue;
     let column = table.structure.find(c => c.slug == key);

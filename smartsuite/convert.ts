@@ -1,29 +1,58 @@
 import * as coda from "@codahq/packs-sdk";
-import { CodaMember as CodaMemberReference, CodaOption, CodaPerson, Column, SmartSuiteDateField, SmartSuiteDatePersonField as SmartSuiteMemberDateField, SmartSuitePhoneField, SmartSuiteRichTextField } from "./types";
+import { CodaMember as CodaMemberReference, CodaOption, CodaPerson, SmartSuiteColumn, SmartSuiteDateField, SmartSuiteDatePersonField as SmartSuiteMemberDateField, SmartSuitePhoneField, SmartSuiteRichTextField, SmartSuiteStatus } from "./types";
 import { MemberSchema } from "./schemas";
 
 export function getConverter(
-  column: Column,
+  column: SmartSuiteColumn,
 ): ColumnConverter<any, any> {
   switch (column.field_type) {
+    // Text
     case "textfield":
     case "recordtitlefield":
       return new TextColumnConverter(column);
     case "richtextareafield":
       return new HtmlColumnConverter(column);
+    case "linkfield":
+      return new LinkColumnConverter(column);
+
+    // Numbers
+    case "numberfield":
+      return new NumberColumnConverter(column);
+    case "numbersliderfield":
+      return new SliderColumnConverter(column);
+    case "percentfield":
+      return new PercentColumnConverter(column);
+    case "currencyfield":
+      return new CurrencyColumnConverter(column);
+
+    // Dates and times
     case "datefield":
       // TODO: Handle date + time.
       return new DateColumnConverter(column);
-    case "phonefield":
-      return new PhoneColumnConverter(column);
+    case "timefield":
+      return new TimeColumnConverter(column);
+
+    // Select lists
     case "singleselectfield":
+    case "multipleselectfield":
+    case "statusfield":
       return new SelectListColumnConverter(column);
+
+    // People and contacts
     case "userfield":
       return new MemberColumnConverter(column);
+    case "phonefield":
+      return new PhoneColumnConverter(column);
+
+    // Metadata
     case "firstcreatedfield":
     case "lastupdatedfield":
           return new MemberDatePairColumnConverter(column);
     default:
+      // Composites
+      if (column.nested) {
+        return new SplitNestedColumnConverter(column);
+      }
       console.error(`No converter found for column type: ${column.field_type}`);
       return new UnknownColumnConverter(column);
   }
@@ -31,9 +60,9 @@ export function getConverter(
 
 // Abstract class that all converter classes extend.
 abstract class ColumnConverter<T, C> {
-  column: Column;
+  column: SmartSuiteColumn;
 
-  constructor(column: Column) {
+  constructor(column: SmartSuiteColumn) {
     this.column = column;
   }
 
@@ -45,7 +74,7 @@ abstract class ColumnConverter<T, C> {
     let schema = this._getBaseSchema();
     let schemas = Array.isArray(schema) ? schema : [schema];
     let propertyKeys = this.getPropertyKeys();
-    let propertyNames = this._getPropertyNames();
+    let propertyNames = this.getPropertyNames();
     for (let [i, schema] of schemas.entries()) {
       let propertyKey = propertyKeys[i];
       let propertyName = propertyNames[i];
@@ -68,7 +97,7 @@ abstract class ColumnConverter<T, C> {
     return [this.column.slug];
   }
 
-  _getPropertyNames(): string[] {
+  getPropertyNames(): string[] {
     return [this.column.label];
   }
 
@@ -77,7 +106,7 @@ abstract class ColumnConverter<T, C> {
     return value as any;
   }
 
-  formatValueForApi(value: C): T | string {
+  formatValueForApi(value: C): T | string | string[] {
     return value as any;
   }
 }
@@ -86,6 +115,66 @@ class TextColumnConverter extends ColumnConverter<string, string> {
   _getBaseSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
+    });
+  }
+}
+
+class NumberColumnConverter extends ColumnConverter<string, number> {
+  _getBaseSchema() {
+    return coda.makeSchema({
+      type: coda.ValueType.Number,
+      precision: this.column.params.precision,
+      useThousandsSeparator: this.column.params.separator,
+    });
+  }
+
+  formatValueForSchema(value: string): number {
+    return Number(value);
+  }
+
+  formatValueForApi(value: number): string {
+    return String(value);
+  }
+}
+
+class SliderColumnConverter extends ColumnConverter<number, number> {
+  _getBaseSchema() {
+    return coda.makeSchema({
+      type: coda.ValueType.Number,
+      codaType: coda.ValueHintType.Slider,
+      minimum: this.column.params.min_value,
+      maximum: this.column.params.max_value,
+      step: this.column.params.value_increment,
+    });
+  }
+}
+
+class PercentColumnConverter extends NumberColumnConverter {
+  _getBaseSchema() {
+    return coda.makeSchema({
+      ...super._getBaseSchema(),
+      codaType: coda.ValueHintType.Percent,
+    });
+  }
+
+  formatValueForSchema(value: string): number {
+    return Number(value) / 100;
+  }
+
+  formatValueForApi(value: number): string {
+    return String(value * 100);
+  }
+}
+
+class CurrencyColumnConverter extends NumberColumnConverter {
+  _getBaseSchema() {
+    return coda.makeSchema({
+      ...super._getBaseSchema(),
+      codaType: coda.ValueHintType.Currency,
+      currencyCode: this.column.params.currency,
+      // For some reason this field doesn't exist on the CurrencySchema,
+      // so we need to unset it.
+      useThousandsSeparator: undefined,
     });
   }
 }
@@ -121,21 +210,45 @@ class DateColumnConverter extends ColumnConverter<SmartSuiteDateField, string> {
   }
 }
 
-class PhoneColumnConverter extends ColumnConverter<SmartSuitePhoneField, string> {
+class TimeColumnConverter extends ColumnConverter<string, string> {
   _getBaseSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Time,
     });
   }
+}
 
-  formatValueForSchema(value: SmartSuitePhoneField) {
-    return value.sys_title;
+class PhoneColumnConverter extends ColumnConverter<SmartSuitePhoneField[], string | string[]> {
+  _getBaseSchema() {
+    let schema: coda.Schema = coda.makeSchema({
+      type: coda.ValueType.String,
+    });
+    if (this.column.params.entries_allowed == "multiple") {
+      schema = coda.makeSchema({
+        type: coda.ValueType.Array,
+        items: schema,
+      });
+    }
+    return schema;
   }
 
-  formatValueForApi(value: string): SmartSuitePhoneField {
-    return {
-      phone_number: value,
-    };
+  formatValueForSchema(value: SmartSuitePhoneField[]) {
+    let phones = value.map(phone => phone.sys_title);
+    if (this.column.params.entries_allowed == "single") {
+      return phones[0];
+    }
+    return phones;
+  }
+
+  formatValueForApi(value: string | string[]): string[] {
+    let phones = Array.isArray(value) ? value:  [value];
+    for (let phone of phones) {
+      if (!phone.trim().startsWith("+")) {
+        throw new coda.UserVisibleError("Phone number doesn't start with a plus and country code: " + phone);
+      }
+    }
+    return phones;
   }
 }
 
@@ -158,7 +271,7 @@ class MemberDatePairColumnConverter extends ColumnConverter<SmartSuiteMemberDate
     ]
   }
 
-  _getPropertyNames(): string[] {
+  getPropertyNames(): string[] {
     return [
       this.column.label + " By",
       this.column.label + " On",
@@ -174,9 +287,9 @@ class MemberDatePairColumnConverter extends ColumnConverter<SmartSuiteMemberDate
   }
 }
 
-class SelectListColumnConverter extends ColumnConverter<string, CodaOption> {
+class SelectListColumnConverter extends ColumnConverter<string | string[] | SmartSuiteStatus, CodaOption | CodaOption[]> {
   _getBaseSchema() {
-    return coda.makeObjectSchema({
+    let schema: coda.Schema = coda.makeObjectSchema({
       properties: {
         label: { type: coda.ValueType.String },
         value: { type: coda.ValueType.String },
@@ -185,18 +298,40 @@ class SelectListColumnConverter extends ColumnConverter<string, CodaOption> {
       options: coda.OptionsType.Dynamic,
       allowNewValues: this.column.params.new_choices_allowed,
     });
+    if (this.column.field_type == "multipleselectfield") {
+      schema = coda.makeSchema({
+        type: coda.ValueType.Array,
+        items: schema,
+      });
+    }
+    return schema;
   }
 
-  formatValueForSchema(value: string): CodaOption {
-    let option = this.column.params.choices.find(choice => choice.value == value);
+  formatValueForSchema(value: string | string[] | SmartSuiteStatus): CodaOption | CodaOption[] {
+    if (value instanceof Array) {
+      return value.map(val => this.toOption(val));
+    } else if (typeof(value) == "string") {
+        return this.toOption(value);
+    } else {
+      // Status column.
+      return this.toOption(value.value);
+    }
+  }
+
+  private toOption(value: string) {
+    let choice = this.column.params.choices.find(choice => choice.value == value);
     return {
-      label: option?.label ?? "Unknown",
+      label: choice?.label ?? "Unknown",
       value: value,
     };
   }
 
-  formatValueForApi(value: CodaOption): string {
-    return value.value;
+  formatValueForApi(value: CodaOption | CodaOption[]): string | string[] {
+    if (value instanceof Array) {
+      return value.map(val => val.value);
+    } else {
+      return value.value;
+    }
   }
 }
 
@@ -211,8 +346,18 @@ class HtmlColumnConverter extends ColumnConverter<SmartSuiteRichTextField, strin
   }
 
   formatValueForSchema(value: SmartSuiteRichTextField): string {
-    return value.html.replaceAll("\n", "");
+    return value.html.replaceAll("\n", "").trim();
   }
+}
+
+class LinkColumnConverter extends ColumnConverter<string[], string> {
+  _getBaseSchema() {
+    return coda.makeSchema({
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Url,
+    });
+  }
+  
 }
 
 class MemberColumnConverter extends ColumnConverter<string[], CodaMemberReference> {
@@ -229,6 +374,39 @@ class MemberColumnConverter extends ColumnConverter<string[], CodaMemberReferenc
 
   formatValueForApi(value: CodaMemberReference): string[] {
     return [value.id];
+  }
+}
+
+class SplitNestedColumnConverter extends ColumnConverter<any, string> {
+  private converters: ColumnConverter<any, any>[] = [];
+
+  constructor(column) {
+    super(column);
+    for (let sub of column.nested) {
+      this.converters.push(getConverter(sub));
+    }
+  }
+
+  _getBaseSchema() {
+    return this.converters.map(converter => {
+      return {
+        ...converter.getSchemas()[0],
+        // TODO: Find a way to make these mutable.
+        mutable: false,
+      };
+    });
+  }
+
+  getPropertyKeys(): string[] {
+    return this.converters.map(converter => this.column.slug + "." + converter.getPropertyKeys()[0]);
+  }
+
+  getPropertyNames(): string[] {
+    return this.converters.map(converter => this.column.label + " - " + converter.getPropertyNames()[0]);
+  }
+
+  formatValueForSchema(value: any): string[] {
+    return this.converters.map(converter => converter.formatValueForSchema(value[converter.getPropertyKeys()[0]]));
   }
 }
 

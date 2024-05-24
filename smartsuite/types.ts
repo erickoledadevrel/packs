@@ -7,7 +7,7 @@ export interface Table {
   name: string;
   id: string;
   primary_field: string;
-  structure: Column[];
+  structure: SmartSuiteColumn[];
   structure_layout: {
     single_column: {
       rows: string[];
@@ -15,7 +15,7 @@ export interface Table {
   };
 }
 
-export interface Column {
+export interface SmartSuiteColumn {
   slug: string;
   label: string;
   field_type: string; // TODO: Fill in types.
@@ -32,7 +32,15 @@ export interface Column {
     hidden: boolean;
     system: boolean;
     help_text: string;
+    precision: number;
+    separator: boolean;
+    min_value: number;
+    max_value: number;
+    value_increment: number;
+    currency: string;
+    entries_allowed: string;
   };
+  nested?: SmartSuiteColumn[];
 }
 
 export interface SmartSuiteRecord extends Record<string, any> {
@@ -62,7 +70,13 @@ export interface SmartSuiteMember {
   id: string;
   full_name: {
     sys_root: string;
-  }
+  },
+  email: string[];
+  timezone: string;
+}
+
+export interface SmartSuiteStatus {
+  value: string;
 }
 
 
