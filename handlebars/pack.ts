@@ -63,6 +63,47 @@ pack.addFormula({
   },
 });
 
+pack.addFormula({
+  name: "TemplateReplaceWithJSON",
+  description: "Replace placeholders in a Handlebars template, with values passed as JSON.",
+  examples: [
+    {params: ["Hello {{name}}", `{"name": "World"}`], result: "Hello World"},
+    {params: ["{{person.name}} is {{person.feeling}}", `{"person": {"name": "Alice", "feeling": "happy"}}`], result: "Alice is happy"},
+  ],
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.Html,
+      name: "template",
+      description: `The template text, with placeholders in the Handlesbars syntax. Ex: "Hello {{name}}"`,
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "valuesJSON",
+      description: `The values to for the replacement, as a JSON string. Ex: '{"name": "Alice"}'`,
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  codaType: coda.ValueHintType.Html,
+  cacheTtlSecs: OneDaySecs,
+  onError: onError,
+  execute: async function (args, context) {
+    let [template, valuesJSON] = args;
+    template = cleanHtml(template);
+
+    let variables;
+    try {
+      variables = JSON.parse(valuesJSON);
+    } catch (e) {
+      throw new coda.UserVisibleError("The values are not valid JSON: " + e)
+    }
+    let compiled = Handlebars.compile(template, {
+      strict: true,
+      noEscape: true,
+    });
+    return compiled(variables);
+  },
+});
+
 // Backwards compatibility.
 pack.formulas.push({
   ...pack.formulas[0],
