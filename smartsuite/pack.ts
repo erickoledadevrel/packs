@@ -2,24 +2,11 @@ import * as coda from "@codahq/packs-sdk";
 import { getMembers, getSolutions, getTable, getTables } from "./api";
 import { getConverter } from "./convert";
 import { CodaMember, CodaRow, SmartSuiteRecord, Table } from "./types";
-import { MemberSchema } from "./schemas";
+import { BaseRowSchema, MemberSchema } from "./schemas";
 
 export const pack = coda.newPack();
 
 export const PageSize = 100;
-
-const BaseRowSchema = coda.makeObjectSchema({
-  properties: {
-    recordId: {
-      type: coda.ValueType.String,
-      description: "The unique ID of the record.",
-      fromKey: "id",
-    },
-  },
-  idProperty: "recordId",
-  displayProperty: undefined,
-  featuredProperties: [],
-});
 
 pack.addNetworkDomain("smartsuite.com");
 
@@ -78,19 +65,19 @@ pack.addDynamicSyncTable({
       }
     });
     for (let column of table.structure) {
-      let converter = getConverter(column);
-      let propertySchemas = converter.getSchema();
-      for (let propertySchema of propertySchemas) {
-        let propertyName = propertySchema.displayName;
-        schema.properties[propertyName] = propertySchema;
-        if (column.params.primary) {
-          schema.displayProperty = propertyName;
-        }
-        if (!column.params.hidden) {
-          schema.featuredProperties.push(propertyName);
-        }
+      let converter = getConverter(context, column);
+      let propertySchema = converter.getSchema();
+      let propertyName = converter.getPropertyName();
+      schema.properties[propertyName] = propertySchema;
+      /*
+      if (!column.params.hidden) {
+        schema.featuredProperties.push(propertyName);
       }
+      */
     }
+    schema.featuredProperties = table.structure_layout.single_column.rows.map(columnId => {
+      return Object.entries(schema.properties).find(([name, prop]) => prop.fromKey == columnId)[0];
+    });
     return schema;
   },
   getDisplayUrl: async function (context) {
@@ -139,9 +126,9 @@ pack.addDynamicSyncTable({
         body: JSON.stringify({}),
       });
       let {total, items} = response.body;
-      let result = items.map(item => {
-        return formatRecordForSchema(item, table);
-      });
+      let result = await Promise.all(items.map(async item => {
+        return formatRecordForSchema(context, item, table);
+      }));
       let continuation;
       if (total > offset + PageSize) {
         continuation = { offset: offset + PageSize };
@@ -164,7 +151,7 @@ pack.addDynamicSyncTable({
       });
       let payload = {
         items: patches.map(patch => {
-          return formatRowForApi(patch, table);
+          return formatRowForApi(context, patch, table);
         }),
       };
       let response = await context.fetcher.fetch({
@@ -176,8 +163,15 @@ pack.addDynamicSyncTable({
         body: JSON.stringify(payload),
       });
       let records = response.body;
+      let rows = await Promise.all(records.map(async record => {
+        return formatRecordForSchema(context, record, table);
+      }));
+      if (rows.length != updates.length) {
+        // One or more rows were no-ops. Return the original values as a fallback.
+        rows = updates.map(update => update.newValue);
+      }
       return {
-        result: records.map(record => formatRecordForSchema(record, table)),
+        result: rows,
       };
     },
   },
@@ -217,34 +211,30 @@ pack.addSyncTable({
   },
 });
 
-function formatRecordForSchema(record: SmartSuiteRecord, table: Table): CodaRow {
+async function formatRecordForSchema(context: coda.ExecutionContext, record: SmartSuiteRecord, table: Table): Promise<CodaRow> {
   let result: CodaRow = {
     id: record.id,
   };
 
   for (let column of table.structure) {
-    let converter = getConverter(column);
-    let key = column.slug;
-    let value = converter.formatValueForSchema(record[key]);
-    let keys = converter.getPropertyKeys();
-    let values = keys.length > 1 ? value : [value];
-    for (let [i, k] of keys.entries()) {
-      let v = values[i];
-      result[k] = v;
+    let converter = getConverter(context, column);
+    let key = converter.getPropertyKey();
+    if (record[key] != null && record[key] != "") {
+      let value = await converter.formatValueForSchema(record[key]);
+      result[key] = value;
     }
   }
   return result;
 }
 
-function formatRowForApi(row: CodaRow, table: Table): SmartSuiteRecord {
+function formatRowForApi(context: coda.ExecutionContext, row: CodaRow, table: Table): SmartSuiteRecord {
   let result: SmartSuiteRecord = {
     id: row.id,
   };
-  Object.assign
   for (let [key, value] of Object.entries(row)) {
     if (key == "id" || !value) continue;
     let column = table.structure.find(c => c.slug == key);
-    let converter = getConverter(column);
+    let converter = getConverter(context, column);
     result[key] = converter.formatValueForApi(value);
   }
   return result;

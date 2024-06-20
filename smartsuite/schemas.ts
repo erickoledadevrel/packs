@@ -1,5 +1,26 @@
 import * as coda from "@codahq/packs-sdk";
 
+export const TitlePropertyName = "Title";
+
+export const BaseRowSchema = coda.makeObjectSchema({
+  properties: {
+    recordId: {
+      type: coda.ValueType.String,
+      description: "The unique ID of the record.",
+      fromKey: "id",
+      required: true,
+    },
+    [TitlePropertyName]: {
+      type: coda.ValueType.String,
+      fromKey: "title",
+      required: true,
+    }
+  },
+  idProperty: "recordId",
+  displayProperty: TitlePropertyName,
+  featuredProperties: [],
+});
+
 const PersonSchema = coda.makeObjectSchema({
   codaType: coda.ValueHintType.Person,
   properties: {

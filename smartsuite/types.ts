@@ -38,7 +38,10 @@ export interface SmartSuiteColumn {
     max_value: number;
     value_increment: number;
     currency: string;
+    linked_application?: string;
     entries_allowed: string;
+    display_format: string;
+    scale: number;
   };
   nested?: SmartSuiteColumn[];
 }
@@ -79,6 +82,27 @@ export interface SmartSuiteStatus {
   value: string;
 }
 
+export interface SmartSuiteDueDate {
+  from_date: SmartSuiteDateField;
+  to_date: SmartSuiteDateField;
+}
+
+export interface SmartSuiteFile {
+  handle: string;
+  metadata: {
+    filename: string;
+    mimetype: string;
+  };
+}
+
+export interface SmartSuiteDependency {
+  predecessor?: {
+    type: "fs";
+    lag: 0;
+    application: string;
+    record: string;
+  }[];
+}
 
 
 export interface CodaRow extends Record<string, any> {
@@ -98,4 +122,9 @@ export interface CodaMember {
 export interface CodaOption {
   label: string;
   value: string;
+}
+
+export interface CodaDatePersonField {
+  by: CodaMember,
+  on: string,
 }
