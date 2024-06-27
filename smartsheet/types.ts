@@ -2,6 +2,7 @@ export interface Cell<T> {
   columnId: number;
   value: T;
   displayValue?: string;
+  strict?: boolean;
 }
 
 export interface Row {

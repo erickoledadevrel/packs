@@ -2,6 +2,7 @@ import * as coda from "@codahq/packs-sdk";
 import { getConverter } from "./convert";
 import { CodaRow, Row, Sheet, SheetFormatSettings } from "./types";
 import { getSheet, syncSheet, updateRows, getRows } from "./api";
+import { listSheets, searchSheets } from "../smartsuite/api";
 
 export const pack = coda.newPack();
 
@@ -9,6 +10,7 @@ const HomeUrl = "https://api.smartsheet.com/2.0/folders/personal";
 const WorkspacesUrl = "https://api.smartsheet.com/2.0/workspaces";
 export const PageSize = 100;
 const IdParameterRegex = /^.*\((\d+)\)$/;
+const SheetUrlRegex = new RegExp("https://app.smartsheet.com/sheets/([^?/]+)")
 
 const BaseRowSchema = coda.makeObjectSchema({
   properties: {
@@ -245,6 +247,96 @@ pack.addDynamicSyncTable({
   },
 });
 
+pack.addFormula({
+  name: "AddRow",
+  description: "Adds a row to a sheet.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "sheet",
+      description: "The numerical ID of the sheet, as found in the properties dialog.",
+      autocomplete: async function (context, search) {
+        if (search) {
+          let {results} = await searchSheets(context, search);
+          if (!results) return [];
+          return results
+          .filter(item => item.objectType == "sheet")
+          .map(item => {
+            let title = item.text;
+            let sheetId = item.objectId;
+            return `${title} (${sheetId})`;
+          });
+        } else {
+          let {data} = await listSheets(context);
+          return data.map(sheet => `${sheet.name} (${sheet.id})`);
+        }
+      },
+    }),
+  ],
+  varargParameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "column",
+      description: "The column to set.",
+      autocomplete: async function (context, search, args) {
+        let {sheet} = args;
+        if (!sheet) return [];
+        let sheetId = parseIdParameter(sheet);
+        let sheetUrl = `https://api.smartsheet.com/2.0/sheets/${sheetId}`;
+        let {columns} = await getSheet(context, sheetUrl);
+        return columns.map(column => `${column.title} (${column.id})`);
+      },
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "value",
+      description: "The value to set for that column.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  isAction: true,
+  execute: async function (args, context) {
+    let [sheet, ...rest] = args;
+    let sheetId = parseIdParameter(sheet);
+    let sheetUrl = `https://api.smartsheet.com/2.0/sheets/${sheetId}`;
+    let {columns} = await getSheet(context, sheetUrl);
+    let row: Row = {
+      id: undefined,
+      cells: [],
+    };
+    while (rest.length > 0) {
+      let [column, value, ...more] = rest;
+      let columnId = parseIdParameter(column);
+      let columnInfo = columns.find(col => col.id == columnId);
+      if (columnInfo.type == "CHECKBOX") {
+        value = Boolean(value);
+      } else if (columnInfo.type == "TEXT_NUMBER" && !Number.isNaN(Number(value))) {
+        value = Number(value);
+      }
+      row.cells.push({columnId, value, strict: false});
+      rest = more;
+    }
+    let url = coda.withQueryParams(`https://api.smartsheet.com/2.0/sheets/${sheetId}/rows`, {});
+    try {
+      let response = await context.fetcher.fetch({
+        method: "POST",
+        url: url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(row),
+      });
+      let data = response.body;
+      return data.result.id;
+    } catch (e) {
+      if (coda.StatusCodeError.isStatusCodeError(e) && e.body.message) {
+        throw new coda.UserVisibleError(e.body.message);
+      }
+      throw e;
+    }
+  },
+});
+
 async function formatRowForSchema(context: coda.ExecutionContext, row: Row, sheet: Sheet, settings: SheetFormatSettings): Promise<CodaRow> {
   let result: CodaRow = {
     id: String(row.id),
@@ -285,5 +377,3 @@ function parseIdParameter(value: string): number {
   if (extracted) return parseInt(extracted);
   throw new coda.UserVisibleError(`Invalid parameter value: ${value}`);
 }
-
-
