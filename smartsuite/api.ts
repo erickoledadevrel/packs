@@ -1,6 +1,27 @@
 import * as coda from "@codahq/packs-sdk";
 import { SmartSuiteMember, Solution, Table } from "./types";
 
+export async function listSheets(context: coda.ExecutionContext) {
+  let url = coda.withQueryParams("https://api.smartsheet.com/2.0/sheets", {})
+  let response = await context.fetcher.fetch({
+    method: "GET",
+    url: url,
+  });
+  return response.body;
+}
+
+export async function searchSheets(context: coda.ExecutionContext, search: string) {
+  let url = coda.withQueryParams("https://api.smartsheet.com/2.0/search", {
+    query: search,
+    scopes: "sheetNames",
+  })
+  let response = await context.fetcher.fetch({
+    method: "GET",
+    url: url,
+  });
+  return response.body;
+}
+
 export async function getTables(context: coda.ExecutionContext, solutionId?: string): Promise<Table[]> {
   let url = coda.withQueryParams("https://app.smartsuite.com/api/v1/applications/", {
     solution: solutionId,

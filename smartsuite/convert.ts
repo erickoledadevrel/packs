@@ -1,5 +1,5 @@
 import * as coda from "@codahq/packs-sdk";
-import { CodaDatePersonField, CodaMember as CodaMemberReference, CodaOption, CodaPerson, CodaRow, SmartSuiteColumn, SmartSuiteDateField, SmartSuiteDependency, SmartSuiteDueDate, SmartSuiteFile, SmartSuiteDatePersonField as SmartSuiteMemberDateField, SmartSuitePhoneField, SmartSuiteRichTextField, SmartSuiteStatus } from "./types";
+import { CodaDatePersonField, CodaMemberReference as CodaMemberReference, CodaOption, CodaPerson, CodaRow, CodaVote, SmartSuiteColumn, SmartSuiteDateField, SmartSuiteDependency, SmartSuiteDueDate, SmartSuiteFile, SmartSuiteDatePersonField as SmartSuiteMemberDateField, SmartSuitePhoneField, SmartSuiteRichTextField, SmartSuiteStatus, SmartSuiteVote } from "./types";
 import { BaseRowSchema, MemberSchema, TitlePropertyName } from "./schemas";
 
 const SyntheticDisplayPropertyKey = "_display";
@@ -53,6 +53,7 @@ export function getConverter(context: coda.ExecutionContext, column: SmartSuiteC
     case "singleselectfield":
     case "multipleselectfield":
     case "statusfield":
+    case "tagsfield":
       return new SelectListColumnConverter(context, column);
 
     // Relations
@@ -68,6 +69,10 @@ export function getConverter(context: coda.ExecutionContext, column: SmartSuiteC
       return new PhoneColumnConverter(context, column);
     case "addressfield":
       return new NestedColumnConverter(context, column, ", ");
+    case "votefield":
+      return new VoteColumnConverter(context, column);
+    case "socialnetworkfield":
+      return new NestedColumnConverter(context, column, ", "); 
 
     // Media
     case "filefield":
@@ -406,7 +411,7 @@ class SelectListColumnConverter extends ColumnConverter<string | string[] | Smar
       options: coda.OptionsType.Dynamic,
       allowNewValues: this.column.params.new_choices_allowed,
     });
-    if (this.column.field_type == "multipleselectfield") {
+    if (["multipleselectfield", "tagsfield"].includes(this.column.field_type)) {
       schema = coda.makeSchema({
         type: coda.ValueType.Array,
         items: schema,
@@ -491,6 +496,34 @@ class MemberColumnConverter extends ColumnConverter<string, CodaMemberReference>
 
   _formatValueForApi(value: CodaMemberReference): string {
     return value.id;
+  }
+}
+
+class VoteColumnConverter extends ColumnConverter<SmartSuiteVote, CodaVote> {
+  _getSchema() {
+    return coda.makeObjectSchema({
+      properties: {
+        total_votes: { type: coda.ValueType.Number },
+        votes: {
+          type: coda.ValueType.Array,
+          items: coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
+        },
+      },
+      displayProperty: "total_votes",
+      mutable: false,
+    });
+  }
+
+  async _formatValueForSchema(value: SmartSuiteVote): Promise<CodaVote> {
+    return {
+      ...value,
+      votes: value.votes.map(vote => {
+        return {
+          id: vote.user_id,
+          name: "Not synced"
+        };
+      }),
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
 import { getMembers, getSolutions, getTable, getTables } from "./api";
 import { getConverter } from "./convert";
-import { CodaMember, CodaRow, SmartSuiteRecord, Table } from "./types";
+import { CodaMemberReference, CodaRow, SmartSuiteRecord, Table } from "./types";
 import { BaseRowSchema, MemberSchema } from "./schemas";
 
 export const pack = coda.newPack();
@@ -189,7 +189,7 @@ pack.addSyncTable({
     execute: async function (args, context) {
       let offset = context.sync.continuation?.offset as number ?? 0;
       let {items, total} = await getMembers(context, PageSize, offset);
-      let result: CodaMember[] = items.map(member => {
+      let result: CodaMemberReference[] = items.map(member => {
         let name = member.full_name.sys_root;
         let email = member.email?.[0];
         return {

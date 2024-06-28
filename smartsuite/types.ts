@@ -104,6 +104,14 @@ export interface SmartSuiteDependency {
   }[];
 }
 
+export interface SmartSuiteVote {
+  total_votes: number;
+  votes: {
+    user_id: string;
+    date: string;
+  }[];
+}
+
 
 export interface CodaRow extends Record<string, any> {
   id: string;
@@ -114,7 +122,7 @@ export interface CodaPerson {
   email: string;
 }
 
-export interface CodaMember {
+export interface CodaMemberReference {
   name: string;
   id: string;
 }
@@ -125,6 +133,11 @@ export interface CodaOption {
 }
 
 export interface CodaDatePersonField {
-  by: CodaMember,
+  by: CodaMemberReference,
   on: string,
+}
+
+export interface CodaVote {
+  total_votes: number;
+  votes: CodaMemberReference[];
 }
