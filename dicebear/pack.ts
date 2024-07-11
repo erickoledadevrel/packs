@@ -9,7 +9,7 @@ export const pack = coda.newPack();
 
 const ApiVersion = "7.x";
 const DefaultStyle = "initials";
-const DefaultFileType = "svg";
+const DefaultImageFormat = "svg";
 const OneDaySecs = 24 * 60 * 60;
 const HiddenOptions = ["seed"];
 const DefaultOptions = {
@@ -17,6 +17,7 @@ const DefaultOptions = {
 };
 const ColorPattern = '^(transparent|[a-fA-F0-9]{6})$';
 const StyleDocumentationBaseUrl = "https://www.dicebear.com/styles/";
+const ImageFormats = ["svg", "png", "jpg"];
 
 const LicenseSchema = coda.makeObjectSchema({
   properties: {
@@ -181,8 +182,10 @@ function getAvatarUrl(seed: string, style: string, options?: Record<string, stri
 }
 
 function getBaseUrl(style: string, options: Record<string, string>): string {
+  let format = options.format ?? DefaultImageFormat;
+  delete options["format"];
   return coda.withQueryParams(
-    coda.joinUrl("https://api.dicebear.com/", ApiVersion, style, DefaultFileType),
+    coda.joinUrl("https://api.dicebear.com/", ApiVersion, style, format),
     options);
 }
 
@@ -232,6 +235,11 @@ function getSchema(styleName, includeBaseSchema = true) {
     properties: {
       ...(includeBaseSchema ? dicebear.schema.properties : {}),
       ...styleSchema.properties,
+      format: {
+        name: "Image format",
+        type: "string",
+        enum: ImageFormats,
+      },
     },
   };
 }
