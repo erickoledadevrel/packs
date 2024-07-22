@@ -1,117 +1,129 @@
 import * as coda from "@codahq/packs-sdk";
-import { CodaDatePersonField, CodaMemberReference as CodaMemberReference, CodaOption, CodaPerson, CodaRow, CodaVote, SmartSuiteColumn, SmartSuiteDateField, SmartSuiteDependency, SmartSuiteDueDate, SmartSuiteFile, SmartSuiteDatePersonField as SmartSuiteMemberDateField, SmartSuitePhoneField, SmartSuiteRichTextField, SmartSuiteStatus, SmartSuiteVote } from "./types";
-import { BaseRowSchema, MemberSchema, TitlePropertyName } from "./schemas";
+import type * as ct from "./types/coda";
+import type * as sst from "./types/smartsuite";
+import { getReferenceSchema, MemberSchema } from "./schemas";
+import { getSharedFile, getTable } from "./api";
+import { ConversionSettings } from "./types";
 
 const SyntheticDisplayPropertyKey = "_display";
 const SyntheticDisplayPropertyName = "Display";
 const SecondsPerDay = 60 * 60 * 24;
+const NotSyncedMessage = "Not synced";
 
-export function getConverter(context: coda.ExecutionContext, column: SmartSuiteColumn): ColumnConverter<any, any> {
+export function getConverter(settings: ConversionSettings, column: sst.Column): ColumnConverter<any, any> {
   switch (column.field_type) {
     // Text
     case "textfield":
     case "recordtitlefield":
     case "textareafield":
-      return new TextColumnConverter(context, column);
+      return new TextColumnConverter(settings, column);
     case "richtextareafield":
-      return new HtmlColumnConverter(context, column);
+      return new HtmlColumnConverter(settings, column);
     case "linkfield":
-      return new LinkColumnConverter(context, column);
+      return new LinkColumnConverter(settings, column);
     case "emailfield":
-      return new EmailColumnConverter(context, column);
+      return new EmailColumnConverter(settings, column);
     case "fullnamefield":
-      return new NestedColumnConverter(context, column, " ");
+      return new NestedColumnConverter(settings, column, " ");
 
     // Numbers
     case "numberfield":
-      return new NumberColumnConverter(context, column);
+      return new NumberColumnConverter(settings, column);
     case "numbersliderfield":
-      return new SliderColumnConverter(context, column);
+      return new SliderColumnConverter(settings, column);
     case "percentfield":
-      return new PercentColumnConverter(context, column);
+      return new PercentColumnConverter(settings, column);
     case "currencyfield":
-      return new CurrencyColumnConverter(context, column);
+      return new CurrencyColumnConverter(settings, column);
     case "percentcompletefield":
-      return new ProgressColumnConverter(context, column);
+      return new ProgressColumnConverter(settings, column);
     case "ratingfield":
-      return new ScaleColumnConverter(context, column);
+      return new ScaleColumnConverter(settings, column);
 
     // Dates and times
     case "datefield":
       // TODO: Handle date + time.
-      return new DateColumnConverter(context, column);
+      return new DateColumnConverter(settings, column);
     case "timefield":
-      return new TimeColumnConverter(context, column);
+      return new TimeColumnConverter(settings, column);
     case "duedatefield":
-      return new DueDateColumnConverter(context, column);
+      return new DueDateColumnConverter(settings, column);
     case "daterangefield":
-      return new NestedColumnConverter(context, column, " - ");
+      return new NestedColumnConverter(settings, column, " - ");
     case "durationfield":
-      return new DurationColumnConverter(context, column);
+      return new DurationColumnConverter(settings, column);
 
     // Select lists
     case "singleselectfield":
     case "multipleselectfield":
     case "statusfield":
     case "tagsfield":
-      return new SelectListColumnConverter(context, column);
+      return new SelectListColumnConverter(settings, column);
 
     // Relations
     case "linkedrecordfield":
-      return new LinkedRecordColumnConverter(context, column);
+      return new LinkedRecordColumnConverter(settings, column);
     case "dependencyfield":
-      return new DependencyColumnConverter(context, column);
+      return new DependencyColumnConverter(settings, column);
 
     // People and contacts
     case "userfield":
-      return new MemberColumnConverter(context, column);
+      return new MemberColumnConverter(settings, column);
     case "phonefield":
-      return new PhoneColumnConverter(context, column);
+      return new PhoneColumnConverter(settings, column);
     case "addressfield":
-      return new NestedColumnConverter(context, column, ", ");
+      return new NestedColumnConverter(settings, column, ", ");
     case "votefield":
-      return new VoteColumnConverter(context, column);
+      return new VoteColumnConverter(settings, column);
     case "socialnetworkfield":
-      return new NestedColumnConverter(context, column, ", "); 
+      // It doesn't really allow multiple entries.
+      column.params.entries_allowed = "single";
+      return new NestedColumnConverter(settings, column, ", ");
 
     // Media
     case "filefield":
-      return new FileColumnConverter(context, column);
+      return new FileColumnConverter(settings, column);
 
     // Metadata
     case "firstcreatedfield":
     case "lastupdatedfield":
-      return new MemberDatePairColumnConverter(context, column);
+      return new MemberDatePairColumnConverter(settings, column);
     case "commentscountfield":
     case "autonumberfield":
-      return new NumberColumnConverter(context, column);
+      return new NumberColumnConverter(settings, column);
+
+    // Structured
+    case "checklistfield":
+      return new ChecklistColumnConverter(settings, column);
+    case "timetrackingfield":
+      return new TimeTrackkingLogColumnConverter(settings, column);
+    case "colorpickerfield":
+      return new ColorColumnConverter(settings, column);
+    case "ipaddressfield":
+      return new IpAddressColumnConverter(settings, column);
 
     default:
       // Composites
       if (column.nested) {
-        return new NestedColumnConverter(context, column);
+        return new NestedColumnConverter(settings, column);
       }
       console.error(`No converter found for column type: ${column.field_type}`);
-      return new UnknownColumnConverter(context, column);
+      return new UnknownColumnConverter(settings, column);
   }
 }
 
 // Abstract class that all converter classes extend.
 abstract class ColumnConverter<T, C> {
-  context: coda.ExecutionContext;
-  column: SmartSuiteColumn;
+  settings: ConversionSettings
+  column: sst.Column;
 
-  constructor(context: coda.ExecutionContext, column: SmartSuiteColumn) {
-    this.context = context;
+  constructor(settings: ConversionSettings, column: sst.Column) {
+    this.settings = settings;
     this.column = column;
   }
 
-  getColumnCount(): number {
-    return 1;
-  }
-
-  getSchema(): coda.Schema & coda.ObjectSchemaProperty {
-    let schema = this._getSchema();
+  async getSchema(): Promise<coda.Schema & coda.ObjectSchemaProperty> {
+    let schema = await this._getSchema();
     let propertyKey = this.getPropertyKey();
     let columnName = this.getColumnName();
     schema.fixedId = propertyKey;
@@ -139,16 +151,13 @@ abstract class ColumnConverter<T, C> {
   }
 
   // Each implementation must define the base property schema.
-  abstract _getSchema(): coda.Schema & coda.ObjectSchemaProperty;
+  abstract _getSchema(): Promise<coda.Schema & coda.ObjectSchemaProperty>;
 
   getPropertyKey(): string {
     return this.column.slug;
   }
 
   getPropertyName(): string {
-    if (this.column.params.primary) {
-      return TitlePropertyName;
-    }
     return this.column.label;
   }
 
@@ -157,6 +166,9 @@ abstract class ColumnConverter<T, C> {
   }
 
   async formatValueForSchema(value: T | T[]): Promise<C | C[]> {
+    if (isEmpty(value)) {
+      return undefined;
+    }
     if (Array.isArray(value)) {
       if (this.column.params.entries_allowed == "multiple") {
         return Promise.all(value.map(v => this._formatValueForSchema(v)));
@@ -167,12 +179,11 @@ abstract class ColumnConverter<T, C> {
     return this._formatValueForSchema(value as T);
   }
 
-
-  formatValueForApi(value: C | C[]): T | T[] {
+  async formatValueForApi(value: C | C[]): Promise<T | T[]> {
     if (this.column.params.entries_allowed == "multiple" && Array.isArray(value)) {
-      return value.map(v => this._formatValueForApi(v));
+      return Promise.all(value.map(v => this._formatValueForApi(v)));
     } else if (this.column.params.entries_allowed == "single") {
-      return [this._formatValueForApi(value as C)];
+      return Promise.all([this._formatValueForApi(value as C)]);
     }
     return this._formatValueForApi(value as C);
   }
@@ -182,13 +193,13 @@ abstract class ColumnConverter<T, C> {
     return value as any;
   }
 
-  _formatValueForApi(value: C): T {
+  async _formatValueForApi(value: C): Promise<T> {
     return value as any;
   }
 }
 
 class TextColumnConverter extends ColumnConverter<string, string> {
-  _getSchema() {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
     });
@@ -196,7 +207,7 @@ class TextColumnConverter extends ColumnConverter<string, string> {
 }
 
 class NumberColumnConverter extends ColumnConverter<string, number> {
-  _getSchema() {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.Number,
       precision: this.column.params.precision,
@@ -208,13 +219,13 @@ class NumberColumnConverter extends ColumnConverter<string, number> {
     return Number(value);
   }
 
-  _formatValueForApi(value: number): string {
+  async _formatValueForApi(value: number): Promise<string> {
     return String(value);
   }
 }
 
 class SliderColumnConverter extends ColumnConverter<number, number> {
-  _getSchema() {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.Number,
       codaType: coda.ValueHintType.Slider,
@@ -226,7 +237,7 @@ class SliderColumnConverter extends ColumnConverter<number, number> {
 }
 
 class ProgressColumnConverter extends ColumnConverter<number, number> {
-  _getSchema() {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.Number,
       codaType: coda.ValueHintType.ProgressBar,
@@ -238,7 +249,7 @@ class ProgressColumnConverter extends ColumnConverter<number, number> {
 }
 
 class ScaleColumnConverter extends ColumnConverter<number, number> {
-  _getSchema() {
+  async _getSchema() {
     let icon = undefined;
     switch(this.column.params.display_format) {
       case "star":
@@ -271,9 +282,10 @@ class ScaleColumnConverter extends ColumnConverter<number, number> {
 }
 
 class PercentColumnConverter extends NumberColumnConverter {
-  _getSchema() {
+  async _getSchema() {
+    let baseSchema = await super._getSchema();
     return coda.makeSchema({
-      ...super._getSchema(),
+      ...baseSchema,
       codaType: coda.ValueHintType.Percent,
     });
   }
@@ -282,15 +294,16 @@ class PercentColumnConverter extends NumberColumnConverter {
     return Number(value) / 100;
   }
 
-  _formatValueForApi(value: number): string {
+  async _formatValueForApi(value: number): Promise<string> {
     return String(value * 100);
   }
 }
 
 class CurrencyColumnConverter extends NumberColumnConverter {
-  _getSchema() {
+  async _getSchema() {
+    let baseSchema = await super._getSchema();
     return coda.makeSchema({
-      ...super._getSchema(),
+      ...baseSchema,
       codaType: coda.ValueHintType.Currency,
       currencyCode: this.column.params.currency,
       // For some reason this field doesn't exist on the CurrencySchema,
@@ -300,15 +313,15 @@ class CurrencyColumnConverter extends NumberColumnConverter {
   }
 }
 
-class DateColumnConverter extends ColumnConverter<SmartSuiteDateField, string> {
-  _getSchema() {
+class DateColumnConverter extends ColumnConverter<sst.Date, string> {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
       codaType: coda.ValueHintType.Date,
     });
   }
 
-  async _formatValueForSchema(value: SmartSuiteDateField): Promise<string> {
+  async _formatValueForSchema(value: sst.Date): Promise<string> {
     if (!value || !value.date) return undefined;
     if (value.include_time) {
       return value.date;
@@ -318,7 +331,7 @@ class DateColumnConverter extends ColumnConverter<SmartSuiteDateField, string> {
   }
 
   // Pass the date back as a string.
-  _formatValueForApi(value: string): SmartSuiteDateField {
+  async _formatValueForApi(value: string): Promise<sst.Date> {
     let hasTime = true;
     if (!value.includes("T")) {
       value += "T00:00:00Z";
@@ -332,7 +345,7 @@ class DateColumnConverter extends ColumnConverter<SmartSuiteDateField, string> {
 }
 
 class TimeColumnConverter extends ColumnConverter<string, string> {
-  _getSchema() {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
       codaType: coda.ValueHintType.Time,
@@ -341,7 +354,7 @@ class TimeColumnConverter extends ColumnConverter<string, string> {
 }
 
 class DurationColumnConverter extends ColumnConverter<number, number> {
-  _getSchema() {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.Number,
       codaType: coda.ValueHintType.Duration,
@@ -352,23 +365,23 @@ class DurationColumnConverter extends ColumnConverter<number, number> {
     return value / SecondsPerDay;
   }
 
-  _formatValueForApi(value: number): number {
+  async _formatValueForApi(value: number): Promise<number> {
     return value * SecondsPerDay;
   }
 }
 
-class PhoneColumnConverter extends ColumnConverter<SmartSuitePhoneField | string, string> {
-  _getSchema() {
+class PhoneColumnConverter extends ColumnConverter<sst.PhoneField | string, string> {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
     });
   }
 
-  async _formatValueForSchema(value: SmartSuitePhoneField): Promise<string>{
+  async _formatValueForSchema(value: sst.PhoneField): Promise<string> {
     return value.sys_title;
   }
 
-  _formatValueForApi(value: string): string {
+  async _formatValueForApi(value: string): Promise<string> {
     if (!value.trim().startsWith("+")) {
       throw new coda.UserVisibleError("Phone number doesn't start with a plus and country code: " + value);
     }
@@ -376,8 +389,8 @@ class PhoneColumnConverter extends ColumnConverter<SmartSuitePhoneField | string
   }
 }
 
-class MemberDatePairColumnConverter extends ColumnConverter<SmartSuiteMemberDateField, CodaDatePersonField> {
-  _getSchema() {
+class MemberDatePairColumnConverter extends ColumnConverter<sst.DatePersonField, ct.DatePersonField> {
+  async _getSchema() {
     return coda.makeObjectSchema({
       properties: {
         by: coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
@@ -391,8 +404,8 @@ class MemberDatePairColumnConverter extends ColumnConverter<SmartSuiteMemberDate
     });
   }
 
-  async _formatValueForSchema(value: SmartSuiteMemberDateField): Promise<CodaDatePersonField> {
-    let person: CodaMemberReference = {
+  async _formatValueForSchema(value: sst.DatePersonField): Promise<ct.DatePersonField> {
+    let person: ct.MemberReference = {
       name: "Not synced",
       id: value.by,
     };
@@ -400,8 +413,8 @@ class MemberDatePairColumnConverter extends ColumnConverter<SmartSuiteMemberDate
   }
 }
 
-class SelectListColumnConverter extends ColumnConverter<string | string[] | SmartSuiteStatus, CodaOption | CodaOption[]> {
-  _getSchema() {
+class SelectListColumnConverter extends ColumnConverter<string | string[] | sst.Status, ct.Option | ct.Option[]> {
+  async _getSchema() {
     let schema: coda.Schema = coda.makeObjectSchema({
       properties: {
         label: { type: coda.ValueType.String },
@@ -409,7 +422,7 @@ class SelectListColumnConverter extends ColumnConverter<string | string[] | Smar
       },
       codaType: coda.ValueHintType.SelectList,
       options: coda.OptionsType.Dynamic,
-      allowNewValues: this.column.params.new_choices_allowed,
+      allowNewValues: this.column.params.new_choices_allowed || this.column.field_type == "tagsfield",
     });
     if (["multipleselectfield", "tagsfield"].includes(this.column.field_type)) {
       schema = coda.makeSchema({
@@ -420,7 +433,7 @@ class SelectListColumnConverter extends ColumnConverter<string | string[] | Smar
     return schema;
   }
 
-  async _formatValueForSchema(value: string | string[] | SmartSuiteStatus): Promise<CodaOption | CodaOption[]> {
+  async _formatValueForSchema(value: string | string[] | sst.Status): Promise<ct.Option | ct.Option[]> {
     if (value instanceof Array) {
       return value.map(val => this.toOption(val));
     } else if (typeof(value) == "string") {
@@ -439,7 +452,7 @@ class SelectListColumnConverter extends ColumnConverter<string | string[] | Smar
     };
   }
 
-  _formatValueForApi(value: CodaOption | CodaOption[]): string | string[] {
+  async _formatValueForApi(value: ct.Option | ct.Option[]): Promise<string | string[]> {
     if (value instanceof Array) {
       return value.map(val => val.value);
     } else {
@@ -448,8 +461,8 @@ class SelectListColumnConverter extends ColumnConverter<string | string[] | Smar
   }
 }
 
-class HtmlColumnConverter extends ColumnConverter<SmartSuiteRichTextField, string> {
-  _getSchema() {
+class HtmlColumnConverter extends ColumnConverter<sst.RichTextField, string> {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
       codaType: coda.ValueHintType.Html,
@@ -458,13 +471,13 @@ class HtmlColumnConverter extends ColumnConverter<SmartSuiteRichTextField, strin
     });
   }
 
-  async _formatValueForSchema(value: SmartSuiteRichTextField): Promise<string> {
+  async _formatValueForSchema(value: sst.RichTextField): Promise<string> {
     return value.html.replaceAll("\n", "").trim();
   }
 }
 
 class LinkColumnConverter extends ColumnConverter<string, string> {
-  _getSchema() {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
       codaType: coda.ValueHintType.Url,
@@ -474,7 +487,7 @@ class LinkColumnConverter extends ColumnConverter<string, string> {
 }
 
 class EmailColumnConverter extends ColumnConverter<string, string> {
-  _getSchema() {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
       codaType: coda.ValueHintType.Email,
@@ -482,25 +495,25 @@ class EmailColumnConverter extends ColumnConverter<string, string> {
   }
 }
 
-class MemberColumnConverter extends ColumnConverter<string, CodaMemberReference> {
-  _getSchema() {
+class MemberColumnConverter extends ColumnConverter<string, ct.MemberReference> {
+  async _getSchema() {
     return coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member");
   }
 
-  async _formatValueForSchema(value: string): Promise<CodaMemberReference> {
+  async _formatValueForSchema(value: string): Promise<ct.MemberReference> {
     return {
       name: "Not synced",
       id: value,
     };
   }
 
-  _formatValueForApi(value: CodaMemberReference): string {
+  async _formatValueForApi(value: ct.MemberReference): Promise<string> {
     return value.id;
   }
 }
 
-class VoteColumnConverter extends ColumnConverter<SmartSuiteVote, CodaVote> {
-  _getSchema() {
+class VoteColumnConverter extends ColumnConverter<sst.Vote, ct.Vote> {
+  async _getSchema() {
     return coda.makeObjectSchema({
       properties: {
         total_votes: { type: coda.ValueType.Number },
@@ -514,7 +527,7 @@ class VoteColumnConverter extends ColumnConverter<SmartSuiteVote, CodaVote> {
     });
   }
 
-  async _formatValueForSchema(value: SmartSuiteVote): Promise<CodaVote> {
+  async _formatValueForSchema(value: sst.Vote): Promise<ct.Vote> {
     return {
       ...value,
       votes: value.votes.map(vote => {
@@ -531,12 +544,12 @@ class NestedColumnConverter extends ColumnConverter<any, any> {
   private converters: ColumnConverter<any, any>[] = [];
   private syntheticDisplayValueSeparator: string;
 
-  constructor(context: coda.ExecutionContext, column: SmartSuiteColumn, syntheticDisplayValueSeparator?: string) {
+  constructor(context: ConversionSettings, column: sst.Column, syntheticDisplayValueSeparator?: string) {
     super(context, column);
     this.syntheticDisplayValueSeparator = syntheticDisplayValueSeparator;
   }
 
-  _getSchema() {
+  async _getSchema() {
     let schema = coda.makeObjectSchema({
       properties: {},
       displayProperty: undefined,
@@ -544,8 +557,8 @@ class NestedColumnConverter extends ColumnConverter<any, any> {
     });
     for (let column of this.column.nested) {
       if (column.field_type == "hidden_textfield") continue;
-      let converter = getConverter(this.context, column);
-      let propertySchema = converter.getSchema();
+      let converter = getConverter(this.settings, column);
+      let propertySchema = await converter.getSchema();
       let propertyName = propertySchema.displayName;
       schema.properties[propertyName] = propertySchema;
       if (column.params.primary) {
@@ -570,7 +583,7 @@ class NestedColumnConverter extends ColumnConverter<any, any> {
     let values = [];
     for (let column of this.column.nested) {
       if (column.field_type == "hidden_textfield") continue;
-      let converter = getConverter(this.context, column);
+      let converter = getConverter(this.settings, column);
       let key = converter.getPropertyKey();
       if (value[key] != null && value[key] != "") {
         let val = await converter.formatValueForSchema(value[key]);
@@ -584,32 +597,38 @@ class NestedColumnConverter extends ColumnConverter<any, any> {
     return result;
   }
 
-  _formatValueForApi(value: any) {
+  async _formatValueForApi(value: any): Promise<any> {
     let result: Record<string, any> = {};
     for (let column of this.column.nested) {
       if (column.field_type == "hidden_textfield") continue;
-      let converter = getConverter(this.context, column);
+      let converter = getConverter(this.settings, column);
       let key = converter.getPropertyKey();
-      result[key] = converter.formatValueForApi(value[key]);
+      result[key] = await converter.formatValueForApi(value[key]);
     }
     return result;
   }
 }
 
 class DueDateColumnConverter extends NestedColumnConverter {
-  constructor(context, column) {
-    super(context, column);
-  }
-
-  _getSchema() {
-    let result = super._getSchema();
+  async _getSchema() {
+    let baseSchema = await super._getSchema();
+    let result = {
+      ...baseSchema,
+    }
     result.displayProperty = "End Date";
     return result;
   }
 }
 
-class FileColumnConverter extends ColumnConverter<SmartSuiteFile[], string[]> {
-  _getSchema() {
+class FileColumnConverter extends ColumnConverter<sst.File[], string[]> {
+  fileUrls: Record<string, string>;
+
+  constructor(context: ConversionSettings, column: sst.Column) {
+    super(context, column);
+    this.fileUrls = {};
+  }
+
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.Array,
       items: {
@@ -619,66 +638,72 @@ class FileColumnConverter extends ColumnConverter<SmartSuiteFile[], string[]> {
     });
   }
 
-  async _formatValueForSchema(value: SmartSuiteFile[]): Promise<string[]> {
+  async _formatValueForSchema(value: sst.File[]): Promise<string[]> {
     return Promise.all(value.map(async file => {
-      let response = await this.context.fetcher.fetch({
-        method: "GET",
-        url: `https://app.smartsuite.com/api/v1/shared-files/${file.handle}/url/`,
-      });
-      return response.body.url as string;
+      let sharedFile = await getSharedFile(this.settings.context, file.handle);
+      return sharedFile.url;
     }));
   }
 }
 
-class LinkedRecordColumnConverter extends ColumnConverter<string, CodaRow> {
-  _getSchema() {
-    let schema = coda.makeReferenceSchemaFromObjectSchema(BaseRowSchema, "Record");
-    schema.identity.dynamicUrl = this.column.params.linked_application;
-    return schema;
+class LinkedRecordColumnConverter extends ColumnConverter<string, ct.Row> {
+  async _getSchema() {
+    let linkedTable = await this.getLinkedTable();
+    return getReferenceSchema(linkedTable);
   }
 
-  async _formatValueForSchema(value: string): Promise<CodaRow> {
+  async _formatValueForSchema(value: string): Promise<ct.Row> {
+    let linkedTable = await this.getLinkedTable();
+    let primaryKey = linkedTable.primary_field;
     return {
       id: value,
-      title: "Not synced",
+      [primaryKey]: NotSyncedMessage,
     };
   }
 
-  _formatValueForApi(value: CodaRow): string {
+  async _formatValueForApi(value: ct.Row): Promise<string> {
     return value.id;
+  }
+
+  async getLinkedTable() {
+    let tableId = this.column.params.linked_application;
+    if (!this.settings.relatedTables[tableId]) {
+      this.settings.relatedTables[tableId] = await getTable(this.settings.context, tableId);
+    }
+    return this.settings.relatedTables[tableId];
   }
 }
 
-class DependencyColumnConverter extends ColumnConverter<SmartSuiteDependency, CodaRow[]> {
-  _getSchema() {
-    let schema = coda.makeReferenceSchemaFromObjectSchema(BaseRowSchema, "Record");
-    schema.identity.dynamicUrl = this.context.sync.dynamicUrl;
+class DependencyColumnConverter extends ColumnConverter<sst.Dependency, ct.Row[]> {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.Array,
-      items: schema,
+      items: getReferenceSchema(this.settings.table),
     });
   }
 
-  async _formatValueForSchema(value: SmartSuiteDependency): Promise<CodaRow[]> {
+  async _formatValueForSchema(value: sst.Dependency): Promise<ct.Row[]> {
+    let schema = getReferenceSchema(this.settings.table);
+    let propertyKey = schema.properties[schema.displayProperty].fromKey;
     return value?.predecessor?.map(dep => {
-      let title = "Not synced";
-      if (dep.application != this.context.sync.dynamicUrl) {
-        title = "Incompatible: Dependency from another table"
+      let label = "Not synced";
+      if (dep.application != this.settings.context.sync.dynamicUrl) {
+        label = "Incompatible: Dependency from another table"
       }
       return {
         id: dep.record,
-        title: "Not synced",
+        [propertyKey]: "Not synced",
       };
     });
   }
 
-  _formatValueForApi(value: CodaRow[]): SmartSuiteDependency {
+  async _formatValueForApi(value: ct.Row[]): Promise<sst.Dependency> {
     return {
       predecessor: value.map(row => {
         return {
           type: "fs",
           lag: 0,
-          application: this.context.sync.dynamicUrl,
+          application: this.settings.context.sync.dynamicUrl,
           record: row.id,
         };
       })
@@ -686,8 +711,117 @@ class DependencyColumnConverter extends ColumnConverter<SmartSuiteDependency, Co
   }
 }
 
+class ChecklistColumnConverter extends ColumnConverter<sst.Checklist, ct.Checklist> {
+  async _getSchema() {
+    let itemSchema = coda.makeObjectSchema({
+      properties: {
+        preview: { type: coda.ValueType.String, codaType: coda.ValueHintType.Markdown },
+        label: { type: coda.ValueType.String },
+        completed: { type: coda.ValueType.Boolean },
+        assignee: coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
+        due_date: { type: coda.ValueType.String, codaType: coda.ValueHintType.Date },
+        completed_at: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime },
+      },
+      displayProperty: "preview",
+    });
+    return coda.makeObjectSchema({
+      properties: {
+        summary: { type: coda.ValueType.String },
+        items: { type: coda.ValueType.Array, items: itemSchema },
+      },
+      displayProperty: "summary",
+      mutable: false,
+    });
+  }
+
+  async _formatValueForSchema(value: sst.Checklist): Promise<ct.Checklist> {
+    return {
+      summary: `${value.completed_items} of ${value.total_items}`,
+      items: value.items?.map(item => {
+        let assignee = item.assignee ? { name: 'Not synced', id: item.assignee } : undefined;
+        return {
+          preview: `- [${item.completed ? "X": ""}] ${item.content.preview} `,
+          label: item.content.preview,
+          completed: item.completed,
+          assignee: assignee,
+          due_date: item.due_date,
+          completed_at: item.completed_at,
+        };
+      }),
+    };
+  }
+}
+
+class TimeTrackkingLogColumnConverter extends ColumnConverter<sst.TimeTrackingLog, ct.TimeTrackingLog> {
+  async _getSchema() {
+    let entrySchema = coda.makeObjectSchema({
+      properties: {
+        user: coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
+        created: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime },
+        duration: { type: coda.ValueType.String, codaType: coda.ValueHintType.Duration },
+        note: { type: coda.ValueType.String },
+      },
+      displayProperty: "created",
+    });
+    return coda.makeObjectSchema({
+      properties: {
+        total: { type: coda.ValueType.String, codaType: coda.ValueHintType.Duration },
+        entries: { type: coda.ValueType.Array, items: entrySchema },
+      },
+      displayProperty: "total",
+      mutable: false,
+    });
+  }
+
+  async _formatValueForSchema(value: sst.TimeTrackingLog): Promise<ct.TimeTrackingLog> {
+    let entries = value.time_track_logs?.map(item => {
+      let user = item.user_id ? { name: 'Not synced', id: item.user_id } : undefined;
+      return {
+        user: user,
+        created: item.date_time,
+        duration: `${item.duration} seconds`,
+        note: item.note,
+      };
+    });
+    return {
+      total: `${value.total_duration} seconds`,
+      entries: entries,
+    };
+  }
+}
+
+class ColorColumnConverter extends ColumnConverter<sst.Color, string> {
+  async _getSchema() {
+    return coda.makeSchema({
+      type: coda.ValueType.String,
+    });
+  }
+
+  async _formatValueForSchema(value: sst.Color): Promise<string> {
+    return value.value;
+  }
+
+  async _formatValueForApi(value: string): Promise<sst.Color> {
+    return {
+      value: value,
+    };
+  }
+}
+
+class IpAddressColumnConverter extends ColumnConverter<sst.IpAddress, sst.IpAddress> {
+  async _getSchema() {
+    return coda.makeObjectSchema({
+      properties: {
+        address: { type: coda.ValueType.String },
+        country_code: { type: coda.ValueType.String },
+      },
+      displayProperty: "address",
+    });
+  }
+}
+
 class UnknownColumnConverter extends ColumnConverter<any, string> {
-  _getSchema() {
+  async _getSchema() {
     return coda.makeSchema({
       type: coda.ValueType.String,
       mutable: false,
@@ -695,9 +829,18 @@ class UnknownColumnConverter extends ColumnConverter<any, string> {
   }
 
   async _formatValueForSchema(value: any): Promise<string> {
-    if (value == undefined || value == null) {
-      return undefined;
-    }
     return String(value);
   }
+}
+
+function isEmpty(value: any) {
+  if (value == undefined || value == null) {
+    return true;
+  }
+  if (typeof value == "object") {
+    return Object.values(value).map(val => {
+      return !val || isEmpty(val);
+    }).every(empty => empty);
+  }
+  return false;
 }

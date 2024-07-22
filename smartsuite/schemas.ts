@@ -1,25 +1,5 @@
 import * as coda from "@codahq/packs-sdk";
-
-export const TitlePropertyName = "Title";
-
-export const BaseRowSchema = coda.makeObjectSchema({
-  properties: {
-    recordId: {
-      type: coda.ValueType.String,
-      description: "The unique ID of the record.",
-      fromKey: "id",
-      required: true,
-    },
-    [TitlePropertyName]: {
-      type: coda.ValueType.String,
-      fromKey: "title",
-      required: true,
-    }
-  },
-  idProperty: "recordId",
-  displayProperty: TitlePropertyName,
-  featuredProperties: [],
-});
+import type * as sst from "./types/smartsuite";
 
 const PersonSchema = coda.makeObjectSchema({
   codaType: coda.ValueHintType.Person,
@@ -43,3 +23,34 @@ export const MemberSchema = coda.makeObjectSchema({
   idProperty: "id",
   featuredProperties: ["email", "codaAccount"],
 });
+
+export function getBaseRowSchema(table: sst.Table): coda.GenericObjectSchema {
+  let primaryColumn = table.structure.find(column => column.slug == table.primary_field);
+  return coda.makeObjectSchema({
+    properties: {
+      recordId: {
+        type: coda.ValueType.String,
+        description: "The unique ID of the record.",
+        fromKey: "id",
+        required: true,
+      },
+      [primaryColumn.label]: {
+        type: coda.ValueType.String, 
+        fromKey: primaryColumn.slug,
+        required: true,
+      },
+    },
+    idProperty: "recordId",
+    displayProperty: primaryColumn.label,
+    featuredProperties: [],
+    identity: {
+      name: "Record",
+      dynamicUrl: table.id,
+    }
+  });
+}
+
+export function getReferenceSchema(table: sst.Table) {
+  let schema = getBaseRowSchema(table);
+  return coda.makeReferenceSchemaFromObjectSchema(schema);
+}

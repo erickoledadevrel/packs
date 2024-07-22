@@ -1,61 +1,82 @@
 import * as coda from "@codahq/packs-sdk";
-import { SmartSuiteMember, Solution, Table } from "./types";
+import type * as sst from "./types/smartsuite";
+import * as qs from 'qs';
 
-export async function listSheets(context: coda.ExecutionContext) {
-  let url = coda.withQueryParams("https://api.smartsheet.com/2.0/sheets", {})
-  let response = await context.fetcher.fetch({
-    method: "GET",
-    url: url,
-  });
-  return response.body;
-}
+const ShortCacheSecs = 30;
+const MaxCacheSecs = 24 * 60 * 60;
 
-export async function searchSheets(context: coda.ExecutionContext, search: string) {
-  let url = coda.withQueryParams("https://api.smartsheet.com/2.0/search", {
-    query: search,
-    scopes: "sheetNames",
-  })
-  let response = await context.fetcher.fetch({
-    method: "GET",
-    url: url,
-  });
-  return response.body;
-}
-
-export async function getTables(context: coda.ExecutionContext, solutionId?: string): Promise<Table[]> {
-  let url = coda.withQueryParams("https://app.smartsuite.com/api/v1/applications/", {
+export async function getTables(context: coda.ExecutionContext, solutionId?: string): Promise<sst.SimpleTable[]> {
+  let params = {
     solution: solutionId,
-  });
-  let response = await context.fetcher.fetch({
+    fields: ["name", "id", "slug"],
+  };
+  // Use qs so that multiple copies of the fields parameter are added to the URL.
+  let url = "https://app.smartsuite.com/api/v1/applications/?" + qs.stringify(params, {indices: false})
+  let response = await fetch(context, {
     method: "GET",
     url: url,
+    cacheTtlSecs: ShortCacheSecs,
   });
   return response.body;
 }
 
-export async function getTable(context: coda.ExecutionContext, tableId: string): Promise<Table> {
+export async function getTable(context: coda.ExecutionContext, tableId: string, cacheTtlSecs = ShortCacheSecs): Promise<sst.Table> {
   let url = coda.joinUrl("https://app.smartsuite.com/api/v1/applications/", tableId);
-  let response = await context.fetcher.fetch({
+  let response = await fetch(context, {
     method: "GET",
     url: url,
+    cacheTtlSecs: cacheTtlSecs,
   });
   return response.body;
 }
 
-export async function getSolutions(context: coda.ExecutionContext): Promise<Solution[]> {
-  let response = await context.fetcher.fetch({
+export async function getSolutions(context: coda.ExecutionContext): Promise<sst.Solution[]> {
+  let response = await fetch(context, {
     method: "GET",
     url: "https://app.smartsuite.com/api/v1/solutions/",
+    cacheTtlSecs: ShortCacheSecs,
   });
   return response.body;
 }
 
-export async function getMembers(context: coda.ExecutionContext, limit: number, offset?: number): Promise<{items: SmartSuiteMember[], total: number}> {
+export async function getSolution(context: coda.ExecutionContext, solutionId: string): Promise<sst.Solution> {
+  let response = await fetch(context, {
+    method: "GET",
+    url: coda.joinUrl("https://app.smartsuite.com/api/v1/solutions/", solutionId),
+  });
+  return response.body;
+}
+
+export async function getAccounts(context: coda.ExecutionContext): Promise<sst.Account[]> {
+  let response = await fetch(context, {
+    method: "GET",
+    url: "https://app.smartsuite.com/api/v1/accounts/",
+  });
+  return response.body;
+}
+
+export async function getAccount(context: coda.ExecutionContext, accountId: string): Promise<sst.Account> {
+  let response = await fetch(context, {
+    method: "GET",
+    url: coda.joinUrl("https://app.smartsuite.com/api/v1/accounts/", accountId),
+  });
+  return response.body;
+}
+
+export async function getCurrentMember(context: coda.ExecutionContext): Promise<sst.Member> {
+  let response = await fetch(context, {
+    method: "GET",
+    url: "https://app.smartsuite.com/api/v1/current-member/",
+  });
+  return response.body;
+}
+
+export async function getMembers(context: coda.ExecutionContext, limit: number, offset?: number): Promise<{items: sst.Member[], total: number}> {
   let payload = {
     limit: limit,
     offset: offset,
   };
-  let response = await context.fetcher.fetch({
+  let response = await fetch(context, {
     method: "POST",
     url: "https://app.smartsuite.com/api/v1/applications/members/records/list/",
     headers: {
@@ -64,4 +85,30 @@ export async function getMembers(context: coda.ExecutionContext, limit: number, 
     body: JSON.stringify(payload),
   });
   return response.body;
+}
+
+export async function getSharedFile(context: coda.ExecutionContext, fileHandle: string): Promise<sst.SharedFile> {
+  let response = await context.fetcher.fetch({
+    method: "GET",
+    url: `https://app.smartsuite.com/api/v1/shared-files/${fileHandle}/url/`,
+    cacheTtlSecs: MaxCacheSecs,
+  });
+  return response.body;
+}
+
+export async function fetch(context: coda.ExecutionContext, request: coda.FetchRequest): Promise<coda.FetchResponse> {
+  let accountId = getAccountId(context);
+  request.headers = {
+    ...request.headers,
+    "Account-ID": accountId,
+  };
+  return context.fetcher.fetch(request);
+}
+
+export function getAccountId(context: coda.ExecutionContext) {
+  return context.endpoint?.split("#")[1];
+}
+
+export async function getMembersTable(context: coda.ExecutionContext): Promise<sst.Table> {
+  return getTable(context, "members", MaxCacheSecs);
 }
