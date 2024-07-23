@@ -93,8 +93,20 @@ const SyncTableSchema = coda.makeObjectSchema({
       type: coda.ValueType.Boolean,
       description: "If the sync table has a dynamic schema.",
     },
-    parameters: {type: coda.ValueType.Array, items: ParameterSchema},
-    supportsRowPermissions: { type: coda.ValueType.Boolean, fromKey: "supportsGetPermissions" },
+    parameters: {
+      type: coda.ValueType.Array, 
+      items: ParameterSchema,
+      description: "The parameters of the sync table."
+    },
+    supportsRowPermissions: { 
+      type: coda.ValueType.Boolean, 
+      fromKey: "supportsGetPermissions",
+      description: "If the sync table can return per-row permissions."
+    },
+    schemaJSON: {
+      type: coda.ValueType.String,
+      description: "The schema the sync table uses, as a JSON string.",
+    },
   },
   displayProperty: "name",
 });

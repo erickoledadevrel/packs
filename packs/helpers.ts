@@ -66,7 +66,10 @@ function formatSyncTable(syncTable) {
   result.canEdit = syncTable.getter?.supportsUpdates;
   result.hasDynamicSchema = Boolean(syncTable.getSchema);
   result.parameters = (syncTable.getter?.parameters ?? []).map(parameter => formatParameter(parameter));
-  result.supportsGetPermissions = syncTable.getter?.supportsGetPermissions;
+  result.supportsGetPermissions = Boolean(syncTable.getter?.supportsGetPermissions);
+  if (!result.hasDynamicSchema) {
+    result.schemaJSON = JSON.stringify(syncTable.schema);
+  }
   return result;
 }
 
