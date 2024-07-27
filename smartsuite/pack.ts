@@ -1,14 +1,15 @@
 import * as coda from "@codahq/packs-sdk";
-import { getAccount, getAccounts, getAccountId, getCurrentMember, getMembers, getSolutions, getTable, getTables, fetch, getMembersTable } from "./api";
+import { getAccount, getAccounts, getAccountId, getCurrentMember, getMembers, getSolutions, getTable, getTables, fetch, getMembersTable, getRecords } from "./api";
 import { getConverter } from "./convert";
-import type * as Coda from "./types/coda";
-import type * as SmartSuite from "./types/smartsuite";
+import type * as ct from "./types/coda";
+import type * as sst from "./types/smartsuite";
 import { getBaseRowSchema, MemberSchema } from "./schemas";
 import { ConversionSettings } from "./types";
 
 export const pack = coda.newPack();
 
 export const PageSize = 100;
+const IdParameterRegex = /^.*\((.+?)\)$/;
 
 pack.addNetworkDomain("smartsuite.com");
 
@@ -90,9 +91,11 @@ pack.addDynamicSyncTable({
         schema.displayProperty = propertyName;
       }
     }
-    schema.featuredProperties = table.structure_layout?.single_column?.rows.map(columnId => {
-      return Object.entries(schema.properties).find(([name, prop]) => prop.fromKey == columnId)[0];
-    });
+    schema.featuredProperties = table.structure_layout?.single_column?.rows
+      .filter(columnId => !columnId.startsWith("section__"))
+      .map(columnId => {
+        return Object.entries(schema.properties).find(([name, prop]) => prop.fromKey == columnId)[0];
+      });
     return schema;
   },
   getDisplayUrl: async function (context) {
@@ -119,31 +122,31 @@ pack.addDynamicSyncTable({
     parameters: [
       // TODO: Filtering
       coda.makeParameter({
-        type: coda.ParameterType.String,
-        name: "filter",
-        description: "The filter to apply.",
+        type: coda.ParameterType.StringArray,
+        name: "filters",
+        description: "The filters to apply. Create filters using the Filter formula.",
         optional: true,
       }),
     ],
     execute: async function (args, context) {
-      let [filter] = args;
+      let [filters] = args;
+      if (filters) {
+        filters = filters.map(filter => JSON.parse(filter));
+      }
+      let body: any = {};
+      if (filters) {
+        body.filter = {
+          operator: "and",
+          fields: filters,
+        }
+      }
+
       let offset = context.sync.continuation?.offset as number ?? 0;
       let settings = await getSettings(context);
       let table = settings.table;
 
-      let url = coda.withQueryParams(`https://app.smartsuite.com/api/v1/applications/${table.id}/records/list/`, {
-        offset: offset,
-        limit: PageSize,
-      });
-      let response = await fetch(context, {
-        method: "POST",
-        url: url,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
-      });
-      let {total, items} = response.body;
+      let page = await getRecords(context, table.id, body, PageSize, offset);
+      let {total, items} = page;
       let result = await Promise.all(items.map(async item => {
         return formatRecordForSchema(settings, item);
       }));
@@ -166,7 +169,7 @@ pack.addDynamicSyncTable({
           Object.entries(update.newValue).filter(([key, value]) => {
             return update.updatedFields.includes(key) || key == "id";
           })
-        ) as Coda.Row;
+        ) as ct.Row;
       });
       console.log("Patches: ", JSON.stringify(patches));
       let items = await Promise.all(patches.map(patch => {
@@ -201,7 +204,7 @@ pack.addDynamicSyncTable({
 
 pack.addSyncTable({
   name: "Members",
-  description: "Lists the members in the workspace.",
+  description: "List the members in the workspace.",
   identityName: "Member",
   schema: MemberSchema,
   formula: {
@@ -211,7 +214,7 @@ pack.addSyncTable({
     execute: async function (args, context) {
       let offset = context.sync.continuation?.offset as number ?? 0;
       let {items, total} = await getMembers(context, PageSize, offset);
-      let result: Coda.MemberReference[] = items.map(member => {
+      let result: ct.MemberReference[] = items.map(member => {
         let name = member.full_name.sys_root;
         let email = member.email?.[0];
         return {
@@ -233,8 +236,66 @@ pack.addSyncTable({
   },
 });
 
-async function formatRecordForSchema(settings: ConversionSettings, record: SmartSuite.Row): Promise<Coda.Row> {
-  let result: Coda.Row = {
+pack.addFormula({
+  name: "Filter",
+  description: "Make a filter value to pass into the filter parameter of the Table table.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "table",
+      description: "The table being filtered.",
+      autocomplete: async function (context, search) {
+        let tables = await getTables(context);
+        let options = tables.map(table => {
+          return {
+            display: table.name,
+            value: `${table.name} (${table.id})`,
+          };
+        });
+        return coda.autocompleteSearchObjects(search, options, "display", "value");
+      }
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "field",
+      description: "The field to filter on.",
+      autocomplete: async function (context, search, args) {
+        let tableValue = args.table;
+        if (!tableValue) {
+          return [];
+        }
+        let tableId = parseIdParameter(tableValue);
+        let table = await getTable(context, tableId);
+        let options = table.structure.map(column => {
+          return {
+            display: column.label,
+            value: `${column.label} (${column.slug})`,
+          };
+        });
+        return coda.autocompleteSearchObjects(search, options, "display", "value");
+      }
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "comparison",
+      description: "The comparison operator to use.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "value",
+      description: "The comparison value. For operators that don't require a comparison value pass an empty string.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  execute: async function (args, context) {
+    let [_tableValue, fieldValue, comparison, value] = args;
+    let fieldId = parseIdParameter(fieldValue);
+    return JSON.stringify({field: fieldId, comparison, value});
+  },
+});
+
+async function formatRecordForSchema(settings: ConversionSettings, record: sst.Row): Promise<ct.Row> {
+  let result: ct.Row = {
     id: record.id,
   };
   for (let column of settings.table.structure) {
@@ -248,8 +309,8 @@ async function formatRecordForSchema(settings: ConversionSettings, record: Smart
   return result;
 }
 
-async function formatRowForApi(settings: ConversionSettings, row: Coda.Row): Promise<SmartSuite.Row> {
-  let result: SmartSuite.Row = {
+async function formatRowForApi(settings: ConversionSettings, row: ct.Row): Promise<sst.Row> {
+  let result: sst.Row = {
     id: row.id,
   };
   for (let [key, value] of Object.entries(row)) {
@@ -273,4 +334,10 @@ async function getSettings(context: coda.ExecutionContext): Promise<ConversionSe
     membersTable: membersTable,
     relatedTables: {},
   };  
+}
+
+function parseIdParameter(value: string): string {
+  let extracted = value.trim().match(IdParameterRegex)?.[1];
+  if (extracted) return extracted;
+  return value;
 }

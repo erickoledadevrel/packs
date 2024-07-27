@@ -12,6 +12,18 @@ const NotSyncedMessage = "Not synced";
 
 export function getConverter(settings: ConversionSettings, column: sst.Column): ColumnConverter<any, any> {
   switch (column.field_type) {
+    /*
+      TODO:
+      * countfield
+      * durationfield
+      * formulafield
+      * lookupfield
+      * rollupfield
+      * signaturefield
+      * recordidfield
+      * subitemsfield
+    */
+
     // Text
     case "textfield":
     case "recordtitlefield":
@@ -39,6 +51,10 @@ export function getConverter(settings: ConversionSettings, column: sst.Column): 
       return new ProgressColumnConverter(settings, column);
     case "ratingfield":
       return new ScaleColumnConverter(settings, column);
+
+    // Boolean
+    case "yesnofield":
+      return new BooleanColumnConverter(settings, column);
 
     // Dates and times
     case "datefield":
@@ -309,6 +325,15 @@ class CurrencyColumnConverter extends NumberColumnConverter {
       // For some reason this field doesn't exist on the CurrencySchema,
       // so we need to unset it.
       useThousandsSeparator: undefined,
+    });
+  }
+}
+
+class BooleanColumnConverter extends ColumnConverter<boolean, boolean> {
+  async _getSchema() {
+    return coda.makeSchema({
+      type: coda.ValueType.Boolean,
+      codaType: this.column.params.display_format.includes("toggle") ? coda.ValueHintType.Toggle : undefined,
     });
   }
 }

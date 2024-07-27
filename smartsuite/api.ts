@@ -2,8 +2,24 @@ import * as coda from "@codahq/packs-sdk";
 import type * as sst from "./types/smartsuite";
 import * as qs from 'qs';
 
-const ShortCacheSecs = 30;
+const ShortCacheSecs = 5 * 60;
 const MaxCacheSecs = 24 * 60 * 60;
+
+export async function getRecords(context: coda.ExecutionContext, tableId: string, body: any, limit: number, offset?: number): Promise<{total: number, items: sst.Row[]}> {
+  let url = coda.withQueryParams(`https://app.smartsuite.com/api/v1/applications/${tableId}/records/list/`, {
+    offset: offset,
+    limit: limit,
+  });
+  let response = await fetch(context, {
+    method: "POST",
+    url: url,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  return response.body;
+}
 
 export async function getTables(context: coda.ExecutionContext, solutionId?: string): Promise<sst.SimpleTable[]> {
   let params = {
@@ -15,7 +31,6 @@ export async function getTables(context: coda.ExecutionContext, solutionId?: str
   let response = await fetch(context, {
     method: "GET",
     url: url,
-    cacheTtlSecs: ShortCacheSecs,
   });
   return response.body;
 }
@@ -34,7 +49,6 @@ export async function getSolutions(context: coda.ExecutionContext): Promise<sst.
   let response = await fetch(context, {
     method: "GET",
     url: "https://app.smartsuite.com/api/v1/solutions/",
-    cacheTtlSecs: ShortCacheSecs,
   });
   return response.body;
 }
@@ -88,7 +102,7 @@ export async function getMembers(context: coda.ExecutionContext, limit: number, 
 }
 
 export async function getSharedFile(context: coda.ExecutionContext, fileHandle: string): Promise<sst.SharedFile> {
-  let response = await context.fetcher.fetch({
+  let response = await fetch(context, {
     method: "GET",
     url: `https://app.smartsuite.com/api/v1/shared-files/${fileHandle}/url/`,
     cacheTtlSecs: MaxCacheSecs,
@@ -102,6 +116,9 @@ export async function fetch(context: coda.ExecutionContext, request: coda.FetchR
     ...request.headers,
     "Account-ID": accountId,
   };
+  if (request.cacheTtlSecs === undefined) {
+    request.cacheTtlSecs = ShortCacheSecs;
+  }
   return context.fetcher.fetch(request);
 }
 

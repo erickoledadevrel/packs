@@ -162,3 +162,8 @@ export interface IpAddress {
   country_code: string;
 }
   
+export interface Filter {
+  field: string;
+  comparison: string;
+  value: any;
+}
