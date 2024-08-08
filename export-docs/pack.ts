@@ -8,6 +8,9 @@ const FileUrl = "https://www.googleapis.com/upload/drive/v3/files";
 const DocUrlRegex = new RegExp("^https://docs.google.com/document/d/([^/]+)/");
 const UrlRegex = new RegExp("^https?://");
 const MaxImageWidth = 600;
+const ShareTypes = ["user", "group", "domain", "anoyone"];
+const ShareRoles = ["writer", "commenter", "reader"];
+const OneDaySecs = 24 * 60 * 60;
 
 const ContentParam = coda.makeParameter({
   type: coda.ParameterType.Html,
@@ -55,13 +58,23 @@ pack.addFormula({
       description: "The name of the resulting Google Doc file.",
     }),
     ContentParam,
+    coda.makeParameter({
+      type: coda.ParameterType.StringArray,
+      name: "permissions",
+      description: "Who should the exported doc be shared with. Pass in a List() of permissions, each created with the CreatePermission() formula.",
+      optional: true,
+    }),
   ],
   resultType: coda.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
-    let [name, content] = args;
+    let [name, content, permissions = []] = args;
     content = fixHtml(content);
-    return exportToDoc(context, content, name);
+    let file = await exportToDoc(context, content, name);
+    await Promise.all(permissions.map(permission => {
+      addPermission(context, file.id, permission);
+    }));
+    return file.webViewLink;
   },
 });
 
@@ -194,7 +207,50 @@ pack.addFormula({
   },
 });
 
-async function exportToDoc(context: coda.ExecutionContext, html: string, name?: string, docId?: string) {
+pack.addFormula({
+  name: "CreatePermission",
+  description: "Creates a permission value to be used with the permissions parameter of the ExportDoc() formula.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "type",
+      description: "The type of entity to share with. One of: " + ShareTypes.join(", "),
+      autocomplete: ShareTypes,
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "who",
+      description: "Who to share with. For users and groups this should be their email address, for domains it should be the domain name, and for anyone leave it blank.",
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "role",
+      description: "What role they should have in the document. One of: " + ShareRoles.join(", "),
+      autocomplete: ShareRoles,
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.Boolean,
+      name: "sendNotificationEmail",
+      description: "Whether or not Google Drive should send a notification email about the shared doc. Default: false",
+      optional: true,
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  connectionRequirement: coda.ConnectionRequirement.None,
+  cacheTtlSecs: OneDaySecs,
+  execute: async function (args, context) {
+    let [type, who, role, sendNotificationEmail = false] = args;
+    let permission: Record<string, any> = {type, role, sendNotificationEmail};
+    if (["user", "group"].includes(type)) {
+      permission.emailAddress = who;
+    } else if (type == "domain") {
+      permission.domain = who;
+    }
+    return JSON.stringify(permission);
+  },
+});
+
+async function exportToDoc(context: coda.ExecutionContext, html: string, name?: string, docId?: string): DriveFile {
   let url = FileUrl;
   let method: coda.FetchMethodType = "POST";
   if (docId) {
@@ -203,7 +259,7 @@ async function exportToDoc(context: coda.ExecutionContext, html: string, name?: 
   }
   url = coda.withQueryParams(url, {
     uploadType: "multipart",
-    fields: "webViewLink"
+    fields: "id,webViewLink"
   });
   let metadata = {
     name: name,
@@ -227,7 +283,25 @@ async function exportToDoc(context: coda.ExecutionContext, html: string, name?: 
     body: form.getBuffer(),
   });
   let file = response.body;
-  return file.webViewLink;
+  return file;
+}
+
+async function addPermission(context: coda.ExecutionContext, fileId: string, permissionJson: string) {
+  let permission = JSON.parse(permissionJson);
+  let {sendNotificationEmail, ...rest} = permission;
+  permission = rest;
+  let url = coda.withQueryParams(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
+    sendNotificationEmail,
+  });
+  let response = await context.fetcher.fetch({
+    method: "POST",
+    url: url,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: permissionJson,
+  });
+  return response.body;
 }
 
 function parseDocUrl(idOrUrl: string) {
@@ -281,4 +355,9 @@ function fixHtml(html:string): string {
   });
 
   return $(":root").html();
+}
+
+interface DriveFile {
+  id: string;
+  webViewLink: string;
 }
