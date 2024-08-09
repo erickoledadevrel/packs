@@ -2,6 +2,7 @@ import * as coda from "@codahq/packs-sdk";
 import { ScriptUrlRegexes } from "./constants";
 import { getFiles, getMetrics, getScript, parseScriptId } from "./helpers";
 import { ScriptSchema } from "./schemas";
+const cheerio = require('cheerio');
 
 const DefaultRequestMethod = "GET";
 const SupportedRequestMethods = ["GET", "POST"];
@@ -113,6 +114,7 @@ pack.addFormula({
   resultType: coda.ValueType.String,
   isAction: true,
   connectionRequirement: coda.ConnectionRequirement.None,
+  onError: onError,
   execute: async function (args, context) {
     let [
       url,
@@ -147,6 +149,7 @@ pack.addFormula({
       request.headers["Content-Type"] = contentType;
     }
     let response = await context.fetcher.fetch(request);
+    checkForError(response);
     let result = response.body;
     if (typeof result == "object") {
       result = JSON.stringify(result);
@@ -212,3 +215,26 @@ pack.addFormula({
     return JSON.stringify(result);
   },
 });
+
+function checkForError(response: coda.FetchResponse) {
+  let contentType = response.headers["content-type"] as string;
+  if (contentType?.startsWith("text/html")) {
+    let $ = cheerio.load(response.body);
+    if ($("title").text() == "Error") {
+      throw new coda.UserVisibleError($("body").text());
+    }
+  }
+}
+
+function onError(error) {
+  if (coda.StatusCodeError.isStatusCodeError(error)) {
+    let contentType = error.response.headers["content-type"] as string;
+    if (contentType?.startsWith("text/html")) {
+      let $ = cheerio.load(error.response.body);
+      throw new coda.UserVisibleError($("body").text());
+    } else {
+      throw new coda.UserVisibleError(error.response.body);
+    }
+  }
+  throw error;
+}
