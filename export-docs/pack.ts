@@ -8,7 +8,7 @@ const FileUrl = "https://www.googleapis.com/upload/drive/v3/files";
 const DocUrlRegex = new RegExp("^https://docs.google.com/document/d/([^/]+)/");
 const UrlRegex = new RegExp("^https?://");
 const MaxImageWidth = 600;
-const ShareTypes = ["user", "group", "domain", "anoyone"];
+const ShareTypes = ["user", "group", "domain", "anyone"];
 const ShareRoles = ["writer", "commenter", "reader"];
 const OneDaySecs = 24 * 60 * 60;
 
@@ -250,7 +250,7 @@ pack.addFormula({
   },
 });
 
-async function exportToDoc(context: coda.ExecutionContext, html: string, name?: string, docId?: string): DriveFile {
+async function exportToDoc(context: coda.ExecutionContext, html: string, name?: string, docId?: string): Promise<DriveFile> {
   let url = FileUrl;
   let method: coda.FetchMethodType = "POST";
   if (docId) {
