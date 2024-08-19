@@ -1,4 +1,5 @@
 import * as coda from "@codahq/packs-sdk";
+const urlParse = require('url-parse');
 const cheerio = require('cheerio');
 // https://github.com/BetaHuhn/metadata-scraper/blob/master/src/rules.ts
 const scraperRules = require("metadata-scraper/lib/rules");
@@ -7,6 +8,19 @@ export const pack = coda.newPack();
 
 const OneHourSecs = 1 * 60 * 60;
 const RedirectBaseUrl = "https://redirect.erickoleda.com";
+
+const BlockedHosts = [
+  "youtube.com",
+];
+const OEmbedUrlFormats = [
+  {
+    host: "youtube.com",
+    url: "https://www.youtube.com/oembed?format=json&url={0}"
+  },
+];
+const InvalidCanonicalUrl = [
+  "https://www.youtube.com/undefined",
+];
 
 const MetadataSchema = coda.makeObjectSchema({
   properties: {
@@ -127,12 +141,28 @@ pack.addFormula({
     if (!url.toLocaleLowerCase().startsWith("https://")) {
       throw new coda.UserVisibleError("The URL must start with 'https://'.");
     }
-    let redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
-      url: url,
-    });
-    let html = await fetch(context, url);
-    let result = getMetdata(url, html);
-    result.url = result.url ?? url;
+    let result: Record<string, any> = {};
+    let oembedUrl;
+    if (!isBlocked(url)) {
+      let html = await fetchPage(context, url);
+      result = getMetdata(url, html);
+      oembedUrl = getOEmbedUrl(html);
+    }
+    if (!oembedUrl) {
+      oembedUrl = getManualOEmbedUrl(url);
+    }
+    if (oembedUrl) {
+      let embedData = await fetchOEmbed(context, oembedUrl);
+      if (embedData) {
+        result.title = embedData.title;
+        result.author = embedData.author_name;
+        result.provider = embedData.provider_name;
+        result.image = embedData.thumbnail_url;
+      }
+    }
+    if (!result.url || InvalidCanonicalUrl.includes(result.url)) {
+      result.url = url;
+    }
     result.label = result.title ?? "⚠️ No Title";
     return result;
   },
@@ -144,7 +174,7 @@ pack.addColumnFormat({
   instructions: "Paste a URL of a web page to get its metadata (title, icon, etc).",
 });
 
-async function fetch(context: coda.ExecutionContext, url: string): Promise<string> {
+async function fetchPage(context: coda.ExecutionContext, url: string): Promise<string> {
   let redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
     url: url,
   });
@@ -173,6 +203,42 @@ async function fetch(context: coda.ExecutionContext, url: string): Promise<strin
       throw new coda.UserVisibleError(`Error accessing URL: ${url}`);
     }
   }
+}
+
+async function fetchOEmbed(context: coda.ExecutionContext, oembedUrl: string): Promise<Record<any, any>> {
+  let redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
+    url: oembedUrl,
+  });
+  let response;
+  try {
+    response = await context.fetcher.fetch({
+      method: "GET",
+      url: redirectUrl,
+      cacheTtlSecs: OneHourSecs,
+    });
+    return response.body;
+  } catch (e) {
+    return undefined;
+  }
+}
+
+function getOEmbedUrl(html) {
+  let $ = cheerio.load(html);
+  let link = $("link[rel='alternate'][type='application/json+oembed']").get(0);
+  if (link) {
+    upgradeElement(link, $);
+    return link.getAttribute("href");
+  }
+  return undefined;
+}
+
+function getManualOEmbedUrl(url) {
+  for (let config of OEmbedUrlFormats) {
+    if (hostMatches(url, config.host)) {
+      return config.url.replace("{0}", encodeURIComponent(url));
+    } 
+  }
+  return undefined;
 }
 
 function getMetdata(url, html) {
@@ -221,4 +287,19 @@ function upgradeElement(elem, $) {
       return $(elem).text();
     }
   });
+}
+
+function isBlocked(url: string) {
+  for (let blocked of BlockedHosts) {
+    if (hostMatches(url, blocked)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function hostMatches(url: string, targetHost: string) {
+  let parsed = urlParse(url);
+  let host = parsed.host;
+  return host == targetHost || host.endsWith("." + targetHost);
 }
