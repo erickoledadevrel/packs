@@ -8,6 +8,9 @@ const DefaultRequestMethod = "GET";
 const SupportedRequestMethods = ["GET", "POST"];
 const DefaultRequestContentType = "text/plain";
 const WebAppUrlRegex = new RegExp("^https://script.google.com/(a/)?macros/([^/]+/)?s/([^/]+)/exec");
+const ErrorsToReturn = [
+  "The script completed but did not return anything.",
+];
 
 export const pack = coda.newPack();
 
@@ -149,8 +152,7 @@ pack.addFormula({
       request.headers["Content-Type"] = contentType;
     }
     let response = await context.fetcher.fetch(request);
-    checkForError(response);
-    let result = response.body;
+    let result = getResult(response);
     if (typeof result == "object") {
       result = JSON.stringify(result);
     }
@@ -216,14 +218,19 @@ pack.addFormula({
   },
 });
 
-function checkForError(response: coda.FetchResponse) {
-  let contentType = response.headers["content-type"] as string;
+function getResult(response: coda.FetchResponse) {
+  let contentType = response.headers?.["content-type"] as string;
   if (contentType?.startsWith("text/html")) {
     let $ = cheerio.load(response.body);
     if ($("title").text() == "Error") {
-      throw new coda.UserVisibleError($("body").text());
+      let error = $("body").text();
+      if (ErrorsToReturn.includes(error)) {
+        return error;
+      }
+      throw new coda.UserVisibleError(error);
     }
   }
+  return response.body;
 }
 
 function onError(error) {
