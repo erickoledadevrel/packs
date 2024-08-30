@@ -2,9 +2,9 @@ import * as coda from "@codahq/packs-sdk";
 import * as rs from "jsrsasign";
 import { PrivateKeyPEM } from "./credentials";
 
-const BaseUrl = "https://erickoledapacks.netlify.app/preview/";
+const BaseUrl = "https://preview.erickoleda.com/docs/preview/";
 const OneDaySecs = 24 * 60 * 60;
-const MaxUrlLength = Math.pow(2, 31);
+const MaxUrlLength = Math.pow(2, 15);
 
 export const pack = coda.newPack();
 
