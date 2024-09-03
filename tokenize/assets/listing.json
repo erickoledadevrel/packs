@@ -1,0 +1,61 @@
+{
+  "packId": 33888,
+  "name": "Tokenize Words",
+  "description": "Getting the individual words from some text is as simple as splitting by a blank space, right? Not really. Punctuation, compound words, and a whole host of other edge cases make it a bit more complicated.\n\nThis Pack simplifies the whole procedure by providing a Words() formula that can be used to get just the words from a string of text. It also offers the ability to remove stop words (\"and\", \"the\", etc.) in a variety of languages.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0\nCover image by Bruno from Pixabay.",
+  "shortDescription": "Split text into the individual words, removing punctuation and optionally stop words.",
+  "logoUrl": "https://codahosted.io/packs/33888/unversioned/assets/LOGO/9fdb9688d5c3b21cfceeae66527d2abaf930404b6ef5214ce0c0b686e0694a496fb685f18c4de02cb640b57688ef1c4f5524a4a5707eb22c13db879c7bc7ddf0a24116c2195975e64b1f6d9e3d40dc387d4117e983c0065e8411bab376d55bfddde07b73",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/33888/unversioned/assets/EXAMPLE/612146246fa483f01d291229959fda2adf5677ce08bff59a0a7e4f0a4c69ea217ab4d179aba9073e67ebd6cd90866b96d3f6b34385f423f568e13c8593091684620d76d46f0d49926399768addcaa362b58f7cbc95fb8894d89964508e41de8250c2ed4e",
+      "filename": "letters-3665281_1920.jpg",
+      "mimeType": "image/jpeg",
+      "assetId": "612146246fa483f01d291229959fda2adf5677ce08bff59a0a7e4f0a4c69ea217ab4d179aba9073e67ebd6cd90866b96d3f6b34385f423f568e13c8593091684620d76d46f0d49926399768addcaa362b58f7cbc95fb8894d89964508e41de8250c2ed4e"
+    }
+  ],
+  "packVersion": "7",
+  "releaseId": 1,
+  "lastReleasedAt": "2024-09-03T21:19:52.083Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/33888/7/metadata/d2885896bb128c3a02d722661a8cbd03281b247ca05faa707d3708776286b1d6962f60591747a13e1dbc73649746a91cbb2bc2f50756a381fe9d162553f0f012850e7aa93038caed5cf936604b73921a3456e700a54fabf56d09ecbc79ca23f8c2a77997.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "7f1004ab-600e-4caf-9977-6f7fea628a4a",
+      "categoryName": "Enterprise",
+      "categorySlug": "enterprise"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "05bbfa90-ac63-400a-a28a-a43dd148f96a",
+    "packId": 33888,
+    "createdAt": "2024-09-03T16:55:29.693Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.5",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

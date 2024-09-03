@@ -1,21 +1,21 @@
 {
-  "packId": 28295,
-  "name": "Smartsheet",
-  "description": "Spend all day in Coda but need collaborate on some important data in Smartsheet? No worries, use the Smartsheet Pack for Coda to sync that data into your Coda docs where you can view and edit it just like every other Coda table.\n\nThis Pack is not associated with Smartsheet Inc.\nThe logo and icon are the property of Smartsheet Inc.",
-  "shortDescription": "View and edit your sheets from within Coda.",
-  "logoUrl": "https://codahosted.io/packs/28295/unversioned/assets/LOGO/6d1625f65a01e3689972a441af447e54807ae757d38bdcd3e5889fc468f52847ff967cae26ef9e777df7357a850ad787e20d21985d3e769bfb887ee800fb513c47686aca5cf6c0441aedfe43702d9f92bab1de096cbb0440a5f77f7368873047b6950008",
-  "coverUrl": "https://codahosted.io/packs/28295/unversioned/assets/COVER/e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec",
+  "packId": 30242,
+  "name": "SmartSuite",
+  "description": "Spend all day in Coda but need collaborate on some important data in SmartSuite? No worries, use the SmartSuite Pack for Coda to sync that data into your Coda docs where you can view and edit it just like every other Coda table.\n\nThis Pack is not associated with SmartSuite Holdings, Inc.\nThe icon and graphic are the property of SmartSuite Holdings, Inc.",
+  "shortDescription": "View and edit your records from within Coda.",
+  "logoUrl": "https://codahosted.io/packs/30242/unversioned/assets/LOGO/80f44b815eed81488a99a61548f5a516e98b3f74686d02b7e7a3dc21d4d241af130bd81a21038fa4cba2a54418b021c481bcb5cdc739bf593ce40e72a39213b02d96fbea86222ee9bcc693a40d5b0a16fa15b6bdbaa617272f11f785314368b5cc0dde74",
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/28295/unversioned/assets/EXAMPLE/e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec",
-      "filename": "Cover photo",
-      "assetId": "e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec"
+      "imageUrl": "https://codahosted.io/packs/30242/unversioned/assets/EXAMPLE/02152a5d2b84119ebf083d7f09e3e3cf0cfc77805b70f5f9ba4a89d99a8a0242691d2aa5154f77ea0db20e28954bd2a3481e6e9e29ad1323f4228f4826fca9b2100fe74028235cab80de8e6457f10385774631dd7e3cb66ce7202dec3b6affd3a1b1e769",
+      "filename": "64a3fcab588349ccc4b1f87f_Grid View2.png",
+      "mimeType": "image/png",
+      "assetId": "02152a5d2b84119ebf083d7f09e3e3cf0cfc77805b70f5f9ba4a89d99a8a0242691d2aa5154f77ea0db20e28954bd2a3481e6e9e29ad1323f4228f4826fca9b2100fe74028235cab80de8e6457f10385774631dd7e3cb66ce7202dec3b6affd3a1b1e769"
     }
   ],
-  "packVersion": "86",
+  "packVersion": "132",
   "releaseId": 1,
-  "lastReleasedAt": "2024-02-15T14:22:03.665Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/28295/86/metadata/684274d510d7aac1508c3e14ce319cef29cf704e75c4ff2448b1e96f47e004500063f5ac979159d3a15d3333cf3e1b748ae5fe9dd8ea44873f7e9e05851f200ed55240978754eeee542fed4851d830b2e947a40447e88c9c4353912014dd4cb5aa2baab3.json",
+  "lastReleasedAt": "2024-07-27T02:45:40.124Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/30242/132/metadata/e17304c197b27208cdc41cf51a7c10c3e9e365b63335735b1114a2ddcfdb9de46581663e32d12fe184272a69f3a40de4033dc213972124545e4ea780c5902d3d8b14b0a579c16fc96074546eefbd898cfdd5797ccc098d0600d0ff67a158b96567020c6b.json",
   "categories": [
     {
       "categoryId": "45083e67-1a78-4f12-a925-cc502a138996",
@@ -26,11 +26,6 @@
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
       "categoryName": "Personal",
       "categorySlug": "personal"
-    },
-    {
-      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
-      "categoryName": "Engineering",
-      "categorySlug": "engineering"
     }
   ],
   "supportEmail": "packs@erickoleda.com",
@@ -38,16 +33,16 @@
   "makers": [
     {
       "name": "Eric Koleda",
-      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
       "employer": "Coda",
       "jobTitle": "Developer Advocate",
       "slug": "eric-koleda"
     }
   ],
   "standardPackPlan": {
-    "packPlanId": "b45b39b4-f1d7-4329-8064-31ec550c00da",
-    "packId": 28295,
-    "createdAt": "2024-02-02T00:15:40.935Z",
+    "packPlanId": "de11a595-c114-4699-8fbc-c73b432ea1f9",
+    "packId": 30242,
+    "createdAt": "2024-04-18T02:19:49.319Z",
     "pricing": {
       "type": "Free"
     }

@@ -1,6 +1,6 @@
 {
   "packId": 10702,
-  "name": "Imoji",
+  "name": "Imoji - Emoji images",
   "description": "Ever wanted a big emoji in your doc? I mean a BIG emoji? Using the Imoji Pack you can convert any emoji into an image, at the size of your choosing. Simply pass your emoji into the provided Imoji formula and you're done! 😃\n\n=Imoji(\"😃\") => ↕️😃🖼️\n\nInstead of the character itself, you can also enter the name of the emoji, with or without surrounding colons.\n\n=Imoji(\"smiley\")\n=Imoji(\":smiley:\")\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Domingo Alvarez E on Unsplash.",
   "shortDescription": "Turn emojis into large images you can embed in your doc.",
   "logoUrl": "https://codahosted.io/packs/10702/unversioned/assets/LOGO/a50d08d64d1515ebfb7d0ee7499217a708892e7cd4ca32c8a3b05ab8c15145751eb8a497ec3c66a52f6cab697e39aca13dc673e843a125d1b7a115d43cbd6a5a516a9867ad14a053d3043d9430763fb9facab7f56a5800bcb2a7a26edd0b57e22e8257d7",
@@ -38,7 +38,7 @@
   "makers": [
     {
       "name": "Eric Koleda",
-      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
       "employer": "Coda",
       "jobTitle": "Developer Advocate",
       "slug": "eric-koleda"

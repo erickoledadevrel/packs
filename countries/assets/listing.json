@@ -1,0 +1,43 @@
+{
+  "packId": 33508,
+  "name": "Countries",
+  "description": "Countries! There sure are a lot of them. Use this Pack to list them all* or get basic information about a specific one.\n\n*What exactly is a country isn't well defined, and different governments recognize different sets of countries. This Pack uses the list defined in the ISO 3166 standard, but it may not reflect the beliefs of all peoples.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nData provided by the NPM package countries-list.",
+  "shortDescription": "Get information about the countries of the world.",
+  "logoUrl": "https://codahosted.io/packs/33508/unversioned/assets/LOGO/eb815aa41f57974e5c15baf8e80d157c2ada65516cc541dd913a2cc9ceebc1b7efd2b8f2328a3d1f3e9e611534dc1602a781a827eaee9c266424cdb520513c345b44e0403ba7e295476e4122c036fb18c3676bdcb37d8daa206291864109327801f10bff",
+  "exampleImages": [],
+  "packVersion": "5",
+  "releaseId": 1,
+  "lastReleasedAt": "2024-08-20T21:56:54.852Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/33508/5/metadata/6707f29fda186067a664a346b4e242c896650c873e3edf4d1d7107b0ccfbe859aa1fb140649ece9ef68a3d81be0c986464d82b1af5dc602ca07a58f65843825f72ae0312a70b27ed312227a111720f16e8aea17d5e257159d0d18c81b8fccde9f1d48eff.json",
+  "categories": [],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "de52d527-a825-4aa3-9ec8-629c763063d9",
+    "packId": 33508,
+    "createdAt": "2024-08-20T21:31:55.199Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.5",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

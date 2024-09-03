@@ -12,10 +12,10 @@
       "assetId": "b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b"
     }
   ],
-  "packVersion": "34",
-  "releaseId": 2,
-  "lastReleasedAt": "2024-02-07T21:32:32.647Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/28372/34/metadata/8f5833347d2a6af77f4b6e95721fdfcc8930ddfe9d98b1babe7faeb2ffad76769e9b2e5d97e084451432c8eccce60a1514358ea85fa31c104eacca042902b6d3ee8c095b7bad3c6091fb2585a365a658a84a6f69d7cf03a828477466232f68e8206f89f4.json",
+  "packVersion": "35",
+  "releaseId": 3,
+  "lastReleasedAt": "2024-07-11T14:49:59.688Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/28372/35/metadata/4ce60e366b6d5bae2b53276f574dc001a963f6be5628e529fbebf8d18b4febd689800b483603e6727cf65fe96a273ccf635180f10abcd64a889fec5e0ce5a2fc8e30e822c89a22fb05d925ea1b2174b2a585c666828e88458cb787f1b2077b6d03def47d.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
@@ -33,7 +33,7 @@
   "makers": [
     {
       "name": "Eric Koleda",
-      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJkcZyMgXgx2S0IwOmmrKTgtU154Ej4ijU4yQRQ4U2RV0Q%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=0ce876d39f3459c3be60d69bde5a48ca",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
       "employer": "Coda",
       "jobTitle": "Developer Advocate",
       "slug": "eric-koleda"
@@ -47,7 +47,7 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.7.4",
+  "sdkVersion": "1.7.5",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

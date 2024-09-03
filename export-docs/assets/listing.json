@@ -1,0 +1,59 @@
+{
+  "packId": 29897,
+  "name": "Export to Google Docs",
+  "description": "\"Can you copy that into Google Docs?\" Ugh. Someday everyone will be using Coda, but until then Google Docs remains a sort of \"lingua franca\" of the productivity world.\n\nUsing this Pack you can quickly copy the contents of a page or canvas into a new Google Doc, and update or append to it later. You can use the Pack's actions in buttons or automations to remove the tedium of copying things back and forth.\n\nNote: The Coda to Docs conversion process is good, but not perfect.\nAlso note: This Pack can only update or append to docs that _it originally created_. Those actions won't work for Docs you created manually, etc.\n\nThis Pack is not created by or affiliated with Google.\nThe Google Docs icon is the property of Google.",
+  "shortDescription": "Use buttons and automations to export page or canvas content to Google Docs.",
+  "logoUrl": "https://codahosted.io/packs/29897/unversioned/assets/LOGO/405cafa5b3d10512aa058b7aba1eadb948c1ef9ef228bd4af06d9797ac4c044b84029ad8a8013c734649778a2fd4acfc160bf505a73e5b67f2d573c6ecfe88b4c3df7dd1a3ca57cd16f106a836a062bab7eb2ad648e5e2dd52c88194f3dd5087098e5f4c",
+  "exampleImages": [],
+  "packVersion": "18",
+  "releaseId": 5,
+  "lastReleasedAt": "2024-08-09T13:29:54.501Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/29897/18/metadata/6e85c99f2f8344fe21de521bb4deece41143843d3ce195aa8b29f0cba1c4fd12e6866e4727ad021d520c82aa386bda3cf4be36124547c595039bf4ce3b1476bf4b0d072d6f258983b5154ebc455092fa3eebe1ddb0d5fb9ee19d8aa6ac1e9c38a1914591.json",
+  "categories": [
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    },
+    {
+      "categoryId": "2ab958ef-6063-461e-9d2f-43e60d546d15",
+      "categoryName": "Marketing",
+      "categorySlug": "marketing"
+    },
+    {
+      "categoryId": "2678cc60-7259-492c-852c-8c7fa7ab9772",
+      "categoryName": "Knowledge management",
+      "categorySlug": "knowledge-management"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "2a8a3407-23a2-487a-96d8-2f0a62575655",
+    "packId": 29897,
+    "createdAt": "2024-04-05T16:02:37.014Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.5",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}
