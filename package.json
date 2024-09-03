@@ -40,7 +40,9 @@
     "regex-escape": "^3.4.10",
     "seinfeldapi": "github:wdifruscio/seinfeld-api",
     "sql.js": "^1.8.0",
+    "stopword": "^3.1.1",
     "text-encoding": "^0.7.0",
+    "tokenize-words": "^0.0.4-alpha.0",
     "url-parse": "^1.5.10",
     "url-polyfill": "^1.1.12"
   },
