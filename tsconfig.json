@@ -4,5 +4,6 @@
     "target": "ES2022",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
   },
 }

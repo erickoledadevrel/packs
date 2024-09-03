@@ -4,7 +4,7 @@ import * as chai from "chai";
 import {assert} from "chai";
 import {describe} from "mocha";
 import {it} from "mocha";
-import * as chaiAsPromised from "chai-as-promised";
+import chaiAsPromised from "chai-as-promised";
 chai.use(chaiAsPromised);
 chai.should();
 
