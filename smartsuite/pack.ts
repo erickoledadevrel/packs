@@ -160,22 +160,20 @@ pack.addDynamicSyncTable({
         continuation,
       };
     },
+    maxUpdateBatchSize: PageSize,
     executeUpdate: async function (args, updates, context) {
       let settings = await getSettings(context);
       let table = settings.table;
       let patches = updates.map(update => {
-        console.log("New value: ", JSON.stringify(update.newValue));
         return Object.fromEntries(
           Object.entries(update.newValue).filter(([key, value]) => {
             return update.updatedFields.includes(key) || key == "id";
           })
         ) as ct.Row;
       });
-      console.log("Patches: ", JSON.stringify(patches));
       let items = await Promise.all(patches.map(patch => {
         return formatRowForApi(settings, patch);
       }));
-      console.log("Items: ", JSON.stringify(items));
       let payload = {
         items: items,
       };
