@@ -53,6 +53,13 @@ const DescriptionParam = coda.makeParameter({
   optional: true,
 });
 
+const IsAllDayParam = coda.makeParameter({
+  type: coda.ParameterType.Boolean,
+  name: "isAllDay",
+  description: "True if the event is an all-day event.",
+  optional: true,
+});
+
 pack.addFormula({
   name: "ExportEvent",
   description: "Export an event in iCalendar format. Returns a temporary URL to the file.",
@@ -63,6 +70,7 @@ pack.addFormula({
     GetFilenameParam(false),
     LocationParam,
     DescriptionParam,
+    IsAllDayParam,
   ],
   resultType: coda.ValueType.String,
   cacheTtlSecs: OneHourSecs,
@@ -70,7 +78,8 @@ pack.addFormula({
     let [summary, start, end,
       filename = DefaultFilename,
       location,
-      description
+      description,
+      isAllDay,
     ] = args;
     let calendar = ical({});
     calendar.method(ICalCalendarMethod.PUBLISH);
@@ -80,6 +89,7 @@ pack.addFormula({
       summary,
       location,
       description,
+      allDay: isAllDay,
     });
     let buffer = Buffer.from(calendar.toString());
     return context.temporaryBlobStorage.storeBlob(buffer, "text/calendar", {
@@ -99,6 +109,7 @@ pack.addFormula({
     GetFilenameParam(true),
     arrayOf(LocationParam),
     arrayOf(DescriptionParam),
+    arrayOf(IsAllDayParam),
   ],
   resultType: coda.ValueType.String,
   cacheTtlSecs: OneHourSecs,
@@ -107,6 +118,7 @@ pack.addFormula({
       filename = DefaultFilenameMultiple,
       locations = [],
       descriptions = [],
+      isAllDays = [],
     ] = args;
     let calendar = ical({});
     calendar.method(ICalCalendarMethod.PUBLISH);
@@ -125,6 +137,7 @@ pack.addFormula({
         end: ends[i],
         location: locations[i],
         description: descriptions[i],
+        allDay: isAllDays[i],
       });
     }
     let buffer = Buffer.from(calendar.toString());
@@ -143,6 +156,9 @@ function arrayOf(param: coda.ParamDef<any>, sparse = false): coda.ParamDef<any> 
       break;
     case coda.Type.date:
       type = sparse ? coda.ParameterType.SparseDateArray : coda.ParameterType.DateArray;
+      break;
+    case coda.Type.boolean:
+      type = sparse ? coda.ParameterType.SparseBooleanArray : coda.ParameterType.BooleanArray;
       break;
     default:
       throw new Error(`Unhandled parameter type: ${param.type}`);
