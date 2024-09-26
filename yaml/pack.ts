@@ -112,6 +112,42 @@ pack.addFormula({
   },
 });
 
+pack.addFormula({
+  name: "ToYAML",
+  description: "Converts a JSON string to YAML.",
+  parameters: [
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "json",
+      description: "The JSON contents as a string.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  cacheTtlSecs: OneDaySecs,
+  examples: [
+    { 
+      params: [`{"a":[1,2]}`], 
+      result: trimIndent(`
+        a:
+          - 1
+          - 2
+      `),
+    },
+  ],
+  execute: async function (args, context) {
+    let [json] = args;
+    try {
+      let value = JSON.parse(json);
+      return YAML.stringify(value);
+    } catch (e) {
+      if (e.toString().startsWith("SyntaxError")) {
+        throw new coda.UserVisibleError(e);
+      }
+      throw e;
+    }
+  },
+});
+
 function parse(yaml: string) {
   try {
     return YAML.parse(yaml);
