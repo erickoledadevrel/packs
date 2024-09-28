@@ -1,0 +1,56 @@
+{
+  "packId": 34536,
+  "name": "YAML",
+  "description": "A collection of utility functions for working with YAML in Coda.\n\nIcon and logo are the property of yaml.org.",
+  "shortDescription": "Human-friendly data serialization for all programming languages.",
+  "logoUrl": "https://codahosted.io/packs/34536/unversioned/assets/LOGO/2e81d22e4833dbca15f43a6eff028aa7163e9cd67dcc41adc61ab62e3c7bbf141fcbc58bbd79245b7727ad234afad4ab4f26ba548dbb80592b213aaab0c923edda556fba31d522260439511d382f3ee9b411c7172086883f81008f4a2ecec372781d57fe",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/34536/unversioned/assets/EXAMPLE/287fc0f4ef338f16ba6d4da6971f05089cd2936e3d5f58937baeab62924f9df5fd4945b5156d82e822293adfc1f1a2a5390575bf422cec7bccc592abc259bb7e0eb42434e329aedc6826babdbf3c2ed259bbf5064bfe51b21b08b6b25d980ce7cdf7249b",
+      "filename": "yaml.png",
+      "mimeType": "image/png",
+      "assetId": "287fc0f4ef338f16ba6d4da6971f05089cd2936e3d5f58937baeab62924f9df5fd4945b5156d82e822293adfc1f1a2a5390575bf422cec7bccc592abc259bb7e0eb42434e329aedc6826babdbf3c2ed259bbf5064bfe51b21b08b6b25d980ce7cdf7249b"
+    }
+  ],
+  "packVersion": "2",
+  "releaseId": 2,
+  "lastReleasedAt": "2024-09-24T16:19:47.166Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/34536/2/metadata/3d78a8e0055be7d62adf585e36565b0fcd9edd9813791f145cb61497fbd4c4ce927f9acf171836b4f0326f87236d4bc294b2d878decf1117cf4876f4011c40b7288db5520543ee52c0ff69b196e922402182713b4b32ace0549135a92e66a09fd10824fc.json",
+  "categories": [
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "7dd9c80e-ddb5-4045-af91-8697131cb26d",
+    "packId": 34536,
+    "createdAt": "2024-09-24T14:52:53.214Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.5",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

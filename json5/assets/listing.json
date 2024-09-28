@@ -1,0 +1,56 @@
+{
+  "packId": 34513,
+  "name": "JSON5",
+  "description": "JSON5 is an extension to the popular JSON file format that aims to be easier to write and maintain by hand (e.g. for config files). This Pack provides a number of utility formulas that make it easier to work with JSON5 content in Coda.\n\nIcon and logo are the property of json5.org.",
+  "shortDescription": "JSON for Humans",
+  "logoUrl": "https://codahosted.io/packs/34513/unversioned/assets/LOGO/e0ff43fe3b1ae9dd1575089b8fc44c444bb1c846ce963610dd7a265e16994d02fc5228814397f935b6c4061b3f0f0597d1b7b31c639b823fe18b1b0e0d1cc6f4165276ec003b7e4a0fcf00f0edd6308dad68be0cd8a44db9d0a6b598cacf0af53a33684a",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/34513/unversioned/assets/EXAMPLE/4a7e48bd619cecd19789e1d4af4ffa514e49ad63eb7469366efc1c278fb32d48161fbaa59d8da4790a85c7a036b9fc6c10e8f3eecb93a8372cb3f9229a5333776673b20567991e95532e03aadad4dad7d07460cdd127ff496667f4c28c4f78cc00c5bb0a",
+      "filename": "json5.png",
+      "mimeType": "image/png",
+      "assetId": "4a7e48bd619cecd19789e1d4af4ffa514e49ad63eb7469366efc1c278fb32d48161fbaa59d8da4790a85c7a036b9fc6c10e8f3eecb93a8372cb3f9229a5333776673b20567991e95532e03aadad4dad7d07460cdd127ff496667f4c28c4f78cc00c5bb0a"
+    }
+  ],
+  "packVersion": "2",
+  "releaseId": 1,
+  "lastReleasedAt": "2024-09-23T21:32:38.333Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/34513/2/metadata/18e7612db4f10a0dc6dcaded1887acb447355c3d55af73cca6e3cda8251635020ce73f3320a334451eb6b37a747c92fa7784e79e8f84122667715b9158edfa03aa68686fb697bb2a13480d8b8c0d4a372bacf88b2160f92d2977767a6d941957b49b60be.json",
+  "categories": [
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "be92857f-93fe-4e73-abe3-9dece7ad37ac",
+    "packId": 34513,
+    "createdAt": "2024-09-23T21:17:09.359Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.5",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}
