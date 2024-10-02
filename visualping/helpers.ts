@@ -14,6 +14,8 @@ export async function getToken(context: coda.ExecutionContext) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
+    cacheTtlSecs: 24 * 60 * 60, // 24 hours.
+    forceCache: true, // Required to cache POST requests.
   });
   return response.body.id_token;
 }
