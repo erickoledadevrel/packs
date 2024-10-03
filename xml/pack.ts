@@ -1,5 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
 import * as xml2js from 'xml2js';
+import * as xpath from 'xpath';
+import * as xmldom from '@xmldom/xmldom';
 
 const OneDaySecs = 24 * 60 * 60;
 
@@ -169,6 +171,58 @@ pack.addFormula({
   },
 });
 
+pack.addFormula({
+  name: "XPath",
+  description: "Run an XPath query over the XML content. Returns a list of results as text.",
+  parameters: [
+    XMLParam,
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "query",
+      description: "The XPath query to run.",
+    }),
+  ],
+  resultType: coda.ValueType.Array,
+  items: { type: coda.ValueType.String },
+  examples: [
+    { 
+      params: [`<a><b id="1">foo</b><b id="2">bar</b></a>`, '/a/b'],
+      result: [`<b id="1">foo</b>`, `<b id="2">bar</b>`],
+    },
+    { 
+      params: [`<a><b id="1">foo</b><b id="2">bar</b></a>`, '/a/b[@id="1"]'],
+      result: [`<b id="1">foo</b>`],
+    },
+    { 
+      params: [`<a><b id="1">foo</b><b id="2">bar</b></a>`, '/a/b/text()'],
+      result: [`foo`, `bar`],
+    },
+    { 
+      params: [`<a><b id="1">foo</b><b id="2">bar</b></a>`, '/a/b/@id'],
+      result: [`1`, `2`],
+    },
+  ],
+  execute: async function (args, context) {
+    let [xml, query] = args;
+    try {
+      let parser = new xmldom.DOMParser({
+        onError: () => {}, // Disable logging of errors.
+      });
+      let doc = parser.parseFromString(xml, 'text/xml');
+      let nodes = xpath.select(query, doc as unknown as Node);
+      if (nodes instanceof Array) {
+        return nodes.map(node => serializeNode(node));
+      }
+      if (["string", "number", "boolean"].includes(typeof nodes)) {
+        return [nodes.toString()];
+      }
+      return [serializeNode(nodes as Node)];
+    } catch (e) {
+      throw new coda.UserVisibleError(e);
+    }
+  },
+});
+
 async function parse(xml: string) {
   try {
     return await xml2js.parseStringPromise(xml);
@@ -194,4 +248,12 @@ function trimIndent(str: string, trim = false) {
     result = result.trim();
   }
   return result;
+}
+
+function serializeNode(node: Node) {
+  if (node.nodeType == node.ATTRIBUTE_NODE) {
+    return node.nodeValue;
+  } else {
+    return node.toString();
+  }
 }
