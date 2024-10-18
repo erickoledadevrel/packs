@@ -1,0 +1,13 @@
+diff --git a/node_modules/node-fetch/lib/index.js b/node_modules/node-fetch/lib/index.js
+index 337d6e5..c0e767c 100644
+--- a/node_modules/node-fetch/lib/index.js
++++ b/node_modules/node-fetch/lib/index.js
+@@ -160,7 +160,7 @@ FetchError.prototype.name = 'FetchError';
+ 
+ let convert;
+ try {
+-	convert = require('encoding').convert;
++	// convert = require('encoding').convert;
+ } catch (e) {}
+ 
+ const INTERNALS = Symbol('Body internals');
