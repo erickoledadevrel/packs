@@ -2,6 +2,7 @@ import * as coda from "@codahq/packs-sdk";
 import * as xml2js from 'xml2js';
 import * as xpath from 'xpath';
 import * as xmldom from '@xmldom/xmldom';
+import * as xslt from 'xslt-processor';
 
 const OneDaySecs = 24 * 60 * 60;
 
@@ -220,6 +221,31 @@ pack.addFormula({
     } catch (e) {
       throw new coda.UserVisibleError(e);
     }
+  },
+});
+
+pack.addFormula({
+  name: "Transform",
+  description: "Use XSLT to transform the XML.",
+  parameters: [
+    XMLParam,
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "xslt",
+      description: "The XSLT transformation to use.",
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  isExperimental: true,
+  execute: async function (args, context) {
+    let [xmlString, xsltString] = args;
+    const processor = new xslt.Xslt();
+    const parser = new xslt.XmlParser();
+    const result = await processor.xsltProcess(
+      parser.xmlParse(xmlString),
+      parser.xmlParse(xsltString)
+    );
+    return result;
   },
 });
 
