@@ -76,12 +76,16 @@ export const ChangeSchema = coda.makeObjectSchema({
     link: {
       type: coda.ValueType.String,
       codaType: coda.ValueHintType.Url,
-      fromKey: "ccache_snapshot",
       description: "A link to more information about the change.",
+    },
+    summary: {
+      type: coda.ValueType.String,
+      description: "An AI-generated summary of the change.",
+      fromKey: "englishSummary",
     },
     job: JobReferenceSchema,
   },
   displayProperty: "created",
   idProperty: "changeId",
-  featuredProperties: ["difference", "preview", "link"],
+  featuredProperties: ["difference", "preview", "link", "summary"],
 });

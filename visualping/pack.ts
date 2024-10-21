@@ -121,7 +121,7 @@ pack.addDynamicSyncTable({
       for (let change of changes) {
         change.job = {id: job.id, description: job.description};
         change.PercentDifference /= 100;
-        change.ccache_snapshot = coda.withQueryParams(change.ccache_snapshot, {
+        change.link = coda.withQueryParams(change.ccache_snapshot ?? change.htmlDiffUrl, {
           mode: job.mode.toLowerCase(),
         });
       }
