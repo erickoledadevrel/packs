@@ -9,3 +9,4 @@ service-account.json
 bigquery/.coda-pack.json
 bigquery/assets
 _build
+_upload_build
