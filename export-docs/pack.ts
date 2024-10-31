@@ -11,6 +11,13 @@ const MaxImageWidth = 600;
 const ShareTypes = ["user", "group", "domain", "anyone"];
 const ShareRoles = ["writer", "commenter", "reader"];
 const OneDaySecs = 24 * 60 * 60;
+const DocsMimeType = "application/vnd.google-apps.document";
+
+const NameParam = coda.makeParameter({
+  type: coda.ParameterType.String,
+  name: "name",
+  description: "The name of the resulting Google Doc file.",
+});
 
 const ContentParam = coda.makeParameter({
   type: coda.ParameterType.Html,
@@ -22,6 +29,13 @@ const DocParam = coda.makeParameter({
   type: coda.ParameterType.String,
   name: "doc",
   description: "The URL or ID of a Google Doc created by this Pack.",
+});
+
+const PermissionsParam = coda.makeParameter({
+  type: coda.ParameterType.StringArray,
+  name: "permissions",
+  description: "Who should the exported doc be shared with. Pass in a List() of permissions, each created with the CreatePermission() formula.",
+  optional: true,
 });
 
 pack.addNetworkDomain("googleapis.com");
@@ -52,25 +66,16 @@ pack.addFormula({
   name: "ExportToDoc",
   description: "Creates a new Google Doc using the content from a Coda page or canvas.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
-      name: "name",
-      description: "The name of the resulting Google Doc file.",
-    }),
+    NameParam,
     ContentParam,
-    coda.makeParameter({
-      type: coda.ParameterType.StringArray,
-      name: "permissions",
-      description: "Who should the exported doc be shared with. Pass in a List() of permissions, each created with the CreatePermission() formula.",
-      optional: true,
-    }),
+    PermissionsParam,
   ],
   resultType: coda.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
     let [name, content, permissions = []] = args;
     content = fixHtml(content);
-    let file = await exportToDoc(context, content, name);
+    let file = await exportToDoc(context, Buffer.from(content), "text/html", {name});
     await Promise.all(permissions.map(permission => {
       addPermission(context, file.id, permission);
     }));
@@ -91,7 +96,7 @@ pack.addFormula({
     let [doc, content] = args;
     content = fixHtml(content);
     let docId = parseDocUrl(doc);
-    await exportToDoc(context, content, undefined, docId);
+    await exportToDoc(context, Buffer.from(content), "text/html", {docId});
     return "Done";
   },
 });
@@ -208,6 +213,44 @@ pack.addFormula({
 });
 
 pack.addFormula({
+  name: "ConvertToDoc",
+  description: "Converts a file (PDF, Word Doc, image, etc) to a Google Doc.",
+  parameters: [
+    NameParam,
+    coda.makeParameter({
+      type: coda.ParameterType.File,
+      name: "file",
+      description: "The file to convert.",
+    }),
+    PermissionsParam,
+  ],
+  resultType: coda.ValueType.String,
+  isAction: true,
+  execute: async function (args, context) {
+    let [name, fileUrl, permissions = []] = args;
+    let response = await context.fetcher.fetch({
+      method: "GET",
+      url: fileUrl,
+      isBinaryResponse: true,
+      disableAuthentication: true,
+    });
+    let buffer = response.body;
+    let mimeType = response.headers['content-type'] as string | undefined;
+    let supportedMimeTypes = await getSupportedMimeTypes(context);
+    if (!mimeType) {
+      throw new coda.UserVisibleError("Can't determine the file type of the source file.");
+    } else if (!supportedMimeTypes.includes(mimeType)) {
+      throw new coda.UserVisibleError(`Unsupported file type: ${mimeType}`);
+    }
+    let file = await exportToDoc(context, buffer, response.headers['content-type'] as string, {name});
+    await Promise.all(permissions.map(permission => {
+      addPermission(context, file.id, permission);
+    }));
+    return file.webViewLink;
+  },
+});
+
+pack.addFormula({
   name: "CreatePermission",
   description: "Creates a permission value to be used with the permissions parameter of the ExportDoc() formula.",
   parameters: [
@@ -250,11 +293,16 @@ pack.addFormula({
   },
 });
 
-async function exportToDoc(context: coda.ExecutionContext, html: string, name?: string, docId?: string): Promise<DriveFile> {
+interface ExportOptions {
+  name?: string;
+  docId?: string;
+}
+
+async function exportToDoc(context: coda.ExecutionContext, content: Buffer, mimeType: string, options?: ExportOptions): Promise<DriveFile> {
   let url = FileUrl;
   let method: coda.FetchMethodType = "POST";
-  if (docId) {
-    url = coda.joinUrl(url, docId);
+  if (options?.docId) {
+    url = coda.joinUrl(url, options.docId);
     method = "PATCH";
   }
   url = coda.withQueryParams(url, {
@@ -262,15 +310,15 @@ async function exportToDoc(context: coda.ExecutionContext, html: string, name?: 
     fields: "id,webViewLink"
   });
   let metadata = {
-    name: name,
-    mimeType: "application/vnd.google-apps.document",
+    name: options?.name,
+    mimeType: DocsMimeType,
   };
   let form = new FormData();
   form.append("metadata", Buffer.from(JSON.stringify(metadata)), {
     contentType: "application/json; charset=UTF-8",
   });
-  form.append("media", Buffer.from(html), {
-    contentType: "text/html",
+  form.append("media", content, {
+    contentType: mimeType,
   });
   let headers = form.getHeaders();
   headers['content-type'] = headers['content-type'].replace("form-data", "related");
@@ -340,6 +388,16 @@ async function getEndIndex(context: coda.ExecutionContext, docId: string) {
   let doc = response.body;
   console.log(JSON.stringify(doc));
   return doc?.body?.content?.at(-1)?.endIndex;
+}
+
+async function getSupportedMimeTypes(context: coda.ExecutionContext) {
+  let response = await context.fetcher.fetch({
+    method: "GET",
+    url: "https://www.googleapis.com/drive/v3/about?fields=importFormats",
+    cacheTtlSecs: OneDaySecs,
+  });
+  let formats = response.body.importFormats;
+  return Object.keys(formats).filter(mimeType => formats[mimeType].includes(DocsMimeType));
 }
 
 function fixHtml(html:string): string {
