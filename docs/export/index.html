@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Select Folder</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <style>header, main, article {text-align: center;}</style>
+  </head>
+  <body>
+    <header>
+      <h1>Export to Docs Pack - Folder Selector</h1>
+    </header>
+    <main class="container">
+      <article>
+        <p>Before you can export your doc to a specific folder in Google Drive, you must first select it using the Google Picker dialog.</p>
+        <button id="select" onclick="createPicker()" disabled>📁 Select folder</button>
+        <hr>
+        <h4>Folder ID</h4>
+        <div><input type="text" id="result" style="width: 400px;" /></div>
+        <div><button class="secondary" onclick="copyDocId()">
+          <span id="clip">📋</span>
+          <span id="check" style="display: none;">✅</span>
+          Copy to clipboard
+        </button></div>
+      </article>
+    </main>
+    <script>
+      const ClientId = "1038863564626-rn5e6ghkv4m496eqmv3rdpev700l887p.apps.googleusercontent.com";
+      const ApiKey = "AIzaSyA7ZFGccWqtCT9ye7IDgZBhAWSCqU-GcMY";
+      const ProjectId = "export-to-docs-pack";
+
+      let tokenClient;
+      let accessToken = null;
+      let pickerInited = false;
+      let gisInited = false;
+
+      // Use the API Loader script to load google.picker
+      function onApiLoad() {
+        gapi.load('picker', onPickerApiLoad);
+      }
+
+      function onPickerApiLoad() {
+        pickerInited = true;
+      }
+
+      function gisLoaded() {
+        // TODO(developer): Replace with your client ID and required scopes.
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: ClientId,
+          scope: 'profile',
+        });
+        gisInited = true;
+        document.getElementById("select").disabled = false;
+      }
+
+      // Create and render a Google Picker object for selecting from Drive.
+      function createPicker() {
+        const showPicker = () => {
+          let docsView = new google.picker.DocsView()
+            .setIncludeFolders(true) 
+            .setMode(google.picker.DocsViewMode.LIST) 
+            .setMimeTypes('application/vnd.google-apps.folder')
+            .setSelectFolderEnabled(true)
+            .setParent('root');
+          const picker = new google.picker.PickerBuilder()
+              .addView(docsView)
+              .setOAuthToken(accessToken)
+              .setDeveloperKey(ApiKey)
+              .setCallback(pickerCallback)
+              .setAppId(ProjectId)
+              .build();
+          picker.setVisible(true);
+        }
+
+        // Request an access token.
+        tokenClient.callback = async (response) => {
+          if (response.error !== undefined) {
+            throw (response);
+          }
+          accessToken = response.access_token;
+          showPicker();
+        };
+
+        if (accessToken === null) {
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
+          tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+          // Skip display of account chooser and consent dialog for an existing session.
+          tokenClient.requestAccessToken({prompt: ''});
+        }
+      }
+
+      function pickerCallback(data) {
+        if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+          let doc = data[google.picker.Response.DOCUMENTS][0];
+          let id = doc[google.picker.Document.ID];
+          document.getElementById('result').value = id;
+        }
+      }
+
+      function copyDocId() {
+        let docId = document.getElementById('result').value;
+        navigator.clipboard.writeText(docId).then(function() {
+          document.getElementById("clip").style.display = "none";
+          document.getElementById("check").style.display = "inline";
+          window.setTimeout(() => {
+            document.getElementById("check").style.display = "none";
+            document.getElementById("clip").style.display = "inline";
+          }, 3000)
+        }, function(err) {
+          window.alert("Error copying doc ID.");
+        });
+      }
+    </script>
+    <!-- Load the Google API Loader script. -->
+    <script async defer src="https://apis.google.com/js/api.js" onload="onApiLoad()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+  </body>
+</html>
