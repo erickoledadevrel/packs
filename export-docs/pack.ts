@@ -38,6 +38,13 @@ const PermissionsParam = coda.makeParameter({
   optional: true,
 });
 
+const FolderParam = coda.makeParameter({
+  type: coda.ParameterType.String,
+  name: "folder",
+  description: "The ID of the folder where the exported doc should be created. It must first be selected at https://packs.erickoleda.com/export.",
+  optional: true,
+});
+
 pack.addNetworkDomain("googleapis.com");
 
 pack.setUserAuthentication({
@@ -69,13 +76,14 @@ pack.addFormula({
     NameParam,
     ContentParam,
     PermissionsParam,
+    FolderParam,
   ],
   resultType: coda.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
-    let [name, content, permissions = []] = args;
+    let [name, content, permissions = [], folderId] = args;
     content = fixHtml(content);
-    let file = await exportToDoc(context, Buffer.from(content), "text/html", {name});
+    let file = await exportToDoc(context, Buffer.from(content), "text/html", {name, folderId});
     await Promise.all(permissions.map(permission => {
       addPermission(context, file.id, permission);
     }));
@@ -223,11 +231,12 @@ pack.addFormula({
       description: "The file to convert.",
     }),
     PermissionsParam,
+    FolderParam,
   ],
   resultType: coda.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
-    let [name, fileUrl, permissions = []] = args;
+    let [name, fileUrl, permissions = [], folderId] = args;
     let response = await context.fetcher.fetch({
       method: "GET",
       url: fileUrl,
@@ -242,7 +251,7 @@ pack.addFormula({
     } else if (!supportedMimeTypes.includes(mimeType)) {
       throw new coda.UserVisibleError(`Unsupported file type: ${mimeType}`);
     }
-    let file = await exportToDoc(context, buffer, response.headers['content-type'] as string, {name});
+    let file = await exportToDoc(context, buffer, response.headers['content-type'] as string, {name, folderId});
     await Promise.all(permissions.map(permission => {
       addPermission(context, file.id, permission);
     }));
@@ -296,6 +305,7 @@ pack.addFormula({
 interface ExportOptions {
   name?: string;
   docId?: string;
+  folderId?: string;
 }
 
 async function exportToDoc(context: coda.ExecutionContext, content: Buffer, mimeType: string, options?: ExportOptions): Promise<DriveFile> {
@@ -312,6 +322,7 @@ async function exportToDoc(context: coda.ExecutionContext, content: Buffer, mime
   let metadata = {
     name: options?.name,
     mimeType: DocsMimeType,
+    parents: options.folderId ? [options.folderId] : undefined,
   };
   let form = new FormData();
   form.append("metadata", Buffer.from(JSON.stringify(metadata)), {
