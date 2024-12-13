@@ -114,6 +114,12 @@ pack.addSyncTable({
           display: value.name, value: key,
         })),
       }),
+      coda.makeParameter({
+        type: coda.ParameterType.Boolean,
+        name: "includeBrainOnlyPacks",
+        description: "",
+        optional: true,
+      }),
     ],
     execute: async function (args, context) {
       let [
@@ -121,6 +127,7 @@ pack.addSyncTable({
         includeWorkspace,
         includePrivate,
         metadata = [],
+        includeBrainOnlyPacks,
       ] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
@@ -129,6 +136,7 @@ pack.addSyncTable({
           excludePublicPacks: !includePublished,
           excludeWorkspaceAcls: !includeWorkspace,
           excludeIndividualAcls: !includePrivate,
+          includeBrainOnly: includeBrainOnlyPacks,
           limit: 20,
         });
       }
