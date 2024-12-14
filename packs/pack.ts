@@ -12,6 +12,9 @@ const PackIdOrUrlParameter = coda.makeParameter({
   description: "The ID or URL of the Pack.",
 });
 
+const IncludeBrainOnlyPacksOption = "includeBrainOnlyPacks";
+const AllOptions = [IncludeBrainOnlyPacksOption];
+
 pack.addNetworkDomain("coda.io");
 pack.addNetworkDomain("coda-us-west-2-prod-packs.s3.us-west-2.amazonaws.com");
 
@@ -114,6 +117,13 @@ pack.addSyncTable({
           display: value.name, value: key,
         })),
       }),
+      coda.makeParameter({
+        type: coda.ParameterType.StringArray,
+        name: "options",
+        description: "Additional options to enable.",
+        optional: true,
+        autocomplete: AllOptions,
+      }),
     ],
     execute: async function (args, context) {
       let [
@@ -121,6 +131,7 @@ pack.addSyncTable({
         includeWorkspace,
         includePrivate,
         metadata = [],
+        options = [],
       ] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
@@ -129,6 +140,7 @@ pack.addSyncTable({
           excludePublicPacks: !includePublished,
           excludeWorkspaceAcls: !includeWorkspace,
           excludeIndividualAcls: !includePrivate,
+          includeBrainOnlyPacks: options.includes(IncludeBrainOnlyPacksOption),
           limit: 20,
         });
       }
