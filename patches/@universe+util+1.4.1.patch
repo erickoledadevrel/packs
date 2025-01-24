@@ -1,0 +1,12 @@
+diff --git a/node_modules/@universe/util/dist/mjs/src/index.mjs b/node_modules/@universe/util/dist/mjs/src/index.mjs
+index 375cb25..ecd01ce 100644
+--- a/node_modules/@universe/util/dist/mjs/src/index.mjs
++++ b/node_modules/@universe/util/dist/mjs/src/index.mjs
+@@ -1,6 +1,7 @@
+ /* eslint-disable max-len */
+ /* global MessageChannel */
+ import * as nodeCrypto from 'node:crypto';
++import {TextDecoder} from "text-encoding";
+ // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+ // @ts-ignore
+ const IS_BROWSER = (typeof globalThis.window === 'object' && window.document) || (typeof globalThis.WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope);
