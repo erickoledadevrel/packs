@@ -52,3 +52,10 @@ export interface SheetFormatSettings {
   useColumnTypes?: boolean;
   page?: number;
 }
+
+export interface SheetResult {
+  name: string;
+  parent?: string;
+  id: string;
+  url: string;
+}

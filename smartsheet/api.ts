@@ -1,6 +1,45 @@
 import * as coda from "@codahq/packs-sdk";
-import { Row, Sheet, SheetFormatSettings } from "./types";
+import { Row, SheetResult, Sheet, SheetFormatSettings } from "./types";
 import { PageSize } from "./pack";
+
+export async function searchSheets(context: coda.ExecutionContext, query: string): Promise<SheetResult[]> {
+  if (query) {
+    let url = coda.withQueryParams("https://api.smartsheet.com/2.0/search", {
+      query,
+      scopes: "sheetNames",
+    })
+    let response = await context.fetcher.fetch({
+      method: "GET",
+      url: url,
+    });
+    let results = response.body.results ?? [];
+    return results
+      .filter(item => item.objectType == "sheet")
+      .map(item => {
+        let name = item.text;
+        let parent = item.contextData?.[0];
+        let id = item.objectId;
+        let url = `https://api.smartsheet.com/2.0/sheets/${id}`;
+        return {name, parent, id, url};
+      });
+  } else {
+    let url = coda.withQueryParams("https://api.smartsheet.com/2.0/sheets", {
+      pageSize: 100,
+    });
+    let response = await context.fetcher.fetch({
+      method: "GET",
+      url: url,
+    });
+    let sheets = response.body.data ?? [];
+    return sheets
+      .map(sheet => {
+        return {
+          ...sheet,
+          url: `https://api.smartsheet.com/2.0/sheets/${sheets.id}`
+        };
+      });
+  }
+}
 
 export async function getSheet(context: coda.ExecutionContext, sheetUrl: string): Promise<Sheet> {
   let url = coda.withQueryParams(sheetUrl, {

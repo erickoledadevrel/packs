@@ -1,8 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
 import { getConverter } from "./convert";
 import { CodaRow, Row, Sheet, SheetFormatSettings } from "./types";
-import { getSheet, syncSheet, updateRows, getRows } from "./api";
-import { listSheets, searchSheets } from "../smartsuite/api";
+import { getSheet, syncSheet, updateRows, getRows, searchSheets } from "./api";
 
 export const pack = coda.newPack();
 
@@ -97,24 +96,14 @@ pack.addDynamicSyncTable({
     return results;
   },
   searchDynamicUrls: async function (context, search) {
-    let url = coda.withQueryParams("https://api.smartsheet.com/2.0/search", {
-      query: search,
-      scopes: "sheetNames",
-    })
-    let response = await context.fetcher.fetch({
-      method: "GET",
-      url: url,
-    });
-    let items = response.body.results ?? [];
-    return items
-      .filter(item => item.objectType == "sheet")
-      .map(item => {
-        let label = item.text;
-        if (item.contextData?.length > 0) {
-          label += ` (${item.contextData[0]})`;
+    let results = await searchSheets(context, search);
+    return results
+      .map(sheet => {
+        let label = sheet.name;
+        if (sheet.parent) {
+          label += ` (${sheet.parent})`;
         }
-        let url = `https://api.smartsheet.com/2.0/sheets/${item.objectId}`;
-        return {display: label, value: url};
+        return {display: label, value: sheet.url};
       });
   },
   getName: async function (context) {
@@ -133,7 +122,7 @@ pack.addDynamicSyncTable({
     let settings: SheetFormatSettings = {useColumnTypes};
 
     let sheet = await getSheet(context, sheetUrl);
-    let schema = coda.makeObjectSchema({
+    let schema: coda.GenericObjectSchema = coda.makeObjectSchema({
       ...BaseRowSchema,
       properties: {
         ...BaseRowSchema.properties,
@@ -256,20 +245,9 @@ pack.addFormula({
       name: "sheet",
       description: "The numerical ID of the sheet, as found in the properties dialog.",
       autocomplete: async function (context, search) {
-        if (search) {
-          let {results} = await searchSheets(context, search);
-          if (!results) return [];
-          return results
-          .filter(item => item.objectType == "sheet")
-          .map(item => {
-            let title = item.text;
-            let sheetId = item.objectId;
-            return `${title} (${sheetId})`;
-          });
-        } else {
-          let {data} = await listSheets(context);
-          return data.map(sheet => `${sheet.name} (${sheet.id})`);
-        }
+        let results = await searchSheets(context, search);
+        if (!results) return [];
+        return results.map(sheet => `${sheet.name} (${sheet.id})`);
       },
     }),
   ],
@@ -377,3 +355,4 @@ function parseIdParameter(value: string): number {
   if (extracted) return parseInt(extracted);
   throw new coda.UserVisibleError(`Invalid parameter value: ${value}`);
 }
+
