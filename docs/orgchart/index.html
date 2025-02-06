@@ -4,34 +4,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/csv-parse@5.6.0/dist/umd/sync.min.js"></script>
+    <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+
       google.charts.load("current", { 
         packages: ["orgchart"],
       });
       google.charts.setOnLoadCallback(drawChart);
-
-      function chartReady() {
-        tryFit();
-        window.setTimeout(() => {
-          // Scroll the root node into view.
-          document.getElementById('person-0').scrollIntoView({
-            block: "center",
-            inline: "center",
-          });
-        }, 1);
-      }
-
-      function tryFit() {
-        let chart = document.getElementById('chart');
-        let table = $(chart).find("table").get(0);
-        let zoom = 10;
-        while(!isElementFullyVisible(table) && zoom > 2) {
-          zoom -= 1;
-          console.log(zoom);
-          chart.style.zoom = zoom / 10;
-        }
-      }
 
       function isElementFullyVisible(el) {
         const rect = el.getBoundingClientRect();
@@ -75,7 +55,7 @@
 
         // Create the chart.
         var chart = new google.visualization.OrgChart(document.getElementById("chart"));
-        google.visualization.events.addListener(chart, 'ready', chartReady);
+        // google.visualization.events.addListener(chart, 'ready', chartReady);
         // Draw the chart, setting the allowHtml option to true for the tooltips.
         chart.draw(data, {
           allowHtml :true,
@@ -84,35 +64,27 @@
           selectedNodeClass: "selected",
         });
 
-        // Make draggable.
-        $("#chart").draggable({
-          cursor: "grabbing",
+        let pane = $("#pane").get(0);
+        let table = $("#chart > table").get(0);
+        let zoomer = panzoom(pane, {
+          zoomDoubleClickSpeed: 1,
         });
+        zoomer.showRectangle(table.getBoundingClientRect());
 
         // Use the user's background color, if specified.
         if (color) {
           $('.node').css('background-color', color);
         }
-        
-        // Add scroll to zoom.
-        const elementToZoom = document.getElementById("chart");
-        elementToZoom.addEventListener("wheel", (event) => {
-          event.preventDefault();
-          let zoomLevel = parseFloat(elementToZoom.style.zoom) || 1;
-          if (event.deltaY < 0) {
-            zoomLevel += 0.1; // Zoom in
-          } else {
-            zoomLevel -= 0.1; // Zoom out
-          }
-          zoomLevel = Math.max(0.1, Math.min(zoomLevel, 3));
-          elementToZoom.style.zoom = zoomLevel;
-        });
       }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css" integrity="sha512-TFee0335YRJoyiqz8hA8KV3P0tXa5CpRBSoM0Wnkn7JoJx1kaq1yXL/rb8YFpWXkMOjRcv5txv+C6UluttluCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css">
     <style>
+      #pane {
+        width: 100%;
+        height: 100%;
+      }
       #chart:not(.ui-draggable-dragging) {
         cursor: grab;
       }
@@ -126,14 +98,13 @@
         text-align: center;
         border-radius: .25rem;
       }
-      .node > .content { 
-        min-width: 125px;
-      }
-      .node > .content > .name { font-weight: bold; }
-      .node > .content > .description { white-space: pre-wrap; }
+      .node > .content > .name { font-weight: bold; text-wrap: nowrap; }
+      .node > .content > .description { white-space: pre-wrap; text-wrap: nowrap; }
     </style>
     </head>
   <body>
-    <div id="chart"></div>
+    <div id="pane">
+      <div id="chart"></div>
+    </div>      
   </body>
 </html>
