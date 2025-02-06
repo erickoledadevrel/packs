@@ -11,6 +11,37 @@
       });
       google.charts.setOnLoadCallback(drawChart);
 
+      function chartReady() {
+        tryFit();
+        window.setTimeout(() => {
+          // Scroll the root node into view.
+          document.getElementById('person-0').scrollIntoView({
+            block: "center",
+            inline: "center",
+          });
+        }, 1);
+      }
+
+      function tryFit() {
+        let chart = document.getElementById('chart');
+        let table = $(chart).find("table").get(0);
+        let zoom = 1;
+        while(!isElementFullyVisible(table) && zoom > 0.1) {
+          zoom -= 0.1;
+          chart.style.zoom = zoom;
+        }
+      }
+
+      function isElementFullyVisible(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+      }
+
       function drawChart() {
         var data = new google.visualization.DataTable();
         data.addColumn("string", "Name");
@@ -22,7 +53,7 @@
         let color = params.get('c');
         let csv = LZString.decompressFromEncodedURIComponent(input);
         let people = csv_parse_sync.parse(csv);
-        let rows = people.map(person => {
+        let rows = people.map((person, i) => {
           let [name, managerIndex, description] = person;
           let manager = managerIndex >= 0 ? people[managerIndex][0] : undefined;
           let display = `<div class="name">${name}</div>`;
@@ -32,7 +63,7 @@
           return [
             {
               v: name,
-              f: `<div class="content">${display}</content>`,
+              f: `<div id="person-${i}" class="content">${display}</content>`,
             },
             manager,
           ];
@@ -43,6 +74,7 @@
 
         // Create the chart.
         var chart = new google.visualization.OrgChart(document.getElementById("chart"));
+        google.visualization.events.addListener(chart, 'ready', chartReady);
         // Draw the chart, setting the allowHtml option to true for the tooltips.
         chart.draw(data, {
           allowHtml :true,
@@ -50,12 +82,30 @@
           nodeClass: "node",
           selectedNodeClass: "selected",
         });
+
+        // Make draggable.
         $("#chart").draggable({
           cursor: "grabbing",
         });
+
+        // Use the user's background color, if specified.
         if (color) {
           $('.node').css('background-color', color);
         }
+        
+        // Add scroll to zoom.
+        const elementToZoom = document.getElementById("chart");
+        elementToZoom.addEventListener("wheel", (event) => {
+          event.preventDefault();
+          let zoomLevel = parseFloat(elementToZoom.style.zoom) || 1;
+          if (event.deltaY < 0) {
+            zoomLevel += 0.1; // Zoom in
+          } else {
+            zoomLevel -= 0.1; // Zoom out
+          }
+          zoomLevel = Math.max(0.1, Math.min(zoomLevel, 3));
+          elementToZoom.style.zoom = zoomLevel;
+        });
       }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css" integrity="sha512-TFee0335YRJoyiqz8hA8KV3P0tXa5CpRBSoM0Wnkn7JoJx1kaq1yXL/rb8YFpWXkMOjRcv5txv+C6UluttluCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -65,6 +115,9 @@
       #chart:not(.ui-draggable-dragging) {
         cursor: grab;
       }
+      #chart > table {
+        width: auto;
+      }
       .node { 
         /* background-color: var(--pico-color-azure-200); */
         background-color: rgb(219, 238, 250);
@@ -72,11 +125,11 @@
         text-align: center;
         border-radius: .25rem;
       }
-      .node .content { 
+      .node > .content { 
         min-width: 125px;
       }
-      .node .content .name { font-weight: bold; }
-      .node .content .description { white-space: pre-wrap; }
+      .node > .content > .name { font-weight: bold; }
+      .node > .content > .description { white-space: pre-wrap; }
     </style>
     </head>
   <body>

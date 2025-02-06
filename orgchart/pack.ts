@@ -4,6 +4,7 @@ import { build } from "but-csv";
 
 const BaseUrl = "https://packs.erickoleda.com/orgchart/index.html";
 const OneDaySecs = 24 * 60 * 60;
+const MaxUrlLength = 8000;
 
 export const pack = coda.newPack();
 
@@ -56,14 +57,18 @@ pack.addFormula({
     let rows = names.map((name, i) => {
       let manager = managers[i];
       let managerIndex = names.indexOf(manager);
-      let description = descriptions[i];
+      let description = descriptions[i] ?? "";
       return [name, managerIndex, description];
     });
     let csv = build(rows);
     let input = LZString.compressToEncodedURIComponent(csv);
-    return coda.withQueryParams(BaseUrl, {
+    let url = coda.withQueryParams(BaseUrl, {
       i: input,
       c: color,
     });
+    if (url.length > MaxUrlLength) {
+      throw new coda.UserVisibleError("Org chart too large. Try removing data if possible.");
+    }
+    return url;
   },
 });
