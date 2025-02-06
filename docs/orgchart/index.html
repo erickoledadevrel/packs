@@ -1,6 +1,9 @@
 <html>
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js" integrity="sha512-qtX0GLM3qX8rxJN1gyDfcnMFFrKvixfoEOwbBib9VafR5vbChV5LeE5wSI/x+IlCkTY5ZFddFDCCfaVJJNnuKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/csv-parse@5.6.0/dist/umd/sync.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load("current", { 
@@ -16,21 +19,20 @@
 
         let params = new URLSearchParams(window.location.search);
         let input = params.get('i');
-        let json = LZString.decompressFromEncodedURIComponent(input);
-        let people = JSON.parse(json);
+        let color = params.get('c');
+        let csv = LZString.decompressFromEncodedURIComponent(input);
+        let people = csv_parse_sync.parse(csv);
         let rows = people.map(person => {
-          let [name, manager, title, department] = person;
+          let [name, managerIndex, description] = person;
+          let manager = managerIndex >= 0 ? people[managerIndex][0] : undefined;
           let display = `<div class="name">${name}</div>`;
-          if (title) {
-            display += `<div class="title">${title}</div>`;
-          }
-          if (department) {
-            display += `<div class="department">${department}</div>`;
+          if (description) {
+            display += `<div class="description">${description}</div>`;
           }
           return [
             {
               v: name,
-              f: display
+              f: `<div class="content">${display}</content>`,
             },
             manager,
           ];
@@ -45,11 +47,37 @@
         chart.draw(data, {
           allowHtml :true,
           allowCollapse: true,
-          // nodeClass: "node",
-          // selectedNodeClass: "selected",
+          nodeClass: "node",
+          selectedNodeClass: "selected",
         });
+        $("#chart").draggable({
+          cursor: "grabbing",
+        });
+        if (color) {
+          $('.node').css('background-color', color);
+        }
       }
-   </script>
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css" integrity="sha512-TFee0335YRJoyiqz8hA8KV3P0tXa5CpRBSoM0Wnkn7JoJx1kaq1yXL/rb8YFpWXkMOjRcv5txv+C6UluttluCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css">
+    <style>
+      #chart:not(.ui-draggable-dragging) {
+        cursor: grab;
+      }
+      .node { 
+        /* background-color: var(--pico-color-azure-200); */
+        background-color: rgb(219, 238, 250);
+        padding: .25rem !important;
+        text-align: center;
+        border-radius: .25rem;
+      }
+      .node .content { 
+        min-width: 125px;
+      }
+      .node .content .name { font-weight: bold; }
+      .node .content .description { white-space: pre-wrap; }
+    </style>
     </head>
   <body>
     <div id="chart"></div>
