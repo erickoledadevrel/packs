@@ -25,10 +25,11 @@
       function tryFit() {
         let chart = document.getElementById('chart');
         let table = $(chart).find("table").get(0);
-        let zoom = 1;
-        while(!isElementFullyVisible(table) && zoom > 0.1) {
-          zoom -= 0.1;
-          chart.style.zoom = zoom;
+        let zoom = 10;
+        while(!isElementFullyVisible(table) && zoom > 2) {
+          zoom -= 1;
+          console.log(zoom);
+          chart.style.zoom = zoom / 10;
         }
       }
 
