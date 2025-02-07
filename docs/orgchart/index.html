@@ -17,7 +17,13 @@
       google.charts.load("current", { 
         packages: ["orgchart"],
       });
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(() => {
+        $(document).ready(() => {
+          window.setTimeout(() => {
+            drawChart();
+          }, 100);
+        })
+      });
 
       function isElementFullyVisible(el) {
         const rect = el.getBoundingClientRect();
