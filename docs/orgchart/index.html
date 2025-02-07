@@ -10,6 +10,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       let zoomer;
+      let oneTimeFit = false;
 
       google.charts.load("current", { 
         packages: ["orgchart"],
@@ -24,6 +25,11 @@
           rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
           rect.right <= (window.innerWidth || document.documentElement.clientWidth)
         );
+      }
+
+      function showAll() {
+        let table = $("#chart > table").get(0);
+        zoomer.showRectangle(table.getBoundingClientRect());
       }
 
       function centerOn(elem) {
@@ -86,15 +92,15 @@
 
         // Create the chart.
         var chart = new google.visualization.OrgChart(document.getElementById("chart"));
+
         google.visualization.events.addListener(chart, 'ready', () => {
-          // Use the user's colors, if specified.
-          if (backgroundColor) {
-            $('.node').css('background-color', backgroundColor);
-          }
-          if (textColor) {
-            $('.node').css('color', textColor);
+          if (!oneTimeFit) {
+            showAll();
+            oneTimeFit = true;
           }
         });
+
+
         google.visualization.events.addListener(chart, 'collapse', (e) => {
           let {row, collapsed} = e;
           let node = $('#person-' + row);
@@ -115,9 +121,6 @@
           nodeClass: "node",
           selectedNodeClass: "selected",
         });
-
-        let table = $("#chart > table").get(0);
-        zoomer.showRectangle(table.getBoundingClientRect());
       }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css" integrity="sha512-TFee0335YRJoyiqz8hA8KV3P0tXa5CpRBSoM0Wnkn7JoJx1kaq1yXL/rb8YFpWXkMOjRcv5txv+C6UluttluCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
