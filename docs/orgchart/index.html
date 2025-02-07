@@ -136,6 +136,8 @@
       :root {
         --node-background-color: rgb(219, 238, 250);
         --node-text-color: var(--pico-color);
+        --node-dark-color: hsl(from var(--node-background-color) h calc(s - 40) calc(l - 20));
+        --node-very-dark-color: hsl(from var(--node-background-color) h calc(s - 40) calc(l - 50));
       }
       html, body {
         position: fixed;
@@ -173,16 +175,19 @@
         content: "";
         text-align: center;
         line-height: 1.2em;
-        background-color: rgb(0, 0, 0, 1);
+        background-color: var(--node-dark-color);
         border-radius: 0 0 .5rem .5rem;
         border: 0;
-        opacity: 0.2;
+        opacity: 0.5;
       }
       .node > .content.collapsed::after {
-        opacity: 0.5;
+        background-color: var(--node-very-dark-color);
       }
       td {
         border: 0;
+      }
+      table.google-visualization-orgchart-table td {
+        border-color: var(--node-dark-color);
       }
     </style>
     </head>
