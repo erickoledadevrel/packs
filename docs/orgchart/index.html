@@ -21,7 +21,7 @@
         $(document).ready(() => {
           window.setTimeout(() => {
             drawChart();
-          }, 100);
+          }, 1000);
         })
       });
 
@@ -188,7 +188,9 @@
     </head>
   <body>
     <div id="pane">
-      <div id="chart"></div>
+      <div id="chart">
+        <progress />
+      </div>
     </div>      
   </body>
 </html>
