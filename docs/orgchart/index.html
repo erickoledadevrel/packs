@@ -9,6 +9,8 @@
     <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+      console.log("Version: {{site.github.build_revision}}");
+
       let zoomer;
       let oneTimeSetup = false;
 
@@ -111,7 +113,7 @@
             centerOn(elem);
           }
         });
-        
+
         // Draw the chart, setting the allowHtml option to true for the tooltips.
         chart.draw(data, {
           allowHtml :true,
