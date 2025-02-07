@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js" integrity="sha512-qtX0GLM3qX8rxJN1gyDfcnMFFrKvixfoEOwbBib9VafR5vbChV5LeE5wSI/x+IlCkTY5ZFddFDCCfaVJJNnuKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -7,6 +9,7 @@
     <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+      let zoomer;
 
       google.charts.load("current", { 
         packages: ["orgchart"],
@@ -23,6 +26,19 @@
         );
       }
 
+      function centerOn(elem) {
+        var clientRect = elem.getBoundingClientRect();
+        var cx = clientRect.left + clientRect.width / 2;
+        var cy = clientRect.top + clientRect.height / 2;
+
+        var container = window.document.body.getBoundingClientRect();
+        var dx = container.width / 2 - cx;
+        var dy = container.height / 2 - cy;
+
+        let curr = zoomer.getTransform();
+        zoomer.smoothMoveTo(curr.x + dx, curr.y + dy)
+      }
+
       function drawChart() {
         var data = new google.visualization.DataTable();
         data.addColumn("string", "Name");
@@ -31,11 +47,26 @@
 
         let params = new URLSearchParams(window.location.search);
         let input = params.get('i');
-        let color = params.get('c');
+        let backgroundColor = params.get('b');
+        let textColor = params.get('t');
+
+        if (backgroundColor) {
+          document.documentElement.style.setProperty("--node-background-color", backgroundColor);
+        }
+        if (textColor) {
+          document.documentElement.style.setProperty("--node-text-color", textColor);
+        }
+
+        let pane = $("#pane").get(0);
+        zoomer = panzoom(pane, {
+          zoomDoubleClickSpeed: 1,
+        });
+
         let csv = LZString.decompressFromEncodedURIComponent(input);
         let people = csv_parse_sync.parse(csv);
         let rows = people.map((person, i) => {
           let [name, managerIndex, description] = person;
+          let isManager = people.some(p => p[1] == i);
           let manager = managerIndex >= 0 ? people[managerIndex][0] : undefined;
           let display = `<div class="name">${name}</div>`;
           if (description) {
@@ -44,7 +75,7 @@
           return [
             {
               v: name,
-              f: `<div id="person-${i}" class="content">${display}</content>`,
+              f: `<div id="person-${i}" class="content ${isManager ? "parent" : ""}">${display}</content>`,
             },
             manager,
           ];
@@ -55,7 +86,28 @@
 
         // Create the chart.
         var chart = new google.visualization.OrgChart(document.getElementById("chart"));
-        // google.visualization.events.addListener(chart, 'ready', chartReady);
+        google.visualization.events.addListener(chart, 'ready', () => {
+          // Use the user's colors, if specified.
+          if (backgroundColor) {
+            $('.node').css('background-color', backgroundColor);
+          }
+          if (textColor) {
+            $('.node').css('color', textColor);
+          }
+        });
+        google.visualization.events.addListener(chart, 'collapse', (e) => {
+          let {row, collapsed} = e;
+          let node = $('#person-' + row);
+          if (collapsed) {
+            node.addClass("collapsed");
+          } else {
+            node.removeClass("collapsed");
+          }
+          let elem = node.get(0);
+          if (!isElementFullyVisible(elem)) {
+            centerOn(elem);
+          }
+        });
         // Draw the chart, setting the allowHtml option to true for the tooltips.
         chart.draw(data, {
           allowHtml :true,
@@ -64,26 +116,24 @@
           selectedNodeClass: "selected",
         });
 
-        let pane = $("#pane").get(0);
         let table = $("#chart > table").get(0);
-        let zoomer = panzoom(pane, {
-          zoomDoubleClickSpeed: 1,
-        });
         zoomer.showRectangle(table.getBoundingClientRect());
-
-        // Use the user's background color, if specified.
-        if (color) {
-          $('.node').css('background-color', color);
-        }
       }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css" integrity="sha512-TFee0335YRJoyiqz8hA8KV3P0tXa5CpRBSoM0Wnkn7JoJx1kaq1yXL/rb8YFpWXkMOjRcv5txv+C6UluttluCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css">
     <style>
-      #pane {
+      :root {
+        --node-background-color: rgb(219, 238, 250);
+        --node-text-color: var(--pico-color);
+      }
+      html, body {
+        position: fixed;
         width: 100%;
         height: 100%;
+        padding: 0;
+        margin: 0;
       }
       #chart:not(.ui-draggable-dragging) {
         cursor: grab;
@@ -92,14 +142,39 @@
         width: auto;
       }
       .node { 
-        /* background-color: var(--pico-color-azure-200); */
-        background-color: rgb(219, 238, 250);
-        padding: .25rem !important;
+        position: relative;
+        background-color: var(--node-background-color);
+        color: var(--node-text-color);
+        padding: 0 !important;
         text-align: center;
-        border-radius: .25rem;
+        border-radius: .5rem;
       }
+      .node > .content { padding-bottom: 1em; padding: 5px 5px 15px 5px; }
       .node > .content > .name { font-weight: bold; text-wrap: nowrap; }
       .node > .content > .description { white-space: pre-wrap; text-wrap: nowrap; }
+      .node > .content.parent::after {
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 15px;
+        margin: 0;
+        padding: 0;
+        content: "";
+        text-align: center;
+        line-height: 1.2em;
+        background-color: rgb(0, 0, 0, 1);
+        border-radius: 0 0 .5rem .5rem;
+        border: 0;
+        opacity: 0.2;
+      }
+      .node > .content.collapsed::after {
+        opacity: 0.5;
+      }
+      td {
+        border: 0;
+      }
     </style>
     </head>
   <body>
