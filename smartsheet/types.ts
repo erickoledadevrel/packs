@@ -29,6 +29,8 @@ interface Filter {
 }
 
 export interface Sheet {
+  name: string;
+  permalink: string;
   columns: Column[];
   filters: Filter[];
   rows: Row[];

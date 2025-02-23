@@ -108,11 +108,7 @@ pack.addDynamicSyncTable({
   },
   getName: async function (context) {
     let sheetUrl = context.sync.dynamicUrl;
-    let response = await context.fetcher.fetch({
-      method: "GET",
-      url: sheetUrl,
-    });
-    let sheet = response.body;
+    let sheet = await getSheet(context, sheetUrl);
     return sheet.name;
   },
   getSchema: async function (context, _, args) {
@@ -142,11 +138,7 @@ pack.addDynamicSyncTable({
   },
   getDisplayUrl: async function (context) {
     let sheetUrl = context.sync.dynamicUrl;
-    let response = await context.fetcher.fetch({
-      method: "GET",
-      url: sheetUrl,
-    });
-    let sheet = response.body;
+    let sheet = await getSheet(context, sheetUrl);
     return sheet.permalink;
   },
   formula: {
