@@ -1,6 +1,8 @@
 import * as coda from "@codahq/packs-sdk";
 import FormData from 'form-data';
+import * as mime from "mime-types";
 const cheerio = require('cheerio');
+const sanitize = require("sanitize-filename");
 
 export const pack = coda.newPack();
 
@@ -245,7 +247,7 @@ pack.addFormula({
     });
     let buffer = response.body;
     let mimeType = response.headers['content-type'] as string | undefined;
-    let supportedMimeTypes = await getSupportedMimeTypes(context);
+    let supportedMimeTypes = await getSupportedImportFormats(context);
     if (!mimeType) {
       throw new coda.UserVisibleError("Can't determine the file type of the source file.");
     } else if (!supportedMimeTypes.includes(mimeType)) {
@@ -299,6 +301,53 @@ pack.addFormula({
       permission.domain = who;
     }
     return JSON.stringify(permission);
+  },
+});
+
+pack.addFormula({
+  name: "GetDownloadUrl",
+  description: `Gets a temporary download URL for a Google Doc created using this Pack. Use with the "Open hyperlink" action to download immediately, or the "Modify rows" action to save it to a File column.`,
+  parameters: [
+    DocParam,
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "format",
+      description: "Which file format the Google Doc should be converted to.",
+      autocomplete: async function (context) {
+        let mimeTypes = await getSupportedExportFormats(context);
+        return mimeTypes.map(mimeType => mime.extension(mimeType));
+      }
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "filename",
+      description: "The name of the resulting file. If not specified, the name of the Google Doc will be used.",
+      optional: true,
+    }),
+  ],
+  resultType: coda.ValueType.String,
+  cacheTtlSecs: 0,
+  execute: async function (args, context) {
+    let [doc, format, filename] = args;
+    let docId = parseDocUrl(doc);
+    let mimeTypes = await getSupportedExportFormats(context);
+    let mimeType = mimeTypes.find(mimeType => mimeType == format || mime.extension(mimeType) == format);
+    if (!mimeType) {
+      return `Format not supported: ${format}`;
+    }
+    if (!filename) {
+      let {name} = await getDocInfo(context, docId);
+      let extension = mime.extension(mimeType);
+      filename = sanitize(`${name}.${extension}`);
+    }
+    let url = coda.withQueryParams(`https://www.googleapis.com/drive/v3/files/${docId}/export`, {
+      mimeType: mimeType,
+    });
+    return context.temporaryBlobStorage.storeUrl(url, {
+      expiryMs: OneDaySecs * 1000,
+      contentType: mimeType,
+      downloadFilename: filename,
+    });
   },
 });
 
@@ -401,7 +450,7 @@ async function getEndIndex(context: coda.ExecutionContext, docId: string) {
   return doc?.body?.content?.at(-1)?.endIndex;
 }
 
-async function getSupportedMimeTypes(context: coda.ExecutionContext) {
+async function getSupportedImportFormats(context: coda.ExecutionContext): Promise<string[]> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: "https://www.googleapis.com/drive/v3/about?fields=importFormats",
@@ -409,6 +458,24 @@ async function getSupportedMimeTypes(context: coda.ExecutionContext) {
   });
   let formats = response.body.importFormats;
   return Object.keys(formats).filter(mimeType => formats[mimeType].includes(DocsMimeType));
+}
+
+async function getSupportedExportFormats(context: coda.ExecutionContext): Promise<string[]> {
+  let response = await context.fetcher.fetch({
+    method: "GET",
+    url: "https://www.googleapis.com/drive/v3/about?fields=exportFormats",
+    cacheTtlSecs: OneDaySecs,
+  });
+  return response.body.exportFormats[DocsMimeType];
+}
+
+async function getDocInfo(context: coda.ExecutionContext, docId: string) {
+  let response = await context.fetcher.fetch({
+    method: "GET",
+    url: `https://www.googleapis.com/drive/v3/files/${docId}?fields=name`,
+    cacheTtlSecs: OneDaySecs,
+  });
+  return response.body;
 }
 
 function fixHtml(html:string): string {
