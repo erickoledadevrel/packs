@@ -41,6 +41,7 @@
     "parse-data-uri": "^0.2.0",
     "qs": "^6.12.3",
     "regex-escape": "^3.4.10",
+    "sanitize-filename": "^1.6.3",
     "seinfeldapi": "github:wdifruscio/seinfeld-api",
     "sql.js": "^1.8.0",
     "stopword": "^3.1.1",
@@ -83,6 +84,7 @@
     "test": "mocha --require ts-node/register **/*_test.ts --ignore node_modules/**/*",
     "postinstall": "npx patch-package && sh bin/patch.sh",
     "generate-fonts": "node -r ts-node/register asciify/utils/generate-fonts.ts",
-    "backup": "node -r ts-node/register bin/backup.ts"
+    "backup": "node -r ts-node/register bin/backup.ts",
+    "server": "python -m http.server 8000"
   }
 }
