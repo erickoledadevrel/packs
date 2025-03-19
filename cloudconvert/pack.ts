@@ -94,7 +94,7 @@ pack.addFormula({
     coda.makeParameter({
       type: coda.ParameterType.Html,
       name: "page",
-      description: "The file to convert (from a File or Image column).",
+      description: "The page to convert (or content from a Text or Canvas column).",
     }),
     coda.makeParameter({
       type: coda.ParameterType.String,
