@@ -183,6 +183,25 @@ const AuthenticationSchema = coda.makeObjectSchema({
   displayProperty: "type",
 });
 
+const AdminAuthenticationSchema = coda.makeObjectSchema({
+  properties: {
+    authentication: AuthenticationSchema,
+    name: {
+      type: coda.ValueType.String,
+      description: "The unique identifier for the admin authentication.",
+    },
+    displayName: {
+      type: coda.ValueType.String,
+      description: "The user-visible name of the authentication.",
+    },
+    description: {
+      type: coda.ValueType.String,
+      description: "The user-visible description of the authentication.",
+    },
+  },
+  displayProperty: "name",
+});
+
 export const BasePackSchema = coda.makeObjectSchema({
   properties: {
     packId: {
@@ -349,6 +368,16 @@ export const BuildingBlockPoperties: coda.ObjectSchemaProperties = {
   authentication: {
     ...AuthenticationSchema,
     description: "The authentication the Pack uses.",
+  },
+  adminAuthentications: {
+    type: coda.ValueType.Array,
+    items: AdminAuthenticationSchema,
+    description: "The admin authentication types that the Pack supports.",
+  },
+  networkDomains: {
+    type: coda.ValueType.Array,
+    items: {type: coda.ValueType.String},
+    description: "The network domains that the Pack can make requests to.",
   },
 }
 
