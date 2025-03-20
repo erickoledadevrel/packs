@@ -1,6 +1,9 @@
 import * as coda from "@codahq/packs-sdk";
 import { PackSchema } from "./schemas";
 import { PackUrlRegexes, MetadataTypes } from "./constants";
+import mask from 'json-mask';
+
+const OneDaySecs = 24 * 60 * 60;
 
 export function formatItem(context: coda.ExecutionContext, item: any) {
   if (!item.packId && item.id) {
@@ -31,6 +34,7 @@ export async function addBuildingBlocks(context: coda.ExecutionContext, items: a
       method: "GET",
       url: item.externalMetadataUrl,
       disableAuthentication: true,
+      cacheTtlSecs: OneDaySecs,
     });
   });
   let results = await Promise.allSettled(requests);
@@ -162,6 +166,28 @@ export async function addFeaturedDocs(context: coda.ExecutionContext, items: any
   }
 }
 
+export async function addManifest(context: coda.ExecutionContext, items: any[], fieldMask: string) {
+  let requests = items.map(item => {
+    return context.fetcher.fetch({
+      method: "GET",
+      url: item.externalMetadataUrl,
+      disableAuthentication: true,
+      cacheTtlSecs: OneDaySecs,
+    });
+  });
+  let results = await Promise.allSettled(requests);
+  for (let [i, result] of results.entries()) {
+    let item = items[i];
+    if (result.status == "fulfilled") {
+      let manifest = result.value.body;
+      let masked = mask(manifest, fieldMask);
+      item.manifest = JSON.stringify(masked);
+    } else {
+      console.error(result.reason);
+    }
+  }
+}
+
 export function getPackId(context: coda.ExecutionContext, packIdOrUrl: string): string {
   for (let regex of PackUrlRegexes) {
     let match = packIdOrUrl.match(regex);
@@ -180,7 +206,7 @@ export function getPackId(context: coda.ExecutionContext, packIdOrUrl: string): 
   return packIdOrUrl;
 }
 
-export function extendSchema(metadata: string[]) {
+export function extendSchema(metadata: string[]): coda.GenericObjectSchema {
   let properties = { ...PackSchema.properties };
   let featured: string[] = [...PackSchema.featuredProperties];
   for (let key of metadata) {

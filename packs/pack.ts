@@ -1,7 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
-import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError, getCategories, unformatItem, removeCategory, addCategory, addStats } from "./helpers";
+import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError, getCategories, unformatItem, removeCategory, addCategory, addStats, addManifest } from "./helpers";
 import { MetadataTypes, PackUrlRegexes } from "./constants";
-import { MyPackSchema, PackSchema, StatsSchema } from "./schemas";
+import { ManifestProperty, MyPackSchema, PackSchema, StatsSchema } from "./schemas";
 const escape = require('escape-html');
 
 export const pack = coda.newPack();
@@ -75,7 +75,11 @@ pack.addSyncTable({
   dynamicOptions: {
     getSchema: async function (context, search, args) {
       let metadata = args.metdata ?? [];
-      return extendSchema(metadata);
+      let schema = extendSchema(metadata);
+      if (args.manifestFields) {
+        schema.properties.manifest = ManifestProperty;
+      }
+      return schema;
     },
     propertyOptions: async function (context) {
       switch (context.propertyName) {
@@ -124,6 +128,12 @@ pack.addSyncTable({
         optional: true,
         autocomplete: AllOptions,
       }),
+      coda.makeParameter({
+        type: coda.ParameterType.String,
+        name: "manifestFields",
+        description: "If this field mask is specified, the selected fields from Pack's internal manifest will be included as raw JSON in a Manifest column.",
+        optional: true,
+      }),
     ],
     execute: async function (args, context) {
       let [
@@ -132,6 +142,7 @@ pack.addSyncTable({
         includePrivate,
         metadata = [],
         options = [],
+        manifestFields,
       ] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
@@ -156,6 +167,9 @@ pack.addSyncTable({
       for (let key of metadata) {
         let settings = getMetdataSettings(key);
         jobs.push(settings.callback(context, items));
+      }
+      if (manifestFields) {
+        jobs.push(addManifest(context, items, manifestFields))
       }
       await Promise.allSettled(jobs);
       let continuation;

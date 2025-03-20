@@ -27,6 +27,7 @@
     "hsl-to-hex": "^1.0.0",
     "hue-colors": "^0.5.4",
     "ical-generator": "^6.0.1",
+    "json-mask": "^2.0.0",
     "json5": "^2.2.3",
     "jsrsasign": "^10.8.6",
     "jszip": "^3.10.1",

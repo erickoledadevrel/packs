@@ -281,6 +281,12 @@ export const PackSchema = coda.makeObjectSchema({
     sdkVersion: {
       type: coda.ValueType.String,
       description: "The version of the SDK the current release of the Pack was built with.",
+    },
+    manifestUrl: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Url,
+      description: "A link to the Pack's manifest file. It's an internal format that is subject to change without warning.",
+      fromKey: "externalMetadataUrl",
     }
   },
   featuredProperties: ["logo", "tagline", "makers"],
@@ -367,6 +373,11 @@ export const FeaturedDocsProperties: coda.ObjectSchemaProperties = {
     items: FeaturedDocSchema,
     description: "The published docs featured in the Pack listing page.",
   }
+}
+
+export const ManifestProperty: coda.Schema & coda.ObjectSchemaProperty = {
+  type: coda.ValueType.String,
+  description: "The raw JSON contents of the Pack's manifest. Use the ParseJSON formula to extract information. It's an internal format that is subject to change without warning.",
 }
 
 export const StatsSchema = coda.makeObjectSchema({

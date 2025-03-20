@@ -1,4 +1,4 @@
-import { MetadataSettings, addBuildingBlocks, addPublished, addReleases, addFeaturedDocs } from "./helpers";
+import { MetadataSettings, addBuildingBlocks, addPublished, addReleases, addFeaturedDocs, addManifest } from "./helpers";
 import { BuildingBlockPoperties, FeaturedDocsProperties, PublishedProperties, ReleasesProperties } from "./schemas";
 
 export const PackUrlRegexes = [
