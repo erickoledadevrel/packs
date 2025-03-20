@@ -42,6 +42,8 @@ export async function addBuildingBlocks(context: coda.ExecutionContext, items: a
       item.syncTables = metadata.syncTables.map(syncTable => formatSyncTable(syncTable));
       item.columnFormats = metadata.formats.map(columnFormat => formatColumnFormat(columnFormat));
       item.authentication = metadata.authentication;
+      item.adminAuthentications = metadata.adminAuthentications;
+      item.networkDomains = metadata.networkDomains;
     } else {
       console.error(result.reason);
     }
