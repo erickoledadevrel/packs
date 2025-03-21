@@ -40,6 +40,12 @@ pack.addFormula({
       description: "If specified, which CSS color value to use for the text in the nodes. Ex: white",
       optional: true,
     }),
+    coda.makeParameter({
+      type: coda.ParameterType.SparseStringArray,
+      name: "colorsColumn",
+      description: "Optionally, the column containing the CSS colors to use for that person's node. The format should be either 'background' or 'background,text'. Ex: EmployeesTable.Colors",
+      optional: true,
+    }),
   ],
   resultType: coda.ValueType.String,
   schema: {
@@ -52,11 +58,13 @@ pack.addFormula({
     let [
       names, 
       managers, 
-      descriptions = new Array(names.length), 
+      descriptions, 
       backgroundColor,
       textColor,
+      colors,
     ] = args;
-    [names, descriptions, managers].reduce((result, list) => {
+    [names, descriptions, managers, colors].reduce((result, list) => {
+      if (!list) return result;
       if (!result) return list.length;
       if (result != list.length) throw new coda.UserVisibleError("All lists must be the same length.");
       return result;
@@ -64,8 +72,16 @@ pack.addFormula({
     let rows = names.map((name, i) => {
       let manager = managers[i];
       let managerIndex = names.indexOf(manager);
-      let description = descriptions[i] ?? "";
-      return [name, managerIndex, description];
+      let description = descriptions?.[i] ?? "";
+      let color = colors?.[i] ?? "";
+      let row = [name, managerIndex];
+      if (descriptions) {
+        row.push(description)
+      }
+      if (colors) {
+        row.push(color);
+      }
+      return row;
     });
     let csv = build(rows);
     let input = LZString.compressToEncodedURIComponent(csv);

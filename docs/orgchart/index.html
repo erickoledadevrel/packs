@@ -83,7 +83,7 @@
 
         // Add to the datasource.
         let rows = people.map((person, i) => {
-          let [name, managerIndex, description] = person;
+          let [name, managerIndex, description, colors] = person;
           let isManager = people.some(p => p[1] == i);
           let manager = managerIndex >= 0 ? people[managerIndex][0] : undefined;
           let display = `<div class="name">${name}</div>`;
@@ -93,7 +93,7 @@
           return [
             {
               v: name,
-              f: `<div id="person-${i}" class="content ${isManager ? "parent" : ""}">${display}</content>`,
+              f: `<div id="person-${i}" class="content ${isManager ? "parent" : ""}" data-colors="${colors}">${display}</content>`,
             },
             manager,
           ];
@@ -112,6 +112,16 @@
             });
             showAll();
             OneTimeSetupComplete = true;
+          }
+          for (let elem of document.querySelectorAll(".content")) {
+            let colors = elem.dataset.colors;
+            if (colors) {
+              let [backgroundColor, textColor] = colors.split(",").map(c => c.trim());
+              elem.parentElement.style.backgroundColor = backgroundColor;
+              if (textColor) {
+                elem.parentElement.style.color = textColor;
+              }
+            }
           }
         });
 
