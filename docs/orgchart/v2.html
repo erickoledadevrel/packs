@@ -18,16 +18,27 @@
     let backgroundColor = params.get('b');
     let textColor = params.get('t');
 
+    // Handle the color options, if set.
+    if (backgroundColor) {
+      document.documentElement.style.setProperty("--node-background-color", backgroundColor);
+    }
+    if (textColor) {
+      document.documentElement.style.setProperty("--node-text-color", textColor);
+    }
+
     // Parse the CSV data.
     let csv = input ? LZString.decompressFromEncodedURIComponent(input) : rawInput;
     let people = csv_parse_sync.parse(csv);
     let data = people.map((person, i) => {
-      let [name, managerIndex, description] = person;
+      let [name, managerIndex, description, colors] = person;
+      let [backgroundColor, textColor] = colors?.split(",").map(c => c.trim()) ?? [];
       return {
         id: i,
         parentId: managerIndex >= 0 ? managerIndex : undefined,
         name,
         description,
+        backgroundColor,
+        textColor,
       };
     });
 
@@ -40,9 +51,16 @@
       .compactMarginPair((d) => 30)
       .neighbourMargin((a, b) => 20)
       .nodeContent(function (d, i, arr, state) {
-        const color = '#FFFFFF';
         return `
-          <div id="person-${d.data.id}" class="person ${d.data._directSubordinates > 0 ? "parent" : ""}" style="width:${d.width}px;height:${d.height}px;"">
+          <div id="person-${d.data.id}" 
+            class="person ${d.data._directSubordinates > 0 ? "parent" : ""}" 
+            style="
+              width:${d.width}px;
+              height:${d.height}px;
+              ${d.data.backgroundColor ? `background-color: ${d.data.backgroundColor};` : ""}
+              ${d.data.textColor ? `color: ${d.data.textColor};` : ""}
+            "
+          >
             <div class="content">
               <div class="name">${d.data.name}</div>
               <div class="description">${d.data.description}</div>
@@ -59,7 +77,6 @@
     for (let elem of document.querySelectorAll('.content')) {
       maxHeight = Math.max(elem.scrollHeight, maxHeight);
     }
-    console.log(maxHeight);
     chart.nodeHeight((d) => maxHeight + 25);
     chart.render();
 
@@ -75,7 +92,6 @@
   --node-background-color: rgb(219, 238, 250);
   --node-text-color: var(--pico-color);
   --node-dark-color: hsl(from var(--node-background-color) h calc(s - 40) calc(l - 20));
-  --node-very-dark-color: hsl(from var(--node-background-color) h calc(s - 40) calc(l - 50));
 }
 html, body, #chart {
   position: fixed;
