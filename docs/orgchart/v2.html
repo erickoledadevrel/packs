@@ -34,12 +34,17 @@
       let [backgroundColor, textColor] = colors?.split(",").map(c => c.trim()) ?? [];
       return {
         id: i,
-        parentId: managerIndex >= 0 ? managerIndex : undefined,
+        parentId: managerIndex != "" && managerIndex >= 0 ? managerIndex : "_root",
         name,
         description,
         backgroundColor,
         textColor,
       };
+    });
+
+    // Add hidden root node, to allow for multiple top-level people.
+    data.unshift({
+      id: "_root",
     });
 
     // Draw the chart.
@@ -69,15 +74,38 @@
         `;
       })
       .container('#chart')
-      .data(data)
-      .render();
+      .data(data);
+
+    try {
+      chart.render();
+    } catch (e) {
+      document.getElementById("chart").innerText = e;
+    }
     
     chart.expandAll();
     let maxHeight = Number.NEGATIVE_INFINITY;
     for (let elem of document.querySelectorAll('.content')) {
       maxHeight = Math.max(elem.scrollHeight, maxHeight);
     }
-    chart.nodeHeight((d) => maxHeight + 25);
+    chart.nodeHeight((d) => {
+      if (d.data.id == "_root") {
+        return 0;
+      }
+      return maxHeight + 25
+    });
+    chart.nodeUpdate(function (d) {
+      if (d.data.id == "_root") {
+        d3.select(this).style('display', 'none');
+      }
+    });
+    chart.linkUpdate(function (d) {
+      if (d.parent && d.parent.data.id == "_root") {
+        d3.select(this).style('display', 'none');
+      } else {
+        chart.linkUpdate();
+      }
+    });
+
     chart.render();
 
     chart.fit();
