@@ -117,7 +117,7 @@
       let now = (new Date()).getTime();
       if (last && now - last <= 500) {
         console.log("Double click");
-        chart.onButtonClick({}, d);
+        chart.onButtonClick(new CustomEvent("click"), d);
         d.data.lastClicked = undefined;
       } else {
         d.data.lastClicked = now;
