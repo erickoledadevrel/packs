@@ -102,7 +102,25 @@
       if (d.parent && d.parent.data.id == "_root") {
         d3.select(this).style('display', 'none');
       } else {
-        chart.linkUpdate();
+        // Copied from impl.
+        d3.select(this)
+          .attr("stroke", d => d.data._upToTheRootHighlighted ? '#E27396' : '#E4E2E9')
+          .attr("stroke-width", d => d.data._upToTheRootHighlighted ? 5 : 1);
+
+        if (d.data._upToTheRootHighlighted) {
+          d3.select(this).raise();
+        }
+      }
+    });
+    chart.onNodeClick(d => {
+      let last = d.data.lastClicked;
+      let now = (new Date()).getTime();
+      if (last && now - last <= 500) {
+        console.log("Double click");
+        chart.onButtonClick({}, d);
+        d.data.lastClicked = undefined;
+      } else {
+        d.data.lastClicked = now;
       }
     });
 
