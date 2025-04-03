@@ -47,10 +47,13 @@
       id: "_root",
     });
 
+    let defaultNodeContentHeight = 50;
+    let nodePadding = 25;
+
     // Draw the chart.
     chart = new d3.OrgChart()
-      .nodeHeight((d) => 50 + 25)
-      .nodeWidth((d) => 220 + 2)
+      .nodeHeight((d) => defaultNodeContentHeight + nodePadding)
+      .nodeWidth((d) => 200)
       .childrenMargin((d) => 50)
       .compactMarginBetween((d) => 35)
       .compactMarginPair((d) => 30)
@@ -83,7 +86,7 @@
     }
     
     chart.expandAll();
-    let maxHeight = Number.NEGATIVE_INFINITY;
+    let maxHeight = defaultNodeContentHeight;
     for (let elem of document.querySelectorAll('.content')) {
       maxHeight = Math.max(elem.scrollHeight, maxHeight);
     }
@@ -91,7 +94,7 @@
       if (d.data.id == "_root") {
         return 0;
       }
-      return maxHeight + 25
+      return maxHeight + nodePadding;
     });
     chart.nodeUpdate(function (d) {
       if (d.data.id == "_root") {
