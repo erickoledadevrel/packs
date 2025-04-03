@@ -2,7 +2,7 @@ import * as coda from "@codahq/packs-sdk";
 import * as LZString from 'lz-string'
 import { build } from "but-csv";
 
-const BaseUrl = "https://packs.erickoleda.com/orgchart/index.html";
+const BaseUrl = "https://packs.erickoleda.com/orgchart/v2.html";
 const OneDaySecs = 24 * 60 * 60;
 const MaxUrlLength = 8000;
 

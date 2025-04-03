@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-org-chart@3.0.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js" integrity="sha512-qtX0GLM3qX8rxJN1gyDfcnMFFrKvixfoEOwbBib9VafR5vbChV5LeE5wSI/x+IlCkTY5ZFddFDCCfaVJJNnuKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/csv-parse@5.6.0/dist/umd/sync.min.js"></script>
+<script>
+  var chart = null;
+
+  function run() {
+    // Get parameters from the URL.
+    let params = new URLSearchParams(window.location.search);
+    let input = params.get('i');
+    let rawInput = params.get('r');
+    let backgroundColor = params.get('b');
+    let textColor = params.get('t');
+
+    // Parse the CSV data.
+    let csv = input ? LZString.decompressFromEncodedURIComponent(input) : rawInput;
+    let people = csv_parse_sync.parse(csv);
+    let data = people.map((person, i) => {
+      let [name, managerIndex, description] = person;
+      return {
+        id: i,
+        parentId: managerIndex >= 0 ? managerIndex : undefined,
+        name,
+        description,
+      };
+    });
+
+    // Draw the chart.
+    chart = new d3.OrgChart()
+      .nodeHeight((d) => 50 + 25)
+      .nodeWidth((d) => 220 + 2)
+      .childrenMargin((d) => 50)
+      .compactMarginBetween((d) => 35)
+      .compactMarginPair((d) => 30)
+      .neighbourMargin((a, b) => 20)
+      .nodeContent(function (d, i, arr, state) {
+        const color = '#FFFFFF';
+        return `
+          <div id="person-${d.data.id}" class="person ${d.data._directSubordinates > 0 ? "parent" : ""}" style="width:${d.width}px;height:${d.height}px;"">
+            <div class="content">
+              <div class="name">${d.data.name}</div>
+              <div class="description">${d.data.description}</div>
+            </div>
+          </div>
+        `;
+      })
+      .container('#chart')
+      .data(data)
+      .render();
+    
+    chart.expandAll();
+    let maxHeight = Number.NEGATIVE_INFINITY;
+    for (let elem of document.querySelectorAll('.content')) {
+      maxHeight = Math.max(elem.scrollHeight, maxHeight);
+    }
+    console.log(maxHeight);
+    chart.nodeHeight((d) => maxHeight + 25);
+    chart.render();
+
+    chart.fit();
+      
+  }
+
+  document.addEventListener('DOMContentLoaded', event => run());
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+<style>
+:root {
+  --node-background-color: rgb(219, 238, 250);
+  --node-text-color: var(--pico-color);
+  --node-dark-color: hsl(from var(--node-background-color) h calc(s - 40) calc(l - 20));
+  --node-very-dark-color: hsl(from var(--node-background-color) h calc(s - 40) calc(l - 50));
+}
+html, body, #chart {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.person { 
+  padding: 10px;
+  background-color: var(--node-background-color);
+  color: var(--node-text-color);
+  text-align: center;
+  border-radius: .5rem;
+}
+.person > .content > .name { font-size: 1.25em; font-weight: bold; }
+.person > .content > .description { font-size: 1.1em; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+</body>
+</html>
