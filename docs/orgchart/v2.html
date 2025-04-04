@@ -52,6 +52,7 @@
 
     // Draw the chart.
     chart = new d3.OrgChart()
+      .svgHeight(window.innerHeight)
       .nodeHeight((d) => defaultNodeContentHeight + nodePadding)
       .nodeWidth((d) => 200)
       .childrenMargin((d) => 50)
@@ -115,6 +116,9 @@
         }
       }
     });
+    chart.childrenMargin(d => {
+      return d.data.id == "_root" ? 0 : 60;
+    });
     chart.onNodeClick(d => {
       let last = d.data.lastClicked;
       let now = (new Date()).getTime();
@@ -133,7 +137,14 @@
       
   }
 
-  document.addEventListener('DOMContentLoaded', event => run());
+  document.addEventListener('DOMContentLoaded', event => {
+    // Add a delay, to ensure that the Coda iframe is properly sized.
+    // A loading bar will be shown.
+    window.setTimeout(() => {
+      document.getElementById('loading').style.display = "none";
+      run();
+    }, 1000);
+  });
 </script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 <style>
@@ -162,6 +173,8 @@ html, body, #chart {
 </style>
 </head>
 <body>
-<div id="chart"></div>
+<div id="chart">
+  <progress id="loading" />
+</div>
 </body>
 </html>
