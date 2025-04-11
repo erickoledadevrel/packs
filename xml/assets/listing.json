@@ -1,0 +1,56 @@
+{
+  "packId": 34738,
+  "name": "XML",
+  "description": "> Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.\n\nI feel like \"simple\" is a bit of an overstatement, I have no idea what SGML is, and its importance on the Web has long since faded. But XML still lives on, and with this Pack you can work with it in your Coda docs.\n\nThis Pack uses the xml2js library, and as such the way that XML is turned into JSON or vice versa follows the standard they defined. Read more: https://www.npmjs.com/package/xml2js\n\nIcon created by Freepik - Flaticon.\nBanner image created using icon from riajulislam - Flaticon.",
+  "shortDescription": "A collection of utility formulas for working with XML.",
+  "logoUrl": "https://codahosted.io/packs/34738/unversioned/assets/LOGO/084f6e83222251a847d773092376e1d79c1be6a2538db224611ae40915be02e643ce2ccf8240589d011fffbb3566cdb4780a13d26779f9cff33044c3520b5442bdcabdd12a60ad1b61652abaf206fb92ec39a610f20eb04f5878a99be1e3d378b966ac8a",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/34738/unversioned/assets/EXAMPLE/e7e0a69ad8f95e171449f86840c3926ebf167e3101727043d3c3e0371293fffdeff3c0bcd41de02408b1f534ef1d19702fa65c8747bde301702dfe7f8545eb6691472e944e0bfba40bc46d94b6e323fc965e7f670f1b857e011c9126c7c80e014904bb33",
+      "filename": "xml.png",
+      "mimeType": "image/png",
+      "assetId": "e7e0a69ad8f95e171449f86840c3926ebf167e3101727043d3c3e0371293fffdeff3c0bcd41de02408b1f534ef1d19702fa65c8747bde301702dfe7f8545eb6691472e944e0bfba40bc46d94b6e323fc965e7f670f1b857e011c9126c7c80e014904bb33"
+    }
+  ],
+  "packVersion": "2",
+  "releaseId": 2,
+  "lastReleasedAt": "2024-10-03T14:15:12.643Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/34738/2/metadata/33a1d24af67b87a449f5ad26458ea9fb4c971ff356924ce6a24ffacf077137208e79b3f68782ea612061b2e127d4b690cca683172984543d17c2b7c8f795da19c48ff1336167f2407fdf3748a731e5562bad8b38c4c5986cbf2db85a22fd8297d9b36e3d.json",
+  "categories": [
+    {
+      "categoryId": "076f4d78-eac3-4d62-b87a-4f3964c96e65",
+      "categoryName": "Engineering",
+      "categorySlug": "engineering"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "71cb98a2-7594-48c2-9167-1434a344167b",
+    "packId": 34738,
+    "createdAt": "2024-09-28T18:07:47.601Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.7.5",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

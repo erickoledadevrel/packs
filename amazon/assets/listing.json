@@ -1,0 +1,61 @@
+{
+  "packId": 35706,
+  "name": "Amazon Shopping",
+  "description": "Collaborating with others on an Amazon shopping list is such a pain, and a bunch of links in a spreadsheet is no fun to manage. Using this Pack you can instantly upgrade an Amazon product link to a bundle of rich information, including the name, photo, price, and more.\n\nThis Pack uses the service Outscraper (outscraper.com) to pull the data from the Amazon website, and you'll need to sign up for an Outscraper account before you can start using it. They offer a generous free tier, but you'll need to connect a payment mechanism before you can generate your API key.\n\nThis Pack is not affiliated with Amazon or Outscraper.\nThe icon and cover image are the property of Amazon Inc.",
+  "shortDescription": "Get rich information about an Amazon product from a link.",
+  "logoUrl": "https://codahosted.io/packs/35706/unversioned/assets/LOGO/d13852d17bb84cd04147045c40c22b7b696761550a1dd8b5eab18a809b45948020c86f66c104df3288d58fecbb3d5227f2aee0184bd3a1024e1e876c72f07c2e3202ec7a7cb68ff7298b2e7229e398540de35f8f1d5a8583abae6cf02a344401bf85c29d",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/35706/unversioned/assets/EXAMPLE/a4e7dfc24dee9040a601814c188b60cd2e3f1cc9a9c65ef39b417845f05c730a159cb8d3734028d22a9af49b39dc59ee3f95d198ac8dba43a32cf25e285db9051d7a93340fad79dc01f1f8fdc920838faf1a45201806d2531b58c7f0fd77b639348fee5f",
+      "filename": "amazon-logo-a-fon-black-amazon-logo.jpg",
+      "mimeType": "image/jpeg",
+      "assetId": "a4e7dfc24dee9040a601814c188b60cd2e3f1cc9a9c65ef39b417845f05c730a159cb8d3734028d22a9af49b39dc59ee3f95d198ac8dba43a32cf25e285db9051d7a93340fad79dc01f1f8fdc920838faf1a45201806d2531b58c7f0fd77b639348fee5f"
+    }
+  ],
+  "packVersion": "7",
+  "releaseId": 1,
+  "lastReleasedAt": "2024-11-11T01:45:06.348Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/35706/7/metadata/45b94aa4fdb6ce817d45b1a8d95e040723ea52eeddad348197008ed11ccb08fc6d5611710280c5c452a7ebe702dff3ff5a75c1838ae9511f67a0a9626f6edf9e71c5ecc48af7f979e3b488415b2a635f0cd1390735b381bb5668179166a7e5ea20b9bf7d.json",
+  "categories": [
+    {
+      "categoryId": "2ab958ef-6063-461e-9d2f-43e60d546d15",
+      "categoryName": "Marketing",
+      "categorySlug": "marketing"
+    },
+    {
+      "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
+      "categoryName": "Personal",
+      "categorySlug": "personal"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "d450e2f3-44e8-488c-b0a9-fc044eb0f73c",
+    "packId": 35706,
+    "createdAt": "2024-11-08T22:20:22.884Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.8.1",
+  "discoverability": "public",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

@@ -1,14 +1,44 @@
 {
   "packId": 32027,
   "name": "Org Chart",
-  "description": "",
-  "shortDescription": "",
-  "logoUrl": "https://cdn.coda.io/assets/d4509cea2525/img/packs/default-pack-icon.png",
-  "exampleImages": [],
-  "packVersion": "8",
-  "externalMetadataUrl": "https://codahosted.io/packs/32027/8/metadata/f1218b07ea2ef81f080fefd202f5a726541bf05d7dacec5b5a46c86c13ee6b95032b3f11bb6a47dd634232ae37112cab0f7a8d8c11917caf4936057f678a83aad6b1a2fbe4e48bea3eadb3fd0c333b08888c09daf312b4631957d8a90e33bbe4f8d407d6.json",
-  "categories": [],
-  "supportEmail": "koleda.eric@gmail.com",
+  "description": "You know 'em, you love 'em, and now you can easily create 'em in Coda. Using this Org Chart Pack you can embed an interactive org chart in your Coda doc, created dynamically from data in a Coda table. Check out the attached User Guide to learn more!\n\nIcon by Apikke - Flaticon.",
+  "shortDescription": "Create interactive org charts from people in a table.",
+  "logoUrl": "https://codahosted.io/packs/32027/unversioned/assets/LOGO/519f709d09da6dc7f1707e3b030b51a88713d25b026167c11b699aef62c59ef8d610f0259a3b7fefcf368773e2af9543c480c9fe0ec85de726aaab05677a981df6334b5582468d49e603f68d0f8ace3279cb665f176a4400e4512cb1e18c775d9eed05eb",
+  "exampleImages": [
+    {
+      "imageUrl": "https://codahosted.io/packs/32027/unversioned/assets/EXAMPLE/4bf819eef331ca15a837d19f922866016fb9c4f40c798f4ef6d51218b77d2893b034c39c30b684a3131bcd66a754492ca7a634f25dd3dc1b13bbf42724e92c7f23df4b929eb89c85e20618e9799908b99f04bdfe6b1f03d19ab0223f55dcb24f804fc7f6",
+      "filename": "OrgChartWide.gif",
+      "mimeType": "image/gif",
+      "assetId": "4bf819eef331ca15a837d19f922866016fb9c4f40c798f4ef6d51218b77d2893b034c39c30b684a3131bcd66a754492ca7a634f25dd3dc1b13bbf42724e92c7f23df4b929eb89c85e20618e9799908b99f04bdfe6b1f03d19ab0223f55dcb24f804fc7f6"
+    }
+  ],
+  "packVersion": "19",
+  "releaseId": 4,
+  "lastReleasedAt": "2025-04-04T23:39:57.486Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/32027/19/metadata/b97b047dfee0252dfddade18edd7393462f1fc002b21271d45ffe0ff6928550ff6d76ccf25130517fa83a9999c42c9ecf3ce80c44540d4fec7bfe8cdb1a4fc363fcf0fce21e9c55435d44141c09a2ac0205b2a5e831674572762ab1dc1e1eb86676590b9.json",
+  "categories": [
+    {
+      "categoryId": "6d2fdb78-4e8d-493d-9074-abc5921b3bf5",
+      "categoryName": "HR",
+      "categorySlug": "hr"
+    },
+    {
+      "categoryId": "b0d78e43-cddb-44c5-9a0e-1b2926793f36",
+      "categoryName": "Sales",
+      "categorySlug": "sales"
+    },
+    {
+      "categoryId": "7f1004ab-600e-4caf-9977-6f7fea628a4a",
+      "categoryName": "Enterprise",
+      "categorySlug": "enterprise"
+    },
+    {
+      "categoryId": "23938cb0-eee0-4f00-8639-c635f753945f",
+      "categoryName": "Team charters",
+      "categorySlug": "team-charters"
+    }
+  ],
+  "supportEmail": "packs@erickoleda.com",
   "sourceCodeVisibility": "private",
   "makers": [
     {
@@ -27,8 +57,8 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.7.5",
-  "discoverability": "private",
+  "sdkVersion": "1.8.6",
+  "discoverability": "public",
   "userAccess": {
     "canEdit": true,
     "canInstall": false,

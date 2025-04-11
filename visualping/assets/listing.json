@@ -12,10 +12,10 @@
       "assetId": "d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d"
     }
   ],
-  "packVersion": "9",
-  "releaseId": 1,
-  "lastReleasedAt": "2023-07-09T21:17:29.630Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/23109/9/metadata/6dc5a9cfdb33f36e9aa748c2dd387a5f8403da4627c2afc186e7b8ed47b69933f76f244ba80a6c01d13d554b2808a1cbd27577ba04522aaeddf72259d830f1894d9e8c1212e369cdf5e363ed26a6f2758965edbd4611e57b766dfad0b17264e10cfd1416.json",
+  "packVersion": "12",
+  "releaseId": 3,
+  "lastReleasedAt": "2024-10-21T13:57:17.092Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/23109/12/metadata/3ecaef9430a7f8db6bc5048456cefd47c0ebaf1429481919607a523ad0be57e4f34f9cc1daa122793f6d03c2365a0d340e7466773b86b3bfe7e031efa63c0b15367e047fb6bba444153c445163b7bda6eddff855b08e062268be1e72d4e4f02f6f5b80c5.json",
   "categories": [
     {
       "categoryId": "5b2f676a-1700-4feb-bc90-9a6a6715edfd",
@@ -52,7 +52,7 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.4.0",
+  "sdkVersion": "1.7.5",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

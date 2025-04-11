@@ -3,7 +3,7 @@
   "name": "JSON5",
   "description": "JSON5 is an extension to the popular JSON file format that aims to be easier to write and maintain by hand (e.g. for config files). This Pack provides a number of utility formulas that make it easier to work with JSON5 content in Coda.\n\nIcon and logo are the property of json5.org.",
   "shortDescription": "JSON for Humans",
-  "logoUrl": "https://codahosted.io/packs/34513/unversioned/assets/LOGO/e0ff43fe3b1ae9dd1575089b8fc44c444bb1c846ce963610dd7a265e16994d02fc5228814397f935b6c4061b3f0f0597d1b7b31c639b823fe18b1b0e0d1cc6f4165276ec003b7e4a0fcf00f0edd6308dad68be0cd8a44db9d0a6b598cacf0af53a33684a",
+  "logoUrl": "https://codahosted.io/packs/34513/unversioned/assets/LOGO/e30ee67601594d142a4bede9a6a8cf74d99c61e867845fdc8cac5cc1bc9862b79e942872aa60bf2e681f22c1a700002cb4faab65a8a940a05668808122e6edb3c956ddf41c56f309bc79a25318f8d9e66a36bfd24ecb34ecbd163c243afa88a68f2ba9c2",
   "exampleImages": [
     {
       "imageUrl": "https://codahosted.io/packs/34513/unversioned/assets/EXAMPLE/4a7e48bd619cecd19789e1d4af4ffa514e49ad63eb7469366efc1c278fb32d48161fbaa59d8da4790a85c7a036b9fc6c10e8f3eecb93a8372cb3f9229a5333776673b20567991e95532e03aadad4dad7d07460cdd127ff496667f4c28c4f78cc00c5bb0a",
