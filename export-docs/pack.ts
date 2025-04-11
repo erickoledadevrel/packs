@@ -47,6 +47,13 @@ const FolderParam = coda.makeParameter({
   optional: true,
 });
 
+const PageSizeParam = coda.makeParameter({
+  type: coda.ParameterType.NumberArray,
+  name: "pageSize",
+  description: "The width and height of the pages in the doc, comma-separated, in points (1/72 of an inch). For example, 11 x 8.5 inches is be '792, 612'.",
+  optional: true,
+});
+
 pack.addNetworkDomain("googleapis.com");
 
 pack.setUserAuthentication({
@@ -79,16 +86,23 @@ pack.addFormula({
     ContentParam,
     PermissionsParam,
     FolderParam,
+    PageSizeParam,
   ],
   resultType: coda.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
-    let [name, content, permissions = [], folderId] = args;
+    let [name, content, permissions = [], folderId, pageSize] = args;
+    if (pageSize && pageSize.length != 2) {
+      throw new coda.UserVisibleError("Page size must include both a width and height.");
+    }
     content = fixHtml(content);
     let file = await exportToDoc(context, Buffer.from(content), "text/html", {name, folderId});
-    await Promise.all(permissions.map(permission => {
-      addPermission(context, file.id, permission);
-    }));
+    let jobs = [];
+    for (let permission of permissions) {
+      jobs.push(addPermission(context, file.id, permission));
+    }
+    jobs.push(adjustDoc(context, file.id, pageSize));
+    await Promise.all(jobs);
     return file.webViewLink;
   },
 });
@@ -234,11 +248,15 @@ pack.addFormula({
     }),
     PermissionsParam,
     FolderParam,
+    PageSizeParam,
   ],
   resultType: coda.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
-    let [name, fileUrl, permissions = [], folderId] = args;
+    let [name, fileUrl, permissions = [], folderId, pageSize] = args;
+    if (pageSize && pageSize.length != 2) {
+      throw new coda.UserVisibleError("Page size must include both a width and height.");
+    }
     let response = await context.fetcher.fetch({
       method: "GET",
       url: fileUrl,
@@ -254,9 +272,12 @@ pack.addFormula({
       throw new coda.UserVisibleError(`Unsupported file type: ${mimeType}`);
     }
     let file = await exportToDoc(context, buffer, response.headers['content-type'] as string, {name, folderId});
-    await Promise.all(permissions.map(permission => {
-      addPermission(context, file.id, permission);
-    }));
+    let jobs = [];
+    for (let permission of permissions) {
+      jobs.push(addPermission(context, file.id, permission));
+    }
+    jobs.push(adjustDoc(context, file.id, pageSize));
+    await Promise.all(jobs);
     return file.webViewLink;
   },
 });
@@ -410,6 +431,33 @@ async function addPermission(context: coda.ExecutionContext, fileId: string, per
     body: permissionJson,
   });
   return response.body;
+}
+
+async function adjustDoc(context: coda.ExecutionContext, fileId: string, pageSize: number[] | undefined) {
+  if (!pageSize) {
+    return;
+  }
+  let requests = [];
+  if (pageSize) {
+    requests.push({
+      updateDocumentStyle: {
+        documentStyle: {
+          pageSize: {
+            width: {
+              magnitude: pageSize[0],
+              unit: "PT",
+            },
+            height: {
+              magnitude: pageSize[1],
+              unit: "PT",
+            },
+          },
+        },
+        fields: "pageSize",
+      },
+    });
+  }
+  return modifyDoc(context, fileId, requests);
 }
 
 function parseDocUrl(idOrUrl: string) {
