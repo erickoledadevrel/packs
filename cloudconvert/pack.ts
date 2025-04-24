@@ -1,5 +1,5 @@
 import * as coda from "@codahq/packs-sdk";
-import { DetectFormat, FormatUsageTypes, doExport, getFormatCodes, getFormatOptions, onError, optionsToAutocomplete } from "./helpers";
+import { DetectFormat, FormatUsageTypes, PageFormatOptions, doExport, getFormatCodes, getFormatOptions, onError, optionsToAutocomplete, parseOptions } from "./helpers";
 
 export const pack = coda.newPack();
 
@@ -121,6 +121,7 @@ pack.addFormula({
           return [];
         }
         let options = await getFormatOptions(context, "html", to);
+        options = options.concat(PageFormatOptions);
         return optionsToAutocomplete(options);
       },
     }),
@@ -135,6 +136,25 @@ pack.addFormula({
   onError: onError,
   execute: async function (args, context) {
     let [pageHtml, toFormat, filename, ...options] = args;
+    let settings = parseOptions(options);
+    if (settings.page_break_at) {
+      let find: string;
+      switch (settings.page_break_at) {
+        case "line_separator":
+          find = "<hr>";
+          break;
+        case "placeholder":
+          if (!settings.page_break_placeholder) {
+            throw new coda.UserVisibleError("Option page_break_placeholder must be set.");
+          }
+          find = settings.page_break_placeholder;
+          break;
+        default:
+          throw new coda.UserVisibleError(`Invalid value for page_break_at: ${settings.page_break_at}`)
+      }
+      pageHtml = pageHtml.replaceAll(find, `<div style="height: 0; page-break-after: always;"></div>`);
+    }
+    
     if (!pageHtml.includes("<html")) {
       pageHtml = `
         <!DOCTYPE html>

@@ -5,6 +5,17 @@ export const DetectFormat = "*detect*";
 export const OneDaySecs = 24 * 60 * 60;
 export const FormatUsageTypes = ["input", "output"];
 const TaskOrder = ["import", "convert", "export"];
+export const PageFormatOptions = [
+  {
+    name: "page_break_at",
+    type: "enum",
+    possible_values: ["line_separator", "placeholder"]
+  },
+  {
+    name: "page_break_placeholder",
+    type: "string",
+  },
+];
 
 export async function getFormatCodes(context: coda.ExecutionContext, usage: string, otherFormat?: string): Promise<string[]> {
   let formats = await getFormats(context);
@@ -32,7 +43,7 @@ async function getFormats(context: coda.ExecutionContext) {
   return response.body.data;
 }
 
-export async function getFormatOptions(context: coda.ExecutionContext, from: string, to: string) {
+export async function getFormatOptions(context: coda.ExecutionContext, from: string, to: string): Promise<any[]> {
   let url = coda.withQueryParams("https://api.cloudconvert.com/v2/convert/formats", {
     "filter[input_format]": from,
     "filter[output_format]": to,
@@ -76,6 +87,20 @@ export function onError(error) {
   throw error;
 }
 
+export function parseOptions(options: string[]) {
+  let result: Record<string, any> = {};
+  while (options.length) {
+    let [option, value, ...rest] = options;
+    if (value === "true" || value === "false") {
+      result[option] = Boolean(value);
+    } else {
+      result[option] = value;
+    }
+    options = rest;
+  }
+  return result;
+}
+
 export async function doExport(context: coda.ExecutionContext, importTask: any, fromFormat: string, toFormat: string, filename: string, options: string[]) {
   let conversion: Record<string, any> = {
     operation: "convert",
@@ -86,15 +111,7 @@ export async function doExport(context: coda.ExecutionContext, importTask: any, 
   if (fromFormat != DetectFormat) {
     conversion.input_format = fromFormat;
   }
-  while (options.length) {
-    let [option, value, ...rest] = options;
-    if (value === "true" || value === "false") {
-      conversion[option] = Boolean(value);
-    } else {
-      conversion[option] = value;
-    }
-    options = rest;
-  }
+  Object.assign(conversion, parseOptions(options));
   let payload = {
     tasks: {
       import: importTask,
