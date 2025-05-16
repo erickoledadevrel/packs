@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@codahq/packs-sdk": "^1.8.5",
+    "@codahq/packs-sdk": "^1.9.5",
     "@dicebear/collection": "^7.0.4",
     "@dicebear/core": "^7.0.4",
     "@universe/address-parser": "^4.0.0",
