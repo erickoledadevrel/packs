@@ -161,6 +161,7 @@ pack.addFormula({
         <html>
           <head>
             <meta charset="UTF-8">
+            <style>${settings.page_styles ?? ""}</style>
           </head>
         <body>${pageHtml}</body>
       </html>`

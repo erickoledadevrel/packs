@@ -15,6 +15,10 @@ export const PageFormatOptions = [
     name: "page_break_placeholder",
     type: "string",
   },
+  {
+    name: "page_styles",
+    type: "string",
+  },
 ];
 
 export async function getFormatCodes(context: coda.ExecutionContext, usage: string, otherFormat?: string): Promise<string[]> {
