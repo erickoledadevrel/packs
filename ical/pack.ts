@@ -123,7 +123,6 @@ pack.addFormula({
     let calendar = ical({});
     calendar.method(ICalCalendarMethod.PUBLISH);
     let lists: any[] = [summaries, starts, ends, locations, descriptions];
-    console.log(descriptions);
     let length = lists.shift().length;
     for (let list of lists) {
       if (list.length != 0 && list.length != length) {
