@@ -67,6 +67,7 @@ function formatFormula(formula) {
 
 function formatSyncTable(syncTable) {
   let result = { ...syncTable };
+  result.description ??= syncTable.getter.description;
   result.canBrowseDatasets = Boolean(syncTable.listDynamicUrls);
   result.canSearchDatasets = Boolean(syncTable.searchDynamicUrls);
   result.canEdit = syncTable.getter?.supportsUpdates;
