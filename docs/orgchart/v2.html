@@ -17,6 +17,7 @@
     let rawInput = params.get('r');
     let backgroundColor = params.get('b');
     let textColor = params.get('t');
+    let layout = params.get('l');
 
     // Handle the color options, if set.
     if (backgroundColor) {
@@ -79,6 +80,10 @@
       })
       .container('#chart')
       .data(data);
+
+    if (layout) {
+      chart.layout(layout);
+    }
 
     try {
       chart.render();
