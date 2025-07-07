@@ -189,6 +189,23 @@ pack.addFormula({
 });
 
 pack.addFormula({
+  name: "FormatPhoneNumberCA",
+  description: "Returns the Canadian (CA) phone number in a standard format. Returns an error if the input is not a valid CA phone number.",
+  parameters: [
+    InputParameter,
+  ],
+  resultType: coda.ValueType.String,
+  examples: [
+    { params: ["(613) 941-6900"], result: "(613) 941-6900" },
+    { params: ["6139416900"], result: "(613) 941-6900" },
+    { params: ["+16139416900"], result: "(613) 941-6900" },
+  ],
+  execute: async function ([input], context) {
+    return formatNumber(input, "CA", "national");
+  },
+});
+
+pack.addFormula({
   name: "FormatPhoneNumberIntl",
   description: "Returns the international phone number in a standard format. It must include a plus and the country code. Returns an error if the input is not a valid phone number.",
   parameters: [
@@ -225,6 +242,12 @@ pack.addColumnFormat({
   name: "US Phone Number",
   formulaName: "FormatPhoneNumberUS",
   instructions: "Paste in a United States (US) phone number and it will be formatted.",
+});
+
+pack.addColumnFormat({
+  name: "CA Phone Number",
+  formulaName: "FormatPhoneNumberCA",
+  instructions: "Paste in a Canadian (CA) phone number and it will be formatted.",
 });
 
 pack.addColumnFormat({

@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@codahq/packs-sdk": "^1.9.5",
+    "@codahq/packs-sdk": "^1.9.9",
     "@dicebear/collection": "^7.0.4",
     "@dicebear/core": "^7.0.4",
     "@universe/address-parser": "^4.0.0",
@@ -78,8 +78,8 @@
     "json-schema": "^0.4.0",
     "mocha": "^9.1.4",
     "sinon": "^13.0.1",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "scripts": {
     "test": "mocha --require ts-node/register **/*_test.ts --ignore node_modules/**/*",
