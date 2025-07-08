@@ -96,6 +96,7 @@
     for (let elem of document.querySelectorAll('.content')) {
       maxHeight = Math.max(elem.scrollHeight, maxHeight);
     }
+    chart.nodeWidth((d) => d.data.id == "_root" ? 0 : 180);
     chart.nodeHeight((d) => {
       if (d.data.id == "_root") {
         return 0;
