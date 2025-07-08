@@ -5,6 +5,7 @@ import { build } from "but-csv";
 const BaseUrl = "https://packs.erickoleda.com/orgchart/v2.html";
 const OneDaySecs = 24 * 60 * 60;
 const MaxUrlLength = 8000;
+const Layouts = ["top", "left", "bottom", "right"];
 
 export const pack = coda.newPack();
 
@@ -46,6 +47,13 @@ pack.addFormula({
       description: "Optionally, the column containing the CSS colors to use for that person's node. The format should be either 'background' or 'background,text'. Ex: EmployeesTable.Colors",
       optional: true,
     }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "layout",
+      description: `Optionally, which layout to use when drawing the chart. One of: ${Layouts.join(", ")}. Default: top.`,
+      optional: true,
+      autocomplete: Layouts,
+    }),
   ],
   resultType: coda.ValueType.String,
   schema: {
@@ -62,6 +70,7 @@ pack.addFormula({
       backgroundColor,
       textColor,
       colors,
+      layout,
     ] = args;
     [names, descriptions, managers, colors].reduce((result, list) => {
       if (!list) return result;
@@ -89,6 +98,7 @@ pack.addFormula({
       i: input,
       b: backgroundColor,
       t: textColor,
+      l: layout,
     });
     if (url.length > MaxUrlLength) {
       throw new coda.UserVisibleError("Org chart too large. Try removing data if possible.");
