@@ -8,6 +8,7 @@ export const pack = coda.newPack();
 
 const OneHourSecs = 1 * 60 * 60;
 const RedirectBaseUrl = "https://redirect.erickoleda.com";
+const UseGoogleCacheFallback = false;
 
 const BlockedHosts = [
   "youtube.com",
@@ -138,6 +139,11 @@ pack.addFormula({
   cacheTtlSecs: OneHourSecs,
   execute: async function (args, context) {
     let [url] = args;
+    if (!url) {
+      return {
+        label: "⚠️ No URL",
+      };
+    }
     if (!url.toLocaleLowerCase().startsWith("https://")) {
       throw new coda.UserVisibleError("The URL must start with 'https://'.");
     }
@@ -187,22 +193,23 @@ async function fetchPage(context: coda.ExecutionContext, url: string): Promise<s
     });
     return response.body;
   } catch (e) {
-    // Fallback to the Google Cache.
-    let cacheUrl = "https://webcache.googleusercontent.com/search?q=cache:" + encodeURIComponent(url);
-    redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
-      url: cacheUrl,
-    });
-    try {
-      response = await context.fetcher.fetch({
-        method: "GET",
-        url: redirectUrl,
-        cacheTtlSecs: OneHourSecs,
+    if (UseGoogleCacheFallback) {
+      // Fallback to the Google Cache.
+      let cacheUrl = "https://webcache.googleusercontent.com/search?q=cache:" + encodeURIComponent(url);
+      redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
+        url: cacheUrl,
       });
-      return response.body;
-    } catch (e) {
-      throw new coda.UserVisibleError(`Error accessing URL: ${url}`);
+      try {
+        response = await context.fetcher.fetch({
+          method: "GET",
+          url: redirectUrl,
+          cacheTtlSecs: OneHourSecs,
+        });
+        return response.body;
+      } catch (e) {}
     }
   }
+  throw new coda.UserVisibleError(`Error accessing URL: ${url}`);
 }
 
 async function fetchOEmbed(context: coda.ExecutionContext, oembedUrl: string): Promise<Record<any, any>> {
