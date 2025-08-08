@@ -11,6 +11,11 @@ export function formatMovieForSchema(movie, country: string, configuration) {
     ?.release_dates
     .sort((a, b) => a.release_date.localeCompare(b.release_date))
     [0].certification;
+
+  let trailer = movie.videos?.results?.find(v => v.type == "Trailer" && v.official && v.site == "YouTube");
+  if (trailer) {
+    movie.trailer = `https://www.youtube.com/watch?v=${trailer.key}`;
+  }
   return movie;
 }
 

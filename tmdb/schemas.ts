@@ -80,6 +80,12 @@ export const MovieSchema = coda.makeObjectSchema({
       codaType: coda.ValueHintType.Duration,
     },
     title: { type: coda.ValueType.String },
+
+    // Synthetic
+    trailer: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.Url,
+    },
   },
   displayProperty: "title",
   titleProperty: "title",

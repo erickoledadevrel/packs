@@ -40,7 +40,7 @@ export class Api {
 
   public async getMovie(id: string) {
     let url = coda.withQueryParams(`https://api.themoviedb.org/3/movie/${id}`, {
-      append_to_response: "release_dates",
+      append_to_response: "release_dates,videos",
     });
     let response = await this.context.fetcher.fetch({
       method: "GET",
