@@ -6,7 +6,6 @@ const sanitize = require("sanitize-filename");
 
 export const pack = coda.newPack();
 
-const FileUrl = "https://www.googleapis.com/upload/drive/v3/files";
 const DocUrlRegex = new RegExp("^https://docs.google.com/document/d/([^/]+)/");
 const UrlRegex = new RegExp("^https?://");
 const MaxImageWidth = 600;
@@ -90,6 +89,7 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.String,
   isAction: true,
+  onError: onError,
   execute: async function (args, context) {
     let [name, content, permissions = [], folderId, pageSize] = args;
     if (pageSize && pageSize.length != 2) {
@@ -116,6 +116,7 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.String,
   isAction: true,
+  onError: onError,
   execute: async function (args, context) {
     let [doc, content] = args;
     content = fixHtml(content);
@@ -138,6 +139,7 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.String,
   isAction: true,
+  onError: onError,
   execute: async function (args, context) {
     let [doc, text] = args;
     let docId = parseDocUrl(doc);
@@ -202,6 +204,7 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.String,
   isAction: true,
+  onError: onError,
   execute: async function (args, context) {
     let [doc, image, width, height] = args;
     let docId = parseDocUrl(doc);
@@ -252,6 +255,7 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.String,
   isAction: true,
+  onError: onError,
   execute: async function (args, context) {
     let [name, fileUrl, permissions = [], folderId, pageSize] = args;
     if (pageSize && pageSize.length != 2) {
@@ -348,6 +352,7 @@ pack.addFormula({
   ],
   resultType: coda.ValueType.String,
   cacheTtlSecs: 0,
+  onError: onError,
   execute: async function (args, context) {
     let [doc, format, filename] = args;
     let docId = parseDocUrl(doc);
@@ -379,7 +384,7 @@ interface ExportOptions {
 }
 
 async function exportToDoc(context: coda.ExecutionContext, content: Buffer, mimeType: string, options?: ExportOptions): Promise<DriveFile> {
-  let url = FileUrl;
+  let url = "https://www.googleapis.com/upload/drive/v3/files";
   let method: coda.FetchMethodType = "POST";
   if (options?.docId) {
     url = coda.joinUrl(url, options.docId);
@@ -387,7 +392,8 @@ async function exportToDoc(context: coda.ExecutionContext, content: Buffer, mime
   }
   url = coda.withQueryParams(url, {
     uploadType: "multipart",
-    fields: "id,webViewLink"
+    fields: "id,webViewLink",
+    supportsAllDrives: true,
   });
   let metadata = {
     name: options?.name,
@@ -421,6 +427,7 @@ async function addPermission(context: coda.ExecutionContext, fileId: string, per
   permission = rest;
   let url = coda.withQueryParams(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
     sendNotificationEmail,
+    supportsAllDrives: true,
   });
   let response = await context.fetcher.fetch({
     method: "POST",
@@ -520,7 +527,7 @@ async function getSupportedExportFormats(context: coda.ExecutionContext): Promis
 async function getDocInfo(context: coda.ExecutionContext, docId: string) {
   let response = await context.fetcher.fetch({
     method: "GET",
-    url: `https://www.googleapis.com/drive/v3/files/${docId}?fields=name`,
+    url: `https://www.googleapis.com/drive/v3/files/${docId}?fields=name&supportsAllDrives=true`,
     cacheTtlSecs: OneDaySecs,
   });
   return response.body;
@@ -539,6 +546,13 @@ function fixHtml(html:string): string {
   });
 
   return $(":root").html();
+}
+
+function onError(error: Error) {
+  if (coda.StatusCodeError.isStatusCodeError(error) && error.body.error.message && error.statusCode != 401) {
+    throw new coda.UserVisibleError("Error from Google Docs: " + error.body.error.message);
+  }
+  throw error;
 }
 
 interface DriveFile {
