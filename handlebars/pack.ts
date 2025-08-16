@@ -1,7 +1,11 @@
 import * as coda from "@codahq/packs-sdk";
 import * as Handlebars from "handlebars";
+import { decode } from 'html-entities';
 const cheerio = require('cheerio');
 const escape = require('escape-html');
+
+import * as helpers from "./helpers";
+Object.entries(helpers).forEach(([name, func]) => Handlebars.registerHelper(name, func as Handlebars.HelperDelegate));
 
 export const pack = coda.newPack();
 
@@ -173,19 +177,20 @@ function cleanHtml(html: string): string {
   if (divs.length == 1) {
     return $(divs[0]).html();
   }
-  return $("body").html();
+  return fixTags($("body").html());
 }
 
 function convertToHtml(html) {
-  let original = html;
   html = html.split("\n").map(line => escape(line)).join("\n");
   if (html.includes("\n")) {
     html = `<div>${html.replace(/\n/g, "</div><div>")}</p>`;
   }
-  if (html != original) {
-    return html;
-  }
-  return original;
+  return fixTags(html);
+}
+
+function fixTags(html) {
+  return html.replace(/\{\{.*?\}\}/g, (match) => 
+    decode(match).replace(/[“”]/g, '"').replace(/[‘’]/g, "'"));
 }
 
 function getPlaceholders(template: string): string[] {
