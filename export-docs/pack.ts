@@ -550,6 +550,9 @@ function fixHtml(html:string): string {
 
 function onError(error: Error) {
   if (coda.StatusCodeError.isStatusCodeError(error) && error.body.error.message && error.statusCode != 401) {
+    if (error.statusCode == 403 && error.body?.error?.errors?.[0]?.reason == "insufficientPermissions") {
+      throw new coda.MissingScopesError("You must check the box next to each permission.");
+    }
     throw new coda.UserVisibleError("Error from Google Docs: " + error.body.error.message);
   }
   throw error;
