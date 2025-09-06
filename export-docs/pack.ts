@@ -13,11 +13,12 @@ const ShareTypes = ["user", "group", "domain", "anyone"];
 const ShareRoles = ["writer", "commenter", "reader"];
 const OneDaySecs = 24 * 60 * 60;
 const DocsMimeType = "application/vnd.google-apps.document";
+const AutoNamePlaceholder = "[auto]";
 
 const NameParam = coda.makeParameter({
   type: coda.ParameterType.String,
   name: "name",
-  description: "The name of the resulting Google Doc file.",
+  description: `The name of the resulting Google Doc file. Use the special value "${AutoNamePlaceholder}" generate the name automatically from the page title or first heading.`,
 });
 
 const ContentParam = coda.makeParameter({
@@ -92,11 +93,21 @@ pack.addFormula({
   onError: onError,
   execute: async function (args, context) {
     let [name, content, permissions = [], folderId, pageSize] = args;
+    if (!name) {
+      throw new coda.UserVisibleError("The name cannot be empty.");
+    }
     if (pageSize && pageSize.length != 2) {
       throw new coda.UserVisibleError("Page size must include both a width and height.");
     }
-    content = fixHtml(content);
-    let file = await exportToDoc(context, Buffer.from(content), "text/html", {name, folderId});
+    let {title, html} = processHtml(content);
+    if (name == AutoNamePlaceholder) {
+      console.log(title);
+      if (!title) {
+        throw new coda.UserVisibleError("The name could not be determined automatically.");
+      }
+      name = title;
+    }
+    let file = await exportToDoc(context, Buffer.from(html), "text/html", {name, folderId});
     let jobs = [];
     for (let permission of permissions) {
       jobs.push(addPermission(context, file.id, permission));
@@ -119,9 +130,9 @@ pack.addFormula({
   onError: onError,
   execute: async function (args, context) {
     let [doc, content] = args;
-    content = fixHtml(content);
+    let {html} = processHtml(content);
     let docId = parseDocUrl(doc);
-    await exportToDoc(context, Buffer.from(content), "text/html", {docId});
+    await exportToDoc(context, Buffer.from(html), "text/html", {docId});
     return "Done";
   },
 });
@@ -533,7 +544,7 @@ async function getDocInfo(context: coda.ExecutionContext, docId: string) {
   return response.body;
 }
 
-function fixHtml(html:string): string {
+function processHtml(html:string): {title: string, html: string} {
   let $ = cheerio.load(html);
 
   // Enforce max image width.
@@ -545,7 +556,10 @@ function fixHtml(html:string): string {
     }
   });
 
-  return $(":root").html();
+  let title = $("h1,h2,h3").first().text();
+  let fixed = $(":root").html();
+
+  return {title, html: fixed};
 }
 
 function onError(error: Error) {
