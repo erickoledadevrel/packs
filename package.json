@@ -45,6 +45,7 @@
     "regex-escape": "^3.4.10",
     "sanitize-filename": "^1.6.3",
     "seinfeldapi": "github:wdifruscio/seinfeld-api",
+    "smol-toml": "^1.4.2",
     "sql.js": "^1.8.0",
     "stopword": "^3.1.1",
     "text-encoding": "^0.7.0",

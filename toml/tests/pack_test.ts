@@ -11,7 +11,7 @@ chai.should();
 describe("Examples", () => {
   for (let formula of pack.formulas) {
     describe(formula.name, () => {
-      for (let [i, example] of formula.examples?.entries() ?? []) {
+      for (let [i, example] of formula.examples?.entries()) {
         it(`Example ${i}`, async () => {
           const result = await executeFormulaFromPackDef(pack, formula.name, example.params as any);
           if (typeof example.result == "object") {
