@@ -3,6 +3,7 @@
     "@codahq/packs-sdk": "^1.9.9",
     "@dicebear/collection": "^7.0.4",
     "@dicebear/core": "^7.0.4",
+    "@toon-format/toon": "^1.0.0",
     "@universe/address-parser": "^4.0.0",
     "@xmldom/xmldom": "^0.9.3",
     "airport-codes": "^1.0.2",
@@ -80,14 +81,14 @@
     "json-schema": "^0.4.0",
     "mocha": "^9.1.4",
     "sinon": "^13.0.1",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "test": "mocha --require ts-node/register **/*_test.ts --ignore node_modules/**/*",
+    "test": "mocha **/*_test.ts --ignore node_modules/**/* --import=tsx",
     "postinstall": "npx patch-package && sh bin/patch.sh",
-    "generate-fonts": "node -r ts-node/register asciify/utils/generate-fonts.ts",
-    "backup": "node -r ts-node/register bin/backup.ts",
+    "generate-fonts": "tsx asciify/utils/generate-fonts.ts",
+    "backup": "tsx bin/backup.ts",
     "server": "python -m http.server 8000"
   }
 }

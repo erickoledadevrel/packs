@@ -2,6 +2,7 @@
   "compilerOptions": {
     "lib": ["es2022"],
     "target": "ES2022",
+    "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
