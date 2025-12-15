@@ -8,7 +8,6 @@ export const pack = coda.newPack();
 
 const OneHourSecs = 1 * 60 * 60;
 const RedirectBaseUrl = "https://redirect.erickoleda.com";
-const UseGoogleCacheFallback = false;
 
 const BlockedHosts = [
   "youtube.com",
@@ -193,20 +192,11 @@ async function fetchPage(context: coda.ExecutionContext, url: string): Promise<s
     });
     return response.body;
   } catch (e) {
-    if (UseGoogleCacheFallback) {
-      // Fallback to the Google Cache.
-      let cacheUrl = "https://webcache.googleusercontent.com/search?q=cache:" + encodeURIComponent(url);
-      redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
-        url: cacheUrl,
-      });
-      try {
-        response = await context.fetcher.fetch({
-          method: "GET",
-          url: redirectUrl,
-          cacheTtlSecs: OneHourSecs,
-        });
-        return response.body;
-      } catch (e) {}
+    if (coda.StatusCodeError.isStatusCodeError(e)) {
+      // Blocked by Data Dome.
+      if (e.statusCode == 403 && e.response.headers["x-datadome"]) {
+        throw new coda.UserVisibleError(`Access blocked by website.`);
+      }
     }
   }
   throw new coda.UserVisibleError(`Error accessing URL: ${url}`);
