@@ -104,8 +104,8 @@ pack.addFormula({
   description: "Export a calendar/table of events in iCalendar format. Returns a temporary URL to the file.",
   parameters: [
     arrayOf(SummaryParam),
-    arrayOf(StartParam),
-    arrayOf(EndParam),
+    arrayOf(StartParam, true),
+    arrayOf(EndParam, true),
     GetFilenameParam(true),
     arrayOf(LocationParam),
     arrayOf(DescriptionParam),
@@ -130,6 +130,12 @@ pack.addFormula({
       }
     }
     for (let i = 0; i < length; i++) {
+      if (!summaries[i]) {
+        throw new coda.UserVisibleError(`Event ${i + 1} is missing a summary.`);
+      }
+      if (!starts[i]) {
+        throw new coda.UserVisibleError(`Event ${i + 1} is missing a start date/time.`);
+      }
       calendar.createEvent({
         summary: summaries[i],
         start: starts[i],
