@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery</title>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            font-family: Arial, sans-serif;
+        }
+        #root {
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+            background: #1a1a1a;
+        }
+        .gallery {
+            column-count: 1;
+            column-gap: 15px;
+        }
+        @media (min-width: 640px) {
+            .gallery {
+                column-count: 2;
+            }
+        }
+        @media (min-width: 1024px) {
+            .gallery {
+                column-count: 3;
+            }
+        }
+        @media (min-width: 1536px) {
+            .gallery {
+                column-count: 4;
+            }
+        }
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .gallery-item:hover {
+            transform: scale(1.02);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            font-size: 24px;
+        }
+        .error {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ff6b6b;
+            font-size: 20px;
+            text-align: center;
+            padding: 20px;
+        }
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            padding: 20px;
+            user-select: none;
+        }
+        .lightbox-prev {
+            left: 20px;
+        }
+        .lightbox-next {
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function PhotoGallery() {
+            const [photos, setPhotos] = useState([]);
+            const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+            const [lightboxIndex, setLightboxIndex] = useState(null);
+
+            useEffect(() => {
+                const params = new URLSearchParams(window.location.search);
+                const urlsParam = params.get('urls');
+
+                let urls;
+                if (!urlsParam) {
+                    // Default picsum photos if no URLs provided
+                    urls = [
+                        'https://picsum.photos/id/1018/1200/800',
+                        'https://picsum.photos/id/1015/800/1200',
+                        'https://picsum.photos/id/1019/1000/800',
+                        'https://picsum.photos/id/1016/900/600',
+                        'https://picsum.photos/id/1020/1200/900',
+                        'https://picsum.photos/id/1025/800/1200',
+                        'https://picsum.photos/id/1011/1100/700',
+                        'https://picsum.photos/id/1012/800/800'
+                    ];
+                } else {
+                    urls = urlsParam.split(',').map(url => url.trim()).filter(url => url);
+                }
+
+                if (urls.length === 0) {
+                    setError('No valid photo URLs found.');
+                    setLoading(false);
+                    return;
+                }
+
+                setPhotos(urls);
+                setLoading(false);
+            }, []);
+
+            const openLightbox = (index) => {
+                setLightboxIndex(index);
+            };
+
+            const closeLightbox = () => {
+                setLightboxIndex(null);
+            };
+
+            const goToPrevious = (e) => {
+                e.stopPropagation();
+                setLightboxIndex((lightboxIndex - 1 + photos.length) % photos.length);
+            };
+
+            const goToNext = (e) => {
+                e.stopPropagation();
+                setLightboxIndex((lightboxIndex + 1) % photos.length);
+            };
+
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (lightboxIndex === null) return;
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowLeft') goToPrevious(e);
+                    if (e.key === 'ArrowRight') goToNext(e);
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [lightboxIndex, photos.length]);
+
+            if (loading) {
+                return <div className="loading">Loading gallery...</div>;
+            }
+
+            if (error) {
+                return <div className="error">{error}</div>;
+            }
+
+            return (
+                <>
+                    <div className="gallery">
+                        {photos.map((url, index) => (
+                            <div key={index} className="gallery-item" onClick={() => openLightbox(index)}>
+                                <img src={url} alt={`Photo ${index + 1}`} />
+                            </div>
+                        ))}
+                    </div>
+
+                    {lightboxIndex !== null && (
+                        <div className="lightbox" onClick={closeLightbox}>
+                            <button className="lightbox-close" onClick={closeLightbox}>&times;</button>
+                            {photos.length > 1 && (
+                                <>
+                                    <button className="lightbox-nav lightbox-prev" onClick={goToPrevious}>‹</button>
+                                    <button className="lightbox-nav lightbox-next" onClick={goToNext}>›</button>
+                                </>
+                            )}
+                            <img src={photos[lightboxIndex]} alt={`Photo ${lightboxIndex + 1}`} onClick={(e) => e.stopPropagation()} />
+                        </div>
+                    )}
+                </>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<PhotoGallery />);
+    </script>
+</body>
+</html>
