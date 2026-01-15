@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
     <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+    <script crossorigin
+        src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
     <style>
         * {
@@ -13,52 +15,63 @@
             padding: 0;
             box-sizing: border-box;
         }
-        body, html {
+
+        body,
+        html {
             width: 100%;
             height: 100%;
             overflow: auto;
             font-family: Arial, sans-serif;
         }
+
         #root {
             width: 100%;
             min-height: 100vh;
             padding: 20px;
             background: #1a1a1a;
         }
+
         .gallery {
             column-count: 1;
             column-gap: 15px;
         }
+
         @media (min-width: 640px) {
             .gallery {
                 column-count: 2;
             }
         }
+
         @media (min-width: 1024px) {
             .gallery {
                 column-count: 3;
             }
         }
+
         @media (min-width: 1536px) {
             .gallery {
                 column-count: 4;
             }
         }
+
         .gallery-item {
             break-inside: avoid;
             margin-bottom: 15px;
             cursor: pointer;
             transition: transform 0.2s;
         }
+
         .gallery-item:hover {
             transform: scale(1.02);
         }
+
         .gallery-item img {
             width: 100%;
             height: auto;
             display: block;
             border-radius: 8px;
         }
+
         .loading {
             display: flex;
             justify-content: center;
@@ -67,6 +80,7 @@
             color: white;
             font-size: 24px;
         }
+
         .error {
             display: flex;
             justify-content: center;
@@ -77,6 +91,7 @@
             text-align: center;
             padding: 20px;
         }
+
         .lightbox {
             position: fixed;
             top: 0;
@@ -89,11 +104,13 @@
             align-items: center;
             z-index: 1000;
         }
+
         .lightbox img {
             max-width: 90%;
             max-height: 90%;
             object-fit: contain;
         }
+
         .lightbox-close {
             position: absolute;
             top: 20px;
@@ -105,6 +122,7 @@
             background: none;
             border: none;
         }
+
         .lightbox-nav {
             position: absolute;
             top: 50%;
@@ -118,14 +136,17 @@
             padding: 20px;
             user-select: none;
         }
+
         .lightbox-prev {
             left: 20px;
         }
+
         .lightbox-next {
             right: 20px;
         }
     </style>
 </head>
+
 <body>
     <div id="root"></div>
 
@@ -137,6 +158,7 @@
             const [loading, setLoading] = useState(true);
             const [error, setError] = useState(null);
             const [lightboxIndex, setLightboxIndex] = useState(null);
+            const [columnCount, setColumnCount] = useState(null);
 
             useEffect(() => {
                 const params = new URLSearchParams(window.location.search);
@@ -167,6 +189,26 @@
 
                 setPhotos(urls);
                 setLoading(false);
+            }, []);
+
+            // Separate effect for width responsiveness
+            useEffect(() => {
+                const params = new URLSearchParams(window.location.search);
+                const widthParam = params.get('width');
+
+                if (widthParam) {
+                    const width = parseInt(widthParam, 10);
+                    if (!isNaN(width) && width > 0) {
+                        const updateColumns = () => {
+                            const cols = Math.ceil(window.innerWidth / width);
+                            setColumnCount(Math.max(1, cols));
+                        };
+
+                        updateColumns();
+                        window.addEventListener('resize', updateColumns);
+                        return () => window.removeEventListener('resize', updateColumns);
+                    }
+                }
             }, []);
 
             const openLightbox = (index) => {
@@ -206,9 +248,11 @@
                 return <div className="error">{error}</div>;
             }
 
+            const galleryStyle = columnCount ? { columnCount: columnCount } : {};
+
             return (
                 <>
-                    <div className="gallery">
+                    <div className="gallery" style={galleryStyle}>
                         {photos.map((url, index) => (
                             <div key={index} className="gallery-item" onClick={() => openLightbox(index)}>
                                 <img src={url} alt={`Photo ${index + 1}`} />
@@ -236,4 +280,5 @@
         root.render(<PhotoGallery />);
     </script>
 </body>
+
 </html>
