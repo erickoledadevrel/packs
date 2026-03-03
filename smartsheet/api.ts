@@ -1,6 +1,6 @@
 import * as coda from "@codahq/packs-sdk";
 import { Row, SheetResult, Sheet, SheetFormatSettings } from "./types";
-import { PageSize } from "./pack";
+import { PageSize } from "./builder";
 
 export async function searchSheets(context: coda.ExecutionContext, query: string): Promise<SheetResult[]> {
   if (query) {
