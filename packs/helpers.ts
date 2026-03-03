@@ -114,17 +114,15 @@ function formatColumnFormat(columnFormat) {
 export async function addPublished(context: coda.ExecutionContext, items: any[]) {
   let requests = items.map(item => {
     return context.fetcher.fetch({
-      method: "HEAD",
-      url: `https://coda.io/packs/${item.packId}`,
-      disableAuthentication: true,
-      ignoreRedirects: true,
+      method: "GET",
+      url: `https://coda.io/apis/v1/packs/${item.packId}/listing`,
     });
   });
   let results = await Promise.allSettled(requests);
   for (let [i, result] of results.entries()) {
     let item = items[i];
     if (result.status == "fulfilled") {
-      item.published = result.value.status == 200;
+      item.published = result.value.body.discoverability == "public";
     } else {
       console.error(result.reason);
     }
