@@ -1,5 +1,5 @@
 import * as coda from "@codahq/packs-sdk";
-import { PackSchema } from "./schemas";
+import { ManifestProperty, PackSchema } from "./schemas";
 import { PackUrlRegexes, MetadataTypes } from "./constants";
 import mask from 'json-mask';
 
@@ -45,6 +45,7 @@ export async function addBuildingBlocks(context: coda.ExecutionContext, items: a
       item.formulas = metadata.formulas.map(formula => formatFormula(formula));
       item.syncTables = metadata.syncTables.map(syncTable => formatSyncTable(syncTable));
       item.columnFormats = metadata.formats.map(columnFormat => formatColumnFormat(columnFormat));
+      item.skills = metadata.skills;
       item.authentication = metadata.authentication;
       item.adminAuthentications = metadata.adminAuthentications;
       item.networkDomains = metadata.networkDomains;
@@ -209,8 +210,8 @@ export function getPackId(context: coda.ExecutionContext, packIdOrUrl: string): 
   return packIdOrUrl;
 }
 
-export function extendSchema(metadata: string[]): coda.GenericObjectSchema {
-  let properties = { ...PackSchema.properties };
+export function extendSchema(metadata: string[], includeManifest): coda.GenericObjectSchema {
+  let properties: coda.ObjectSchemaProperties = { ...PackSchema.properties };
   let featured: string[] = [...PackSchema.featuredProperties];
   for (let key of metadata) {
     let settings = getMetdataSettings(key);
@@ -219,6 +220,9 @@ export function extendSchema(metadata: string[]): coda.GenericObjectSchema {
       ...settings.properties,
     };
     featured = featured.concat(Object.keys(settings.properties));
+  }
+  if (includeManifest) {
+    properties.manifest = ManifestProperty;
   }
   return {
     ...PackSchema,

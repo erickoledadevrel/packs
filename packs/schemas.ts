@@ -133,6 +133,39 @@ const ColumnFormatSchema = coda.makeObjectSchema({
   displayProperty: "name",
 });
 
+const ToolSchema = coda.makeObjectSchema({
+  properties: {
+    type: {
+      type: coda.ValueType.String,
+      description: "The type of tool.",
+    },
+  },
+  displayProperty: "type",
+});
+
+const SkillSchema = coda.makeObjectSchema({
+  properties: {
+    name: {
+      type: coda.ValueType.String,
+      description: "The name of the skill.",
+    },
+    displayName: {
+      type: coda.ValueType.String,
+      description: "The user-visible name of the skill.",
+    },
+    description: {
+      type: coda.ValueType.String,
+      description: "The description of the skill.",
+    },
+    tools: {
+      type: coda.ValueType.Array,
+      items: ToolSchema,
+      description: "The tools the skill can use.",
+    },
+  },
+  displayProperty: "name",
+});
+
 const ReleaseSchema = coda.makeObjectSchema({
   properties: {
     created: {
@@ -282,6 +315,10 @@ export const PackSchema = coda.makeObjectSchema({
       type: coda.ValueType.Boolean,
       description: "Whether the Pack has been marked as Certified by Coda.",
     },
+    certifiedAgent: {
+      type: coda.ValueType.Boolean,
+      description: "Whether the Pack has been marked as a verified agent.",
+    },
     makers: {
       type: coda.ValueType.Array,
       items: MakerSchema,
@@ -364,6 +401,11 @@ export const BuildingBlockPoperties: coda.ObjectSchemaProperties = {
     type: coda.ValueType.Array,
     items: SyncTableSchema,
     description: "The sync tables in the Pack.",
+  },
+  skills: {
+    type: coda.ValueType.Array,
+    items: SkillSchema,
+    description: "The skills in the Pack.",
   },
   authentication: {
     ...AuthenticationSchema,

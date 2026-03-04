@@ -1,7 +1,7 @@
 import * as coda from "@codahq/packs-sdk";
 import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError, getCategories, unformatItem, removeCategory, addCategory, addStats, addManifest } from "./helpers";
 import { MetadataTypes, PackUrlRegexes } from "./constants";
-import { ManifestProperty, MyPackSchema, PackSchema, StatsSchema } from "./schemas";
+import { MyPackSchema, PackSchema, StatsSchema } from "./schemas";
 const escape = require('escape-html');
 
 export const pack = coda.newPack();
@@ -10,6 +10,13 @@ const PackIdOrUrlParameter = coda.makeParameter({
   type: coda.ParameterType.String,
   name: "packIdOrUrl",
   description: "The ID or URL of the Pack.",
+});
+
+const ManifestFieldsParameter = coda.makeParameter({
+  type: coda.ParameterType.String,
+  name: "manifestFields",
+  description: "If this field mask is specified, the selected fields from Pack's internal manifest will be included as raw JSON in Manifest.",
+  optional: true,
 });
 
 const IncludeBrainOnlyPacksOption = "includeBrainOnlyPacks";
@@ -29,11 +36,12 @@ pack.addFormula({
   description: "Load information about a Pack",
   parameters: [
     PackIdOrUrlParameter,
+    ManifestFieldsParameter,
   ],
   resultType: coda.ValueType.Object,
-  schema: extendSchema(Object.keys(MetadataTypes)),
+  schema: extendSchema(Object.keys(MetadataTypes), true),
   execute: async function (args, context) {
-    let [packIdOrUrl] = args;
+    let [packIdOrUrl, manifestFields] = args;
     let packId = getPackId(context, packIdOrUrl);
     let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs/listings");
     let url = coda.withQueryParams(baseUrl, {
@@ -55,6 +63,9 @@ pack.addFormula({
       let settings = getMetdataSettings(key);
       jobs.push(settings.callback(context, items));
     }
+    if (manifestFields) {
+      jobs.push(addManifest(context, items, manifestFields))
+    }
     await Promise.allSettled(jobs);
     return item;
   },
@@ -75,10 +86,7 @@ pack.addSyncTable({
   dynamicOptions: {
     getSchema: async function (context, search, args) {
       let metadata = args.metdata ?? [];
-      let schema = extendSchema(metadata);
-      if (args.manifestFields) {
-        schema.properties.manifest = ManifestProperty;
-      }
+      let schema = extendSchema(metadata, Boolean(args.manifestFields));
       return schema;
     },
     propertyOptions: async function (context) {
@@ -128,12 +136,7 @@ pack.addSyncTable({
         optional: true,
         autocomplete: AllOptions,
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.String,
-        name: "manifestFields",
-        description: "If this field mask is specified, the selected fields from Pack's internal manifest will be included as raw JSON in a Manifest column.",
-        optional: true,
-      }),
+      ManifestFieldsParameter,
     ],
     execute: async function (args, context) {
       let [
