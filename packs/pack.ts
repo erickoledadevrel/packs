@@ -20,7 +20,8 @@ const ManifestFieldsParameter = coda.makeParameter({
 });
 
 const IncludeBrainOnlyPacksOption = "includeBrainOnlyPacks";
-const AllOptions = [IncludeBrainOnlyPacksOption];
+const CertifiedAgentsOnlyOption = "certifiedAgentsOnly";
+const AllOptions = [IncludeBrainOnlyPacksOption, CertifiedAgentsOnlyOption];
 
 pack.addNetworkDomain("coda.io");
 pack.addNetworkDomain("coda-us-west-2-prod-packs.s3.us-west-2.amazonaws.com");
@@ -155,6 +156,7 @@ pack.addSyncTable({
           excludeWorkspaceAcls: !includeWorkspace,
           excludeIndividualAcls: !includePrivate,
           includeBrainOnlyPacks: options.includes(IncludeBrainOnlyPacksOption),
+          certifiedAgentsOnly: options.includes(CertifiedAgentsOnlyOption),
           limit: 20,
         });
       }
