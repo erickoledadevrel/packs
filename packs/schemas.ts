@@ -212,6 +212,11 @@ const AuthenticationSchema = coda.makeObjectSchema({
       type: coda.ValueType.String,
       description: "The type of authentication.",
     },
+    oauthScopes: {
+      type: coda.ValueType.Array,
+      items: { type: coda.ValueType.String },
+      description: "For OAuth2 types, the scopes being requested.",
+    },
   },
   displayProperty: "type",
 });
