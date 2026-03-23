@@ -3,15 +3,26 @@
   "name": "JWT",
   "description": "A JSON Web Token (JWT, pronounced \"jot\") is an industry standard method for representing claims securely between two parties. You rarely need to craft them on your own, and even more rarely need to do so in a Coda doc. BUT if you are that rare, poor soul that must then this Pack is for you.\n\nIcon property of jwt.io.\nCover photo by GuHyeok Jeong from Pixabay.",
   "shortDescription": "Create, validate, and parse JSON Web Tokens.",
-  "logoUrl": "https://codahosted.io/packs/24109/unversioned/assets/LOGO/479a83b4acbf2804480e5361815e8a03d03fcaf21d500082d6edd865ec7d4469531dc445a7c33750e768f02a48e38eac54529951039c7747cda1c19af6c4079f171c9542b1841bb721cab8c13f3bd935ebaf9b405924a45d42894b7c8f03b7eff26c82cc",
-  "coverUrl": "https://codahosted.io/packs/24109/unversioned/assets/COVER/2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14",
+  "logoUrl": "https://codaio.imgix.net/packs/24109/unversioned/assets/LOGO/479a83b4acbf2804480e5361815e8a03d03fcaf21d500082d6edd865ec7d4469531dc445a7c33750e768f02a48e38eac54529951039c7747cda1c19af6c4079f171c9542b1841bb721cab8c13f3bd935ebaf9b405924a45d42894b7c8f03b7eff26c82cc",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/24109/unversioned/assets/LOGO/479a83b4acbf2804480e5361815e8a03d03fcaf21d500082d6edd865ec7d4469531dc445a7c33750e768f02a48e38eac54529951039c7747cda1c19af6c4079f171c9542b1841bb721cab8c13f3bd935ebaf9b405924a45d42894b7c8f03b7eff26c82cc",
+    "filename": "unknown",
+    "assetId": "479a83b4acbf2804480e5361815e8a03d03fcaf21d500082d6edd865ec7d4469531dc445a7c33750e768f02a48e38eac54529951039c7747cda1c19af6c4079f171c9542b1841bb721cab8c13f3bd935ebaf9b405924a45d42894b7c8f03b7eff26c82cc"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/24109/unversioned/assets/COVER/2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/24109/unversioned/assets/EXAMPLE/2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14",
+    "filename": "Cover photo",
+    "assetId": "2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/24109/unversioned/assets/EXAMPLE/2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14",
+      "imageUrl": "https://codaio.imgix.net/packs/24109/unversioned/assets/EXAMPLE/2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14",
       "filename": "Cover photo",
       "assetId": "2b9fab03729da69c01c2ae3aeb58a13c7a527a0975d999ebda9a3ea86c694be9684335b4975781058f428bccf3656bf1e800a7bf6847cc79b5767e02d342300480f9d39c68003427025d8062cf9fbc9d8f785d0e5074c2c1f6e798b4426909015db2dc14"
     }
   ],
+  "agentImages": [],
   "packVersion": "10",
   "releaseId": 1,
   "lastReleasedAt": "2024-02-08T02:10:42.306Z",
@@ -24,6 +35,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

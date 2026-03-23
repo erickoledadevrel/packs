@@ -3,15 +3,26 @@
   "name": "Visualping",
   "description": "The Visualping app allows you to monitor a website for changes, and this Pack allows you to report on those findings in your Coda doc.\n\nThe icon, cover photo, and brand are all the property of Visualping.",
   "shortDescription": "We monitor website changes ...so you don’t have to!",
-  "logoUrl": "https://codahosted.io/packs/23109/unversioned/assets/LOGO/64610c652d87cc41ca01bc0bdf522851fc617a802b19fc783c71adf25d11b8c2458a9e1534ab8ed2b59882899f15de385fa34f2682115d34985881fbad22b0bf8f8507407ae7e1e6f4809269c225d00d3d0f41baf6f98cc061978df7f4c0401056de5a59",
-  "coverUrl": "https://codahosted.io/packs/23109/unversioned/assets/COVER/d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d",
+  "logoUrl": "https://codaio.imgix.net/packs/23109/unversioned/assets/LOGO/64610c652d87cc41ca01bc0bdf522851fc617a802b19fc783c71adf25d11b8c2458a9e1534ab8ed2b59882899f15de385fa34f2682115d34985881fbad22b0bf8f8507407ae7e1e6f4809269c225d00d3d0f41baf6f98cc061978df7f4c0401056de5a59",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/23109/unversioned/assets/LOGO/64610c652d87cc41ca01bc0bdf522851fc617a802b19fc783c71adf25d11b8c2458a9e1534ab8ed2b59882899f15de385fa34f2682115d34985881fbad22b0bf8f8507407ae7e1e6f4809269c225d00d3d0f41baf6f98cc061978df7f4c0401056de5a59",
+    "filename": "unknown",
+    "assetId": "64610c652d87cc41ca01bc0bdf522851fc617a802b19fc783c71adf25d11b8c2458a9e1534ab8ed2b59882899f15de385fa34f2682115d34985881fbad22b0bf8f8507407ae7e1e6f4809269c225d00d3d0f41baf6f98cc061978df7f4c0401056de5a59"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/23109/unversioned/assets/COVER/d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/23109/unversioned/assets/EXAMPLE/d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d",
+    "filename": "Cover photo",
+    "assetId": "d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/23109/unversioned/assets/EXAMPLE/d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d",
+      "imageUrl": "https://codaio.imgix.net/packs/23109/unversioned/assets/EXAMPLE/d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d",
       "filename": "Cover photo",
       "assetId": "d68f56b9eb26101708c7543be18fc4c18ff919479f0cb5d43352958c536e176962b453118cca39d11ed0410a4a590887422e34ba648cb1f5526967c1c3090621abc05cab0e8d506f11a83534061a3eb6b2ea8af5ca70c88cb066e356c8feb429eb2ccc1d"
     }
   ],
+  "agentImages": [],
   "packVersion": "12",
   "releaseId": 3,
   "lastReleasedAt": "2024-10-21T13:57:17.092Z",
@@ -34,6 +45,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

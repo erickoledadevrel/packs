@@ -3,8 +3,14 @@
   "name": "Rebrickable",
   "description": "All data and photos courtesy of Rebrickable (rebrickable.com).",
   "shortDescription": "Get information about LEGO® sets and parts.",
-  "logoUrl": "https://codahosted.io/packs/35912/unversioned/assets/LOGO/d0c15c067ceef8dca840f0e48b9e8622c025d0682cfbd805bdb82e1a783133ead48ba6add1d5a4e1fe73ef1e750f5b0e8e6f42250dea789758a1921159de2409f885e1a7ddd17830bc8209383b5d31a0b2fb52bb766d4da7e0fb6e6246e302ec1819626b",
+  "logoUrl": "https://codaio.imgix.net/packs/35912/unversioned/assets/LOGO/d0c15c067ceef8dca840f0e48b9e8622c025d0682cfbd805bdb82e1a783133ead48ba6add1d5a4e1fe73ef1e750f5b0e8e6f42250dea789758a1921159de2409f885e1a7ddd17830bc8209383b5d31a0b2fb52bb766d4da7e0fb6e6246e302ec1819626b",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/35912/unversioned/assets/LOGO/d0c15c067ceef8dca840f0e48b9e8622c025d0682cfbd805bdb82e1a783133ead48ba6add1d5a4e1fe73ef1e750f5b0e8e6f42250dea789758a1921159de2409f885e1a7ddd17830bc8209383b5d31a0b2fb52bb766d4da7e0fb6e6246e302ec1819626b",
+    "filename": "unknown",
+    "assetId": "d0c15c067ceef8dca840f0e48b9e8622c025d0682cfbd805bdb82e1a783133ead48ba6add1d5a4e1fe73ef1e750f5b0e8e6f42250dea789758a1921159de2409f885e1a7ddd17830bc8209383b5d31a0b2fb52bb766d4da7e0fb6e6246e302ec1819626b"
+  },
   "exampleImages": [],
+  "agentImages": [],
   "packVersion": "20",
   "releaseId": 1,
   "lastReleasedAt": "2025-01-10T22:19:06.273Z",
@@ -17,6 +23,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

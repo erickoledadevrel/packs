@@ -3,15 +3,26 @@
   "name": "Rich Text Tools",
   "description": "A set of simple formulas for converting rich text to and from HTML and Markdown.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by cottonbro studio on Pexels.",
   "shortDescription": "Formulas for working with rich text as HTML and Markdown.",
-  "logoUrl": "https://codahosted.io/packs/18653/unversioned/assets/LOGO/3a6abfc40704be469820a22eca6be237543ae98a0a1af64d38f1281d4448901aedd737474ac3017d1c3a3c404814231818700dc8415eacf25850f1fbe1062d2835659fbcdd345f5bf7eb713d6db9e923d5985227a725ab53fe79cf5501843810f24b3658",
-  "coverUrl": "https://codahosted.io/packs/18653/unversioned/assets/COVER/b9fce1785a7711baa49d584f30f4057697b0a675ce3510082b72bea07a5952bf9df290889dca98f42b98aa8ed3df8151ade14ff7a0cef4ebb91ae24a8ab9e47f9969f3d7b4c77e21b8998d7fefaae327c276021811e7c034c8b3f0516c7fb3f74e5bc86c",
+  "logoUrl": "https://codaio.imgix.net/packs/18653/unversioned/assets/LOGO/3a6abfc40704be469820a22eca6be237543ae98a0a1af64d38f1281d4448901aedd737474ac3017d1c3a3c404814231818700dc8415eacf25850f1fbe1062d2835659fbcdd345f5bf7eb713d6db9e923d5985227a725ab53fe79cf5501843810f24b3658",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/18653/unversioned/assets/LOGO/3a6abfc40704be469820a22eca6be237543ae98a0a1af64d38f1281d4448901aedd737474ac3017d1c3a3c404814231818700dc8415eacf25850f1fbe1062d2835659fbcdd345f5bf7eb713d6db9e923d5985227a725ab53fe79cf5501843810f24b3658",
+    "filename": "unknown",
+    "assetId": "3a6abfc40704be469820a22eca6be237543ae98a0a1af64d38f1281d4448901aedd737474ac3017d1c3a3c404814231818700dc8415eacf25850f1fbe1062d2835659fbcdd345f5bf7eb713d6db9e923d5985227a725ab53fe79cf5501843810f24b3658"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/18653/unversioned/assets/COVER/b9fce1785a7711baa49d584f30f4057697b0a675ce3510082b72bea07a5952bf9df290889dca98f42b98aa8ed3df8151ade14ff7a0cef4ebb91ae24a8ab9e47f9969f3d7b4c77e21b8998d7fefaae327c276021811e7c034c8b3f0516c7fb3f74e5bc86c",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/18653/unversioned/assets/EXAMPLE/b9fce1785a7711baa49d584f30f4057697b0a675ce3510082b72bea07a5952bf9df290889dca98f42b98aa8ed3df8151ade14ff7a0cef4ebb91ae24a8ab9e47f9969f3d7b4c77e21b8998d7fefaae327c276021811e7c034c8b3f0516c7fb3f74e5bc86c",
+    "filename": "Cover photo",
+    "assetId": "b9fce1785a7711baa49d584f30f4057697b0a675ce3510082b72bea07a5952bf9df290889dca98f42b98aa8ed3df8151ade14ff7a0cef4ebb91ae24a8ab9e47f9969f3d7b4c77e21b8998d7fefaae327c276021811e7c034c8b3f0516c7fb3f74e5bc86c"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/18653/unversioned/assets/EXAMPLE/b9fce1785a7711baa49d584f30f4057697b0a675ce3510082b72bea07a5952bf9df290889dca98f42b98aa8ed3df8151ade14ff7a0cef4ebb91ae24a8ab9e47f9969f3d7b4c77e21b8998d7fefaae327c276021811e7c034c8b3f0516c7fb3f74e5bc86c",
+      "imageUrl": "https://codaio.imgix.net/packs/18653/unversioned/assets/EXAMPLE/b9fce1785a7711baa49d584f30f4057697b0a675ce3510082b72bea07a5952bf9df290889dca98f42b98aa8ed3df8151ade14ff7a0cef4ebb91ae24a8ab9e47f9969f3d7b4c77e21b8998d7fefaae327c276021811e7c034c8b3f0516c7fb3f74e5bc86c",
       "filename": "Cover photo",
       "assetId": "b9fce1785a7711baa49d584f30f4057697b0a675ce3510082b72bea07a5952bf9df290889dca98f42b98aa8ed3df8151ade14ff7a0cef4ebb91ae24a8ab9e47f9969f3d7b4c77e21b8998d7fefaae327c276021811e7c034c8b3f0516c7fb3f74e5bc86c"
     }
   ],
+  "agentImages": [],
   "packVersion": "3",
   "releaseId": 3,
   "lastReleasedAt": "2024-03-06T01:41:26.901Z",
@@ -24,6 +35,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

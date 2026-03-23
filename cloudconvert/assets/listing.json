@@ -3,19 +3,30 @@
   "name": "CloudConvert",
   "description": "CloudConvert is a popular online file conversion tool, founded 2012 and currently converting more than 20 files per second. Now you can use their file converter service right from within your Coda doc.\n\nThis Pack includes a \"Convert\" action that takes a file or image from a column and converts it to another file type.\n\n⮞ The action returns the URL of the converted file, so make sure to save it in a Results Columns. \n⮞ The URL is temporary and only valid for ~24 hours. Either download it right away or change the type of the Results Column to \"File\" to have Coda store the resulting file indefinitely.\n⮞ The action can run for at most 60 seconds, so converting large files may time out.\n\nTo use the Pack you'll need to sign in with a CloudConvert account. You get 25 free conversions per-day, but beyond that you'll need to sign up for one of their paid plans.\n\nThis Pack is not affiliated with CloudConvert.\nThe logo is the property of CloudConvert.\nThe cover photo is by Joe from Pixabay.",
   "shortDescription": "Use an online file convert convert files and images to different formats.",
-  "logoUrl": "https://codahosted.io/packs/25653/unversioned/assets/LOGO/646a02617d730f7cfb0ac3951cd7bd1185362a18ea311e80c581c5c4fc76c81ae7308b13b41ba47575a662136ffc0c135ec4b3be2133052accdc41401115a575ef60ab7dbbeec63c30174393a67e906a60d43e1de8872934d1218f957700c97812ebf464",
-  "coverUrl": "https://codahosted.io/packs/25653/unversioned/assets/COVER/150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86",
+  "logoUrl": "https://codaio.imgix.net/packs/25653/unversioned/assets/LOGO/646a02617d730f7cfb0ac3951cd7bd1185362a18ea311e80c581c5c4fc76c81ae7308b13b41ba47575a662136ffc0c135ec4b3be2133052accdc41401115a575ef60ab7dbbeec63c30174393a67e906a60d43e1de8872934d1218f957700c97812ebf464",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/25653/unversioned/assets/LOGO/646a02617d730f7cfb0ac3951cd7bd1185362a18ea311e80c581c5c4fc76c81ae7308b13b41ba47575a662136ffc0c135ec4b3be2133052accdc41401115a575ef60ab7dbbeec63c30174393a67e906a60d43e1de8872934d1218f957700c97812ebf464",
+    "filename": "unknown",
+    "assetId": "646a02617d730f7cfb0ac3951cd7bd1185362a18ea311e80c581c5c4fc76c81ae7308b13b41ba47575a662136ffc0c135ec4b3be2133052accdc41401115a575ef60ab7dbbeec63c30174393a67e906a60d43e1de8872934d1218f957700c97812ebf464"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/25653/unversioned/assets/COVER/150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/25653/unversioned/assets/EXAMPLE/150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86",
+    "filename": "Cover photo",
+    "assetId": "150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/25653/unversioned/assets/EXAMPLE/150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86",
+      "imageUrl": "https://codaio.imgix.net/packs/25653/unversioned/assets/EXAMPLE/150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86",
       "filename": "Cover photo",
       "assetId": "150f9007e1f78200672f648c54dd3e789c00536b78e8418904c624728ea6b0180490fcf48ce37b02bb48bcf2d81f066dd5c5f4780c6f6cd2d85b4fe614d4641f96a91d33d7b9b7cc562112eeee2391059b3c8e792175b998f8d17e100e9b1f3c93dc3d86"
     }
   ],
-  "packVersion": "41",
-  "releaseId": 4,
-  "lastReleasedAt": "2025-03-19T01:25:46.478Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/25653/41/metadata/1d4c33b68cc2cbf4c73baf1182ebe60ac2704a4c0095c488619c49e283ebca3df7e624fc07c6343c5d83858e8c4f60a349bd6b1ae76ae59206428ea8668c1e07befda1d746a11b3b5fe515b1f692e776331183be24135f78eb1ebf88114d43fb005a0a25.json",
+  "agentImages": [],
+  "packVersion": "49",
+  "releaseId": 6,
+  "lastReleasedAt": "2025-06-09T20:46:39.610Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/25653/49/metadata/7710866c5ee2d5f279cbe2bd87c357eb9e05ed2ded3b7cfe014cea48ba44f17715885b4923ec0185b097273e335eaa528294dffe248fab851212863e65972dc4e92ee1e69d025173f37260033dbbc6085a5e0223339644fa55729cfc3d07d9b01fe0d28a.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
@@ -24,6 +35,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {
@@ -42,7 +54,7 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.8.6",
+  "sdkVersion": "1.9.5",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

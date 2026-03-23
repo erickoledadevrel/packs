@@ -3,15 +3,21 @@
   "name": "SmartSuite",
   "description": "Spend all day in Coda but need collaborate on some important data in SmartSuite? No worries, use the SmartSuite Pack for Coda to sync that data into your Coda docs where you can view and edit it just like every other Coda table.\n\nThis Pack is not associated with SmartSuite Holdings, Inc.\nThe icon and graphic are the property of SmartSuite Holdings, Inc.",
   "shortDescription": "View and edit your records from within Coda.",
-  "logoUrl": "https://codahosted.io/packs/30242/unversioned/assets/LOGO/80f44b815eed81488a99a61548f5a516e98b3f74686d02b7e7a3dc21d4d241af130bd81a21038fa4cba2a54418b021c481bcb5cdc739bf593ce40e72a39213b02d96fbea86222ee9bcc693a40d5b0a16fa15b6bdbaa617272f11f785314368b5cc0dde74",
+  "logoUrl": "https://codaio.imgix.net/packs/30242/unversioned/assets/LOGO/80f44b815eed81488a99a61548f5a516e98b3f74686d02b7e7a3dc21d4d241af130bd81a21038fa4cba2a54418b021c481bcb5cdc739bf593ce40e72a39213b02d96fbea86222ee9bcc693a40d5b0a16fa15b6bdbaa617272f11f785314368b5cc0dde74",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/30242/unversioned/assets/LOGO/80f44b815eed81488a99a61548f5a516e98b3f74686d02b7e7a3dc21d4d241af130bd81a21038fa4cba2a54418b021c481bcb5cdc739bf593ce40e72a39213b02d96fbea86222ee9bcc693a40d5b0a16fa15b6bdbaa617272f11f785314368b5cc0dde74",
+    "filename": "unknown",
+    "assetId": "80f44b815eed81488a99a61548f5a516e98b3f74686d02b7e7a3dc21d4d241af130bd81a21038fa4cba2a54418b021c481bcb5cdc739bf593ce40e72a39213b02d96fbea86222ee9bcc693a40d5b0a16fa15b6bdbaa617272f11f785314368b5cc0dde74"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/30242/unversioned/assets/EXAMPLE/02152a5d2b84119ebf083d7f09e3e3cf0cfc77805b70f5f9ba4a89d99a8a0242691d2aa5154f77ea0db20e28954bd2a3481e6e9e29ad1323f4228f4826fca9b2100fe74028235cab80de8e6457f10385774631dd7e3cb66ce7202dec3b6affd3a1b1e769",
+      "imageUrl": "https://codaio.imgix.net/packs/30242/unversioned/assets/EXAMPLE/02152a5d2b84119ebf083d7f09e3e3cf0cfc77805b70f5f9ba4a89d99a8a0242691d2aa5154f77ea0db20e28954bd2a3481e6e9e29ad1323f4228f4826fca9b2100fe74028235cab80de8e6457f10385774631dd7e3cb66ce7202dec3b6affd3a1b1e769",
       "filename": "64a3fcab588349ccc4b1f87f_Grid View2.png",
       "mimeType": "image/png",
       "assetId": "02152a5d2b84119ebf083d7f09e3e3cf0cfc77805b70f5f9ba4a89d99a8a0242691d2aa5154f77ea0db20e28954bd2a3481e6e9e29ad1323f4228f4826fca9b2100fe74028235cab80de8e6457f10385774631dd7e3cb66ce7202dec3b6affd3a1b1e769"
     }
   ],
+  "agentImages": [],
   "packVersion": "133",
   "releaseId": 2,
   "lastReleasedAt": "2024-09-11T21:01:38.904Z",
@@ -29,6 +35,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

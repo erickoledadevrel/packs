@@ -3,15 +3,26 @@
   "name": "Flight Codes",
   "description": "This Pack includes some utility formulas and column formats that allow you to lookup basic information about an airport, airline, or flight given it's designator code.\n\n= Airport(\"JFK\") ➡️ John F Kennedy International Airport\n= Airline(\"B6\") ➡️ JetBlue Airways\n= Flight(\"UA1929\") ➡️ United Airlines, Flight 1929\n\n⚠️ Important: This Pack doesn't return any real-time flight information, such as delayed status, departure time, or gate information. For that you'll need to use a website like flightaware.com.\n\nAirport and airline data is provided by OpenFlights.\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0.\nCover photo by Darli Donizete on Pexels.",
   "shortDescription": "Get information about an airport, airline, or flight.",
-  "logoUrl": "https://codahosted.io/packs/17566/unversioned/assets/LOGO/ceca34033744eb545256110177727d23d1d414cc3c957a05017d77a1bc39d060c5e615ef29d93c5456ed1e1ba8f705c26496ffb11ceb61d0cd2aa65833b9d168b8417fb908da3ee3d527d79d580ddadcd37b082e767053f30b734cfe71e20ea7f662ddcf",
-  "coverUrl": "https://codahosted.io/packs/17566/unversioned/assets/COVER/305dd1d7871b2a8d471fd993d34ff7431fced1b57b71f2bf3c50fc19539c7c0434ae3b186292391db0379543de9d2d369aa0ed2c3ac21132c7fd625d55bff1690c24220083fa8fa25a4849571f22e3bb78c3669a104cd968f714cfcf13db26cd3f59b8af",
+  "logoUrl": "https://codaio.imgix.net/packs/17566/unversioned/assets/LOGO/ceca34033744eb545256110177727d23d1d414cc3c957a05017d77a1bc39d060c5e615ef29d93c5456ed1e1ba8f705c26496ffb11ceb61d0cd2aa65833b9d168b8417fb908da3ee3d527d79d580ddadcd37b082e767053f30b734cfe71e20ea7f662ddcf",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/17566/unversioned/assets/LOGO/ceca34033744eb545256110177727d23d1d414cc3c957a05017d77a1bc39d060c5e615ef29d93c5456ed1e1ba8f705c26496ffb11ceb61d0cd2aa65833b9d168b8417fb908da3ee3d527d79d580ddadcd37b082e767053f30b734cfe71e20ea7f662ddcf",
+    "filename": "unknown",
+    "assetId": "ceca34033744eb545256110177727d23d1d414cc3c957a05017d77a1bc39d060c5e615ef29d93c5456ed1e1ba8f705c26496ffb11ceb61d0cd2aa65833b9d168b8417fb908da3ee3d527d79d580ddadcd37b082e767053f30b734cfe71e20ea7f662ddcf"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/17566/unversioned/assets/COVER/305dd1d7871b2a8d471fd993d34ff7431fced1b57b71f2bf3c50fc19539c7c0434ae3b186292391db0379543de9d2d369aa0ed2c3ac21132c7fd625d55bff1690c24220083fa8fa25a4849571f22e3bb78c3669a104cd968f714cfcf13db26cd3f59b8af",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/17566/unversioned/assets/EXAMPLE/305dd1d7871b2a8d471fd993d34ff7431fced1b57b71f2bf3c50fc19539c7c0434ae3b186292391db0379543de9d2d369aa0ed2c3ac21132c7fd625d55bff1690c24220083fa8fa25a4849571f22e3bb78c3669a104cd968f714cfcf13db26cd3f59b8af",
+    "filename": "Cover photo",
+    "assetId": "305dd1d7871b2a8d471fd993d34ff7431fced1b57b71f2bf3c50fc19539c7c0434ae3b186292391db0379543de9d2d369aa0ed2c3ac21132c7fd625d55bff1690c24220083fa8fa25a4849571f22e3bb78c3669a104cd968f714cfcf13db26cd3f59b8af"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/17566/unversioned/assets/EXAMPLE/305dd1d7871b2a8d471fd993d34ff7431fced1b57b71f2bf3c50fc19539c7c0434ae3b186292391db0379543de9d2d369aa0ed2c3ac21132c7fd625d55bff1690c24220083fa8fa25a4849571f22e3bb78c3669a104cd968f714cfcf13db26cd3f59b8af",
+      "imageUrl": "https://codaio.imgix.net/packs/17566/unversioned/assets/EXAMPLE/305dd1d7871b2a8d471fd993d34ff7431fced1b57b71f2bf3c50fc19539c7c0434ae3b186292391db0379543de9d2d369aa0ed2c3ac21132c7fd625d55bff1690c24220083fa8fa25a4849571f22e3bb78c3669a104cd968f714cfcf13db26cd3f59b8af",
       "filename": "Cover photo",
       "assetId": "305dd1d7871b2a8d471fd993d34ff7431fced1b57b71f2bf3c50fc19539c7c0434ae3b186292391db0379543de9d2d369aa0ed2c3ac21132c7fd625d55bff1690c24220083fa8fa25a4849571f22e3bb78c3669a104cd968f714cfcf13db26cd3f59b8af"
     }
   ],
+  "agentImages": [],
   "packVersion": "9",
   "releaseId": 3,
   "lastReleasedAt": "2022-12-22T21:25:52.664Z",
@@ -24,6 +35,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

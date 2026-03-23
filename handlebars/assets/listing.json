@@ -3,20 +3,31 @@
   "name": "Handlebars Templates",
   "description": "The Substitue(), RegexReplace(), and Format() formulas are great for simple replacements, and the Compose column makes templated text easy, but for some really complex use cases you need something more.\n\nThis Pack uses the Handlebars templating engine to make it easier to replace placeholders in templated text. Simply wrap your placeholders with double curly braces (like \"{{name}}\", etc) and then feed the values into the Template() formula to do the replacements.\n\n=Template(\"Hello {{name}}\", \"name\", \"World\") 🠮 \"Hello World\"\n\nIn addition to simple placeholder replacements, you can also use \"if\" statements to render text conditionally.\n\n    Hello {{name}. {{#if day}} Happy {{day}}! {{/if}}\n\nSee the documentation at https://handlebarsjs.com/ for more information about the templating language.\n\nIcon property of the Handlebars project.\nCover photo from Photo by Alan Hardman on Unsplash.\nPowered by the handlebars NPM library.",
   "shortDescription": "Use the Handlebars templating engine to replace placeholders in text.",
-  "logoUrl": "https://codahosted.io/packs/25453/unversioned/assets/LOGO/414faf9576ead40dc677c62c7341d6e4803c82e3adef09fd5a77bd2c23f27db8b9139fc726c98ce719623278985f52078860aafbe26fa17cf7d0c948278a5027ec04d21ae1a59861b89a7a73eff1c5acbaf202498a921130dd0e54f36ea56d8949a834a0",
-  "coverUrl": "https://codahosted.io/packs/25453/unversioned/assets/COVER/f9085a2622596c410a1b45b6d5a480147bb4f00673a75a34953757f1841beb4548f2b35d020543d2babb0d50a7f409705683d96058283d842b581d479edfaf3b986b112967541afd333db972abe0d3578a12cc23df7844bd8f915a2bea03bb0049b609a1",
+  "logoUrl": "https://codaio.imgix.net/packs/25453/unversioned/assets/LOGO/414faf9576ead40dc677c62c7341d6e4803c82e3adef09fd5a77bd2c23f27db8b9139fc726c98ce719623278985f52078860aafbe26fa17cf7d0c948278a5027ec04d21ae1a59861b89a7a73eff1c5acbaf202498a921130dd0e54f36ea56d8949a834a0",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/25453/unversioned/assets/LOGO/414faf9576ead40dc677c62c7341d6e4803c82e3adef09fd5a77bd2c23f27db8b9139fc726c98ce719623278985f52078860aafbe26fa17cf7d0c948278a5027ec04d21ae1a59861b89a7a73eff1c5acbaf202498a921130dd0e54f36ea56d8949a834a0",
+    "filename": "unknown",
+    "assetId": "414faf9576ead40dc677c62c7341d6e4803c82e3adef09fd5a77bd2c23f27db8b9139fc726c98ce719623278985f52078860aafbe26fa17cf7d0c948278a5027ec04d21ae1a59861b89a7a73eff1c5acbaf202498a921130dd0e54f36ea56d8949a834a0"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/25453/unversioned/assets/COVER/f9085a2622596c410a1b45b6d5a480147bb4f00673a75a34953757f1841beb4548f2b35d020543d2babb0d50a7f409705683d96058283d842b581d479edfaf3b986b112967541afd333db972abe0d3578a12cc23df7844bd8f915a2bea03bb0049b609a1",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/25453/unversioned/assets/COVER/f9085a2622596c410a1b45b6d5a480147bb4f00673a75a34953757f1841beb4548f2b35d020543d2babb0d50a7f409705683d96058283d842b581d479edfaf3b986b112967541afd333db972abe0d3578a12cc23df7844bd8f915a2bea03bb0049b609a1",
+    "filename": "unknown",
+    "assetId": "f9085a2622596c410a1b45b6d5a480147bb4f00673a75a34953757f1841beb4548f2b35d020543d2babb0d50a7f409705683d96058283d842b581d479edfaf3b986b112967541afd333db972abe0d3578a12cc23df7844bd8f915a2bea03bb0049b609a1"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/25453/unversioned/assets/EXAMPLE/1bcd7283f2c54cdf42c39e73ead66f62845ac829a06b450641f35929300c2a0c74ad0867b3c8c832be05fdb3664bfbdcda1ad73c883c37b53f58f2d55452b220bc58e99e0eb626807a4cb997d54364fa66cefd8a9c7da57fd60c11b2fa6979539747b06e",
+      "imageUrl": "https://codaio.imgix.net/packs/25453/unversioned/assets/EXAMPLE/1bcd7283f2c54cdf42c39e73ead66f62845ac829a06b450641f35929300c2a0c74ad0867b3c8c832be05fdb3664bfbdcda1ad73c883c37b53f58f2d55452b220bc58e99e0eb626807a4cb997d54364fa66cefd8a9c7da57fd60c11b2fa6979539747b06e",
       "filename": "alan-hardman-Y-hl3rx5fr8-unsplash (Custom).jpg",
       "mimeType": "image/jpeg",
       "assetId": "1bcd7283f2c54cdf42c39e73ead66f62845ac829a06b450641f35929300c2a0c74ad0867b3c8c832be05fdb3664bfbdcda1ad73c883c37b53f58f2d55452b220bc58e99e0eb626807a4cb997d54364fa66cefd8a9c7da57fd60c11b2fa6979539747b06e"
     }
   ],
-  "packVersion": "33",
-  "releaseId": 6,
-  "lastReleasedAt": "2024-05-31T20:37:33.150Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/25453/33/metadata/8824b5ba030f74c73af8013ba1391a09569570c6e741f68033fcc0fe099630e01de7dbb93839ee6186f6da45700fed9ebba22e7809d9b2174bc02ab1248269268ea6caed189a907b46cb9bfdc222ad70ef28ef0a4327a471f2681abd8e22ed13c3f11dbe.json",
+  "agentImages": [],
+  "packVersion": "40",
+  "releaseId": 7,
+  "lastReleasedAt": "2025-08-16T03:01:32.041Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/25453/40/metadata/96c22a666365c27f104528ddb5305de15013cef97b05aa56b6eacc070e08ecc7f7cbd7b8666f1d79be73d37dbbb51adafc8b7ed21390bd0846a08cfd82611d3b8c16b354f56b8ba4a599bbd0df4e95c771c3461af90b1954a112c1038493f8ea0551889f.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
@@ -25,6 +36,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {
@@ -43,7 +55,7 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.7.5",
+  "sdkVersion": "1.9.9",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

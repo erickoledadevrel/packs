@@ -3,15 +3,21 @@
   "name": "XML",
   "description": "> Extensible Markup Language (XML) is a simple, very flexible text format derived from SGML (ISO 8879). Originally designed to meet the challenges of large-scale electronic publishing, XML is also playing an increasingly important role in the exchange of a wide variety of data on the Web and elsewhere.\n\nI feel like \"simple\" is a bit of an overstatement, I have no idea what SGML is, and its importance on the Web has long since faded. But XML still lives on, and with this Pack you can work with it in your Coda docs.\n\nThis Pack uses the xml2js library, and as such the way that XML is turned into JSON or vice versa follows the standard they defined. Read more: https://www.npmjs.com/package/xml2js\n\nIcon created by Freepik - Flaticon.\nBanner image created using icon from riajulislam - Flaticon.",
   "shortDescription": "A collection of utility formulas for working with XML.",
-  "logoUrl": "https://codahosted.io/packs/34738/unversioned/assets/LOGO/084f6e83222251a847d773092376e1d79c1be6a2538db224611ae40915be02e643ce2ccf8240589d011fffbb3566cdb4780a13d26779f9cff33044c3520b5442bdcabdd12a60ad1b61652abaf206fb92ec39a610f20eb04f5878a99be1e3d378b966ac8a",
+  "logoUrl": "https://codaio.imgix.net/packs/34738/unversioned/assets/LOGO/084f6e83222251a847d773092376e1d79c1be6a2538db224611ae40915be02e643ce2ccf8240589d011fffbb3566cdb4780a13d26779f9cff33044c3520b5442bdcabdd12a60ad1b61652abaf206fb92ec39a610f20eb04f5878a99be1e3d378b966ac8a",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/34738/unversioned/assets/LOGO/084f6e83222251a847d773092376e1d79c1be6a2538db224611ae40915be02e643ce2ccf8240589d011fffbb3566cdb4780a13d26779f9cff33044c3520b5442bdcabdd12a60ad1b61652abaf206fb92ec39a610f20eb04f5878a99be1e3d378b966ac8a",
+    "filename": "unknown",
+    "assetId": "084f6e83222251a847d773092376e1d79c1be6a2538db224611ae40915be02e643ce2ccf8240589d011fffbb3566cdb4780a13d26779f9cff33044c3520b5442bdcabdd12a60ad1b61652abaf206fb92ec39a610f20eb04f5878a99be1e3d378b966ac8a"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/34738/unversioned/assets/EXAMPLE/e7e0a69ad8f95e171449f86840c3926ebf167e3101727043d3c3e0371293fffdeff3c0bcd41de02408b1f534ef1d19702fa65c8747bde301702dfe7f8545eb6691472e944e0bfba40bc46d94b6e323fc965e7f670f1b857e011c9126c7c80e014904bb33",
+      "imageUrl": "https://codaio.imgix.net/packs/34738/unversioned/assets/EXAMPLE/e7e0a69ad8f95e171449f86840c3926ebf167e3101727043d3c3e0371293fffdeff3c0bcd41de02408b1f534ef1d19702fa65c8747bde301702dfe7f8545eb6691472e944e0bfba40bc46d94b6e323fc965e7f670f1b857e011c9126c7c80e014904bb33",
       "filename": "xml.png",
       "mimeType": "image/png",
       "assetId": "e7e0a69ad8f95e171449f86840c3926ebf167e3101727043d3c3e0371293fffdeff3c0bcd41de02408b1f534ef1d19702fa65c8747bde301702dfe7f8545eb6691472e944e0bfba40bc46d94b6e323fc965e7f670f1b857e011c9126c7c80e014904bb33"
     }
   ],
+  "agentImages": [],
   "packVersion": "2",
   "releaseId": 2,
   "lastReleasedAt": "2024-10-03T14:15:12.643Z",
@@ -24,6 +30,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

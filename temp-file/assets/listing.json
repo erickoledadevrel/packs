@@ -3,15 +3,26 @@
   "name": "Temp File",
   "description": "The Coda Formula Language can do many things, but it's typically trapped within the document. Use this Pack to break free and generate and download temporary files using the content of your choice!\n\nThe formula TemporaryFile() takes in text content, saves it to a temporary file, and returns the URL.\n\n= TemporaryFile(\"Hello world\")\n\nCombine this with the built-in OpenWindow() formula to allow users to download the file before it expires.\n\n= OpenWindow(TemporaryFile(\"Hello World\"))\n\nYou can also set the name of the generated file, to match the content within.\n\n= OpenWindow(TemporaryFile(\"<b>Hello World</b>\", \"page.html\"))\n\nThere are two additional formulas for creating temporary files in other ways:\n\n⮞ TemporaryFileFromDataUri - Create a temporary file from a data URI (like \"data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==\")\n\n⮞ TemporaryZipFile - Create a temporary zip file from a list of other files (from a Coda table File column)",
   "shortDescription": "Generate a temporary file using a formula.",
-  "logoUrl": "https://codahosted.io/packs/12946/unversioned/assets/LOGO/95344327b3338834da191de64ddd36366b24e131239769c3d806771b276b686323fff3e27736ecb03f21a26d78e20c28f7dd2d5d3a15ef75a2507ae7df64b09512b259c32240f2b95613b77fd4d09be8590d0f149f4c47ebc1716b99793bf64c86945827",
-  "coverUrl": "https://codahosted.io/packs/12946/unversioned/assets/COVER/e808a85d89bc2e34fae416c7e481098ae3ffed1384920de7b06544399bc4ed70988fb8d0922bcac6b34ade2b6f5856bf816859603316286f5eecbe4730361716528f0a6eb1534fcf76222a94e8b19ac29c792868b765c0d7b006a923cfaf4f719c0ea702",
+  "logoUrl": "https://codaio.imgix.net/packs/12946/unversioned/assets/LOGO/95344327b3338834da191de64ddd36366b24e131239769c3d806771b276b686323fff3e27736ecb03f21a26d78e20c28f7dd2d5d3a15ef75a2507ae7df64b09512b259c32240f2b95613b77fd4d09be8590d0f149f4c47ebc1716b99793bf64c86945827",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/12946/unversioned/assets/LOGO/95344327b3338834da191de64ddd36366b24e131239769c3d806771b276b686323fff3e27736ecb03f21a26d78e20c28f7dd2d5d3a15ef75a2507ae7df64b09512b259c32240f2b95613b77fd4d09be8590d0f149f4c47ebc1716b99793bf64c86945827",
+    "filename": "unknown",
+    "assetId": "95344327b3338834da191de64ddd36366b24e131239769c3d806771b276b686323fff3e27736ecb03f21a26d78e20c28f7dd2d5d3a15ef75a2507ae7df64b09512b259c32240f2b95613b77fd4d09be8590d0f149f4c47ebc1716b99793bf64c86945827"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/12946/unversioned/assets/COVER/e808a85d89bc2e34fae416c7e481098ae3ffed1384920de7b06544399bc4ed70988fb8d0922bcac6b34ade2b6f5856bf816859603316286f5eecbe4730361716528f0a6eb1534fcf76222a94e8b19ac29c792868b765c0d7b006a923cfaf4f719c0ea702",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/12946/unversioned/assets/EXAMPLE/e808a85d89bc2e34fae416c7e481098ae3ffed1384920de7b06544399bc4ed70988fb8d0922bcac6b34ade2b6f5856bf816859603316286f5eecbe4730361716528f0a6eb1534fcf76222a94e8b19ac29c792868b765c0d7b006a923cfaf4f719c0ea702",
+    "filename": "Cover photo",
+    "assetId": "e808a85d89bc2e34fae416c7e481098ae3ffed1384920de7b06544399bc4ed70988fb8d0922bcac6b34ade2b6f5856bf816859603316286f5eecbe4730361716528f0a6eb1534fcf76222a94e8b19ac29c792868b765c0d7b006a923cfaf4f719c0ea702"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/12946/unversioned/assets/EXAMPLE/e808a85d89bc2e34fae416c7e481098ae3ffed1384920de7b06544399bc4ed70988fb8d0922bcac6b34ade2b6f5856bf816859603316286f5eecbe4730361716528f0a6eb1534fcf76222a94e8b19ac29c792868b765c0d7b006a923cfaf4f719c0ea702",
+      "imageUrl": "https://codaio.imgix.net/packs/12946/unversioned/assets/EXAMPLE/e808a85d89bc2e34fae416c7e481098ae3ffed1384920de7b06544399bc4ed70988fb8d0922bcac6b34ade2b6f5856bf816859603316286f5eecbe4730361716528f0a6eb1534fcf76222a94e8b19ac29c792868b765c0d7b006a923cfaf4f719c0ea702",
       "filename": "Cover photo",
       "assetId": "e808a85d89bc2e34fae416c7e481098ae3ffed1384920de7b06544399bc4ed70988fb8d0922bcac6b34ade2b6f5856bf816859603316286f5eecbe4730361716528f0a6eb1534fcf76222a94e8b19ac29c792868b765c0d7b006a923cfaf4f719c0ea702"
     }
   ],
+  "agentImages": [],
   "packVersion": "26",
   "releaseId": 7,
   "lastReleasedAt": "2023-07-15T01:44:10.258Z",
@@ -39,6 +50,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

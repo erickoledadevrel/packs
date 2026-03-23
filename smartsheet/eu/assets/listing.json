@@ -1,0 +1,49 @@
+{
+  "packId": 49967,
+  "name": "Smartsheet (EU)",
+  "description": "",
+  "shortDescription": "",
+  "logoUrl": "https://cdn.coda.io/assets/e2cb01c5ac5e/img/packs/default-pack-icon.png",
+  "logo": {
+    "filename": "default-pack-icon.png",
+    "imageUrl": "https://cdn.coda.io/assets/e2cb01c5ac5e/img/packs/default-pack-icon.png",
+    "assetId": "",
+    "mimeType": "image/png"
+  },
+  "exampleImages": [],
+  "agentImages": [],
+  "packVersion": "1",
+  "externalMetadataUrl": "https://codahosted.io/packs/49967/1/metadata/c88825e531e262bb7d41fd25a1be62972f99ed33c60144c037902989e24c068fe86c3478421e9dd1f1a1b8c3a1fbe2fcaf809ee8200a0d54bd7eed276e0ecc9dc4034187bab5cbcf7fe7380eca347dd7a05209dc1f5c1dce5f7fa75686d9acb98ff1c8e6.json",
+  "categories": [],
+  "supportEmail": "koleda.eric@gmail.com",
+  "certifiedAgent": false,
+  "sourceCodeVisibility": "private",
+  "makers": [
+    {
+      "name": "Eric Koleda",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
+      "employer": "Coda",
+      "jobTitle": "Developer Advocate",
+      "slug": "eric-koleda"
+    }
+  ],
+  "standardPackPlan": {
+    "packPlanId": "17a56082-0eda-4e44-868e-e9bb9baf0cfd",
+    "packId": 49967,
+    "createdAt": "2026-03-21T01:52:57.309Z",
+    "pricing": {
+      "type": "Free"
+    }
+  },
+  "sdkVersion": "1.9.9",
+  "discoverability": "private",
+  "userAccess": {
+    "canEdit": true,
+    "canInstall": false,
+    "canTest": true,
+    "canView": true,
+    "canPurchase": false,
+    "requiresTrial": false,
+    "canConnectAccount": true
+  }
+}

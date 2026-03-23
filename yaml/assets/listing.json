@@ -3,15 +3,21 @@
   "name": "YAML",
   "description": "A collection of utility functions for working with YAML in Coda.\n\nIcon and logo are the property of yaml.org.",
   "shortDescription": "Human-friendly data serialization for all programming languages.",
-  "logoUrl": "https://codahosted.io/packs/34536/unversioned/assets/LOGO/2e81d22e4833dbca15f43a6eff028aa7163e9cd67dcc41adc61ab62e3c7bbf141fcbc58bbd79245b7727ad234afad4ab4f26ba548dbb80592b213aaab0c923edda556fba31d522260439511d382f3ee9b411c7172086883f81008f4a2ecec372781d57fe",
+  "logoUrl": "https://codaio.imgix.net/packs/34536/unversioned/assets/LOGO/2e81d22e4833dbca15f43a6eff028aa7163e9cd67dcc41adc61ab62e3c7bbf141fcbc58bbd79245b7727ad234afad4ab4f26ba548dbb80592b213aaab0c923edda556fba31d522260439511d382f3ee9b411c7172086883f81008f4a2ecec372781d57fe",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/34536/unversioned/assets/LOGO/2e81d22e4833dbca15f43a6eff028aa7163e9cd67dcc41adc61ab62e3c7bbf141fcbc58bbd79245b7727ad234afad4ab4f26ba548dbb80592b213aaab0c923edda556fba31d522260439511d382f3ee9b411c7172086883f81008f4a2ecec372781d57fe",
+    "filename": "unknown",
+    "assetId": "2e81d22e4833dbca15f43a6eff028aa7163e9cd67dcc41adc61ab62e3c7bbf141fcbc58bbd79245b7727ad234afad4ab4f26ba548dbb80592b213aaab0c923edda556fba31d522260439511d382f3ee9b411c7172086883f81008f4a2ecec372781d57fe"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/34536/unversioned/assets/EXAMPLE/287fc0f4ef338f16ba6d4da6971f05089cd2936e3d5f58937baeab62924f9df5fd4945b5156d82e822293adfc1f1a2a5390575bf422cec7bccc592abc259bb7e0eb42434e329aedc6826babdbf3c2ed259bbf5064bfe51b21b08b6b25d980ce7cdf7249b",
+      "imageUrl": "https://codaio.imgix.net/packs/34536/unversioned/assets/EXAMPLE/287fc0f4ef338f16ba6d4da6971f05089cd2936e3d5f58937baeab62924f9df5fd4945b5156d82e822293adfc1f1a2a5390575bf422cec7bccc592abc259bb7e0eb42434e329aedc6826babdbf3c2ed259bbf5064bfe51b21b08b6b25d980ce7cdf7249b",
       "filename": "yaml.png",
       "mimeType": "image/png",
       "assetId": "287fc0f4ef338f16ba6d4da6971f05089cd2936e3d5f58937baeab62924f9df5fd4945b5156d82e822293adfc1f1a2a5390575bf422cec7bccc592abc259bb7e0eb42434e329aedc6826babdbf3c2ed259bbf5064bfe51b21b08b6b25d980ce7cdf7249b"
     }
   ],
+  "agentImages": [],
   "packVersion": "2",
   "releaseId": 2,
   "lastReleasedAt": "2024-09-24T16:19:47.166Z",
@@ -24,6 +30,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

@@ -3,15 +3,26 @@
   "name": "Mockaroo",
   "description": "Ever try coming up with a bunch of fake names and addresses? It's harder than it looks! The Mockaroo service makes it easy to generate mock data, including a wide variety of data types.\n\nSimply add a new MockData table to your doc, select the columns of mock data to include as well as the number of rows to generate, and you are done! The MockColumn() helper formula is for advanced use cases where you want to specify additional options for your columns.\n\nYou'll need to supply your own Mockaroo API key to use this Pack, but you can sign up for free and it comes with a generous amount of free usage per day.\n\nThis Pack is not affiliated with Mockaroo, LLC or Tonic, The Fake Data Company™.",
   "shortDescription": "Quickly generate tables of mock (fake) data.",
-  "logoUrl": "https://codahosted.io/packs/17106/unversioned/assets/LOGO/7cbd67027cf426a9207bbb6d2b31b7a0fc55464ee643137c70e8d09c4f49a096c1a170d01722e51c8aa608331bf27dcc911d7703b725f6173018d0f8b7efd096133b333e16935cab543704bad565951483f4eef8ded843dad29c5ecf99796bc556e26b47",
-  "coverUrl": "https://codahosted.io/packs/17106/unversioned/assets/COVER/c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62",
+  "logoUrl": "https://codaio.imgix.net/packs/17106/unversioned/assets/LOGO/7cbd67027cf426a9207bbb6d2b31b7a0fc55464ee643137c70e8d09c4f49a096c1a170d01722e51c8aa608331bf27dcc911d7703b725f6173018d0f8b7efd096133b333e16935cab543704bad565951483f4eef8ded843dad29c5ecf99796bc556e26b47",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/17106/unversioned/assets/LOGO/7cbd67027cf426a9207bbb6d2b31b7a0fc55464ee643137c70e8d09c4f49a096c1a170d01722e51c8aa608331bf27dcc911d7703b725f6173018d0f8b7efd096133b333e16935cab543704bad565951483f4eef8ded843dad29c5ecf99796bc556e26b47",
+    "filename": "unknown",
+    "assetId": "7cbd67027cf426a9207bbb6d2b31b7a0fc55464ee643137c70e8d09c4f49a096c1a170d01722e51c8aa608331bf27dcc911d7703b725f6173018d0f8b7efd096133b333e16935cab543704bad565951483f4eef8ded843dad29c5ecf99796bc556e26b47"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/17106/unversioned/assets/COVER/c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/17106/unversioned/assets/EXAMPLE/c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62",
+    "filename": "Cover photo",
+    "assetId": "c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/17106/unversioned/assets/EXAMPLE/c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62",
+      "imageUrl": "https://codaio.imgix.net/packs/17106/unversioned/assets/EXAMPLE/c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62",
       "filename": "Cover photo",
       "assetId": "c279ee76a5d83c5f9fd20fa8924d3d07b9aad4d28038aa2b2f9fdacecccc5dadc841170694842352d7eeb6ad8ee136bcdd8040133a9e9576488bca5df8578ed1fd5ff0447b1f8af43cb88d4b70f60cc2e9a7a93063b8731eeadaac8793d47377a2d5de62"
     }
   ],
+  "agentImages": [],
   "packVersion": "43",
   "releaseId": 4,
   "lastReleasedAt": "2024-02-14T21:55:58.657Z",
@@ -24,6 +35,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

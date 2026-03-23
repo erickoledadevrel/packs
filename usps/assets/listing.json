@@ -3,12 +3,20 @@
   "name": "USPS",
   "description": "",
   "shortDescription": "",
-  "logoUrl": "https://cdn.coda.io/assets/31678415ed10/img/packs/default-pack-icon.png",
+  "logoUrl": "https://cdn.coda.io/assets/e2cb01c5ac5e/img/packs/default-pack-icon.png",
+  "logo": {
+    "filename": "default-pack-icon.png",
+    "imageUrl": "https://cdn.coda.io/assets/e2cb01c5ac5e/img/packs/default-pack-icon.png",
+    "assetId": "",
+    "mimeType": "image/png"
+  },
   "exampleImages": [],
+  "agentImages": [],
   "packVersion": "10",
   "externalMetadataUrl": "https://codahosted.io/packs/37312/10/metadata/e75829c9e07f0a0e92101e8cee3df784a713530c7cfed3e0ff4f0269feca91f91fd430ca65f71e4aaa3a11df8dc702e5cd8f12ae5820df321448d3c1c1c5014f3601f9b372613819d6be43c390f7e06c6313784a4bf4fd678f4eb81c474932662dda6f55.json",
   "categories": [],
   "supportEmail": "koleda.eric@gmail.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

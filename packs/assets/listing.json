@@ -3,19 +3,30 @@
   "name": "Packs Metadata",
   "description": "It's a Pack with a sync table called \"Packs\" that lists all of the Packs, including itself.\n\nThere's also a formula called \"Pack\" and a column format called \"Pack\" that load information about a single Pack, including itself.\n\nPACKS!\n\nIcon designed by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0\nCover photo by SHVETS production (via Pexels)",
   "shortDescription": "It's a Pack that gets information about Packs. 🤯",
-  "logoUrl": "https://codahosted.io/packs/16745/unversioned/assets/LOGO/ee27584b6d99f80e55ec682d37c438c7b46ba6185dc74d99058b8ac4ae8bab2d416a279dadac248734a27894492f94098e6ad4a7651db671c78daed2f61c88a362fd91db50e336c4818eab9d93b2eb129c45921eeb55c66378021464a0ffaa668e7abc20",
-  "coverUrl": "https://codahosted.io/packs/16745/unversioned/assets/COVER/09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6",
+  "logoUrl": "https://codaio.imgix.net/packs/16745/unversioned/assets/LOGO/ee27584b6d99f80e55ec682d37c438c7b46ba6185dc74d99058b8ac4ae8bab2d416a279dadac248734a27894492f94098e6ad4a7651db671c78daed2f61c88a362fd91db50e336c4818eab9d93b2eb129c45921eeb55c66378021464a0ffaa668e7abc20",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/16745/unversioned/assets/LOGO/ee27584b6d99f80e55ec682d37c438c7b46ba6185dc74d99058b8ac4ae8bab2d416a279dadac248734a27894492f94098e6ad4a7651db671c78daed2f61c88a362fd91db50e336c4818eab9d93b2eb129c45921eeb55c66378021464a0ffaa668e7abc20",
+    "filename": "unknown",
+    "assetId": "ee27584b6d99f80e55ec682d37c438c7b46ba6185dc74d99058b8ac4ae8bab2d416a279dadac248734a27894492f94098e6ad4a7651db671c78daed2f61c88a362fd91db50e336c4818eab9d93b2eb129c45921eeb55c66378021464a0ffaa668e7abc20"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/16745/unversioned/assets/COVER/09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/16745/unversioned/assets/EXAMPLE/09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6",
+    "filename": "Cover photo",
+    "assetId": "09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/16745/unversioned/assets/EXAMPLE/09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6",
+      "imageUrl": "https://codaio.imgix.net/packs/16745/unversioned/assets/EXAMPLE/09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6",
       "filename": "Cover photo",
       "assetId": "09b13329e3e9c9ca386343d16df387746418974a7d43b4ce853cd4e330228f19fe5b2530ae7a83b6197672dee516099c1f30ee0cea88dffecfbf4a260eb8178d2100c20030bd2025b03326d37c595181b8b13cf711ddc69ea118d89843a59d98a0a969a6"
     }
   ],
-  "packVersion": "93",
-  "releaseId": 27,
-  "lastReleasedAt": "2025-03-20T03:42:23.045Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/16745/93/metadata/c8c353fb445fb8382b1af7d182879b24cf05a0fefda3ea78cae998b4566621bdce8386660bc57f7f54c0a5d4ae76a4bd69749bc28537ccb8f5d8e8c044b3b763ec9c0871e5d1d2bcd05eb481b8175aa25f6ac5824e1d5e17fa7a463394caf082843659c8.json",
+  "agentImages": [],
+  "packVersion": "105",
+  "releaseId": 34,
+  "lastReleasedAt": "2026-03-06T21:37:23.459Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/16745/105/metadata/a691d40049d6b9032a22682cbd337048f9a2c15c4f2592f364139ba24af673cee92c93fc49c51705d8283fb883e8e4719b52fe1d7c15202a1130d380d601ca497476e0959292bb64eafdc4e7005d42e6abfd7b95e871cf6de1c880edf5df584cff55bbad.json",
   "categories": [
     {
       "categoryId": "bdc08c38-448c-4a8e-875d-b3b79689375b",
@@ -24,6 +35,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {
@@ -42,7 +54,7 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.8.6",
+  "sdkVersion": "1.9.9",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

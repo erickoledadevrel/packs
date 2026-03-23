@@ -3,15 +3,27 @@
   "name": "Smartsheet",
   "description": "Spend all day in Coda but need collaborate on some important data in Smartsheet? No worries, use the Smartsheet Pack for Coda to sync that data into your Coda docs where you can view and edit it just like every other Coda table.\n\nThis Pack is not associated with Smartsheet Inc.\nThe logo and icon are the property of Smartsheet Inc.",
   "shortDescription": "View and edit your sheets from within Coda.",
-  "logoUrl": "https://codahosted.io/packs/28295/unversioned/assets/LOGO/6d1625f65a01e3689972a441af447e54807ae757d38bdcd3e5889fc468f52847ff967cae26ef9e777df7357a850ad787e20d21985d3e769bfb887ee800fb513c47686aca5cf6c0441aedfe43702d9f92bab1de096cbb0440a5f77f7368873047b6950008",
-  "coverUrl": "https://codahosted.io/packs/28295/unversioned/assets/COVER/e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec",
+  "logoUrl": "https://codaio.imgix.net/packs/28295/unversioned/assets/LOGO/6d1625f65a01e3689972a441af447e54807ae757d38bdcd3e5889fc468f52847ff967cae26ef9e777df7357a850ad787e20d21985d3e769bfb887ee800fb513c47686aca5cf6c0441aedfe43702d9f92bab1de096cbb0440a5f77f7368873047b6950008",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/28295/unversioned/assets/LOGO/6d1625f65a01e3689972a441af447e54807ae757d38bdcd3e5889fc468f52847ff967cae26ef9e777df7357a850ad787e20d21985d3e769bfb887ee800fb513c47686aca5cf6c0441aedfe43702d9f92bab1de096cbb0440a5f77f7368873047b6950008",
+    "filename": "unknown",
+    "assetId": "6d1625f65a01e3689972a441af447e54807ae757d38bdcd3e5889fc468f52847ff967cae26ef9e777df7357a850ad787e20d21985d3e769bfb887ee800fb513c47686aca5cf6c0441aedfe43702d9f92bab1de096cbb0440a5f77f7368873047b6950008"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/28295/unversioned/assets/COVER/e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/28295/unversioned/assets/COVER/e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec",
+    "filename": "unknown",
+    "assetId": "e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/28295/unversioned/assets/EXAMPLE/e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec",
-      "filename": "Cover photo",
-      "assetId": "e608812ec8ca78c7a90c303b1cac86de343a16d813fef5b10e24f53be3aa48d5db1eb37cc0405a70275e58caec5ba9b75db79af9f2f88ad37c37b87711b051502ad41755b5c12e211783947c1b549b1e334268b0658fcbd57de4ff549231b65b62f133ec"
+      "imageUrl": "https://codaio.imgix.net/packs/28295/unversioned/assets/EXAMPLE/2dd32783290b67937a1a1a88821e0928897d1df6490ec8af7a17f7a6c5ef8bb568fb980108df549505493fbaab533cfdd6d2b03a228b488069d89b84dc43e067cde8d5e4081f3e1e7e6468ec26e7341973c35cb204d8e9c7e19ef88909d5e67d3643e123",
+      "filename": "c8eec47616223cfff205fb4ee54f344857b4845f648d4234bc36be61dbb6fd758f2a1d9d4556ae93c8b5eca374ac8b2e1e2579993cc00409cd66599928886867684f170cc8abf5be5bfa8e10611e39cf8f8de3f856555a822b14e05c89ae4426723c0626.png",
+      "mimeType": "image/png",
+      "assetId": "2dd32783290b67937a1a1a88821e0928897d1df6490ec8af7a17f7a6c5ef8bb568fb980108df549505493fbaab533cfdd6d2b03a228b488069d89b84dc43e067cde8d5e4081f3e1e7e6468ec26e7341973c35cb204d8e9c7e19ef88909d5e67d3643e123"
     }
   ],
+  "agentImages": [],
   "packVersion": "104",
   "releaseId": 5,
   "lastReleasedAt": "2025-02-21T15:12:02.492Z",
@@ -33,15 +45,13 @@
       "categorySlug": "engineering"
     }
   ],
-  "supportEmail": "packs@erickoleda.com",
+  "supportEmail": "packs@simpladocs.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {
-      "name": "Eric Koleda",
-      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJYa8nknu-CdeUwswBMRrDPKyLXdwzRPhMFuTodG063315NF-Xe%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=3883cf143fc4db7e36979789fddc045e",
-      "employer": "Coda",
-      "jobTitle": "Developer Advocate",
-      "slug": "eric-koleda"
+      "name": "SimplaDocs",
+      "pictureLink": "https://images-codaio.imgix.net/https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocJA5Qu3JZ1WRQVa1DXZ8GQN5-cVm6qDoxpB1yGhXBrJkhXcjV8%3Ds96-c?ixlib=js-3.8.0&auto=format%2Ccompress&fit=crop&w=360&h=360&crop=faces&s=c41d2a77715ebd4861ba4aa818e08a82"
     }
   ],
   "standardPackPlan": {

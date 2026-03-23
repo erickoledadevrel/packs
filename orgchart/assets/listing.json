@@ -3,19 +3,25 @@
   "name": "Org Chart",
   "description": "You know 'em, you love 'em, and now you can easily create 'em in Coda. Using this Org Chart Pack you can embed an interactive org chart in your Coda doc, created dynamically from data in a Coda table. Check out the attached User Guide to learn more!\n\nIcon by Apikke - Flaticon.",
   "shortDescription": "Create interactive org charts from people in a table.",
-  "logoUrl": "https://codahosted.io/packs/32027/unversioned/assets/LOGO/519f709d09da6dc7f1707e3b030b51a88713d25b026167c11b699aef62c59ef8d610f0259a3b7fefcf368773e2af9543c480c9fe0ec85de726aaab05677a981df6334b5582468d49e603f68d0f8ace3279cb665f176a4400e4512cb1e18c775d9eed05eb",
+  "logoUrl": "https://codaio.imgix.net/packs/32027/unversioned/assets/LOGO/519f709d09da6dc7f1707e3b030b51a88713d25b026167c11b699aef62c59ef8d610f0259a3b7fefcf368773e2af9543c480c9fe0ec85de726aaab05677a981df6334b5582468d49e603f68d0f8ace3279cb665f176a4400e4512cb1e18c775d9eed05eb",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/32027/unversioned/assets/LOGO/519f709d09da6dc7f1707e3b030b51a88713d25b026167c11b699aef62c59ef8d610f0259a3b7fefcf368773e2af9543c480c9fe0ec85de726aaab05677a981df6334b5582468d49e603f68d0f8ace3279cb665f176a4400e4512cb1e18c775d9eed05eb",
+    "filename": "unknown",
+    "assetId": "519f709d09da6dc7f1707e3b030b51a88713d25b026167c11b699aef62c59ef8d610f0259a3b7fefcf368773e2af9543c480c9fe0ec85de726aaab05677a981df6334b5582468d49e603f68d0f8ace3279cb665f176a4400e4512cb1e18c775d9eed05eb"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/32027/unversioned/assets/EXAMPLE/4bf819eef331ca15a837d19f922866016fb9c4f40c798f4ef6d51218b77d2893b034c39c30b684a3131bcd66a754492ca7a634f25dd3dc1b13bbf42724e92c7f23df4b929eb89c85e20618e9799908b99f04bdfe6b1f03d19ab0223f55dcb24f804fc7f6",
+      "imageUrl": "https://codaio.imgix.net/packs/32027/unversioned/assets/EXAMPLE/4bf819eef331ca15a837d19f922866016fb9c4f40c798f4ef6d51218b77d2893b034c39c30b684a3131bcd66a754492ca7a634f25dd3dc1b13bbf42724e92c7f23df4b929eb89c85e20618e9799908b99f04bdfe6b1f03d19ab0223f55dcb24f804fc7f6",
       "filename": "OrgChartWide.gif",
       "mimeType": "image/gif",
       "assetId": "4bf819eef331ca15a837d19f922866016fb9c4f40c798f4ef6d51218b77d2893b034c39c30b684a3131bcd66a754492ca7a634f25dd3dc1b13bbf42724e92c7f23df4b929eb89c85e20618e9799908b99f04bdfe6b1f03d19ab0223f55dcb24f804fc7f6"
     }
   ],
-  "packVersion": "19",
-  "releaseId": 4,
-  "lastReleasedAt": "2025-04-04T23:39:57.486Z",
-  "externalMetadataUrl": "https://codahosted.io/packs/32027/19/metadata/b97b047dfee0252dfddade18edd7393462f1fc002b21271d45ffe0ff6928550ff6d76ccf25130517fa83a9999c42c9ecf3ce80c44540d4fec7bfe8cdb1a4fc363fcf0fce21e9c55435d44141c09a2ac0205b2a5e831674572762ab1dc1e1eb86676590b9.json",
+  "agentImages": [],
+  "packVersion": "22",
+  "releaseId": 6,
+  "lastReleasedAt": "2025-07-08T01:54:58.200Z",
+  "externalMetadataUrl": "https://codahosted.io/packs/32027/22/metadata/e2850217bde4737f05b94ebb52fd9269874a5be15ed33d18161c28ca029849b937e7fb56260055ecb62ebcf3dad67e74bbbf640ede5c4b47e8f5e963b594fb9ad73632f766edf3e33a0baff2086ea677aefa85752f59c21527e1bea7d0474dbd5e63b2ab.json",
   "categories": [
     {
       "categoryId": "6d2fdb78-4e8d-493d-9074-abc5921b3bf5",
@@ -39,6 +45,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {
@@ -57,7 +64,7 @@
       "type": "Free"
     }
   },
-  "sdkVersion": "1.8.6",
+  "sdkVersion": "1.9.9",
   "discoverability": "public",
   "userAccess": {
     "canEdit": true,

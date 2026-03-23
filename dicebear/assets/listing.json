@@ -3,15 +3,26 @@
   "name": "DiceBear",
   "description": "Have you ever found yourself looking for a way to generate a user avatar in a Coda doc? Almost certainly not. But there are a few use cases I can think of:\n\n1) Creating a demo document, which you want to populate with some fake users.\n2) Building a team trivia game, where it would be fun for users to pick a player avatar.\n\nThis Pack uses the DiceBear API to generate random avatars based on a \"seed\" value, with a variety of options supported to allow you to customize the output.\n\nBe aware that the individual icon styles each have their own licensing terms, which you'll need to comply with.\n\nThis Pack is not affiliated with DiceBear.\nIcon property of DiceBear.",
   "shortDescription": "The avatar library you've always been looking for.",
-  "logoUrl": "https://codahosted.io/packs/28372/unversioned/assets/LOGO/f8336d085ea07908459d85a033734c3c220c60684e04b929c5c7ec8fd3e37e10bd6270d1c1cdea1219d543f93f83e19a6108e9dc6ef010943d766dcd582a1eb8b820b59d17781734c6aab2c9fde08383f1fa842bf48e687b85c0bbc82dcd11ca29027d53",
-  "coverUrl": "https://codahosted.io/packs/28372/unversioned/assets/COVER/b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b",
+  "logoUrl": "https://codaio.imgix.net/packs/28372/unversioned/assets/LOGO/f8336d085ea07908459d85a033734c3c220c60684e04b929c5c7ec8fd3e37e10bd6270d1c1cdea1219d543f93f83e19a6108e9dc6ef010943d766dcd582a1eb8b820b59d17781734c6aab2c9fde08383f1fa842bf48e687b85c0bbc82dcd11ca29027d53",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/28372/unversioned/assets/LOGO/f8336d085ea07908459d85a033734c3c220c60684e04b929c5c7ec8fd3e37e10bd6270d1c1cdea1219d543f93f83e19a6108e9dc6ef010943d766dcd582a1eb8b820b59d17781734c6aab2c9fde08383f1fa842bf48e687b85c0bbc82dcd11ca29027d53",
+    "filename": "unknown",
+    "assetId": "f8336d085ea07908459d85a033734c3c220c60684e04b929c5c7ec8fd3e37e10bd6270d1c1cdea1219d543f93f83e19a6108e9dc6ef010943d766dcd582a1eb8b820b59d17781734c6aab2c9fde08383f1fa842bf48e687b85c0bbc82dcd11ca29027d53"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/28372/unversioned/assets/COVER/b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/28372/unversioned/assets/EXAMPLE/b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b",
+    "filename": "Cover photo",
+    "assetId": "b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/28372/unversioned/assets/EXAMPLE/b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b",
+      "imageUrl": "https://codaio.imgix.net/packs/28372/unversioned/assets/EXAMPLE/b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b",
       "filename": "Cover photo",
       "assetId": "b21446f3d1ea5aa6b9fe320a3a4c75bf5331db7880adbca5e2fcaae8df57b0436f73ba60719a1f4c0031f6b40846bbe9bd469bae2d73ac24bf8096b080acb3ea7f6cd6f26d2f4c0ce3fb7756851b7f538d3a6fa9967138fcfdb8ac7f0aa9739fccc57e6b"
     }
   ],
+  "agentImages": [],
   "packVersion": "35",
   "releaseId": 3,
   "lastReleasedAt": "2024-07-11T14:49:59.688Z",
@@ -29,6 +40,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

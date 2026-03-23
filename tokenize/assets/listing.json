@@ -3,15 +3,21 @@
   "name": "Tokenize Words",
   "description": "Getting the individual words from some text is as simple as splitting by a blank space, right? Not really. Punctuation, compound words, and a whole host of other edge cases make it a bit more complicated.\n\nThis Pack simplifies the whole procedure by providing a Words() formula that can be used to get just the words from a string of text. It also offers the ability to remove stop words (\"and\", \"the\", etc.) in a variety of languages.\n\nIcon by OpenMoji – the open-source emoji and icon project. License: CC BY-SA 4.0\nCover image by Bruno from Pixabay.",
   "shortDescription": "Split text into the individual words, removing punctuation and optionally stop words.",
-  "logoUrl": "https://codahosted.io/packs/33888/unversioned/assets/LOGO/9fdb9688d5c3b21cfceeae66527d2abaf930404b6ef5214ce0c0b686e0694a496fb685f18c4de02cb640b57688ef1c4f5524a4a5707eb22c13db879c7bc7ddf0a24116c2195975e64b1f6d9e3d40dc387d4117e983c0065e8411bab376d55bfddde07b73",
+  "logoUrl": "https://codaio.imgix.net/packs/33888/unversioned/assets/LOGO/9fdb9688d5c3b21cfceeae66527d2abaf930404b6ef5214ce0c0b686e0694a496fb685f18c4de02cb640b57688ef1c4f5524a4a5707eb22c13db879c7bc7ddf0a24116c2195975e64b1f6d9e3d40dc387d4117e983c0065e8411bab376d55bfddde07b73",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/33888/unversioned/assets/LOGO/9fdb9688d5c3b21cfceeae66527d2abaf930404b6ef5214ce0c0b686e0694a496fb685f18c4de02cb640b57688ef1c4f5524a4a5707eb22c13db879c7bc7ddf0a24116c2195975e64b1f6d9e3d40dc387d4117e983c0065e8411bab376d55bfddde07b73",
+    "filename": "unknown",
+    "assetId": "9fdb9688d5c3b21cfceeae66527d2abaf930404b6ef5214ce0c0b686e0694a496fb685f18c4de02cb640b57688ef1c4f5524a4a5707eb22c13db879c7bc7ddf0a24116c2195975e64b1f6d9e3d40dc387d4117e983c0065e8411bab376d55bfddde07b73"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/33888/unversioned/assets/EXAMPLE/612146246fa483f01d291229959fda2adf5677ce08bff59a0a7e4f0a4c69ea217ab4d179aba9073e67ebd6cd90866b96d3f6b34385f423f568e13c8593091684620d76d46f0d49926399768addcaa362b58f7cbc95fb8894d89964508e41de8250c2ed4e",
+      "imageUrl": "https://codaio.imgix.net/packs/33888/unversioned/assets/EXAMPLE/612146246fa483f01d291229959fda2adf5677ce08bff59a0a7e4f0a4c69ea217ab4d179aba9073e67ebd6cd90866b96d3f6b34385f423f568e13c8593091684620d76d46f0d49926399768addcaa362b58f7cbc95fb8894d89964508e41de8250c2ed4e",
       "filename": "letters-3665281_1920.jpg",
       "mimeType": "image/jpeg",
       "assetId": "612146246fa483f01d291229959fda2adf5677ce08bff59a0a7e4f0a4c69ea217ab4d179aba9073e67ebd6cd90866b96d3f6b34385f423f568e13c8593091684620d76d46f0d49926399768addcaa362b58f7cbc95fb8894d89964508e41de8250c2ed4e"
     }
   ],
+  "agentImages": [],
   "packVersion": "7",
   "releaseId": 1,
   "lastReleasedAt": "2024-09-03T21:19:52.083Z",
@@ -29,6 +35,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

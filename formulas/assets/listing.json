@@ -3,15 +3,26 @@
   "name": "Formula Metadata",
   "description": "If you're like me, you have a permanent tab open to coda.io/formulas. It contains a wealth of information about all the formulas in the Coda formula language. \n\nBut what if you could have all of that information inside of a Coda doc itself! 🤯\n\nThe Formula Metadata Pack allows you to do just that. Pull information about a single formula using the Formula() formula, or get a table of all formulas using the Formulas table.",
   "shortDescription": "Get information about the formulas in the Coda formula language.",
-  "logoUrl": "https://codahosted.io/packs/13219/unversioned/assets/LOGO/421d3e81fba33085b8c50756732f950c06e55e9eb8219a3d2fd7dd3db4cf4b1edaa0964003762a85cebeeb2082d9c1b64b2f9af6d7ad3522e3df3f155507a7d1854ce3151f5952a03e7990539aaf3a5ceeae4e92abfb98249baae5c686b5a6051faea913",
-  "coverUrl": "https://codahosted.io/packs/13219/unversioned/assets/COVER/817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4",
+  "logoUrl": "https://codaio.imgix.net/packs/13219/unversioned/assets/LOGO/421d3e81fba33085b8c50756732f950c06e55e9eb8219a3d2fd7dd3db4cf4b1edaa0964003762a85cebeeb2082d9c1b64b2f9af6d7ad3522e3df3f155507a7d1854ce3151f5952a03e7990539aaf3a5ceeae4e92abfb98249baae5c686b5a6051faea913",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/13219/unversioned/assets/LOGO/421d3e81fba33085b8c50756732f950c06e55e9eb8219a3d2fd7dd3db4cf4b1edaa0964003762a85cebeeb2082d9c1b64b2f9af6d7ad3522e3df3f155507a7d1854ce3151f5952a03e7990539aaf3a5ceeae4e92abfb98249baae5c686b5a6051faea913",
+    "filename": "unknown",
+    "assetId": "421d3e81fba33085b8c50756732f950c06e55e9eb8219a3d2fd7dd3db4cf4b1edaa0964003762a85cebeeb2082d9c1b64b2f9af6d7ad3522e3df3f155507a7d1854ce3151f5952a03e7990539aaf3a5ceeae4e92abfb98249baae5c686b5a6051faea913"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/13219/unversioned/assets/COVER/817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/13219/unversioned/assets/EXAMPLE/817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4",
+    "filename": "Cover photo",
+    "assetId": "817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/13219/unversioned/assets/EXAMPLE/817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4",
+      "imageUrl": "https://codaio.imgix.net/packs/13219/unversioned/assets/EXAMPLE/817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4",
       "filename": "Cover photo",
       "assetId": "817b0b8675b61a8b22e8b9615a476a0c74dc8cf92d29bac5ad8e6ac300503394420749f387aa6a7b6f7ed66d746586d2ed90dece9f5b74f95e84f2ebb17dcde1c50c231d7c74516068bcfb9ea7ef50313b8d757a6c1a67bee4588825fa754451c02542f4"
     }
   ],
+  "agentImages": [],
   "packVersion": "22",
   "releaseId": 2,
   "lastReleasedAt": "2023-04-11T01:31:19.972Z",
@@ -24,6 +35,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {

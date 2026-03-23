@@ -3,15 +3,26 @@
   "name": "nomnoml",
   "description": "A picture is worth a thousand words, but with nomnoml you can create one with far fewer! Using a custom markup syntax you can easily draw diagrams from plain text.\n\n[egg] -> [caterpillar] -> [butterfly]\n\nSimply pass some markup into the Diagram() formula to get a pretty diagram! Check out the user guide below to get more information about the markup language and try it out.\n\nPowered by the nomnoml library created by Daniel Kallin.",
   "shortDescription": "Draw UML diagrams based on a simple syntax.",
-  "logoUrl": "https://codahosted.io/packs/28266/unversioned/assets/LOGO/c3b9e79e3670b4668ec35bb9986b09cece62df5f869ad054e3484ec876bf7f072208a604489a43b3fc58938b7886819cba86ce6b7102f62c4576b9d653a0b49aed70ccb130a4d2cc41f626f9485ab585da6e009bec83cf08d444fe2fedadae054d8e511e",
-  "coverUrl": "https://codahosted.io/packs/28266/unversioned/assets/COVER/359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a",
+  "logoUrl": "https://codaio.imgix.net/packs/28266/unversioned/assets/LOGO/c3b9e79e3670b4668ec35bb9986b09cece62df5f869ad054e3484ec876bf7f072208a604489a43b3fc58938b7886819cba86ce6b7102f62c4576b9d653a0b49aed70ccb130a4d2cc41f626f9485ab585da6e009bec83cf08d444fe2fedadae054d8e511e",
+  "logo": {
+    "imageUrl": "https://codaio.imgix.net/packs/28266/unversioned/assets/LOGO/c3b9e79e3670b4668ec35bb9986b09cece62df5f869ad054e3484ec876bf7f072208a604489a43b3fc58938b7886819cba86ce6b7102f62c4576b9d653a0b49aed70ccb130a4d2cc41f626f9485ab585da6e009bec83cf08d444fe2fedadae054d8e511e",
+    "filename": "unknown",
+    "assetId": "c3b9e79e3670b4668ec35bb9986b09cece62df5f869ad054e3484ec876bf7f072208a604489a43b3fc58938b7886819cba86ce6b7102f62c4576b9d653a0b49aed70ccb130a4d2cc41f626f9485ab585da6e009bec83cf08d444fe2fedadae054d8e511e"
+  },
+  "coverUrl": "https://codaio.imgix.net/packs/28266/unversioned/assets/COVER/359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a",
+  "cover": {
+    "imageUrl": "https://codaio.imgix.net/packs/28266/unversioned/assets/EXAMPLE/359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a",
+    "filename": "Cover photo",
+    "assetId": "359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a"
+  },
   "exampleImages": [
     {
-      "imageUrl": "https://codahosted.io/packs/28266/unversioned/assets/EXAMPLE/359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a",
+      "imageUrl": "https://codaio.imgix.net/packs/28266/unversioned/assets/EXAMPLE/359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a",
       "filename": "Cover photo",
       "assetId": "359be3fec6bcacda2d803464d0fc3db4b84a1487f4b38fb7c9e97eca428cf32e446733c83a4dbf713f7160e5affaf4892fccd152f31c3fc43a599b1290e3269b59956b62c6efde8a2f7597c4614b6f64023240d9f698d10eeb1142ce223715ccd651774a"
     }
   ],
+  "agentImages": [],
   "packVersion": "7",
   "releaseId": 3,
   "lastReleasedAt": "2024-03-15T15:25:17.433Z",
@@ -29,6 +40,7 @@
     }
   ],
   "supportEmail": "packs@erickoleda.com",
+  "certifiedAgent": false,
   "sourceCodeVisibility": "private",
   "makers": [
     {
