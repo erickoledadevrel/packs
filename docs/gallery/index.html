@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/diorama@1.0.1/dist/diorama.js"></script>
     <style>
         * {
             margin: 0;
@@ -16,48 +14,21 @@
         body, html {
             width: 100%;
             height: 100%;
-            overflow: auto;
+            overflow: hidden;
+            background: #1a1a1a;
             font-family: Arial, sans-serif;
         }
-        #root {
-            width: 100%;
-            min-height: 100vh;
-            padding: 20px;
-            background: #1a1a1a;
+        #gallery {
+            position: relative;
         }
-        .gallery {
-            column-count: 1;
-            column-gap: 15px;
-        }
-        @media (min-width: 640px) {
-            .gallery {
-                column-count: 2;
-            }
-        }
-        @media (min-width: 1024px) {
-            .gallery {
-                column-count: 3;
-            }
-        }
-        @media (min-width: 1536px) {
-            .gallery {
-                column-count: 4;
-            }
-        }
-        .gallery-item {
-            break-inside: avoid;
-            margin-bottom: 15px;
+        #gallery img {
+            position: absolute;
+            object-fit: cover;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: filter 0.2s;
         }
-        .gallery-item:hover {
-            transform: scale(1.02);
-        }
-        .gallery-item img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 8px;
+        #gallery img:hover {
+            filter: brightness(1.1);
         }
         .loading {
             display: flex;
@@ -118,136 +89,156 @@
             padding: 20px;
             user-select: none;
         }
-        .lightbox-prev {
-            left: 20px;
-        }
-        .lightbox-next {
-            right: 20px;
-        }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root"><div class="loading">Loading gallery...</div></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useCallback } = React;
+    <script>
+        const GAP = 4;
 
-        function PhotoGallery() {
-            const [photos, setPhotos] = useState([]);
-            const [loading, setLoading] = useState(true);
-            const [error, setError] = useState(null);
-            const [lightboxIndex, setLightboxIndex] = useState(null);
-
-            useEffect(() => {
-                const params = new URLSearchParams(window.location.search);
-                const urlsParam = params.get('urls');
-
-                let urls;
-                if (!urlsParam) {
-                    // Default picsum photos if no URLs provided
-                    urls = [
-                        'https://picsum.photos/id/1018/1200/800',
-                        'https://picsum.photos/id/1015/800/1200',
-                        'https://picsum.photos/id/1019/1000/800',
-                        'https://picsum.photos/id/1016/900/600',
-                        'https://picsum.photos/id/1020/1200/900',
-                        'https://picsum.photos/id/1025/800/1200',
-                        'https://picsum.photos/id/1011/1100/700',
-                        'https://picsum.photos/id/1012/800/800'
-                    ];
-                } else {
-                    urls = urlsParam.split(',').map(url => url.trim()).filter(url => url);
-                }
-
-                if (urls.length === 0) {
-                    setError('No valid photo URLs found.');
-                    setLoading(false);
-                    return;
-                }
-
-                setPhotos(urls);
-                setLoading(false);
-            }, []);
-
-            const openLightbox = (index) => {
-                setLightboxIndex(index);
-            };
-
-            const closeLightbox = () => {
-                setLightboxIndex(null);
-            };
-
-            const goToPrevious = (e) => {
-                e.stopPropagation();
-                setLightboxIndex((lightboxIndex - 1 + photos.length) % photos.length);
-            };
-
-            const goToNext = (e) => {
-                e.stopPropagation();
-                setLightboxIndex((lightboxIndex + 1) % photos.length);
-            };
-
-            useEffect(() => {
-                const handleKeyDown = (e) => {
-                    if (lightboxIndex === null) return;
-                    if (e.key === 'Escape') closeLightbox();
-                    if (e.key === 'ArrowLeft') goToPrevious(e);
-                    if (e.key === 'ArrowRight') goToNext(e);
-                };
-                window.addEventListener('keydown', handleKeyDown);
-                return () => window.removeEventListener('keydown', handleKeyDown);
-            }, [lightboxIndex, photos.length]);
-
-            const adjust = useCallback(() => {
-                const gallery = document.querySelector(".gallery");
-                gallery.style.columnCount = 1;
-                while (gallery.scrollHeight > window.innerHeight) {
-                    gallery.style.columnCount++;
-                }
-            }, []);
-
-            useEffect(() => {
-                if (photos.length === 0) return;
-                window.addEventListener('resize', adjust);
-                return () => window.removeEventListener('resize', adjust);
-            }, [photos, adjust]);
-
-            if (loading) {
-                return <div className="loading">Loading gallery...</div>;
+        const urls = (() => {
+            const params = new URLSearchParams(window.location.search);
+            const urlsParam = params.get('urls');
+            if (urlsParam) {
+                return urlsParam.split(',').map(u => u.trim()).filter(Boolean);
             }
+            return [
+                'https://picsum.photos/id/1018/1200/800',
+                'https://picsum.photos/id/1015/800/1200',
+                'https://picsum.photos/id/1019/1000/800',
+                'https://picsum.photos/id/1016/900/600',
+                'https://picsum.photos/id/1020/1200/900',
+                'https://picsum.photos/id/1025/800/1200',
+                'https://picsum.photos/id/1011/1100/700',
+                'https://picsum.photos/id/1012/800/800',
+            ];
+        })();
 
-            if (error) {
-                return <div className="error">{error}</div>;
-            }
+        // --- Lightbox ---
+        let lightboxIndex = null;
+        let lightboxEl = null;
 
-            return (
-                <>
-                    <div className="gallery">
-                        {photos.map((url, index) => (
-                            <div key={index} className="gallery-item" onClick={() => openLightbox(index)}>
-                                <img src={url} alt={`Photo ${index + 1}`} onLoad={adjust} />
-                            </div>
-                        ))}
-                    </div>
+        function openLightbox(index) {
+            lightboxIndex = index;
+            renderLightbox();
+        }
+        function closeLightbox() {
+            lightboxIndex = null;
+            if (lightboxEl) { lightboxEl.remove(); lightboxEl = null; }
+        }
+        function moveLightbox(delta) {
+            lightboxIndex = (lightboxIndex + delta + urls.length) % urls.length;
+            renderLightbox();
+        }
+        function renderLightbox() {
+            if (lightboxEl) lightboxEl.remove();
+            lightboxEl = document.createElement('div');
+            lightboxEl.className = 'lightbox';
+            lightboxEl.innerHTML = `
+                <button class="lightbox-close">&times;</button>
+                ${urls.length > 1 ? `
+                    <button class="lightbox-nav lightbox-prev">&#8249;</button>
+                    <button class="lightbox-nav lightbox-next">&#8250;</button>
+                ` : ''}
+                <img src="${urls[lightboxIndex]}" alt="Photo ${lightboxIndex + 1}" />
+            `;
+            lightboxEl.querySelector('.lightbox-close').onclick = closeLightbox;
+            lightboxEl.querySelector('.lightbox-prev')?.addEventListener('click', e => { e.stopPropagation(); moveLightbox(-1); });
+            lightboxEl.querySelector('.lightbox-next')?.addEventListener('click', e => { e.stopPropagation(); moveLightbox(1); });
+            lightboxEl.onclick = closeLightbox;
+            lightboxEl.querySelector('img').onclick = e => e.stopPropagation();
+            document.body.appendChild(lightboxEl);
+        }
+        document.addEventListener('keydown', e => {
+            if (lightboxIndex === null) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') moveLightbox(-1);
+            if (e.key === 'ArrowRight') moveLightbox(1);
+        });
 
-                    {lightboxIndex !== null && (
-                        <div className="lightbox" onClick={closeLightbox}>
-                            <button className="lightbox-close" onClick={closeLightbox}>&times;</button>
-                            {photos.length > 1 && (
-                                <>
-                                    <button className="lightbox-nav lightbox-prev" onClick={goToPrevious}>‹</button>
-                                    <button className="lightbox-nav lightbox-next" onClick={goToNext}>›</button>
-                                </>
-                            )}
-                            <img src={photos[lightboxIndex]} alt={`Photo ${lightboxIndex + 1}`} onClick={(e) => e.stopPropagation()} />
-                        </div>
-                    )}
-                </>
-            );
+        // --- Preload all images to get natural dimensions ---
+        async function loadImages(urls) {
+            return Promise.all(urls.map((url, i) => new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve({
+                    url,
+                    index: i,
+                    aspectRatio: img.naturalWidth / img.naturalHeight,
+                });
+                img.onerror = () => reject(new Error(`Failed to load: ${url}`));
+                img.src = url;
+            })));
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<PhotoGallery />);
+        // --- Render gallery from diorama nodes ---
+        function renderGallery(images, nodes) {
+            const root = document.getElementById('root');
+            root.innerHTML = '';
+
+            const gallery = document.createElement('div');
+            gallery.id = 'gallery';
+            gallery.style.width = window.innerWidth + 'px';
+            gallery.style.height = window.innerHeight + 'px';
+
+            nodes.forEach(node => {
+                if (node.dummy) return;
+                const img = document.createElement('img');
+                img.src = images[node.index].url;
+                img.alt = `Photo ${node.index + 1}`;
+                img.style.left   = (node.x      + GAP / 2) + 'px';
+                img.style.top    = (node.y      + GAP / 2) + 'px';
+                img.style.width  = (node.width  - GAP)     + 'px';
+                img.style.height = (node.height - GAP)     + 'px';
+                img.addEventListener('click', () => openLightbox(node.index));
+                gallery.appendChild(img);
+            });
+
+            root.appendChild(gallery);
+        }
+
+        // --- Main ---
+        async function init() {
+            if (urls.length === 0) {
+                document.getElementById('root').innerHTML = '<div class="error">No valid photo URLs found.</div>';
+                return;
+            }
+
+            let images;
+            try {
+                images = await loadImages(urls);
+            } catch (err) {
+                document.getElementById('root').innerHTML = `<div class="error">${err.message}</div>`;
+                return;
+            }
+
+            const aspectRatios = images.map(img => img.aspectRatio);
+
+            function debounce(fn, delay) {
+                let timer;
+                return (...args) => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => fn(...args), delay);
+                };
+            }
+
+            function layout() {
+                const nodes = diorama.searchSolution(
+                    window.innerWidth,
+                    window.innerHeight,
+                    aspectRatios,
+                    300  // ms to search for a good solution
+                );
+                renderGallery(images, nodes);
+            }
+
+            layout();
+            window.addEventListener('resize', debounce(layout, 150));
+        }
+
+        init();
     </script>
 </body>
 </html>
