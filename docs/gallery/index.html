@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
-    <script src="https://cdn.jsdelivr.net/npm/diorama@1.0.1/dist/diorama.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js" integrity="sha512-qtX0GLM3qX8rxJN1gyDfcnMFFrKvixfoEOwbBib9VafR5vbChV5LeE5wSI/x+IlCkTY5ZFddFDCCfaVJJNnuKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         * {
@@ -107,7 +106,9 @@
 <body>
     <div id="root"><div class="loading">Loading gallery...</div></div>
 
-    <script>
+    <script type="module">
+        import * as diorama from 'https://cdn.jsdelivr.net/npm/diorama@2.0.14/lib/diorama.js';
+
         const GAP = 8;
 
         const urls = (() => {
@@ -137,19 +138,19 @@
         })();
 
         // --- Lightbox ---
-        let lightboxIndex = null;
+        let lightboxUrl = null;
         let lightboxEl = null;
 
-        function openLightbox(index) {
-            lightboxIndex = index;
+        function openLightbox(url) {
+            lightboxUrl = url;
             renderLightbox();
         }
         function closeLightbox() {
-            lightboxIndex = null;
+            lightboxUrl = null;
             if (lightboxEl) { lightboxEl.remove(); lightboxEl = null; }
         }
         function moveLightbox(delta) {
-            lightboxIndex = (lightboxIndex + delta + urls.length) % urls.length;
+            lightboxUrl = (lightboxUrl + delta + urls.length) % urls.length;
             renderLightbox();
         }
         function renderLightbox() {
@@ -162,7 +163,7 @@
                     <button class="lightbox-nav lightbox-prev">&#8249;</button>
                     <button class="lightbox-nav lightbox-next">&#8250;</button>
                 ` : ''}
-                <img src="${urls[lightboxIndex]}" alt="Photo ${lightboxIndex + 1}" />
+                <img src="${lightboxUrl}" />
             `;
             lightboxEl.querySelector('.lightbox-close').onclick = closeLightbox;
             lightboxEl.querySelector('.lightbox-prev')?.addEventListener('click', e => { e.stopPropagation(); moveLightbox(-1); });
@@ -172,7 +173,7 @@
             document.body.appendChild(lightboxEl);
         }
         document.addEventListener('keydown', e => {
-            if (lightboxIndex === null) return;
+            if (lightboxUrl === null) return;
             if (e.key === 'Escape') closeLightbox();
             if (e.key === 'ArrowLeft') moveLightbox(-1);
             if (e.key === 'ArrowRight') moveLightbox(1);
@@ -185,6 +186,8 @@
                 img.onload = () => resolve({
                     url,
                     index: i,
+                    width: img.naturalWidth,
+                    height: img.naturalHeight,
                     aspectRatio: img.naturalWidth / img.naturalHeight,
                 });
                 img.onerror = () => reject(new Error(`Failed to load: ${url}`));
@@ -193,7 +196,7 @@
         }
 
         // --- Render gallery from diorama nodes ---
-        function renderGallery(images, nodes) {
+        function renderGallery(images, layout) {
             const root = document.getElementById('root');
             root.innerHTML = '';
 
@@ -202,16 +205,15 @@
             gallery.style.width = window.innerWidth + 'px';
             gallery.style.height = window.innerHeight + 'px';
 
-            nodes.forEach(node => {
-                if (node.dummy) return;
+            layout.pictures.forEach((picture, index) => {
+                if (picture.dummy) return;
                 const img = document.createElement('img');
-                img.src = images[node.index].url;
-                img.alt = `Photo ${node.index + 1}`;
-                img.style.left   = (node.x      + GAP) + 'px';
-                img.style.top    = (node.y      + GAP) + 'px';
-                img.style.width  = (node.width  - GAP)     + 'px';
-                img.style.height = (node.height - GAP)     + 'px';
-                img.addEventListener('click', () => openLightbox(node.index));
+                img.src = picture.url;
+                img.style.left   = (picture.position.x      + GAP) + 'px';
+                img.style.top    = (picture.position.y      + GAP) + 'px';
+                img.style.width  = (picture.dimension.width  - GAP)     + 'px';
+                img.style.height = (picture.dimension.height - GAP)     + 'px';
+                img.addEventListener('click', () => openLightbox(picture.url));
                 gallery.appendChild(img);
             });
 
@@ -233,8 +235,6 @@
                 return;
             }
 
-            const aspectRatios = images.map(img => img.aspectRatio);
-
             function debounce(fn, delay) {
                 let timer;
                 return (...args) => {
@@ -243,18 +243,20 @@
                 };
             }
 
-            function layout() {
-                const nodes = diorama.searchSolution(
-                    window.innerWidth - GAP,
-                    window.innerHeight - GAP,
-                    aspectRatios,
-                    300  // ms to search for a good solution
+            function layoutPhotos() {
+                const target = {
+                    width: window.innerWidth - GAP,
+                    height: window.innerHeight - GAP,
+                };
+                const layout = diorama.findSolution(
+                    images,
+                    target,
                 );
-                renderGallery(images, nodes);
+                renderGallery(images, layout);
             }
 
-            layout();
-            window.addEventListener('resize', debounce(layout, 150));
+            layoutPhotos();
+            window.addEventListener('resize', debounce(layoutPhotos, 150));
         }
 
         init();
