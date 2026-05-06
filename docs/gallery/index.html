@@ -6,6 +6,10 @@
     <title>Photo Gallery</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js" integrity="sha512-qtX0GLM3qX8rxJN1gyDfcnMFFrKvixfoEOwbBib9VafR5vbChV5LeE5wSI/x+IlCkTY5ZFddFDCCfaVJJNnuKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
+        :root {
+            --foreground-color: #ffffff;
+            --background-color: #1a1a1a;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +19,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: #1a1a1a;
+            background: var(--background-color);
             font-family: Arial, sans-serif;
         }
         #gallery {
@@ -35,7 +39,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: white;
+            color: var(--foreground-color);
             font-size: 24px;
         }
         .error {
@@ -43,7 +47,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: #ff6b6b;
+            color: var(--foreground-color);
             font-size: 20px;
             text-align: center;
             padding: 20px;
@@ -53,7 +57,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: #ffffff88;
+            color: color-mix(in srgb, var(--foreground-color), transparent 50%);
             font-size: 20px;
             text-align: center;
             padding: 20px;
@@ -64,7 +68,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
+            background: color-mix(in srgb, var(--background-color), transparent 5%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -79,7 +83,7 @@
             position: absolute;
             top: 20px;
             right: 30px;
-            color: white;
+            color: var(--foreground-color);
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
@@ -90,11 +94,11 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            color: white;
+            color: var(--foreground-color);
             font-size: 60px;
             font-weight: bold;
             cursor: pointer;
-            background: rgba(0, 0, 0, 0.5);
+            background: color-mix(in srgb, var(--background-color), transparent 25%);
             border: none;
             padding: 20px;
             user-select: none;
@@ -113,6 +117,16 @@
 
         const urls = (() => {
             const params = new URLSearchParams(window.location.search);
+
+            const foregroundColorParam = params.get('fc');
+            const backgroundColorParam = params.get('bc');
+            if (foregroundColorParam) {
+                document.documentElement.style.setProperty('--foreground-color', foregroundColorParam);
+            }
+            if (backgroundColorParam) {
+                document.documentElement.style.setProperty('--background-color', backgroundColorParam);
+            }
+
             let urlsParam = params.get('urls');
             const encodedUrlsParam = params.get('e');
             const placeholdersParam = params.get('p');
@@ -138,19 +152,19 @@
         })();
 
         // --- Lightbox ---
-        let lightboxUrl = null;
+        let lightboxIndex = null;
         let lightboxEl = null;
 
-        function openLightbox(url) {
-            lightboxUrl = url;
+        function openLightbox(index) {
+            lightboxIndex = index;
             renderLightbox();
         }
         function closeLightbox() {
-            lightboxUrl = null;
+            lightboxIndex = null;
             if (lightboxEl) { lightboxEl.remove(); lightboxEl = null; }
         }
         function moveLightbox(delta) {
-            lightboxUrl = (lightboxUrl + delta + urls.length) % urls.length;
+            lightboxIndex = (lightboxIndex + delta + urls.length) % urls.length;
             renderLightbox();
         }
         function renderLightbox() {
@@ -163,7 +177,7 @@
                     <button class="lightbox-nav lightbox-prev">&#8249;</button>
                     <button class="lightbox-nav lightbox-next">&#8250;</button>
                 ` : ''}
-                <img src="${lightboxUrl}" />
+                <img src="${urls[lightboxIndex]}" />
             `;
             lightboxEl.querySelector('.lightbox-close').onclick = closeLightbox;
             lightboxEl.querySelector('.lightbox-prev')?.addEventListener('click', e => { e.stopPropagation(); moveLightbox(-1); });
@@ -173,7 +187,7 @@
             document.body.appendChild(lightboxEl);
         }
         document.addEventListener('keydown', e => {
-            if (lightboxUrl === null) return;
+            if (lightboxIndex === null) return;
             if (e.key === 'Escape') closeLightbox();
             if (e.key === 'ArrowLeft') moveLightbox(-1);
             if (e.key === 'ArrowRight') moveLightbox(1);
@@ -205,7 +219,7 @@
             gallery.style.width = window.innerWidth + 'px';
             gallery.style.height = window.innerHeight + 'px';
 
-            layout.pictures.forEach((picture, index) => {
+            layout.pictures.forEach(picture => {
                 if (picture.dummy) return;
                 const img = document.createElement('img');
                 img.src = picture.url;
@@ -213,7 +227,7 @@
                 img.style.top    = (picture.position.y      + GAP) + 'px';
                 img.style.width  = (picture.dimension.width  - GAP)     + 'px';
                 img.style.height = (picture.dimension.height - GAP)     + 'px';
-                img.addEventListener('click', () => openLightbox(picture.url));
+                img.addEventListener('click', () => openLightbox(urls.indexOf(picture.url)));
                 gallery.appendChild(img);
             });
 
