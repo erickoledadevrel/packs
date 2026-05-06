@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
     <script src="https://cdn.jsdelivr.net/npm/diorama@1.0.1/dist/diorama.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js" integrity="sha512-qtX0GLM3qX8rxJN1gyDfcnMFFrKvixfoEOwbBib9VafR5vbChV5LeE5wSI/x+IlCkTY5ZFddFDCCfaVJJNnuKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         * {
             margin: 0;
@@ -44,6 +45,16 @@
             align-items: center;
             height: 100vh;
             color: #ff6b6b;
+            font-size: 20px;
+            text-align: center;
+            padding: 20px;
+        }
+        .missing {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ffffff88;
             font-size: 20px;
             text-align: center;
             padding: 20px;
@@ -97,24 +108,32 @@
     <div id="root"><div class="loading">Loading gallery...</div></div>
 
     <script>
-        const GAP = 4;
+        const GAP = 8;
 
         const urls = (() => {
             const params = new URLSearchParams(window.location.search);
-            const urlsParam = params.get('urls');
+            let urlsParam = params.get('urls');
+            const encodedUrlsParam = params.get('e');
+            const placeholdersParam = params.get('p');
+            if (encodedUrlsParam) {
+                urlsParam =LZString.decompressFromEncodedURIComponent(encodedUrlsParam);
+            }
             if (urlsParam) {
                 return urlsParam.split(',').map(u => u.trim()).filter(Boolean);
             }
-            return [
-                'https://picsum.photos/id/1018/1200/800',
-                'https://picsum.photos/id/1015/800/1200',
-                'https://picsum.photos/id/1019/1000/800',
-                'https://picsum.photos/id/1016/900/600',
-                'https://picsum.photos/id/1020/1200/900',
-                'https://picsum.photos/id/1025/800/1200',
-                'https://picsum.photos/id/1011/1100/700',
-                'https://picsum.photos/id/1012/800/800',
-            ];
+            if (placeholdersParam) {
+                return [
+                    'https://picsum.photos/id/1018/1200/800',
+                    'https://picsum.photos/id/1015/800/1200',
+                    'https://picsum.photos/id/1019/1000/800',
+                    'https://picsum.photos/id/1016/900/600',
+                    'https://picsum.photos/id/1020/1200/900',
+                    'https://picsum.photos/id/1025/800/1200',
+                    'https://picsum.photos/id/1011/1100/700',
+                    'https://picsum.photos/id/1012/800/800',
+                ];
+            }
+            return [];
         })();
 
         // --- Lightbox ---
@@ -188,8 +207,8 @@
                 const img = document.createElement('img');
                 img.src = images[node.index].url;
                 img.alt = `Photo ${node.index + 1}`;
-                img.style.left   = (node.x      + GAP / 2) + 'px';
-                img.style.top    = (node.y      + GAP / 2) + 'px';
+                img.style.left   = (node.x      + GAP) + 'px';
+                img.style.top    = (node.y      + GAP) + 'px';
                 img.style.width  = (node.width  - GAP)     + 'px';
                 img.style.height = (node.height - GAP)     + 'px';
                 img.addEventListener('click', () => openLightbox(node.index));
@@ -202,7 +221,7 @@
         // --- Main ---
         async function init() {
             if (urls.length === 0) {
-                document.getElementById('root').innerHTML = '<div class="error">No valid photo URLs found.</div>';
+                document.getElementById('root').innerHTML = '<div class="missing">No photos found.</div>';
                 return;
             }
 
@@ -226,8 +245,8 @@
 
             function layout() {
                 const nodes = diorama.searchSolution(
-                    window.innerWidth,
-                    window.innerHeight,
+                    window.innerWidth - GAP,
+                    window.innerHeight - GAP,
                     aspectRatios,
                     300  // ms to search for a good solution
                 );
