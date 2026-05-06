@@ -14,6 +14,18 @@ pack.addFormula({
       name: "photos",
       description: "The list of photos to display in the gallery.",
     }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "backgroundColor",
+      description: "The background color of the gallery. Default: #1a1a1a.",
+      optional: true,
+    }),
+    coda.makeParameter({
+      type: coda.ParameterType.String,
+      name: "foregroundColor",
+      description: "The foreground color of the gallery (text, buttons). Default: white.",
+      optional: true,
+    }),
   ],
   resultType: coda.ValueType.String,
   schema: {
@@ -22,11 +34,13 @@ pack.addFormula({
     force: true,
   },
   execute: async function (args, context) {
-    let [photos] = args;
+    let [photos, backgroundColor, foregroundColor] = args;
     let urls = photos.filter(Boolean).join(",");
     let encoded = LZString.compressToEncodedURIComponent(urls);
     return coda.withQueryParams(EmbedUrl, {
       e: encoded,
+      bc: backgroundColor,
+      fc: foregroundColor,
     });
   },
 });
