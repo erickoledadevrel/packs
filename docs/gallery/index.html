@@ -79,29 +79,27 @@
             max-height: 90%;
             object-fit: contain;
         }
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
+        .lightbox-button {
             color: var(--foreground-color);
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
-            background: none;
+            background: color-mix(in srgb, var(--background-color), transparent 25%);
             border: none;
+            font-family: monospace;
+            user-select: none;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 15px;
         }
         .lightbox-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--foreground-color);
-            font-size: 60px;
-            font-weight: bold;
-            cursor: pointer;
-            background: color-mix(in srgb, var(--background-color), transparent 25%);
-            border: none;
-            padding: 20px;
-            user-select: none;
+            padding: 5px 15px 15px 15px;
         }
         .lightbox-prev { left: 20px; }
         .lightbox-next { right: 20px; }
@@ -172,10 +170,10 @@
             lightboxEl = document.createElement('div');
             lightboxEl.className = 'lightbox';
             lightboxEl.innerHTML = `
-                <button class="lightbox-close">&times;</button>
+                <button class="lightbox-button lightbox-close">&times;</button>
                 ${urls.length > 1 ? `
-                    <button class="lightbox-nav lightbox-prev">&#8249;</button>
-                    <button class="lightbox-nav lightbox-next">&#8250;</button>
+                    <button class="lightbox-button lightbox-nav lightbox-prev">&#8249;</button>
+                    <button class="lightbox-button lightbox-nav lightbox-next">&#8250;</button>
                 ` : ''}
                 <img src="${urls[lightboxIndex]}" />
             `;
