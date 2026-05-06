@@ -49,6 +49,7 @@ export async function addBuildingBlocks(context: coda.ExecutionContext, items: a
       item.authentication = metadata.authentication;
       item.adminAuthentications = metadata.adminAuthentications;
       item.networkDomains = metadata.networkDomains;
+      item.mcpServers = metadata.mcpServers;
     } else {
       console.error(result.reason);
     }

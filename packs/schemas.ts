@@ -240,6 +240,20 @@ const AdminAuthenticationSchema = coda.makeObjectSchema({
   displayProperty: "name",
 });
 
+const McpServerSchema = coda.makeObjectSchema({
+  properties: {
+    name: {
+      type: coda.ValueType.String,
+      description: "The unique identifier for the MCP server.",
+    },
+    endpointUrl: {
+      type: coda.ValueType.String,
+      description: "The URL where the MCP server is hosted.",
+    },
+  },
+  displayProperty: "name",
+});
+
 export const BasePackSchema = coda.makeObjectSchema({
   properties: {
     packId: {
@@ -425,6 +439,11 @@ export const BuildingBlockPoperties: coda.ObjectSchemaProperties = {
     type: coda.ValueType.Array,
     items: {type: coda.ValueType.String},
     description: "The network domains that the Pack can make requests to.",
+  },
+  mcpServers: {
+    type: coda.ValueType.Array,
+    items: McpServerSchema,
+    description: "The MCP servers the Pack can connect to.",
   },
 }
 
