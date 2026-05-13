@@ -94,7 +94,7 @@ pack.addFormula({
     { params: ["Chair"], result: false },
   ],
   execute: async function ([input, region], context) {
-    return phones.parsePhoneNumber(input, region).isValid();
+    return phones.parsePhoneNumber(input, {regionCode: region}).valid;
   },
 });
 
@@ -110,10 +110,9 @@ pack.addFormula({
       description: "The format to return the phone number in. Default value: e164",
       optional: true,
       autocomplete: async function (context) {
-        let parsed = phones.parsePhoneNumber("+19164451254");
+        let example = phones.getExample("US");
         return Formats.map(format => {
-          let example = parsed.getNumber(format as phones.PhoneNumberFormat);
-          return { display: `${format} - ${example}`, value: format };
+          return { display: `${format} - ${example.number[format]}`, value: format };
         })
       },
     }),
@@ -159,14 +158,13 @@ pack.addFormula({
     },
   ],
   execute: async function ([input, region], context) {
-    let parsed = phones.parsePhoneNumber(input, region);
-    if (!parsed.isValid()) {
+    let parsed = phones.parsePhoneNumber(input, {regionCode: region});
+    if (!parsed.valid) {
       throw new coda.UserVisibleError(`Invalid phone number: ${input}`);
     }
-    let result = parsed.toJSON();
-    result.formats = result.number;
-    result.input = result.number.input;
-    result.countryCode = parsed.getCountryCode();
+    let result: coda.SchemaType<typeof PhoneSchema> = {...parsed};
+    result.formats = parsed.number;
+    result.input = parsed.number.input;
     return result;
   },
 });
@@ -263,12 +261,12 @@ pack.addColumnFormat({
 });
 
 function formatNumber(input: string, region: string, format: string) {
-  let parsed = phones.parsePhoneNumber(input, region);
-  if (!parsed.isValid()) {
+  let parsed = phones.parsePhoneNumber(input, {regionCode: region});
+  if (!parsed.valid) {
     throw new coda.UserVisibleError("Invalid phone number");
   }
   if (format && !Formats.includes(format)) {
     throw new coda.UserVisibleError("Invalid format");
   }
-  return parsed.getNumber(format as phones.PhoneNumberFormat);
+  return parsed.number[format];
 }
