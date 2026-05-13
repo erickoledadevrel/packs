@@ -110,6 +110,7 @@
 
     <script type="module">
         import * as diorama from 'https://cdn.jsdelivr.net/npm/diorama@2.0.14/lib/diorama.js';
+        import * as lzma1 from "https://esm.sh/lzma1@latest";
 
         const GAP = 8;
 
@@ -127,9 +128,14 @@
 
             let urlsParam = params.get('urls');
             const encodedUrlsParam = params.get('e');
+            const lzmaUrlsParam = params.get('l');
             const placeholdersParam = params.get('p');
             if (encodedUrlsParam) {
-                urlsParam =LZString.decompressFromEncodedURIComponent(encodedUrlsParam);
+                urlsParam = LZString.decompressFromEncodedURIComponent(encodedUrlsParam);
+            }
+            if (lzmaUrlsParam) {
+                const encoded = Uint8Array.fromBase64(lzmaUrlsParam, { alphabet: "base64url" });
+                urlsParam = lzma1.decompressString(encoded);
             }
             if (urlsParam) {
                 return urlsParam.split(',').map(u => u.trim()).filter(Boolean);

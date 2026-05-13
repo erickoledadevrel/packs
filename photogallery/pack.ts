@@ -1,5 +1,5 @@
 import * as coda from "@codahq/packs-sdk";
-import * as LZString from 'lz-string';
+import * as lzma1 from 'lzma1';
 
 const EmbedUrl = "https://packs.erickoleda.com/gallery/";
 
@@ -36,11 +36,19 @@ pack.addFormula({
   execute: async function (args, context) {
     let [photos, backgroundColor, foregroundColor] = args;
     let urls = photos.filter(Boolean).join(",");
-    let encoded = LZString.compressToEncodedURIComponent(urls);
+    let encoded = lzma1.compressString(urls);
+    let base64 = base64EncodeWebSafe(encoded);
     return coda.withQueryParams(EmbedUrl, {
-      e: encoded,
+      l: base64,
       bc: backgroundColor,
       fc: foregroundColor,
     });
   },
 });
+
+function base64EncodeWebSafe(data) {
+  return Buffer.from(data).toString("base64")
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, ''); // Remove padding
+}
