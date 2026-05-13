@@ -277,7 +277,13 @@
             window.addEventListener('resize', debounce(layoutPhotos, 150));
         }
 
-        init();
+        document.addEventListener('DOMContentLoaded', event => {
+            // Add a delay, to ensure that the Coda iframe is properly sized.
+            // A loading bar will be shown.
+            window.setTimeout(() => {
+            init();
+            }, 1000);
+        });
     </script>
 </body>
 </html>
