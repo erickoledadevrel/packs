@@ -242,6 +242,7 @@ export interface MetadataSettings {
   name: string;
   callback: (context: coda.ExecutionContext, items: any[]) => Promise<void>;
   properties: coda.ObjectSchemaProperties;
+  maxPageSize?: number;
 }
 
 export async function getVersions(context: coda.ExecutionContext, packId: string) {

@@ -1,6 +1,6 @@
 import * as coda from "@codahq/packs-sdk";
 import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError, getCategories, unformatItem, removeCategory, addCategory, addStats, addManifest } from "./helpers";
-import { MetadataTypes, PackUrlRegexes } from "./constants";
+import { MetadataTypes, PackUrlRegexes, PageSize } from "./constants";
 import { MyPackSchema, PackSchema, StatsSchema } from "./schemas";
 const escape = require('escape-html');
 
@@ -151,13 +151,18 @@ pack.addSyncTable({
       let url = context.sync.continuation?.url as string;
       if (!url) {
         let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs/listings");
+        let pageSize = metadata.reduce((result, key) => {
+          let maxPageSize = getMetdataSettings(key).maxPageSize;
+            return maxPageSize ? Math.min(result, maxPageSize) : result;
+          }, PageSize);
+        
         url = coda.withQueryParams(baseUrl, {
           excludePublicPacks: !includePublished,
           excludeWorkspaceAcls: !includeWorkspace,
           excludeIndividualAcls: !includePrivate,
           includeBrainOnlyPacks: options.includes(IncludeBrainOnlyPacksOption),
           certifiedAgentsOnly: options.includes(CertifiedAgentsOnlyOption),
-          limit: 20,
+          limit: pageSize,
         });
       }
       let response = await context.fetcher.fetch({
