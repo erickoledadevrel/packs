@@ -18,6 +18,9 @@ pack.addFormula({
   resultType: coda.ValueType.String,
   codaType: coda.ValueHintType.ImageReference,
   cacheTtlSecs: OneDaySecs,
+  onError: async function (e) {
+    throw new coda.UserVisibleError(e);
+  },
   execute: async function (args, context) {
     let [code] = args;
     let svg = nomnoml.renderSvg(code);
@@ -56,6 +59,13 @@ pack.addFormula({
       if (result != list.length) throw new coda.UserVisibleError("All lists must be the same length.");
       return result;
     }, 0);
+    for (let label of labels) {
+      try {
+        nomnoml.parse(label);
+      } catch (e) {
+        throw new coda.UserVisibleError(`Invalid label: ${label}`);
+      }
+    }
     let lines = labels.map((label, i) => {
       let parent = parents[i];
       if (!label) return "";
