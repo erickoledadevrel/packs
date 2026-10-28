@@ -12,6 +12,12 @@ const DateParameter = coda.makeParameter({
   description: "The date to check.",
 });
 
+const YearParameter = coda.makeParameter({
+  type: coda.ParameterType.Number,
+  name: "year",
+  description: "The target year.",
+});
+
 const CountryParameter = coda.makeParameter({
   type: coda.ParameterType.String,
   name: "country",
@@ -22,11 +28,11 @@ const CountryParameter = coda.makeParameter({
     if (!countries) return [];
     let options = Object.entries(countries).map(([key, value]) => {
       return {
-        display: value,
-        value: key,
+        name: value,
+        code: key,
       };
     });
-    return options;
+    return coda.autocompleteSearchObjects(search, options, "name", "code");
   },
 });
 
@@ -41,11 +47,11 @@ const StateParameter = coda.makeParameter({
     if (!states) return [];
     let options = Object.entries(states).map(([key, value]) => {
       return {
-        display: value,
-        value: key,
+        name: value,
+        code: key,
       };
     });
-    return options;
+    return coda.autocompleteSearchObjects(search, options, "name", "code");
   },
 });
 
@@ -60,11 +66,11 @@ const RegionParameter = coda.makeParameter({
     if (!regions) return [];
     let options = Object.entries(regions).map(([key, value]) => {
       return {
-        display: value,
-        value: key,
+        name: value,
+        code: key,
       };
     });
-    return options;
+    return coda.autocompleteSearchObjects(search, options, "name", "code");
   },
 });
 
@@ -105,7 +111,7 @@ const HolidaySchema = coda.makeObjectSchema({
 
 pack.addFormula({
   name: "IsHoliday",
-  description: "Determines if the given date lands on a holiday.",
+  description: "Checks if the given date is a holiday within the given country.",
   parameters: [
     DateParameter,
     CountryParameter,
@@ -139,7 +145,7 @@ pack.addFormula({
 
 pack.addFormula({
   name: "Holidays",
-  description: "Gets the holidays that fall on a given date.",
+  description: "Gets the holidays that fall on the given date within the given country.",
   parameters: [
     DateParameter,
     CountryParameter,
@@ -167,20 +173,42 @@ pack.addFormula({
   },
 });
 
+pack.addFormula({
+  name: "HolidaysForYear",
+  description: "Lists the holidays for the given year within the given country.",
+  resultType: coda.ValueType.Array,
+  items: HolidaySchema,
+  parameters: [
+    YearParameter,
+    CountryParameter,
+    StateParameter,
+    RegionParameter,
+    TypesParameter,
+  ],
+  execute: async function (args, context) {
+    let [
+      year,
+      country,
+      state,
+      region,
+      types,
+    ] = args;
+    let location = {country, state, region};
+    let holidays = getHolidays(context, year, location, types);
+    return holidays.map(holiday => formatHoliday(holiday, location));
+  },
+});
+
 pack.addSyncTable({
   name: "Holidays",
-  description: "Lists the holidays for a given year.",
+  description: "Lists the holidays for the given year within the given country.",
   identityName: "Holiday",
   schema: HolidaySchema,
   formula: {
     name: "SyncHolidays",
-    description: "Syncs the holidays.",
+    description: "Syncs the holidays for the given year within the given country.",
     parameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.Number,
-        name: "year",
-        description: "The target year.",
-      }),
+      YearParameter,
       CountryParameter,
       StateParameter,
       RegionParameter,
@@ -206,8 +234,8 @@ pack.addSyncTable({
       return {
         result: holidays.map(holiday => formatHoliday(holiday, includeLocation ? location : undefined)),
       };
-    }
-  }
+    },
+  },
 });
 
 function getYear(context: coda.ExecutionContext, date: Date) {
