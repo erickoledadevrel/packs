@@ -27,15 +27,15 @@ const MakerSchema = coda.makeObjectSchema({
 
 const ParameterSchema = coda.makeObjectSchema({
   properties: {
-    name: {type: coda.ValueType.String},
-    description: {type: coda.ValueType.String},
+    name: { type: coda.ValueType.String },
+    description: { type: coda.ValueType.String },
     type: {
       type: coda.ValueType.String,
       description: "The data type of the parameter.",
     },
-    isOptional: {type: coda.ValueType.Boolean},
-    hasAutocomplete: {type: coda.ValueType.Boolean},
-    hasSuggestedValue: {type: coda.ValueType.Boolean},
+    isOptional: { type: coda.ValueType.Boolean },
+    hasAutocomplete: { type: coda.ValueType.Boolean },
+    hasSuggestedValue: { type: coda.ValueType.Boolean },
   },
   displayProperty: "name",
 });
@@ -58,7 +58,7 @@ const FormulaSchema = coda.makeObjectSchema({
       type: coda.ValueType.Boolean,
       description: "If the formula returns a card.",
     },
-    parameters: {type: coda.ValueType.Array, items: ParameterSchema},
+    parameters: { type: coda.ValueType.Array, items: ParameterSchema },
   },
   displayProperty: "name",
 });
@@ -94,12 +94,12 @@ const SyncTableSchema = coda.makeObjectSchema({
       description: "If the sync table has a dynamic schema.",
     },
     parameters: {
-      type: coda.ValueType.Array, 
+      type: coda.ValueType.Array,
       items: ParameterSchema,
       description: "The parameters of the sync table."
     },
-    supportsRowPermissions: { 
-      type: coda.ValueType.Boolean, 
+    supportsRowPermissions: {
+      type: coda.ValueType.Boolean,
       fromKey: "supportsGetPermissions",
       description: "If the sync table can return per-row permissions."
     },
@@ -362,7 +362,24 @@ export const PackSchema = coda.makeObjectSchema({
       codaType: coda.ValueHintType.Url,
       description: "A link to the Pack's manifest file. It's an internal format that is subject to change without warning.",
       fromKey: "externalMetadataUrl",
-    }
+    },
+    packVersion: {
+      type: coda.ValueType.String,
+      description: "The version of the Pack's current release.",
+    },
+    lastReleasedAt: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.DateTime,
+      description: "When the Pack was last released.",
+    },
+    packCategoryType: {
+      type: coda.ValueType.String,
+      description: "The category type of the Pack.",
+    },
+    distributionMode: {
+      type: coda.ValueType.String,
+      description: "The distribution mode of the Pack.",
+    },
   },
   featuredProperties: ["logo", "tagline", "makers"],
   linkProperty: "listingUrl",
@@ -437,7 +454,7 @@ export const BuildingBlockPoperties: coda.ObjectSchemaProperties = {
   },
   networkDomains: {
     type: coda.ValueType.Array,
-    items: {type: coda.ValueType.String},
+    items: { type: coda.ValueType.String },
     description: "The network domains that the Pack can make requests to.",
   },
   mcpServers: {
