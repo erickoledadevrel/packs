@@ -309,7 +309,7 @@ export const BasePackSchema = coda.makeObjectSchema({
     listingUrl: {
       type: coda.ValueType.String,
       codaType: coda.ValueHintType.Url,
-      description: "The URL of the Pack's listing page.",
+      description: "The URL of the Pack's listing page in the Coda Gallery.",
     },
     studioUrl: {
       type: coda.ValueType.String,
@@ -379,6 +379,12 @@ export const PackSchema = coda.makeObjectSchema({
     distributionMode: {
       type: coda.ValueType.String,
       description: "The distribution mode of the Pack.",
+    },
+    entryPoints: {
+      type: coda.ValueType.Array,
+      items: { type: coda.ValueType.String },
+      description: "In which products the Pack will be shown.",
+      fromKey: "packEntrypoints",
     },
   },
   featuredProperties: ["logo", "tagline", "makers"],
@@ -468,6 +474,15 @@ export const PublishedProperties: coda.ObjectSchemaProperties = {
   published: {
     type: coda.ValueType.Boolean,
     description: "If the Pack has been published to the gallery.",
+  },
+  verifiedVersion: {
+    type: coda.ValueType.String,
+    description: "The version of the Pack that was last marked as verified.",
+  },
+  storeUrl: {
+    type: coda.ValueType.String,
+    codaType: coda.ValueHintType.Url,
+    description: "The URL of the Pack's listing page in the Superhuman Store.",
   },
 }
 

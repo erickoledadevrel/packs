@@ -125,6 +125,11 @@ export async function addPublished(context: coda.ExecutionContext, items: any[])
     let item = items[i];
     if (result.status == "fulfilled") {
       item.published = result.value.body.discoverability == "public";
+      item.verifiedVersion = result.value.body.verifiedVersion;
+      if (item.packEntrypoints.includes("go") && item.verifiedVersion) {
+        let directory = item.packCategoryType == 'connector' ? 'connectors' : 'agents';
+        item.storeUrl = `https://superhuman.com/store/${directory}/${item.packId}`;
+      }
     } else {
       console.error(result.reason);
     }
