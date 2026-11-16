@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import tokenizeWords from "tokenize-words";
 import * as sw from "stopword";
 
@@ -71,34 +71,34 @@ const Languages = {
   "zul": "Zulu",
 };
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "Words",
   description: "Extracts the individual words from some text.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The source text.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "removeStopwords",
       description: `Whether stopwords ('and', 'the', etc.) should be removed. Default: ${DefaultRemoveStopwords}`,
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "language",
       description: `The language the text is written in, as a three-letter language code (). Default: ${DefaultLanguage}`,
       optional: true,
       autocomplete: Object.entries(Languages).map(([code, name]) => ({display: name, value: code})),
     }),
   ],
-  resultType: coda.ValueType.Array,
-  items: coda.makeSchema({
-    type: coda.ValueType.String,
+  resultType: sdk.ValueType.Array,
+  items: sdk.makeSchema({
+    type: sdk.ValueType.String,
   }),
   examples: [
     { 
@@ -118,7 +118,7 @@ pack.addFormula({
   execute: async function (args, context) {
     let [text, removeStopwords = DefaultRemoveStopwords, lang = DefaultLanguage] = args;
     if (!Object.keys(Languages).includes(lang)) {
-      throw new coda.UserVisibleError(`Unsupported language: ${lang}`);
+      throw new sdk.UserVisibleError(`Unsupported language: ${lang}`);
     }
     let words = tokenizeWords(text);
     if (removeStopwords) {

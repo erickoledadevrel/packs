@@ -1,6 +1,6 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const DefaultSize = 16;
 
@@ -8,13 +8,13 @@ pack.addFormula({
   name: "Favicon",
   description: "Get the favicon (tab icon) for the provided website.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "url",
       description: "The URL or domain of the website.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "size",
       description: [
         "The size of the image to return, in pixels.",
@@ -26,8 +26,8 @@ pack.addFormula({
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.ImageReference,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.ImageReference,
   examples: [
     { params: ["pokemon.com"], result: "<image>" },
     { params: ["https://www.pokemon.com/us/"], result: "<image>" },

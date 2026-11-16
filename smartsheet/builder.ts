@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { getConverter } from "./convert";
 import { CodaRow, Row, SheetFormatSettings } from "./types";
 import { getSheet, syncSheet, updateRows, getRows, searchSheets } from "./api";
@@ -7,26 +7,26 @@ import { formatRowForApi, formatRowForSchema, parseIdParameter } from "./utils";
 export const PageSize = 100;
 
 export function makePack(domain: string) {
-  const pack = coda.newPack();
+  const pack = sdk.newPack();
 
   const HomeUrl = `https://api.${domain}/2.0/folders/personal`;
   const WorkspacesUrl = `https://api.${domain}/2.0/workspaces`;
   const SheetUrlRegex = new RegExp(`https://app.${domain}/sheets/([^?/]+)`);
 
-  const BaseRowSchema = coda.makeObjectSchema({
+  const BaseRowSchema = sdk.makeObjectSchema({
     properties: {
       rowId: {
-        type: coda.ValueType.String,
+        type: sdk.ValueType.String,
         fromKey: "id",
         description: "The unique ID of the row.",
       },
       rowNumber: {
-        type: coda.ValueType.Number,
+        type: sdk.ValueType.Number,
         description: "The order of the row in the sheet. Useful for sorting."
       },
       rowLink: {
-        type: coda.ValueType.String,
-        codaType: coda.ValueHintType.Url,
+        type: sdk.ValueType.String,
+        codaType: sdk.ValueHintType.Url,
         description: "A permalink to this row in the Smartsheet application.",
       }
     },
@@ -38,7 +38,7 @@ export function makePack(domain: string) {
   pack.addNetworkDomain(domain);
 
   pack.setUserAuthentication({
-    type: coda.AuthenticationType.OAuth2,
+    type: sdk.AuthenticationType.OAuth2,
     authorizationUrl: `https://app.${domain}/b/authorize`,
     tokenUrl: `https://api.${domain}/2.0/token`,
     scopes: [
@@ -61,7 +61,7 @@ export function makePack(domain: string) {
     identityName: "Row",
     listDynamicUrls: async function (context, containerUrl) {
       let url = containerUrl;
-      let results: coda.MetadataFormulaObjectResultType[] = [];
+      let results: sdk.MetadataFormulaObjectResultType[] = [];
       if (!url) {
         url = HomeUrl;
         results.push({
@@ -78,7 +78,7 @@ export function makePack(domain: string) {
       for (let meta of item.data ?? []) {
         results.push({
           display: meta.name,
-          value: coda.joinUrl(url, String(meta.id)),
+          value: sdk.joinUrl(url, String(meta.id)),
           hasChildren: true,
         });
       }
@@ -120,7 +120,7 @@ export function makePack(domain: string) {
       let settings: SheetFormatSettings = {useColumnTypes};
 
       let sheet = await getSheet(context, sheetUrl);
-      let schema: coda.GenericObjectSchema = coda.makeObjectSchema({
+      let schema: sdk.GenericObjectSchema = sdk.makeObjectSchema({
         ...BaseRowSchema,
         properties: {
           ...BaseRowSchema.properties,
@@ -147,8 +147,8 @@ export function makePack(domain: string) {
       name: "SyncSheet",
       description: "Syncs the data.",
       parameters: [
-        coda.makeParameter({
-          type: coda.ParameterType.String,
+        sdk.makeParameter({
+          type: sdk.ParameterType.String,
           name: "filter",
           description: "The filter to apply.",
           optional: true,
@@ -157,8 +157,8 @@ export function makePack(domain: string) {
             return sheet.filters?.map(filter => `${filter.name} (${filter.id})`);
           },
         }),
-        coda.makeParameter({
-          type: coda.ParameterType.StringArray,
+        sdk.makeParameter({
+          type: sdk.ParameterType.StringArray,
           name: "columns",
           description: "The columns to include.",
           optional: true,
@@ -167,8 +167,8 @@ export function makePack(domain: string) {
             return sheet.columns?.map(column => `${column.title} (${column.id})`);
           },
         }),
-        coda.makeParameter({
-          type: coda.ParameterType.Boolean,
+        sdk.makeParameter({
+          type: sdk.ParameterType.Boolean,
           name: "useColumnTypes",
           description: "Respect the column types set in the sheet.",
           optional: true,
@@ -216,7 +216,7 @@ export function makePack(domain: string) {
           let final = finalRows.find(final => final.id == rowId);
           let failure = failedItems.find(failure => failure.rowId == rowId);
           if (failure) {
-            return new coda.UserVisibleError(failure.error.message);
+            return new sdk.UserVisibleError(failure.error.message);
           } else if (final) {
             return formatRowForSchema(context, final, sheet, settings);
           } else {
@@ -234,8 +234,8 @@ export function makePack(domain: string) {
     name: "AddRow",
     description: "Adds a row to a sheet.",
     parameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "sheet",
         description: "The numerical ID of the sheet, as found in the properties dialog.",
         autocomplete: async function (context, search) {
@@ -246,8 +246,8 @@ export function makePack(domain: string) {
       }),
     ],
     varargParameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "column",
         description: "The column to set.",
         autocomplete: async function (context, search, args) {
@@ -259,13 +259,13 @@ export function makePack(domain: string) {
           return columns.map(column => `${column.title} (${column.id})`);
         },
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "value",
         description: "The value to set for that column.",
       }),
     ],
-    resultType: coda.ValueType.String,
+    resultType: sdk.ValueType.String,
     isAction: true,
     execute: async function (args, context) {
       let [sheet, ...rest] = args;
@@ -288,7 +288,7 @@ export function makePack(domain: string) {
         row.cells.push({columnId, value, strict: false});
         rest = more;
       }
-      let url = coda.withQueryParams(`https://api.${domain}/2.0/sheets/${sheetId}/rows`, {});
+      let url = sdk.withQueryParams(`https://api.${domain}/2.0/sheets/${sheetId}/rows`, {});
       try {
         let response = await context.fetcher.fetch({
           method: "POST",
@@ -301,8 +301,8 @@ export function makePack(domain: string) {
         let data = response.body;
         return data.result.id;
       } catch (e) {
-        if (coda.StatusCodeError.isStatusCodeError(e) && e.body.message) {
-          throw new coda.UserVisibleError(e.body.message);
+        if (sdk.StatusCodeError.isStatusCodeError(e) && e.body.message) {
+          throw new sdk.UserVisibleError(e.body.message);
         }
         throw e;
       }

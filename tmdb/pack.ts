@@ -1,39 +1,39 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as schemas from "./schemas";
 import { Api } from "./api";
 import * as helpers from "./helpers";
 import * as constants from "./constants";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("themoviedb.org");
 
 pack.setSystemAuthentication({
-  type: coda.AuthenticationType.HeaderBearerToken,
+  type: sdk.AuthenticationType.HeaderBearerToken,
 });
 
 pack.addFormula({
   name: "Movie",
   description: "Get the details of a movie.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "titleOrUrl",
       description: "The title of the movie, or its URL on TMDB.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "country",
       description: `The country code to use when retrieving certain information (ex: rating). Default: ${constants.DefaultCountryCode}`,
       optional: true,
       autocomplete: async function (context, search) {
         let api = new Api(context);
         let countries = await api.getCountries();
-        return coda.autocompleteSearchObjects(search, countries, "english_name", "iso_3166_1");
+        return sdk.autocompleteSearchObjects(search, countries, "english_name", "iso_3166_1");
       },
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: schemas.MovieSchema,
   cacheTtlSecs: constants.OneDaySecs,
   execute: async function (args, context) {
@@ -70,13 +70,13 @@ pack.addFormula({
   name: "SearchMovies",
   description: "Find a movie in the database.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "title",
       description: "The title of the movie.",
     }),
   ],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: schemas.MovieSchema,
   cacheTtlSecs: constants.OneDaySecs,
   execute: async function (args, context) {
@@ -94,13 +94,13 @@ pack.addFormula({
   name: "TVShow",
   description: "Get the details of a TV show.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "nameOrUrl",
       description: "The name of the TV show, or its URL on TMDB.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: schemas.ShowSchema,
   cacheTtlSecs: constants.OneDaySecs,
   execute: async function (args, context) {
@@ -137,13 +137,13 @@ pack.addFormula({
   name: "SearchTVShows",
   description: "Find a TV show in the database.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "name",
       description: "The name of the show.",
     }),
   ],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: schemas.ShowSchema,
   cacheTtlSecs: constants.OneDaySecs,
   execute: async function (args, context) {

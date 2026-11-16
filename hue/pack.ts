@@ -1,11 +1,11 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import HueColor from "hue-colors";
 import CSSColorList from "css-named-colors";
 import * as hsl from "hsl-to-hex";
 import { formatAutomation, getAutomations, getColorSwatchUri, getLights, getResource, getResourceV2, getRooms, getScenes, getTimeParts, setState, setTimePoint } from "./helpers";
 import { AutomationSchema, LightSchema, LightStatusSchema as LightStateSchema, RoomSchema, SceneSchema } from "./schemas";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const BaseUrl = "https://api.meethue.com";
 const ApplicationName = "Hue Pack for Coda";
@@ -15,8 +15,8 @@ const MaxAPISat = 254;
 const MaxAPIBri = 254;
 const TimePointTypes = ["time", "sunrise", "sunset"];
 
-const LightIdParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const LightIdParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "lightId",
   description: "The ID of the light to control (auto-complete available).",
   autocomplete: async function (context) {
@@ -27,8 +27,8 @@ const LightIdParam = coda.makeParameter({
   },
 });
 
-const RoomIdParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const RoomIdParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "roomId",
   description: "The ID of the room to control (auto-complete available).",
   autocomplete: async function (context) {
@@ -39,8 +39,8 @@ const RoomIdParam = coda.makeParameter({
   },
 });
 
-const LightOrRoomIdParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const LightOrRoomIdParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "lightOrRoomId",
   description: "The ID of the light or room to control (auto-complete available).",
   autocomplete: async function (context) {
@@ -62,8 +62,8 @@ const LightOrRoomIdParam = coda.makeParameter({
   },
 });
 
-const SceneIdParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const SceneIdParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "sceneId",
   description: "The ID of the scene to control (auto-complete available).",
   autocomplete: async function (context, _, args) {
@@ -77,8 +77,8 @@ const SceneIdParam = coda.makeParameter({
   },
 });
 
-const AutomationIdParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const AutomationIdParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "automationId",
   description: "The ID of the automation to operate on.",
   autocomplete: async function (context) {
@@ -89,22 +89,22 @@ const AutomationIdParam = coda.makeParameter({
   },
 });
 
-const AutomationTimePointParams: coda.ParamDefs = [
+const AutomationTimePointParams: sdk.ParamDefs = [
   AutomationIdParam,
-  coda.makeParameter({
-    type: coda.ParameterType.String,
+  sdk.makeParameter({
+    type: sdk.ParameterType.String,
     name: "type",
     description: "The type of time point.",
     autocomplete: TimePointTypes,
   }),
-  coda.makeParameter({
-    type: coda.ParameterType.Date,
+  sdk.makeParameter({
+    type: sdk.ParameterType.Date,
     name: "time",
     description: `The specific time. Only set if the type is "time".`,
     optional: true,
   }),
-  coda.makeParameter({
-    type: coda.ParameterType.Number,
+  sdk.makeParameter({
+    type: sdk.ParameterType.Number,
     name: "offset",
     description: `The time offset. Only set if the type is "sunrise" or "sunset".`,
     optional: true,
@@ -113,7 +113,7 @@ const AutomationTimePointParams: coda.ParamDefs = [
 
 const ErrorHandler = function(error) {
   if (error.status == 504) {
-    throw new coda.UserVisibleError("The request timed out, please try again.");
+    throw new sdk.UserVisibleError("The request timed out, please try again.");
   }
   throw error;
 }
@@ -121,11 +121,11 @@ const ErrorHandler = function(error) {
 pack.addNetworkDomain("meethue.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.OAuth2,
+  type: sdk.AuthenticationType.OAuth2,
   authorizationUrl: "https://api.meethue.com/v2/oauth2/authorize",
   tokenUrl: "https://api.meethue.com/v2/oauth2/token",
   postSetup: [{
-    type: coda.PostSetupType.SetEndpoint,
+    type: sdk.PostSetupType.SetEndpoint,
     name: "Link",
     description: "You're all set!",
     getOptions: async function (context) {
@@ -160,7 +160,7 @@ pack.addFormula({
   parameters: [
     LightOrRoomIdParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   examples: [
     { params: ["lights/1"], result: "Done" },
@@ -181,7 +181,7 @@ pack.addFormula({
   parameters: [
     LightOrRoomIdParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   examples: [
     { params: ["lights/1"], result: "Done" },
@@ -201,18 +201,18 @@ pack.addFormula({
   description: "Changes the color of a light or room, given a hue and saturation.",
   parameters: [
     LightOrRoomIdParam,
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "hue",
       description: "The hue to set, as a number between 0 (red) and 360 (also red).",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "saturation",
       description: "The satuation to set, as a number between 0 (no saturation) and 100 (full saturation).",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   examples: [
     { params: ["lights/1", 265, 60], result: "Done" },
@@ -221,12 +221,12 @@ pack.addFormula({
   onError: ErrorHandler,
   execute: async function ([lightOrRoomId, hue, saturation], context) {
     if (hue < 0 || hue > 360) {
-      throw new coda.UserVisibleError(`Invalid hue: "${hue}".The value must be between 0 and 360.`)
+      throw new sdk.UserVisibleError(`Invalid hue: "${hue}".The value must be between 0 and 360.`)
     }
     hue = Math.round(hue / 360 * MaxAPIHue);
 
     if (saturation < 0 || saturation > 100) {
-      throw new coda.UserVisibleError(`Invalid saturation: "${saturation}".The value must be between 0 and 100.`)
+      throw new sdk.UserVisibleError(`Invalid saturation: "${saturation}".The value must be between 0 and 100.`)
     }
     saturation = Math.round(saturation / 100 * MaxAPISat);
 
@@ -244,13 +244,13 @@ pack.addFormula({
   description: "Changes the color of a light or room, approximating the CSS color string provided.",
   parameters: [
     LightOrRoomIdParam,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "color",
       description: `The CSS color to set. Must be a named CSS color (ex: "red") or a hex string (ex: "#ff2200").`,
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   examples: [
     { params: ["lights/1", "red"], result: "Done" },
@@ -265,7 +265,7 @@ pack.addFormula({
       hex = color;
     }
     if (!hex) {
-      throw new coda.UserVisibleError(`Invalid color: "${color}". Must be a named CSS color (ex: "red") or a hex string (ex: "#ff2200").`);
+      throw new sdk.UserVisibleError(`Invalid color: "${color}". Must be a named CSS color (ex: "red") or a hex string (ex: "#ff2200").`);
     }
     hex = hex.replace(/^#/, "").toLocaleLowerCase();
     let hueColor = HueColor.fromHex(hex);
@@ -285,13 +285,13 @@ pack.addFormula({
   description: "Changes the brightness of a light or room.",
   parameters: [
     LightOrRoomIdParam,
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "brightness",
       description: "The percentage brightness, from 0 to 100.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   examples: [
     { params: ["lights/1", 75], result: "Done" },
@@ -312,14 +312,14 @@ pack.addFormula({
   description: "Makes a light or room blink.",
   parameters: [
     LightOrRoomIdParam,
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "long",
       description: "If the light(s) should blink for a long time (15 seconds).",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   examples: [
     { params: ["lights/1"], result: "Done" },
@@ -343,7 +343,7 @@ pack.addFormula({
     RoomIdParam,
     SceneIdParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   examples: [
     { params: ["groups/1", "abc123"], result: "Done" },
@@ -362,14 +362,14 @@ pack.addFormula({
   description: "Gets the current state of a light.",
   parameters: [
     LightIdParam,
-    coda.makeParameter({
-      type: coda.ParameterType.Date,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Date,
       name: "now",
       description: "The current time, needed to refresh the values.",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: LightStateSchema,
   cacheTtlSecs: 0,
   execute: async function ([lightId, _], context) {
@@ -471,8 +471,8 @@ pack.addFormula({
   name: "SetStart",
   description: "Set the start of an automation.",
   parameters: AutomationTimePointParams,
-  resultType: coda.ValueType.Object,
-  schema: coda.withIdentity(AutomationSchema, "Automation"),
+  resultType: sdk.ValueType.Object,
+  schema: sdk.withIdentity(AutomationSchema, "Automation"),
   isAction: true,
   execute: async function (args, context) {
     let [automationId, type, time, offset] = args;
@@ -484,8 +484,8 @@ pack.addFormula({
   name: "SetEnd",
   description: "Set the end of an automation.",
   parameters: AutomationTimePointParams,
-  resultType: coda.ValueType.Object,
-  schema: coda.withIdentity(AutomationSchema, "Automation"),
+  resultType: sdk.ValueType.Object,
+  schema: sdk.withIdentity(AutomationSchema, "Automation"),
   isAction: true,
   execute: async function (args, context) {
     let [automationId, type, time, offset] = args;

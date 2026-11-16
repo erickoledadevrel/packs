@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as TOON from "@toon-format/toon";
 
 const OneDaySecs = 24 * 60 * 60;
@@ -9,42 +9,42 @@ const Delimiters = {
    "pipe": "|",
 };
 
-const TOONParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const TOONParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "toon",
   description: "The TOON contents as a string.",
 });
 
-const SpacesParam = coda.makeParameter({
-  type: coda.ParameterType.Number,
+const SpacesParam = sdk.makeParameter({
+  type: sdk.ParameterType.Number,
   name: "spaces",
   description: "The number of spaces to indent by. Default: 2.",
   optional: true,
 });
 
-const DelimiterParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const DelimiterParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "delimiter",
   description: `The character to use to separate array values. One of: ${Object.keys(Delimiters).join(", ")}. Default: comma.`,
   autocomplete: Object.keys(Delimiters),
   optional: true,
 });
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "ToTOON",
   description: "Converts a JSON string to TOON.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "json",
       description: "The JSON contents as a string.",
     }),
     SpacesParam,
     DelimiterParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`{"foo":"bar"}`], result: `foo: bar` },
@@ -67,7 +67,7 @@ pack.addFormula({
     TOONParam,
     SpacesParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`foo: bar`], result: `{"foo":"bar"}` },
@@ -86,7 +86,7 @@ pack.addFormula({
   parameters: [
     TOONParam,
   ],
-  resultType: coda.ValueType.Boolean,
+  resultType: sdk.ValueType.Boolean,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { 
@@ -115,7 +115,7 @@ pack.addFormula({
     SpacesParam,
     DelimiterParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`foo:bar`], result: `foo: bar` },
@@ -134,7 +134,7 @@ pack.addFormula({
 function getDelimiter(delimiter) {
   if (!delimiter) return delimiter;
   if (!Object.keys(Delimiters).includes(delimiter)) {
-    throw new coda.UserVisibleError(`Unsupported delimiter: ${delimiter}`);
+    throw new sdk.UserVisibleError(`Unsupported delimiter: ${delimiter}`);
   }
   return Delimiters[delimiter];
 }
@@ -149,7 +149,7 @@ function parseToon(toon: string) {
 
 function onError(e) {
   if (e instanceof SyntaxError) {
-    throw new coda.UserVisibleError(e.message, e);
+    throw new sdk.UserVisibleError(e.message, e);
   }
   throw e;
 }

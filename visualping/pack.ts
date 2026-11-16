@@ -1,15 +1,15 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { JobSchema, ChangeSchema } from "./schemas";
 import { getToken, getJob } from "./helpers";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const PageSize = 100;
 
 pack.addNetworkDomain("visualping.io");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.Custom,
+  type: sdk.AuthenticationType.Custom,
   params: [
     {
       name: "username",
@@ -47,7 +47,7 @@ pack.addSyncTable({
     execute: async function (args, context) {
       let token = await getToken(context);
       let pageIndex = context.sync.continuation?.pageIndex as number || 0;
-      let url = coda.withQueryParams("https://job.api.visualping.io/v2/jobs", {
+      let url = sdk.withQueryParams("https://job.api.visualping.io/v2/jobs", {
         pageIndex,
       });
       let response = await context.fetcher.fetch({
@@ -61,7 +61,7 @@ pack.addSyncTable({
       let {jobs, totalPages} = response.body;
       for (let job of jobs) {
         job.link = `https://visualping.io/jobs/${job.id}`;
-        job.faviconPath = coda.joinUrl("https://visualping.io", job.faviconPath);
+        job.faviconPath = sdk.joinUrl("https://visualping.io", job.faviconPath);
       }
       let continuation;
       if (pageIndex + 1 < totalPages) {
@@ -81,7 +81,7 @@ pack.addDynamicSyncTable({
   identityName: "Change",
   listDynamicUrls: async function (context, search) {
     let token = await getToken(context);
-    let url = coda.withQueryParams("https://job.api.visualping.io/v2/jobs", {
+    let url = sdk.withQueryParams("https://job.api.visualping.io/v2/jobs", {
       pageSize: PageSize,
     });
     let response = await context.fetcher.fetch({
@@ -96,7 +96,7 @@ pack.addDynamicSyncTable({
     for (let job of jobs) {
       job.id = String(job.id);
     }
-    return coda.autocompleteSearchObjects(search, jobs, "description", "id");
+    return sdk.autocompleteSearchObjects(search, jobs, "description", "id");
   },
   getName: async function (context) {
     let jobId = context.sync?.dynamicUrl!;
@@ -121,7 +121,7 @@ pack.addDynamicSyncTable({
       for (let change of changes) {
         change.job = {id: job.id, description: job.description};
         change.PercentDifference /= 100;
-        change.link = coda.withQueryParams(change.ccache_snapshot ?? change.htmlDiffUrl, {
+        change.link = sdk.withQueryParams(change.ccache_snapshot ?? change.htmlDiffUrl, {
           mode: job.mode.toLowerCase(),
         });
       }

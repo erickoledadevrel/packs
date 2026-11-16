@@ -1,10 +1,10 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { getConverter } from "./convert";
 import { Row, Sheet, SheetFormatSettings, CodaRow } from "./types";
 
 const IdParameterRegex = /^.*\((\d+)\)$/;
 
-export async function formatRowForSchema(context: coda.ExecutionContext, row: Row, sheet: Sheet, settings: SheetFormatSettings): Promise<CodaRow> {
+export async function formatRowForSchema(context: sdk.ExecutionContext, row: Row, sheet: Sheet, settings: SheetFormatSettings): Promise<CodaRow> {
   let result: CodaRow = {
     id: String(row.id),
     rowNumber: row.rowNumber,
@@ -42,6 +42,6 @@ export function parseIdParameter(value: string): number {
   if (!isNaN(num)) return num;
   let extracted = value.trim().match(IdParameterRegex)?.[1];
   if (extracted) return parseInt(extracted);
-  throw new coda.UserVisibleError(`Invalid parameter value: ${value}`);
+  throw new sdk.UserVisibleError(`Invalid parameter value: ${value}`);
 }
 

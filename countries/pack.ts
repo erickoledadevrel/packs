@@ -1,49 +1,49 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { countries, languages, continents, getEmojiFlag, TCountryCode } from "countries-list";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
-const ContinentSchema = coda.makeObjectSchema({
+const ContinentSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    code: { type: coda.ValueType.String },
+    name: { type: sdk.ValueType.String },
+    code: { type: sdk.ValueType.String },
   },
   displayProperty: "name",
 });
 
-const LanguageSchema = coda.makeObjectSchema({
+const LanguageSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    code: { type: coda.ValueType.String, description: "ISO 639-1" },
-    localized: { type: coda.ValueType.String, fromKey: "native" },
+    name: { type: sdk.ValueType.String },
+    code: { type: sdk.ValueType.String, description: "ISO 639-1" },
+    localized: { type: sdk.ValueType.String, fromKey: "native" },
   },
   displayProperty: "name",
 });
 
-const CountrySchema = coda.makeObjectSchema({
+const CountrySchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    code: { type: coda.ValueType.String, description: "ISO 3166-1 alpha-2" },
-    localized: { type: coda.ValueType.String, fromKey: "native" },
+    name: { type: sdk.ValueType.String },
+    code: { type: sdk.ValueType.String, description: "ISO 3166-1 alpha-2" },
+    localized: { type: sdk.ValueType.String, fromKey: "native" },
     continent: ContinentSchema,
-    capital: { type: coda.ValueType.String },
+    capital: { type: sdk.ValueType.String },
     languages: {
-      type: coda.ValueType.Array,
+      type: sdk.ValueType.Array,
       items: LanguageSchema,
     },
     callingCodes: {
-      type: coda.ValueType.Array,
-      items: { type: coda.ValueType.Number },
+      type: sdk.ValueType.Array,
+      items: { type: sdk.ValueType.Number },
       fromKey: "phone",
     },
     currencyCodes: {
-      type: coda.ValueType.Array,
-      items: { type: coda.ValueType.String },
+      type: sdk.ValueType.Array,
+      items: { type: sdk.ValueType.String },
       fromKey: "currency",
       description: "ISO 4217",
     },
     flagEmoji: { 
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "Flag emojis may not be rendered correctly on some devices."
     },
   },
@@ -76,13 +76,13 @@ pack.addFormula({
   name: "Country",
   description: "Get country information from a country code.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "code",
       description: "The ISO 3166-1 alpha-2 country code.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: CountrySchema,
   examples: [
     { params: ["US"], result: getCountry("US") },
@@ -102,7 +102,7 @@ pack.addColumnFormat({
 function getCountry(code: string) {
   let country = countries[code];
   if (!country) {
-    throw new coda.UserVisibleError(`Unknown country code: ${code}`);
+    throw new sdk.UserVisibleError(`Unknown country code: ${code}`);
   }
   return {
     code,

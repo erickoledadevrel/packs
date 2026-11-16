@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import figlet from "figlet";
 import {fonts} from "./fonts";
 
@@ -6,12 +6,12 @@ const DefaultPreviewText = "Coda";
 const PaddingAmount = 6;
 const FontNames = fonts.map(font => font.name);
 
-const FontSchema = coda.makeObjectSchema({
+const FontSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String, description: "The name of the font." },
+    name: { type: sdk.ValueType.String, description: "The name of the font." },
     preview: { 
-      type: coda.ValueType.String, 
-      codaType: coda.ValueHintType.Html,
+      type: sdk.ValueType.String, 
+      codaType: sdk.ValueHintType.Html,
       description: "A preview of the font."
     },
   },
@@ -20,26 +20,26 @@ const FontSchema = coda.makeObjectSchema({
   featuredProperties: ["preview"],
 });
 
-const PreviewTextParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const PreviewTextParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "previewText",
   description: "The text to use when rendering the font preview.",
   optional: true,
 });
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "ASCIIfy",
   description: "Convert text into ASCII art.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to render.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "font",
       description: "The font to use.",
       optional: true,
@@ -48,8 +48,8 @@ pack.addFormula({
       },
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Html,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Html,
   examples: [
     { params: ["Hello"], result: "" },
     { params: ["Hello", "DOS Rebel"], result: "" },
@@ -71,7 +71,7 @@ pack.addFormula({
   name: "Fonts",
   description: "Lists the available fonts.",
   parameters: [PreviewTextParameter],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: FontSchema,
   execute: async function ([previewText], context) {
     return await getFonts(previewText);
@@ -98,7 +98,7 @@ pack.addSyncTable({
 
 async function render(text: string, font: string): Promise<string> {
   if (!FontNames.includes(font)) {
-    throw new coda.UserVisibleError("Unknown font: " + font);
+    throw new sdk.UserVisibleError("Unknown font: " + font);
   }
   let definition = fonts.find(f => f.name == font).definition;
   figlet.parseFont(font, definition);

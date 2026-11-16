@@ -1,9 +1,9 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { randomId, getSchema, formatObjectValue, getHash, maybeParseJsonList, getProjectId } from "./helpers";
 import { BigQueryApi } from "./api";
 import { BaseQueryRowSchema, RowIdKey, RowIndexKey } from "./schemas";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const ListProjectsPageSize = 100;
 const OneDaySecs = 24 * 60 * 60;
@@ -11,7 +11,7 @@ const OneDaySecs = 24 * 60 * 60;
 pack.addNetworkDomain("googleapis.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.OAuth2,
+  type: sdk.AuthenticationType.OAuth2,
   authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth",
   tokenUrl: "https://oauth2.googleapis.com/token",
   scopes: [
@@ -25,11 +25,11 @@ pack.setUserAuthentication({
   },
   postSetup: [
     {
-      type: coda.PostSetupType.SetEndpoint,
+      type: sdk.PostSetupType.SetEndpoint,
       name: "SelectProject",
       description: "Select the Google Cloud Console project to bill the queries to.",
       getOptions: async function (context) {
-        let url = coda.withQueryParams("https://cloudresourcemanager.googleapis.com/v1/projects", {
+        let url = sdk.withQueryParams("https://cloudresourcemanager.googleapis.com/v1/projects", {
           filter: "lifecycleState:ACTIVE",
           pageSize: ListProjectsPageSize,
         });
@@ -95,13 +95,13 @@ pack.addDynamicSyncTable({
     name: "SyncQuery",
     description: "Syncs the data.",
     parameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "query",
         description: "The query to use (in the Standard SQL dialect).",
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.StringArray,
+      sdk.makeParameter({
+        type: sdk.ParameterType.StringArray,
         name: "uniqueColumns",
         description: "Which columns, if their values are combined, will form a unique ID for the row.",
         optional: true,
@@ -116,8 +116,8 @@ pack.addDynamicSyncTable({
           return data.schema.fields.map(field => field.name);
         }
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.StringArray,
+      sdk.makeParameter({
+        type: sdk.ParameterType.StringArray,
         name: "parameters",
         description: "A list of parameters, for use with parameterized queries. Use the <Type>Parameter formulas to construct the parameters.",
         optional: true,
@@ -178,19 +178,19 @@ pack.addFormula({
   name: "StringParameter",
   description: "Define a string parameter, for use in parameterized queries.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "name",
       description: "The name of the parameter.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "value",
       description: "The value of the parameter.",
     }),
   ],
-  resultType: coda.ValueType.String,
-  connectionRequirement: coda.ConnectionRequirement.None,
+  resultType: sdk.ValueType.String,
+  connectionRequirement: sdk.ConnectionRequirement.None,
   execute: async function (args, context) {
     let [name, value] = args;
     let parameter = {
@@ -206,19 +206,19 @@ pack.addFormula({
   name: "NumberParameter",
   description: "Define a number parameter, for use in parameterized queries.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "name",
       description: "The name of the parameter.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "value",
       description: "The value of the parameter.",
     }),
   ],
-  resultType: coda.ValueType.String,
-  connectionRequirement: coda.ConnectionRequirement.None,
+  resultType: sdk.ValueType.String,
+  connectionRequirement: sdk.ConnectionRequirement.None,
   execute: async function (args, context) {
     let [name, value] = args;
     let type = value % 1 === 0 ? "INT64" : "FLOAT64";
@@ -235,19 +235,19 @@ pack.addFormula({
   name: "BooleanParameter",
   description: "Define a boolean parameter, for use in parameterized queries.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "name",
       description: "The name of the parameter.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "value",
       description: "The value of the parameter.",
     }),
   ],
-  resultType: coda.ValueType.String,
-  connectionRequirement: coda.ConnectionRequirement.None,
+  resultType: sdk.ValueType.String,
+  connectionRequirement: sdk.ConnectionRequirement.None,
   execute: async function (args, context) {
     let [name, value] = args;
     let parameter = {

@@ -1,5 +1,5 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
 const BaseEmbedUrl = "https://codeblockembed.com";
 const SupportedLanguages = ['bash', 'c', 'cpp', 'csharp', 'css', 'diff', 'go', 'ini', 'java', 'javascript', 'json', 'kotlin', 'less', 'lua', 'makefile', 'xml', 'markdown', 'objectivec', 'perl', 'php', 'php-template', 'plaintext', 'python', 'python-repl', 'r', 'ruby', 'rust', 'scss', 'shell', 'sql', 'swift', 'typescript', 'vbnet', 'yaml'];
@@ -10,31 +10,31 @@ pack.addFormula({
   name: "CodeBlock",
   description: "Creates a code block with syntax highlighting.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "code",
       description: "The code to highlight.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "showLineNumbers",
       description: "Whether or not to show line numbers. Default: false.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "lineNumberStart",
       description: "Which line number to start with. Only applies if showLineNumbers is true. Default: 1.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "highlightLines",
       description: "Which lines to highlight, as a comma-separated list of line numbers. Ranges of lines can be specified using a dash (ex: 2-5). If lineNumberStart has been set the line numbers must be relative to that start.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "language",
       description: "The programming language of the code. If not specified it will be detected automatically.",
       optional: true,
@@ -42,18 +42,18 @@ pack.addFormula({
         return SupportedLanguages.filter((language => !search || language.includes(search)));
       }
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "showButton",
       description: "Whether or not to show the \"Select All\" button. Default: true.",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Embed,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Embed,
   schema: {
-    type: coda.ValueType.String,
-    codaType: coda.ValueHintType.Embed,
+    type: sdk.ValueType.String,
+    codaType: sdk.ValueHintType.Embed,
     force: true,
   },
   examples: [
@@ -83,7 +83,7 @@ pack.addFormula({
     if (showButton === false) {
       params["dc"] = 1;
     }
-    return coda.withQueryParams(BaseEmbedUrl, params);
+    return sdk.withQueryParams(BaseEmbedUrl, params);
   },
 });
 

@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as rs from "jsrsasign";
 
 const OneDaySecs = 24 * 60 * 60;
@@ -17,49 +17,49 @@ const Algorithms = [
   "PS512",
 ];
 
-const JWTSchema = coda.makeObjectSchema({
+const JWTSchema = sdk.makeObjectSchema({
   properties: {
-    header: { type: coda.ValueType.String },
-    payload: { type: coda.ValueType.String },
+    header: { type: sdk.ValueType.String },
+    payload: { type: sdk.ValueType.String },
   },
   displayProperty: "payload",
 });
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "JWT",
   description: "Create a JSON Web Token (JWT).",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "header",
       description: "The JSON payload of the JWT.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "payload",
       description: "The JSON payload of the JWT.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "algorithm",
       description: "Which cryptographic algorithm to use to sign the JWT.",
       autocomplete: Algorithms,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "key",
       description: "The private key to use to sign the JWT.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "passcode",
       description: "A passcode to use along with the key (optional).",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   onError: onError,
   execute: async function (args, context) {
@@ -72,54 +72,54 @@ pack.addFormula({
   name: "VerifyJWT",
   description: "Verifies a JSON Web Token (JWT).",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "jwt",
       description: "The JSON Web Token.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "key",
       description: "The public key to use to verify the JWT.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.StringArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.StringArray,
       name: "alg",
       description: "A list of acceptable algorithms (alg).",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.StringArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.StringArray,
       name: "iss",
       description: "A list of acceptable issues (iss).",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.StringArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.StringArray,
       name: "sub",
       description: "A list of acceptable subject names (sub).",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.StringArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.StringArray,
       name: "aud",
       description: "A list of acceptable audience names (aud).",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Date,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Date,
       name: "verifyAt",
       description: "The date and time used to verify various time-based fields. If not specifies, defaults to the current time.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Date,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Date,
       name: "gracePeriod",
       description: "An acceptable time difference (as a duration) between the signing and verifier.",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.Boolean,
+  resultType: sdk.ValueType.Boolean,
   onError: onError,
   execute: async function (args, context) {
     let [jwt, key, alg=Algorithms, iss, sub, aud, verifyAt, gracePeriod] = args;
@@ -134,13 +134,13 @@ pack.addFormula({
   name: "ParseJWT",
   description: "Parses a JSON Web Token (JWT).",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "jwt",
       description: "The JSON Web Token.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: JWTSchema,
   cacheTtlSecs: OneDaySecs,
   onError: onError,
@@ -159,18 +159,18 @@ pack.addFormula({
   description: "Create a JSON object from key value pairs. Can be used as the JWT header or payload.",
   parameters: [],
   varargParameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "key",
       description: "The key in the object.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "value",
       description: "The value to store under that key.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   onError: onError,
   execute: async function (args, context) {
@@ -186,6 +186,6 @@ pack.addFormula({
 });
 
 function onError(e) {
-  throw new coda.UserVisibleError(e);
+  throw new sdk.UserVisibleError(e);
 }
 

@@ -1,63 +1,63 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
 const MinLightness = 60;
 const MaxLightness = 90;
 const DefaultHue = 0;
 const DefaultSaturation = 0;
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "BulletGraph",
   description: "Generate an image of a bullet graph.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "min",
       description: "The minimum value of the metric.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "max",
       description: "The maximum value of the metric.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "current",
       description: "The current value of the metric.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "target",
       description: "The target value of the metric.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.NumberArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.NumberArray,
       name: "thresholds",
       description: "A list of values that represent meaningful thresholds for the metric.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "markerDistance",
       description: "The distance between markers on the graph. Default: half of the total range.",
       optional: true,
     }), 
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "hue",
       description: `The hue (color) of the graph background, as a number between 0 and 360. Default: ${DefaultHue}.`,
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "saturation",
       description: `The saturation of the graph background, as a number between 0 and 100. Default: ${DefaultSaturation}.`,
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.ImageReference,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.ImageReference,
   execute: async function (args, context) {
     let [
       min, max, current, target, 
@@ -68,26 +68,26 @@ pack.addFormula({
     ] = args;
 
     if (min >= max) {
-      throw new coda.UserVisibleError("The min value must be less than the max value.");
+      throw new sdk.UserVisibleError("The min value must be less than the max value.");
     }
     if (current > max || current < min) {
-      throw new coda.UserVisibleError("The current value must be between the min and max values.");
+      throw new sdk.UserVisibleError("The current value must be between the min and max values.");
     }
     if (target > max || target < min) {
-      throw new coda.UserVisibleError("The target value must be between the min and max values.");
+      throw new sdk.UserVisibleError("The target value must be between the min and max values.");
     }
     if (hue < 0 || hue > 360) {
-      throw new coda.UserVisibleError("The hue must be between 0 and 360.");
+      throw new sdk.UserVisibleError("The hue must be between 0 and 360.");
     }
     if (saturation < 0 || saturation > 100) {
-      throw new coda.UserVisibleError("The saturation must be between 0 and 100.");
+      throw new sdk.UserVisibleError("The saturation must be between 0 and 100.");
     }
     if (markerDistance <= 0) {
-      throw new coda.UserVisibleError("The market distance must be a positive number.");
+      throw new sdk.UserVisibleError("The market distance must be a positive number.");
     }
     for (let threshold of thresholds) {
       if (threshold > max || threshold < min) {
-        throw new coda.UserVisibleError("All thresholds value must be between the min and max values.");
+        throw new sdk.UserVisibleError("All thresholds value must be between the min and max values.");
       }
     }
     
@@ -95,7 +95,7 @@ pack.addFormula({
     // Encode the markup as base64.
     let encoded = Buffer.from(svg).toString("base64");
     // Return the SVG as a data URL.
-    return coda.SvgConstants.DataUrlPrefix + encoded;
+    return sdk.SvgConstants.DataUrlPrefix + encoded;
   },
 });
 

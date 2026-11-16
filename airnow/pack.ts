@@ -1,6 +1,6 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { DateTime } from "luxon";
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const BaseUrl = "https://www.airnowapi.org/aq/observation/zipCode/current/";
 const DefaultParameter = "PM2.5";
@@ -32,47 +32,47 @@ const CatgegoryColors = {
 pack.addNetworkDomain("airnowapi.org");
 
 pack.setSystemAuthentication({
-  type: coda.AuthenticationType.QueryParamToken,
+  type: sdk.AuthenticationType.QueryParamToken,
   paramName: "API_KEY",
 });
 
-const AQISchema = coda.makeObjectSchema({
+const AQISchema = sdk.makeObjectSchema({
   properties: {
     summary: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "A summary of the AQI measurement.",
     },
     location: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The location where the measurement was made. This will be the closest location to the supplied zip code where data is available.",
     },
     time: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Time,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Time,
       description: "The hour (local time) that the measurement was made.",
     },
     parameter: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The parameter measured.",
       fromKey: "ParameterName",
     },
     value: {
-      type: coda.ValueType.Number,
+      type: sdk.ValueType.Number,
       description: "The value of the parameter measured.",
       fromKey: "AQI",
     },
     category: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The risk category that the value falls within.",
     },
     link: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Url,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Url,
       description: "A link the AirNow.gov website for this location.",
     },
     icon: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.ImageReference,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.ImageReference,
       description: "An icon representing the AQI.",
     },
   },
@@ -91,26 +91,26 @@ pack.addFormula({
   name: "LatestAQI",
   description: "Gets the latest Air Quality Index (AQI) for the provided zip code.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "zipcode",
       description: "The zip code of the target location.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "parameter",
       description: `Which parameter to retrieve. Default: ${DefaultParameter}`,
       optional: true,
       autocomplete: AllParameters,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "now",
       description: "The current hour, used to refresh the data automatically. Enter the formula: Hour(Now())",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: AQISchema,
   cacheTtlSecs: DefaultCacheSeconds,
   execute: async function (args, context) {
@@ -119,10 +119,10 @@ pack.addFormula({
       parameter = DefaultParameter,
     ] = args;
     if (!AllParameters.includes(parameter)) {
-      throw new coda.UserVisibleError(`Invalid parameter: ${parameter}`);
+      throw new sdk.UserVisibleError(`Invalid parameter: ${parameter}`);
     }
 
-    let url = coda.withQueryParams(BaseUrl, {
+    let url = sdk.withQueryParams(BaseUrl, {
       format: "application/json",
       zipCode: zipcode,
       distance: 100,
@@ -135,13 +135,13 @@ pack.addFormula({
     let items = response.body;
 
     if (!items?.length) {
-      throw new coda.UserVisibleError(`No data available for zip code: ${zipcode}`);
+      throw new sdk.UserVisibleError(`No data available for zip code: ${zipcode}`);
     }
     let item = items.find(item => item.ParameterName == parameter);
 
     let timeString = `${item.DateObserved.trim()} ${item.HourObserved} ${item.LocalTimeZone}`;
     let time = DateTime.fromFormat(timeString, "yyyy-MM-dd H z");
-    let link = coda.withQueryParams("https://www.airnow.gov/", {
+    let link = sdk.withQueryParams("https://www.airnow.gov/", {
       reportingArea: item.ReportingArea,
       stateCode: item.StateCode,
     });
@@ -173,5 +173,5 @@ function getImageUrl(value, categoryNumber) {
   </svg>
   `;
   let encoded = Buffer.from(svg).toString("base64");
-  return coda.SvgConstants.DataUrlPrefix + encoded;
+  return sdk.SvgConstants.DataUrlPrefix + encoded;
 }

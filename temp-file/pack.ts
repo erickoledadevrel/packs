@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as mime from "mime-types";
 import JSZip from "jszip";
 const parseDataUri = require("parse-data-uri");
@@ -13,9 +13,9 @@ const OneDaySecs = 24 * 60 * 60;
 const FifteenMinutesSecs = 15 * 60;
 const FileSizeLimit = "4MB";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
-function defaultFilename(context: coda.ExecutionContext, ext: string): string {
+function defaultFilename(context: sdk.ExecutionContext, ext: string): string {
   let date = new Date();
   let formatter = new Intl.DateTimeFormat("en", {
     timeZone: context.timezone, // Use the doc's timezone (important!)
@@ -45,20 +45,20 @@ pack.addFormula({
   name: "TemporaryFile",
   description: "Create a temporary file and return the URL. The file expires after ~15 minutes.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "content",
       description: "The content of the file, text only."
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "filename",
       description: "The name of the temporary file. Default: {timestamp}.txt",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Url,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Url,
   cacheTtlSecs: FifteenMinutesSecs,
   execute: async function ([content, filename], context) {
     let mimeType = mime.lookup(filename) || "text/plain";
@@ -78,20 +78,20 @@ pack.addFormula({
   name: "TemporaryFileFromDataUri",
   description: "Create a temporary file from a data URI and return the URL. The file expires after ~15 minutes.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "dataUri",
       description: "A data URI to parse."
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "filename",
       description: "The name of the temporary file. Default: {timestamp}.png",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Url,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Url,
   cacheTtlSecs: FifteenMinutesSecs,
   execute: async function ([dataUri, filename], context) {
     let {mimeType, data} = parseDataUri(dataUri);
@@ -116,32 +116,32 @@ pack.addFormula({
   name: "TemporaryZipFile",
   description: "Create a temporary zip file from a list of files and return the URL. The zip file expires after ~15 minutes.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.SparseFileArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.SparseFileArray,
       name: "files",
       description: `The files to zip. The total size of all files must be under ${FileSizeLimit}.`,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "filename",
       description: "The name of the temporary zip file. Default: {timestamp}.zip",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Url,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Url,
   cacheTtlSecs: FifteenMinutesSecs,
   execute: async function ([files, filename], context) {
     filename ||= defaultFilename(context, "zip");
 
     files = files.filter(Boolean);
     if (!files.length) {
-      throw new coda.UserVisibleError("Received an empty list of files. Are you missing a .ListCombine()?");
+      throw new sdk.UserVisibleError("Received an empty list of files. Are you missing a .ListCombine()?");
     }
 
     let jobs: Promise<File>[] = files.map(async fileUrl => {
       if (!isHostedUrl(fileUrl)) {
-        throw new coda.UserVisibleError("Invalid file URL: " + fileUrl);
+        throw new sdk.UserVisibleError("Invalid file URL: " + fileUrl);
       }
       let response = await context.fetcher.fetch({
         method: "GET",
@@ -159,9 +159,9 @@ pack.addFormula({
       if (result.status == "rejected") {
         let message = result.reason.toString();
         if (message.includes("content size") && message.includes("over limit")) {
-          throw new coda.UserVisibleError(`File #${i+1} is over the size limit (${FileSizeLimit}).`);
+          throw new sdk.UserVisibleError(`File #${i+1} is over the size limit (${FileSizeLimit}).`);
         }
-        throw new coda.UserVisibleError(`Error fetching file #${i+1}.`);
+        throw new sdk.UserVisibleError(`Error fetching file #${i+1}.`);
       }
     }
 
@@ -182,7 +182,7 @@ pack.addFormula({
       return url;
     } catch (error) {
       console.log(error);
-      throw new coda.UserVisibleError("Error creating zip file.");
+      throw new sdk.UserVisibleError("Error creating zip file.");
     }
   },
 });

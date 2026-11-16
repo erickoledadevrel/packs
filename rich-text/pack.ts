@@ -1,19 +1,19 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as emojidict from "emoji-dictionary";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "ToHTML",
   description: "Convert rich text to HTML.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Html,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Html,
       name: "text",
       description: "The rich text to convert.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   execute: async function ([text], context) {
     return text;
   },
@@ -23,19 +23,19 @@ pack.addFormula({
   name: "ToMarkdown",
   description: "Convert rich text to markdown.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Markdown,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Markdown,
       name: "text",
       description: "The rich text to convert.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "preserveBlankLines",
       description: "Preserve blank lines in the text. Default: false.",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   execute: async function ([text, preserveBlankLines], context) {
     let result = text;
     if (preserveBlankLines) {
@@ -53,14 +53,14 @@ pack.addFormula({
   name: "RenderHTML",
   description: "Render HTML as rich text.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "html",
       description: "The HTML markup to render.",
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Html,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Html,
   execute: async function ([html], context) {
     return html;
   },
@@ -70,20 +70,20 @@ pack.addFormula({
   name: "RenderMarkdown",
   description: "Render markdown as rich text.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "markdown",
       description: "The markdown to render.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "supportEmojiShortcodes",
       description: `Render emoji shortcodes as the equivalent emoji. For example, :heart_eyes: => 😍.  Default: false.`,
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Markdown,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Markdown,
   execute: async function ([markdown, supportEmojiShortcodes = false], context) {
     if (supportEmojiShortcodes) {
       for (let name of emojidict.names) {

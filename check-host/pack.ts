@@ -1,37 +1,37 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
 const ResultLoopDelayMs = 1000;
 
-const NodeSchema = coda.makeObjectSchema({
+const NodeSchema = sdk.makeObjectSchema({
   description: "The node (server) that made the request.",
   properties: {
     nodeId: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The ID of the node.",
     },
     countryCode: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The two-letter code for the country the node is located in.",
     },
     country: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The country the node is located in.",
     },
     city: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The city the node is located in.",
     },
     domain: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The domain name of the node.",
     },
     ipAddress: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The IP address of the node.",
     },
     asn: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The ASN (Autonomous System Number) the node is located in.",
     },
   },
@@ -40,60 +40,60 @@ const NodeSchema = coda.makeObjectSchema({
   featuredProperties: ["city", "country"],
 });
 
-const HttpResultSchema = coda.makeObjectSchema({
+const HttpResultSchema = sdk.makeObjectSchema({
   description: "The result of the HTTP request from a specific node.",
   properties: {
     node: NodeSchema,
     success: {
-      type: coda.ValueType.Boolean,
+      type: sdk.ValueType.Boolean,
       description: "Whether the request was successful.",
     },
     responseTimeMs: {
-      type: coda.ValueType.Number,
+      type: sdk.ValueType.Number,
       description: "The response time, in milliseconds.",
     },
     status: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The status text of the HTTP response.",
     },
     statusCode: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The status code of the HTTP response.",
     },
     ipAddress: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The IP address that the request was sent to.",
     },
     error: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The error message returned, if any.",
     },
     summary: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "A summary of the request, for display purposes.",
     },
   },
   displayProperty: "summary",
 });
 
-const CheckHttpResultSchema = coda.makeObjectSchema({
+const CheckHttpResultSchema = sdk.makeObjectSchema({
   description: "The results of the check.",
   properties: {
     requestId: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The ID of the check that was run.",
     },
     success: {
-      type: coda.ValueType.Boolean,
+      type: sdk.ValueType.Boolean,
       description: "If the check was successful (requests from all nodes succeeded).",
     },
     rate: {
-      type: coda.ValueType.Number,
-      codaType: coda.ValueHintType.Percent,
+      type: sdk.ValueType.Number,
+      codaType: sdk.ValueHintType.Percent,
       description: "What percentage of the nodes made the request successfully.",
     },
     results: {
-      type: coda.ValueType.Array,
+      type: sdk.ValueType.Array,
       items: HttpResultSchema,
       description: "The results from individual nodes.",
     }
@@ -107,13 +107,13 @@ pack.addFormula({
   name: "CheckUrl",
   description: "Checks to see if a given website is accessible from servers across the world and reports the results.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "url",
-      description: "The url to check. Ex: https://coda.io",
+      description: "The url to check. Ex: https://sdk.io",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.StringArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.StringArray,
       name: "nodes",
       description: "Which nodes (servers) to use to make the requests. If no nodes are specified then all nodes will be used.",
       optional: true,
@@ -126,11 +126,11 @@ pack.addFormula({
             value: nodeId,
           };
         });
-        return coda.autocompleteSearchObjects(search, items, "display", "value");
+        return sdk.autocompleteSearchObjects(search, items, "display", "value");
       },
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: CheckHttpResultSchema,
   execute: async function (args, context) {
     let [url, nodeIds] = args;
@@ -191,8 +191,8 @@ pack.addSyncTable({
   },
 })
 
-async function runCheck(context: coda.ExecutionContext, host: string, checkType: string, nodeIds?: string[]) {
-  let url = coda.withQueryParams(`https://check-host.net/check-${checkType}`, {
+async function runCheck(context: sdk.ExecutionContext, host: string, checkType: string, nodeIds?: string[]) {
+  let url = sdk.withQueryParams(`https://check-host.net/check-${checkType}`, {
     host,
   });
   if (nodeIds) {
@@ -211,7 +211,7 @@ async function runCheck(context: coda.ExecutionContext, host: string, checkType:
   return response.body;
 }
 
-async function getResults(context: coda.ExecutionContext, requestId: string) {
+async function getResults(context: sdk.ExecutionContext, requestId: string) {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: `https://check-host.net/check-result/${requestId}`,
@@ -223,7 +223,7 @@ async function getResults(context: coda.ExecutionContext, requestId: string) {
   return response.body;
 }
 
-async function getNodes(context: coda.ExecutionContext) {
+async function getNodes(context: sdk.ExecutionContext) {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: "https://check-host.net/nodes/hosts",

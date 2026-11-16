@@ -1,11 +1,11 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
 const DefaultThreatTypes = ["MALWARE", "SOCIAL_ENGINEERING"];
 const DefaultPlatforms = ["ALL_PLATFORMS"];
 
-const ThreatTypeParam = coda.makeParameter({
-  type: coda.ParameterType.StringArray,
+const ThreatTypeParam = sdk.makeParameter({
+  type: sdk.ParameterType.StringArray,
   name: "threatTypes",
   description: `Which type of threats to check for. Default: ${DefaultThreatTypes.join(", ")}`,
   optional: true,
@@ -16,8 +16,8 @@ const ThreatTypeParam = coda.makeParameter({
   }
 });
 
-const PlatformParam = coda.makeParameter({
-  type: coda.ParameterType.StringArray,
+const PlatformParam = sdk.makeParameter({
+  type: sdk.ParameterType.StringArray,
   name: "platforms",
   description: `Which platforms to check for threats. Default: ${DefaultPlatforms.join(", ")}`,
   optional: true,
@@ -28,17 +28,17 @@ const PlatformParam = coda.makeParameter({
   }
 });
 
-const ThreatSchema = coda.makeObjectSchema({
+const ThreatSchema = sdk.makeObjectSchema({
   properties: {
-    url: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
-    threatType: { type: coda.ValueType.String },
-    platformType: { type: coda.ValueType.String },
+    url: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
+    threatType: { type: sdk.ValueType.String },
+    platformType: { type: sdk.ValueType.String },
   },
   displayProperty: "threatType",
 });
 
 pack.setSystemAuthentication({
-  type: coda.AuthenticationType.QueryParamToken,
+  type: sdk.AuthenticationType.QueryParamToken,
   paramName: "key",
 });
 
@@ -48,19 +48,19 @@ pack.addFormula({
   name: "IsThreat",
   description: "Determines if a given URL is a threat.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "url",
       description: "The URL to evaluate.",
     }),
     ThreatTypeParam,
     PlatformParam,
   ],
-  resultType: coda.ValueType.Boolean,
+  resultType: sdk.ValueType.Boolean,
   cacheTtlSecs: 300,
   onError: onError,
   examples: [
-    { params: ["https://coda.io"], result: false },
+    { params: ["https://sdk.io"], result: false },
     { params: ["https://testsafebrowsing.appspot.com/s/malware.html"], result: true },
     { params: ["https://testsafebrowsing.appspot.com/s/malware.html", "SOCIAL_ENGINEERING"], result: false },
     { params: ["https://testsafebrowsing.appspot.com/s/malware.html", null, "ANDROID"], result: false },
@@ -71,7 +71,7 @@ pack.addFormula({
       threatTypes = DefaultThreatTypes,
       platforms = DefaultPlatforms,
     ] = args;
-    if (!isUrl(url)) throw new coda.UserVisibleError(`Invalid URL: "${url}"`);
+    if (!isUrl(url)) throw new sdk.UserVisibleError(`Invalid URL: "${url}"`);
     let matches = await findThreats(context, [url], threatTypes, platforms);
     return matches.length > 0;
   },
@@ -81,29 +81,29 @@ pack.addFormula({
   name: "Threats",
   description: "Finds threars in a list of URLs.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.StringArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.StringArray,
       name: "urls",
       description: "The list of URLs to check.",
     }),
     ThreatTypeParam,
     PlatformParam,
   ],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: ThreatSchema,
   onError: onError,
   examples: [
-    { params: [["https://coda.io", "https://wikipedia.org"]], result: [] },
+    { params: [["https://sdk.io", "https://wikipedia.org"]], result: [] },
     {
-      params: [["https://coda.io", "https://testsafebrowsing.appspot.com/s/malware.html"]],
+      params: [["https://sdk.io", "https://testsafebrowsing.appspot.com/s/malware.html"]],
       result: [{ Url: "https://testsafebrowsing.appspot.com/s/malware.html", ThreatType: "MALWARE", PlatformType: "ALL_PLATFORMS"}],
     },
     {
-      params: [["https://coda.io", "https://testsafebrowsing.appspot.com/s/malware.html"], "SOCIAL_ENGINEERING"],
+      params: [["https://sdk.io", "https://testsafebrowsing.appspot.com/s/malware.html"], "SOCIAL_ENGINEERING"],
       result: [],
     },
     {
-      params: [["https://coda.io", "https://testsafebrowsing.appspot.com/s/malware.html"], null, "ANDROID"],
+      params: [["https://sdk.io", "https://testsafebrowsing.appspot.com/s/malware.html"], null, "ANDROID"],
       result: [],
     },
   ],
@@ -118,7 +118,7 @@ pack.addFormula({
       return [];
     }
     for (let url of urls) {
-      if (!isUrl(url)) throw new coda.UserVisibleError(`Invalid URL: "${url}"`);
+      if (!isUrl(url)) throw new sdk.UserVisibleError(`Invalid URL: "${url}"`);
     }
     let matches = await findThreats(context, urls, threatTypes, platforms);
     for (let match of matches) {
@@ -128,7 +128,7 @@ pack.addFormula({
   },
 });
 
-async function getThreatLists(context: coda.ExecutionContext): Promise<any[]> {
+async function getThreatLists(context: sdk.ExecutionContext): Promise<any[]> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: "https://safebrowsing.googleapis.com/v4/threatLists",
@@ -141,7 +141,7 @@ function isUrl(url: string) {
   return url && (url.startsWith("https://") || url.startsWith("http://"));
 }
 
-async function findThreats(context: coda.ExecutionContext, urls: string[], types = DefaultThreatTypes, platforms = DefaultPlatforms) {
+async function findThreats(context: sdk.ExecutionContext, urls: string[], types = DefaultThreatTypes, platforms = DefaultPlatforms) {
   let payload = {
     client: {
       clientId: "EricKoledaCodaPack",
@@ -168,7 +168,7 @@ function onError(error: any) {
   if (error.statusCode) {
     let message = error.body?.error?.message;
     if (message) {
-      throw new coda.UserVisibleError(message);
+      throw new sdk.UserVisibleError(message);
     }
   }
   throw error;

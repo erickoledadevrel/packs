@@ -1,7 +1,7 @@
 import * as coda from '@codahq/packs-sdk';
 import * as schemas from './schemas';
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const OneDaySecs = 24 * 60 * 60;
 
@@ -12,7 +12,7 @@ const AmazonShortUrlRegex = /^https?:\/\/([a-zA-Z\d-]+\.){0,}(amzn|a)\.(to|eu|co
 pack.addNetworkDomain("outscraper.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.CustomHeaderToken,
+  type: sdk.AuthenticationType.CustomHeaderToken,
   headerName: "X-API-KEY",
   instructionsUrl: "https://app.outscraper.com/profile",
 });
@@ -21,13 +21,13 @@ pack.addFormula({
   name: "Product",
   description: "Gets information about an Amazon product given a link.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "link",
       description: "A link to the Amazon product.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: schemas.ProductSchema,
   cacheTtlSecs: OneDaySecs,
   execute: async function (args, context) {
@@ -39,9 +39,9 @@ pack.addFormula({
     } else if (link.match(AmazonShortUrlRegex)) {
       // All good.
     } else {
-      throw new coda.UserVisibleError("Invalid link: " + link);
+      throw new sdk.UserVisibleError("Invalid link: " + link);
     }
-    let url = coda.withQueryParams("https://api.app.outscraper.com/amazon/products", {
+    let url = sdk.withQueryParams("https://api.app.outscraper.com/amazon/products", {
       query: link,
       async: false,
     })

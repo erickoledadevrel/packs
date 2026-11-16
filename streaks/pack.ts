@@ -1,7 +1,7 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { Settings, DateTime } from "luxon";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const DefaultAllowGaps = false;
 
@@ -9,32 +9,32 @@ pack.addFormula({
   name: "Streaks",
   description: "Calculate the streak for each row in a table.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.SparseDateArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.SparseDateArray,
       name: "dates",
       description: "The dates you have recorded.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.SparseBooleanArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.SparseBooleanArray,
       name: "goals",
       description: "If the goal was met for each of the dates.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "allowGaps",
       description: `Whether gaps in the record should be allowed, AKA not break the streak. Default: ${DefaultAllowGaps}`,
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: {
-    type: coda.ValueType.Number,
+    type: sdk.ValueType.Number,
   },
   execute: async function (args, context) {
     Settings.defaultZone = context.timezone ?? "America/Los_Angeles";
     let [jsDates, goals, allowGaps = DefaultAllowGaps] = args;
     if (jsDates.length != goals.length) {
-      throw new coda.UserVisibleError("You must pass in the same number of dates and goals.");
+      throw new sdk.UserVisibleError("You must pass in the same number of dates and goals.");
     }
     for (let [i, date] of jsDates.entries()) {
       if (!date) {
@@ -56,7 +56,7 @@ pack.addFormula({
     let map: Record<string, Entry> = entries.reduce((result, entry) => {
       let key = getKey(entry.date);
       if (result[key]) {
-        throw new coda.UserVisibleError(`Duplicate entries found for the date ${key}. Ensure each date is only included once.`);
+        throw new sdk.UserVisibleError(`Duplicate entries found for the date ${key}. Ensure each date is only included once.`);
       }
       result[key] = entry;
       return result;

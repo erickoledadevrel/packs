@@ -1,12 +1,12 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import {Address} from "@universe/address-parser";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("usps.com");
 
 pack.setSystemAuthentication({
-  type: coda.AuthenticationType.OAuth2ClientCredentials,
+  type: sdk.AuthenticationType.OAuth2ClientCredentials,
   // The following URL will be found in the API's documentation.
   tokenUrl: "https://apis.usps.com/oauth2/v3/token",
 });
@@ -15,13 +15,13 @@ pack.addFormula({
   name: "StandardizeAddress",
   description: "TODO",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "address",
       description: "The address to standardize.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   execute: async function (args, context) {
     let [address] = args;
     if (!address) return "";
@@ -32,9 +32,9 @@ pack.addFormula({
   },
 });
 
-async function lookupAddress(context: coda.ExecutionContext, parsed: Address): Promise<Address> {
+async function lookupAddress(context: sdk.ExecutionContext, parsed: Address): Promise<Address> {
   let formatted = parsedToUSPS(parsed);
-  let url = coda.withQueryParams("https://apis.usps.com/addresses/v3/address", {
+  let url = sdk.withQueryParams("https://apis.usps.com/addresses/v3/address", {
     ...formatted,
   });
   let response = await context.fetcher.fetch({

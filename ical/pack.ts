@@ -1,10 +1,10 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { Buffer } from "buffer";
 import { TextEncoder } from "text-encoding";
 global.TextEncoder = TextEncoder;
 import ical, {ICalCalendarMethod} from "ical-generator";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const OneHourSecs = 60 * 60;
 const OneDaySecs = 24 * OneHourSecs;
@@ -12,49 +12,49 @@ const DefaultFilename = "event.ics";
 const DefaultFilenameMultiple = "events.ics";
 
 
-const SummaryParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const SummaryParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "summary",
   description: "The summary (name) of the event.",
 });
 
-const StartParam = coda.makeParameter({
-  type: coda.ParameterType.Date,
+const StartParam = sdk.makeParameter({
+  type: sdk.ParameterType.Date,
   name: "start",
   description: "The start of the event, as a date and time.",
 });
 
-const EndParam = coda.makeParameter({
-  type: coda.ParameterType.Date,
+const EndParam = sdk.makeParameter({
+  type: sdk.ParameterType.Date,
   name: "end",
   description: "The end of the event, as a date and time.",
 });
 
 const GetFilenameParam = function(multiple = false) {
-  return coda.makeParameter({
-    type: coda.ParameterType.String,
+  return sdk.makeParameter({
+    type: sdk.ParameterType.String,
     name: "filename",
     description: `The name of the output file. Default: ${multiple ? DefaultFilenameMultiple : DefaultFilename}`,
     optional: true,
   });
 };
 
-const LocationParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const LocationParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "location",
   description: "The location of the event.",
   optional: true,
 });
 
-const DescriptionParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const DescriptionParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "description",
   description: "The description of the event.",
   optional: true,
 });
 
-const IsAllDayParam = coda.makeParameter({
-  type: coda.ParameterType.Boolean,
+const IsAllDayParam = sdk.makeParameter({
+  type: sdk.ParameterType.Boolean,
   name: "isAllDay",
   description: "True if the event is an all-day event.",
   optional: true,
@@ -72,7 +72,7 @@ pack.addFormula({
     DescriptionParam,
     IsAllDayParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneHourSecs,
   execute: async function (args, context) {
     let [summary, start, end,
@@ -111,7 +111,7 @@ pack.addFormula({
     arrayOf(DescriptionParam),
     arrayOf(IsAllDayParam),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneHourSecs,
   execute: async function (args, context) {
     let [summaries, starts, ends,
@@ -126,15 +126,15 @@ pack.addFormula({
     let length = lists.shift().length;
     for (let list of lists) {
       if (list.length != 0 && list.length != length) {
-        throw new coda.UserVisibleError("All list parameters must be of the same length.");
+        throw new sdk.UserVisibleError("All list parameters must be of the same length.");
       }
     }
     for (let i = 0; i < length; i++) {
       if (!summaries[i]) {
-        throw new coda.UserVisibleError(`Event ${i + 1} is missing a summary.`);
+        throw new sdk.UserVisibleError(`Event ${i + 1} is missing a summary.`);
       }
       if (!starts[i]) {
-        throw new coda.UserVisibleError(`Event ${i + 1} is missing a start date/time.`);
+        throw new sdk.UserVisibleError(`Event ${i + 1} is missing a start date/time.`);
       }
       calendar.createEvent({
         summary: summaries[i],
@@ -153,22 +153,22 @@ pack.addFormula({
   },
 });
 
-function arrayOf(param: coda.ParamDef<any>, sparse = false): coda.ParamDef<any> {
-  let type: coda.ParameterType;
+function arrayOf(param: sdk.ParamDef<any>, sparse = false): sdk.ParamDef<any> {
+  let type: sdk.ParameterType;
   switch (param.type) {
-    case coda.Type.string:
-      type = sparse ? coda.ParameterType.SparseStringArray : coda.ParameterType.StringArray;
+    case sdk.Type.string:
+      type = sparse ? sdk.ParameterType.SparseStringArray : sdk.ParameterType.StringArray;
       break;
-    case coda.Type.date:
-      type = sparse ? coda.ParameterType.SparseDateArray : coda.ParameterType.DateArray;
+    case sdk.Type.date:
+      type = sparse ? sdk.ParameterType.SparseDateArray : sdk.ParameterType.DateArray;
       break;
-    case coda.Type.boolean:
-      type = sparse ? coda.ParameterType.SparseBooleanArray : coda.ParameterType.BooleanArray;
+    case sdk.Type.boolean:
+      type = sparse ? sdk.ParameterType.SparseBooleanArray : sdk.ParameterType.BooleanArray;
       break;
     default:
       throw new Error(`Unhandled parameter type: ${param.type}`);
   }
-  return coda.makeParameter({
+  return sdk.makeParameter({
     ...param,
     type: type,
     name: param.name + "Column",

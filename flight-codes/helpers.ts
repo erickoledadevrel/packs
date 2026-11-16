@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { parse } from "but-csv";
 import { OneDaySecs } from "./constants";
 
@@ -34,7 +34,7 @@ const AirlineColumns = [
 ];
 const AirlineBooleanColumns = ["active"];
 
-export async function getAirports(context: coda.ExecutionContext): Promise<any> {
+export async function getAirports(context: sdk.ExecutionContext): Promise<any> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: AirportDataUrl,
@@ -54,7 +54,7 @@ export async function getAirports(context: coda.ExecutionContext): Promise<any> 
   });
 }
 
-export async function getAirlines(context: coda.ExecutionContext): Promise<any> {
+export async function getAirlines(context: sdk.ExecutionContext): Promise<any> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: AirlineDataUrl,
@@ -75,7 +75,7 @@ export async function getAirlines(context: coda.ExecutionContext): Promise<any> 
   });
 }
 
-export async function getAirline(context: coda.ExecutionContext, code: string): Promise<any> {
+export async function getAirline(context: sdk.ExecutionContext, code: string): Promise<any> {
   code = code.toUpperCase();
   let airlines = await getAirlines(context);
   let result;
@@ -85,7 +85,7 @@ export async function getAirline(context: coda.ExecutionContext, code: string): 
     result = airlines.find(airline => airline.ICAO == code);
   }
   if (!result) {
-    throw new coda.UserVisibleError(`Invalid airline code: ${code}`);
+    throw new sdk.UserVisibleError(`Invalid airline code: ${code}`);
   }
   return result;
 }

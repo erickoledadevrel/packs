@@ -1,6 +1,6 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
-export function getYear(context: coda.ExecutionContext, date: Date) {
+export function getYear(context: sdk.ExecutionContext, date: Date) {
   let formatter = new Intl.DateTimeFormat("en", {
     timeZone: context.timezone,
     year: "numeric",

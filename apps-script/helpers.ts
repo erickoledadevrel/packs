@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { ScriptUrlRegexes } from "./constants";
 import _string = require('lodash/string');
 
@@ -17,7 +17,7 @@ export function parseScriptId(scriptIdOrUrl: string): string {
   return scriptIdOrUrl;
 }
 
-export async function getScript(scriptId: string, context: coda.ExecutionContext) {
+export async function getScript(scriptId: string, context: sdk.ExecutionContext) {
   let url = `https://script.googleapis.com/v1/projects/${scriptId}`;
   let response = await context.fetcher.fetch({
     method: "GET",
@@ -27,7 +27,7 @@ export async function getScript(scriptId: string, context: coda.ExecutionContext
   return script;
 }
 
-export async function getFiles(scriptId: string, context: coda.ExecutionContext) {
+export async function getFiles(scriptId: string, context: sdk.ExecutionContext) {
   let url = `https://script.googleapis.com/v1/projects/${scriptId}/content`;
   let response = await context.fetcher.fetch({
     method: "GET",
@@ -43,8 +43,8 @@ export async function getFiles(scriptId: string, context: coda.ExecutionContext)
   return files;
 }
 
-export async function getMetrics(scriptId: string, context: coda.ExecutionContext) {
-  let url = coda.withQueryParams(`https://script.googleapis.com/v1/projects/${scriptId}/metrics`, {
+export async function getMetrics(scriptId: string, context: sdk.ExecutionContext) {
+  let url = sdk.withQueryParams(`https://script.googleapis.com/v1/projects/${scriptId}/metrics`, {
     metricsGranularity: "WEEKLY",
   });
   let response = await context.fetcher.fetch({

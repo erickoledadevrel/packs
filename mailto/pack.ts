@@ -1,5 +1,5 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "MailtoLink",
@@ -11,8 +11,8 @@ pack.addFormula({
     makeParameter("Subject"),
     makeParameter("Body"),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Url,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Url,
   examples: [
     {
       params: ["alice@example.com"], 
@@ -38,13 +38,13 @@ pack.addFormula({
   execute: async function (args, context) {
     let [to, cc, bcc, subject, body] = args;
     let params = compact({ cc, bcc, subject, body });
-    return coda.withQueryParams(`mailto:${to ?? ""}`, params);
+    return sdk.withQueryParams(`mailto:${to ?? ""}`, params);
   },
 });
 
 function makeParameter(field: string) {
-  return coda.makeParameter({
-    type: coda.ParameterType.String,
+  return sdk.makeParameter({
+    type: sdk.ParameterType.String,
     name: field.toLowerCase(),
     description: `The value to pre-fill in the "${field}" field of the email.`,
     optional: true,

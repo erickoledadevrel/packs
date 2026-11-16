@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as xml2js from 'xml2js';
 import * as xpath from 'xpath';
 import * as xmldom from '@xmldom/xmldom';
@@ -6,23 +6,23 @@ import * as xslt from 'xslt-processor';
 
 const OneDaySecs = 24 * 60 * 60;
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
-const XMLParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const XMLParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "xml",
   description: "The XML contents as a string.",
 });
 
-const IndentParam = coda.makeParameter({
-  type: coda.ParameterType.Number,
+const IndentParam = sdk.makeParameter({
+  type: sdk.ParameterType.Number,
   name: "indent",
   description: "The number of spaces to indent by. Default: 2.",
   optional: true,
 });
 
-const OmitDeclarationParam = coda.makeParameter({
-  type: coda.ParameterType.Boolean,
+const OmitDeclarationParam = sdk.makeParameter({
+  type: sdk.ParameterType.Boolean,
   name: "omitDeclaration",
   description: "If true, the standard XML declaration is omitted. Default: false.",
   optional: true,
@@ -36,7 +36,7 @@ pack.addFormula({
     IndentParam,
     OmitDeclarationParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { 
@@ -78,7 +78,7 @@ pack.addFormula({
   parameters: [
     XMLParam,
   ],
-  resultType: coda.ValueType.Boolean,
+  resultType: sdk.ValueType.Boolean,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`<foo>bar</foo>`], result: true },
@@ -105,7 +105,7 @@ pack.addFormula({
     XMLParam,
     IndentParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`<foo a="1">bar</foo>`], result: `{"foo":{"_":"bar","$":{"a":"1"}}}` },
@@ -134,15 +134,15 @@ pack.addFormula({
   name: "ToXML",
   description: "Converts a JSON string to XML, using the xml2js format.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "json",
       description: "The JSON contents as a string.",
     }),
     IndentParam,
     OmitDeclarationParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { 
@@ -165,7 +165,7 @@ pack.addFormula({
       return builder.buildObject(value);
     } catch (e) {
       if (e.toString().startsWith("SyntaxError") || e.toString().startsWith("Error:")) {
-        throw new coda.UserVisibleError(e);
+        throw new sdk.UserVisibleError(e);
       }
       throw e;
     }
@@ -177,14 +177,14 @@ pack.addFormula({
   description: "Run an XPath query over the XML content. Returns a list of results as text.",
   parameters: [
     XMLParam,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "query",
       description: "The XPath query to run.",
     }),
   ],
-  resultType: coda.ValueType.Array,
-  items: { type: coda.ValueType.String },
+  resultType: sdk.ValueType.Array,
+  items: { type: sdk.ValueType.String },
   examples: [
     { 
       params: [`<a><b id="1">foo</b><b id="2">bar</b></a>`, '/a/b'],
@@ -219,7 +219,7 @@ pack.addFormula({
       }
       return [serializeNode(nodes as Node)];
     } catch (e) {
-      throw new coda.UserVisibleError(e);
+      throw new sdk.UserVisibleError(e);
     }
   },
 });
@@ -229,13 +229,13 @@ pack.addFormula({
   description: "Use XSLT to transform the XML.",
   parameters: [
     XMLParam,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "xslt",
       description: "The XSLT transformation to use.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isExperimental: true,
   execute: async function (args, context) {
     let [xmlString, xsltString] = args;
@@ -254,7 +254,7 @@ async function parse(xml: string) {
     return await xml2js.parseStringPromise(xml);
   } catch (e) {
     if (e.toString().startsWith("Error:")) {
-      throw new coda.UserVisibleError(e);
+      throw new sdk.UserVisibleError(e);
     }
     throw e;
   }

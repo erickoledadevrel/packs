@@ -1,14 +1,14 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { MaxRowCount, ShortCacheTimeSecs, RowPageSize } from "./constants";
 import { LoadTableSpec, QueryOptions } from "./types";
 const initSqlJs = require('sql.js/dist/sql-asm.js');
 
 const TableSpecRegex = /^\s*(.+?)(?:\s*@\s*(.+?))?(?:\s*=>\s*(.+?))?\s*$/;
 
-export async function doQuery(context: coda.ExecutionContext, options: QueryOptions) {
+export async function doQuery(context: sdk.ExecutionContext, options: QueryOptions) {
   let { load, query, values, asObject } = options;
   if (!query) {
-    throw new coda.UserVisibleError("No query provided.");
+    throw new sdk.UserVisibleError("No query provided.");
   }
 
   let SQL = await initSqlJs();
@@ -43,14 +43,14 @@ export function validateQuery(db, query, values: string[]) {
     statement.step();
     return statement;
   } catch (e) {
-    throw new coda.UserVisibleError(`Invalid query: ${e}`);
+    throw new sdk.UserVisibleError(`Invalid query: ${e}`);
   }
 }
 
 export function parseSpec(spec: string): LoadTableSpec {
   let match = spec.match(TableSpecRegex);
   if (!match) {
-    throw new coda.UserVisibleError(`Invalid table specification: ${spec}`);
+    throw new sdk.UserVisibleError(`Invalid table specification: ${spec}`);
   }
   let result: LoadTableSpec = {
     table: match[1],
@@ -60,7 +60,7 @@ export function parseSpec(spec: string): LoadTableSpec {
   return result;
 }
 
-export async function prepareSpecs(context: coda.ExecutionContext, specs: LoadTableSpec[]) {
+export async function prepareSpecs(context: sdk.ExecutionContext, specs: LoadTableSpec[]) {
   for (let spec of specs) {
     if (!spec.doc) {
       spec.doc = context.invocationLocation.docId;
@@ -70,7 +70,7 @@ export async function prepareSpecs(context: coda.ExecutionContext, specs: LoadTa
   let tables = await Promise.all(specs.map(spec => getTable(context.fetcher, spec.doc, spec.table)));
   let rowCount = tables.reduce((result, table) => result + table.rowCount, 0);
   if (rowCount > MaxRowCount) {
-    throw new coda.UserVisibleError(`Attempting to load ${rowCount} rows, which is greater than the max of ${MaxRowCount}.`);
+    throw new sdk.UserVisibleError(`Attempting to load ${rowCount} rows, which is greater than the max of ${MaxRowCount}.`);
   }
 
   for (let [i, spec] of specs.entries()) {
@@ -80,7 +80,7 @@ export async function prepareSpecs(context: coda.ExecutionContext, specs: LoadTa
   }
 }
 
-export async function createTables(db, context: coda.ExecutionContext, specs: LoadTableSpec[]) {
+export async function createTables(db, context: sdk.ExecutionContext, specs: LoadTableSpec[]) {
   let statements = [];
 
   for (let { doc, table, destination } of specs) {
@@ -98,7 +98,7 @@ export async function createTables(db, context: coda.ExecutionContext, specs: Lo
   db.run(statement);
 }
 
-async function loadRows(db, context: coda.ExecutionContext, spec: LoadTableSpec, options: QueryOptions) {
+async function loadRows(db, context: sdk.ExecutionContext, spec: LoadTableSpec, options: QueryOptions) {
   let { doc, table, destination } = spec;
 
   let [columns, rows, richRows] = await Promise.all([
@@ -167,34 +167,34 @@ function formatValue(column: any, value: any, richValue: any, options: QueryOpti
   }
 }
 
-async function getTable(fetcher: coda.Fetcher, docId: string, table: string): Promise<any> {
+async function getTable(fetcher: sdk.Fetcher, docId: string, table: string): Promise<any> {
   try {
     let response = await fetcher.fetch({
       method: "GET",
-      url: `https://coda.io/apis/v1/docs/${docId}/tables/${table}`,
+      url: `https://sdk.io/apis/v1/docs/${docId}/tables/${table}`,
       cacheTtlSecs: ShortCacheTimeSecs,
     });
     return response.body;
   } catch (e) {
     if (e?.statusCode == 404) {
-      throw new coda.UserVisibleError(`Table "${table}" not found in doc "${docId}".`);
+      throw new sdk.UserVisibleError(`Table "${table}" not found in doc "${docId}".`);
     }
     throw e;
   }
 }
 
-async function getColumns(fetcher: coda.Fetcher, docId: string, table: string): Promise<any[]> {
+async function getColumns(fetcher: sdk.Fetcher, docId: string, table: string): Promise<any[]> {
   let response = await fetcher.fetch({
     method: "GET",
-    url: `https://coda.io/apis/v1/docs/${docId}/tables/${table}/columns`,
+    url: `https://sdk.io/apis/v1/docs/${docId}/tables/${table}/columns`,
     cacheTtlSecs: ShortCacheTimeSecs,
   });
   return response.body.items;
 }
 
-async function getRows(fetcher: coda.Fetcher, docId: string, table: string, rich = false): Promise<any[]> {
+async function getRows(fetcher: sdk.Fetcher, docId: string, table: string, rich = false): Promise<any[]> {
   let result = [];
-  let url = coda.withQueryParams(`https://coda.io/apis/v1/docs/${docId}/tables/${table}/rows`, {
+  let url = sdk.withQueryParams(`https://sdk.io/apis/v1/docs/${docId}/tables/${table}/rows`, {
     valueFormat: rich ? "rich" : "simple",
     limit: RowPageSize,
   });
@@ -211,10 +211,10 @@ async function getRows(fetcher: coda.Fetcher, docId: string, table: string, rich
   return result;
 }
 
-export async function getTables(fetcher: coda.Fetcher, docId: string): Promise<any[]> {
+export async function getTables(fetcher: sdk.Fetcher, docId: string): Promise<any[]> {
   let response = await fetcher.fetch({
     method: "GET",
-    url: `https://coda.io/apis/v1/docs/${docId}/tables`,
+    url: `https://sdk.io/apis/v1/docs/${docId}/tables`,
     cacheTtlSecs: ShortCacheTimeSecs,
   });
   return response.body.items;

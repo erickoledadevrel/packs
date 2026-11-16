@@ -1,8 +1,8 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
 export async function setState(context, lightOrRoomId, state) {
   let username = getUsername(context.endpoint);
-  let url = coda.joinUrl(
+  let url = sdk.joinUrl(
     "https://api.meethue.com/route/api/",
     username,
     lightOrRoomId,
@@ -59,17 +59,17 @@ export async function getScenes(context) {
   });
 }
 
-export async function getAutomations(context: coda.ExecutionContext) {
+export async function getAutomations(context: sdk.ExecutionContext) {
   let data = await getResourceV2(context, "behavior_instance");
   return data.map(automation => formatAutomation(automation));
 }
 
-export async function setTimePoint(context: coda.ExecutionContext, automationId: string, key: "start_at" | "end_at", type: string, time?: Date, offset?: number) {
-  if (!automationId) throw new coda.UserVisibleError("The automation ID must be provided.");
+export async function setTimePoint(context: sdk.ExecutionContext, automationId: string, key: "start_at" | "end_at", type: string, time?: Date, offset?: number) {
+  if (!automationId) throw new sdk.UserVisibleError("The automation ID must be provided.");
   let timePoint: any;
   switch (type) {
     case "time":
-      if (!time) throw new coda.UserVisibleError("The time must be provided.");
+      if (!time) throw new sdk.UserVisibleError("The time must be provided.");
       timePoint = {
         type,
         time: getTimeParts(context, time),
@@ -83,9 +83,9 @@ export async function setTimePoint(context: coda.ExecutionContext, automationId:
       }
       break;
     default:
-      throw new coda.UserVisibleError(`Invalid type: ${type}`);
+      throw new sdk.UserVisibleError(`Invalid type: ${type}`);
   }
-  let path = coda.joinUrl("behavior_instance", automationId as string)
+  let path = sdk.joinUrl("behavior_instance", automationId as string)
   let [automation] = await getResourceV2(context, path, {
     cacheTtlSecs: 0,
   });
@@ -97,7 +97,7 @@ export async function setTimePoint(context: coda.ExecutionContext, automationId:
   } else if (configuration.when && key == "start_at") {
     configuration.when.time_point = timePoint;
   } else {
-    throw new coda.UserVisibleError("Unable to set time.");
+    throw new sdk.UserVisibleError("Unable to set time.");
   }
   await getResourceV2(context, path, {
     method: "PUT",
@@ -116,8 +116,8 @@ export async function setTimePoint(context: coda.ExecutionContext, automationId:
 
 export async function getResource(context, path, options = {}) {
   let username = getUsername(context.endpoint);
-  let url = coda.joinUrl(`https://api.meethue.com/route/api/${username}`, path);
-  let request: coda.FetchRequest = {
+  let url = sdk.joinUrl(`https://api.meethue.com/route/api/${username}`, path);
+  let request: sdk.FetchRequest = {
     method: "GET",
     url,
     ...options,
@@ -137,8 +137,8 @@ export async function getResource(context, path, options = {}) {
 
 export async function getResourceV2(context, path, options: any = {}) {
   let username = getUsername(context.endpoint);
-  let url = coda.joinUrl(`https://api.meethue.com/route/clip/v2/resource/`, path);
-  let request: coda.FetchRequest = {
+  let url = sdk.joinUrl(`https://api.meethue.com/route/clip/v2/resource/`, path);
+  let request: sdk.FetchRequest = {
     method: "GET",
     url,
     ...options,
@@ -151,14 +151,14 @@ export async function getResourceV2(context, path, options: any = {}) {
   let data = response.body;
   let errors = data.errors;
   if (errors?.length) {
-    throw new coda.UserVisibleError(errors.map(error => error.description).join("\n"));
+    throw new sdk.UserVisibleError(errors.map(error => error.description).join("\n"));
   }
   return data.data;
 }
 
 function getUsername(endpoint) {
   if (!endpoint) {
-    throw new coda.UserVisibleError("Account setup failed. Please sign into your Philips Hue account again.");
+    throw new sdk.UserVisibleError("Account setup failed. Please sign into your Philips Hue account again.");
   }
   return endpoint.split("#")[1];
 }
@@ -170,7 +170,7 @@ export function getColorSwatchUri(color) {
     </svg>
   `.trim();
   let encoded = Buffer.from(svg).toString("base64");
-  return coda.SvgConstants.DataUrlPrefix + encoded;
+  return sdk.SvgConstants.DataUrlPrefix + encoded;
 }
 
 export function formatAutomation(automation) {
@@ -211,7 +211,7 @@ function formatTimePoint(timePoint) {
   return result;
 }
 
-export function getTimeParts(context: coda.ExecutionContext, time: Date) {
+export function getTimeParts(context: sdk.ExecutionContext, time: Date) {
   let formatter = new Intl.DateTimeFormat("en", {
     timeZone: context.timezone,
     hourCycle: "h24",

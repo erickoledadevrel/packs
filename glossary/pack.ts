@@ -1,16 +1,16 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 const RegexEscape = require("regex-escape");
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const Keyword = "Glossary";
-const ErrorEndpoint = "https://coda.io/error";
+const ErrorEndpoint = "https://sdk.io/error";
 
-const TermSchema = coda.makeObjectSchema({
+const TermSchema = sdk.makeObjectSchema({
   properties: {
-    term: { type: coda.ValueType.String },
-    definition: { type: coda.ValueType.String },
-    source: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
+    term: { type: sdk.ValueType.String },
+    definition: { type: sdk.ValueType.String },
+    source: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
   },
   displayProperty: "term",
 });
@@ -19,24 +19,24 @@ pack.addFormula({
   name: "Term",
   description: "Look up a term in the glossary.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "term",
       description: "The glosssary term to lookup.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: TermSchema,
   execute: async function (args, context) {
     let [term] = args;
     if (!term) {
-      throw new coda.UserVisibleError("Term must not be empty.");
+      throw new sdk.UserVisibleError("Term must not be empty.");
     }
 
     let key = term.trim().toLowerCase();
     let dictionary = await getGlossary(context);
     if (!dictionary[key]) {
-      throw new coda.UserVisibleError(`Unknown term: ${term}`);
+      throw new sdk.UserVisibleError(`Unknown term: ${term}`);
     }
     return dictionary[key];
   },
@@ -46,13 +46,13 @@ pack.addFormula({
   name: "Terms",
   description: "Identifies glossary terms in a piece of text.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to scan.",
     }),
   ],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: TermSchema,
   execute: async function (args, context) {
     let [text] = args;
@@ -73,35 +73,35 @@ pack.addFormula({
   name: "AddTerm",
   description: "Adds a term to the glossary",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "term",
       description: "The term to add.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "definition",
       description: "The definition of the term.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
     let [term, definition] = args;
     if (!term) {
-      throw new coda.UserVisibleError("Term must not be empty.");
+      throw new sdk.UserVisibleError("Term must not be empty.");
     }
     if (!definition) {
-      throw new coda.UserVisibleError("Definition must not be empty.");
+      throw new sdk.UserVisibleError("Definition must not be empty.");
     }
 
     let columns = await getColumns(context);
     if (columns.length < 2) {
-      throw new coda.UserVisibleError("The glossary table must have at least two columns.");
+      throw new sdk.UserVisibleError("The glossary table must have at least two columns.");
     }
 
     let baseUrl = context.endpoint.split("#")[0];
-    let url = coda.joinUrl(baseUrl, "/rows");
+    let url = sdk.joinUrl(baseUrl, "/rows");
     await context.fetcher.fetch({
       method: "POST",
       url: url,
@@ -131,10 +131,10 @@ pack.addFormula({
 });
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.CodaApiHeaderBearerToken,
+  type: sdk.AuthenticationType.CodaApiHeaderBearerToken,
   postSetup: [
     {
-      type: coda.PostSetupType.SetEndpoint,
+      type: sdk.PostSetupType.SetEndpoint,
       name: "SelectGlossary",
       description: "Select a glossary:",
       getOptions: async function (context) {
@@ -174,16 +174,16 @@ function getRegex(key: string): RegExp {
   return new RegExp(matcher);
 }
 
-async function getGlossary(context: coda.ExecutionContext) {
+async function getGlossary(context: sdk.ExecutionContext) {
   if (context.endpoint == ErrorEndpoint) {
-    throw new coda.UserVisibleError("Invalid glossary.");
+    throw new sdk.UserVisibleError("Invalid glossary.");
   }
   let [rows, columns] = await Promise.all([
     getRows(context),
     getColumns(context),
   ]);
   if (columns.length < 2) {
-    throw new coda.UserVisibleError("The glossary table must have at least two columns.");
+    throw new sdk.UserVisibleError("The glossary table must have at least two columns.");
   }
   let termColumnId = columns[0].id;
   let definitionColumnId = columns[1].id;
@@ -196,9 +196,9 @@ async function getGlossary(context: coda.ExecutionContext) {
   }, {});
 }
 
-async function getRows(context: coda.ExecutionContext) {
+async function getRows(context: sdk.ExecutionContext) {
   let baseUrl = context.endpoint.split("#")[0];
-  let url = coda.withQueryParams(coda.joinUrl(baseUrl, "/rows"), {
+  let url = sdk.withQueryParams(sdk.joinUrl(baseUrl, "/rows"), {
     limit: 100,
   });
   let result = [];
@@ -213,9 +213,9 @@ async function getRows(context: coda.ExecutionContext) {
   return result;
 }
 
-async function getColumns(context: coda.ExecutionContext) {
+async function getColumns(context: sdk.ExecutionContext) {
   let baseUrl = context.endpoint.split("#")[0];
-  let url = coda.withQueryParams(coda.joinUrl(baseUrl, "/columns"), {
+  let url = sdk.withQueryParams(sdk.joinUrl(baseUrl, "/columns"), {
     visibleOnly: true,
     limit: 100,
   });
@@ -226,7 +226,7 @@ async function getColumns(context: coda.ExecutionContext) {
   return response.body.items;
 }
 
-async function getGlossaries(context: coda.ExecutionContext) {
+async function getGlossaries(context: sdk.ExecutionContext) {
   let docs = await getGlossaryDocs(context);
   let results = await Promise.all(docs.map(async doc => {
     let tables = await getTables(context, doc);
@@ -236,9 +236,9 @@ async function getGlossaries(context: coda.ExecutionContext) {
   return results.flat();
 }
 
-async function getGlossaryDocs(context: coda.ExecutionContext) {
-  let url = coda.withQueryParams(
-    coda.joinUrl(context.invocationLocation.protocolAndHost, "/apis/v1/docs"),
+async function getGlossaryDocs(context: sdk.ExecutionContext) {
+  let url = sdk.withQueryParams(
+    sdk.joinUrl(context.invocationLocation.protocolAndHost, "/apis/v1/docs"),
     { query: Keyword, limit: 100 }
   );
   let response = await context.fetcher.fetch({
@@ -250,8 +250,8 @@ async function getGlossaryDocs(context: coda.ExecutionContext) {
   return docs;
 }
 
-async function getTables(context: coda.ExecutionContext, doc: any): Promise<any> {
-  let url = coda.joinUrl(doc.href, "tables");
+async function getTables(context: sdk.ExecutionContext, doc: any): Promise<any> {
+  let url = sdk.joinUrl(doc.href, "tables");
   let response = await context.fetcher.fetch({
     method: "GET",
     url: url,
@@ -260,4 +260,4 @@ async function getTables(context: coda.ExecutionContext, doc: any): Promise<any>
   return response.body.items;
 }
 
-pack.addNetworkDomain("coda.io");
+pack.addNetworkDomain("sdk.io");

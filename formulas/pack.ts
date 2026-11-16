@@ -1,29 +1,29 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
-pack.addNetworkDomain("coda.io");
+pack.addNetworkDomain("sdk.io");
 
 const DaySecs = 24 * 60 * 60;
-const FormulaUrlRegex = new RegExp("https://coda.io/formulas#(.*)");
+const FormulaUrlRegex = new RegExp("https://sdk.io/formulas#(.*)");
 
-const InputSchema = coda.makeObjectSchema({
+const InputSchema = sdk.makeObjectSchema({
   properties: {
     name: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The name of the input.",
     },
     description: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Markdown,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Markdown,
       description: "The description of the input.",
     },
     optional: {
-      type: coda.ValueType.Boolean,
+      type: sdk.ValueType.Boolean,
       description: "If the input is optional.",
       fromKey: "isOptional",
     },
     repeating: {
-      type: coda.ValueType.Boolean,
+      type: sdk.ValueType.Boolean,
       description: "If the input can be repeated. If there is more than one repeating input they must be repeated together in sets.",
       fromKey: "isVararg",
     },
@@ -31,62 +31,62 @@ const InputSchema = coda.makeObjectSchema({
   displayProperty: "name",
 });
 
-const ExampleSchema = coda.makeObjectSchema({
+const ExampleSchema = sdk.makeObjectSchema({
   properties: {
     input: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "An example usage of the formula.",
     },
     output: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The expected output.",
     },
   },
   displayProperty: "input",
 });
 
-const FormulaSchema = coda.makeObjectSchema({
+const FormulaSchema = sdk.makeObjectSchema({
   properties: {
     label: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "A label for the formula, including it's name and required parameters.",
     },
     name: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The name of the formula.",
     },
     description: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "A description of the formula.",
     },
     category: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       fromKey: "groupName",
       description: "The category the formula belongs to.",
     },
     action: {
-      type: coda.ValueType.Boolean,
+      type: sdk.ValueType.Boolean,
       fromKey: "isAction",
       description: "If the formula is an action. Action formulas can be used in buttons and automations.",
     },
     inputs: {
-      type: coda.ValueType.Array,
+      type: sdk.ValueType.Array,
       items: InputSchema,
       fromKey: "parameters",
       description: "The inputs to the formula.",
     },
     output: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Markdown,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Markdown,
       description: "A description of the output of the formula.",
     },
     link: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Url,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Url,
       description: "A link to the documentation for this formula.",
     },
     examples: {
-      type: coda.ValueType.Array,
+      type: sdk.ValueType.Array,
       items: ExampleSchema,
       description: "Examples of how the formula works.",
     }
@@ -105,13 +105,13 @@ pack.addFormula({
   name: "Formula",
   description: "Get information about a formula in the Coda formula language.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "name",
       description: "The name of the formula.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: FormulaSchema,
   cacheTtlSecs: DaySecs,
   execute: async function (args, context) {
@@ -123,7 +123,7 @@ pack.addFormula({
     let formulas = await getFormulas(context);
     let formula = formulas.find(formula => formula.name == name);
     if (!formula) {
-      throw new coda.UserVisibleError(`Unknown formula: ${name}`);
+      throw new sdk.UserVisibleError(`Unknown formula: ${name}`);
     }
     return formula;
   },
@@ -154,8 +154,8 @@ pack.addSyncTable({
   },
 });
 
-async function getFormulas(context: coda.ExecutionContext): Promise<any[]> {
-  let url = "https://coda.io/api/formulaMetadata";
+async function getFormulas(context: sdk.ExecutionContext): Promise<any[]> {
+  let url = "https://sdk.io/api/formulaMetadata";
   let response = await context.fetcher.fetch({
     method: "GET",
     url: url,
@@ -181,7 +181,7 @@ function formatFormula(formula: any): any {
     ...formula,
     label: `${formula.name}(${paramString})`,
     isAction: formula.badges.isAction,
-    link: `https://coda.io/formulas#${formula.name}`,
+    link: `https://sdk.io/formulas#${formula.name}`,
     output: parseDescription(formula.outputDescription, formula.parameters),
     parameters: (formula.parameters || []).map(param => {
       return {

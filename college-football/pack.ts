@@ -1,32 +1,32 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { TeamSchema, GameSchema, LineSchema } from "./schemas";
 import { getConferences, getGames, getGameLines } from "./helpers";
 import { GamesOptions } from "./types";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("collegefootballdata.com");
 
 pack.setSystemAuthentication({
-  type: coda.AuthenticationType.HeaderBearerToken,
+  type: sdk.AuthenticationType.HeaderBearerToken,
 });
 
-const YearParameter = coda.makeParameter({
-  type: coda.ParameterType.Number,
+const YearParameter = sdk.makeParameter({
+  type: sdk.ParameterType.Number,
   name: "year",
   description: "Which year (season) to fetch data for.",
 });
 
-const DivisionParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const DivisionParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "division",
   description: "If selected, limit the results to this division only.",
   autocomplete: ["FBS", "FCS", "II", "III"],
   optional: true,
 });
 
-const ConferencesParameter = coda.makeParameter({
-  type: coda.ParameterType.StringArray,
+const ConferencesParameter = sdk.makeParameter({
+  type: sdk.ParameterType.StringArray,
   name: "conferences",
   description: "If selected, limit the results to these conferences only.",
   optional: true,
@@ -37,7 +37,7 @@ const ConferencesParameter = coda.makeParameter({
     if (division) {
       conferences = conferences.filter(conference => conference.classification == division.toLocaleLowerCase());
     }
-    return coda.autocompleteSearchObjects(search, conferences, "name", "name");
+    return sdk.autocompleteSearchObjects(search, conferences, "name", "name");
   }
 });
 

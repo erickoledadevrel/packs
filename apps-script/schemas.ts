@@ -1,52 +1,52 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
-const UserSchema = coda.makeObjectSchema({
+const UserSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    email: { type: coda.ValueType.String, codaType: coda.ValueHintType.Email },
-    photo: { type: coda.ValueType.String, codaType: coda.ValueHintType.ImageReference, fromKey: "photoUrl" },
+    name: { type: sdk.ValueType.String },
+    email: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Email },
+    photo: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.ImageReference, fromKey: "photoUrl" },
   },
   displayProperty: "name",
 });
 
-const FileSchema = coda.makeObjectSchema({
+const FileSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    type: { type: coda.ValueType.String },
-    content: { type: coda.ValueType.String, fromKey: "source" },
-    createTime: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime },
-    updateTime: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime },
+    name: { type: sdk.ValueType.String },
+    type: { type: sdk.ValueType.String },
+    content: { type: sdk.ValueType.String, fromKey: "source" },
+    createTime: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime },
+    updateTime: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime },
     lastModifyUser: UserSchema,
   }
 });
 
-const MetricsSchema = coda.makeObjectSchema({
+const MetricsSchema = sdk.makeObjectSchema({
   properties: {
-    summary: { type: coda.ValueType.String },
-    activeUsers: { type: coda.ValueType.Number },
-    totalExecutions: { type: coda.ValueType.Number },
-    failedExecutions: { type: coda.ValueType.Number },
+    summary: { type: sdk.ValueType.String },
+    activeUsers: { type: sdk.ValueType.Number },
+    totalExecutions: { type: sdk.ValueType.Number },
+    failedExecutions: { type: sdk.ValueType.Number },
   },
   displayProperty: "summary",
 });
 
-export const ScriptSchema = coda.makeObjectSchema({
+export const ScriptSchema = sdk.makeObjectSchema({
   properties: {
-    scriptId: { type: coda.ValueType.String },
-    title: { type: coda.ValueType.String },
-    files: { type: coda.ValueType.Array, items: FileSchema },
+    scriptId: { type: sdk.ValueType.String },
+    title: { type: sdk.ValueType.String },
+    files: { type: sdk.ValueType.Array, items: FileSchema },
     metrics: MetricsSchema,
-    createTime: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime },
-    updateTime: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime },
+    createTime: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime },
+    updateTime: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime },
     creator: UserSchema,
     lastModifyUser: UserSchema,
-    link: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
+    link: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
   },
   displayProperty: "title",
   idProperty: "scriptId",
   featuredProperties: ["files", "metrics"],
   subtitleProperties: [
-    { property: "creator.name", label: `By ${coda.PropertyLabelValueTemplate}` },
+    { property: "creator.name", label: `By ${sdk.PropertyLabelValueTemplate}` },
   ],
   linkProperty: "link",
 });

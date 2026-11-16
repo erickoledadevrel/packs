@@ -1,6 +1,6 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const PromoterValue = "Promoter";
 const PassiveValue = "Passive";
@@ -10,13 +10,13 @@ pack.addFormula({
   name: "Category",
   description: "Calculates whether the given score is a Promoter, Detractor, or Passive.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "rating",
       description: "The rating (0-10) that the user gave.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: [4], result: "Detractor" },
     { params: [7], result: "Passive" },
@@ -25,7 +25,7 @@ pack.addFormula({
   execute: async function (args, context) {
     let [rating] = args;
     if (isInvalid(rating)) {
-      throw new coda.UserVisibleError("Invalid rating: " + rating);
+      throw new sdk.UserVisibleError("Invalid rating: " + rating);
     }
     return getBucket(rating);
   }
@@ -35,13 +35,13 @@ pack.addFormula({
   name: "NPS",
   description: "Calculates the Net Promoter Score® for a set of ratings.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.SparseNumberArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.SparseNumberArray,
       name: "ratings",
       description: "The ratings (0-10) that the users gave.",
     }),
   ],
-  resultType: coda.ValueType.Number,
+  resultType: sdk.ValueType.Number,
   examples: [
     { params: [10, 4, 9, 8], result: 25 },
   ],
@@ -59,7 +59,7 @@ pack.addFormula({
     // Handle invalid ratings.
     let invalid = ratings.filter(rating => isInvalid(rating));
     if (invalid.length) {
-      throw new coda.UserVisibleError("Invalid ratings: " + invalid.join(", "));
+      throw new sdk.UserVisibleError("Invalid ratings: " + invalid.join(", "));
     }
 
     let buckets = ratings.map(rating => getBucket(rating));

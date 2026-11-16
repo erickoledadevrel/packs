@@ -1,41 +1,41 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
-const CommonSchema = coda.makeObjectSchema({
+const CommonSchema = sdk.makeObjectSchema({
   properties: {
     // API
     backdrop: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.ImageReference,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.ImageReference,
       fromKey: "backdrop_path",
     },
     genres: {
-      type: coda.ValueType.Array,
-      items: { type: coda.ValueType.String },
+      type: sdk.ValueType.Array,
+      items: { type: sdk.ValueType.String },
     },
     homepage: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Url,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Url,
     },
-    id: { type: coda.ValueType.Number },
-    overview: { type: coda.ValueType.String },
+    id: { type: sdk.ValueType.Number },
+    overview: { type: sdk.ValueType.String },
     poster: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.ImageReference,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.ImageReference,
       fromKey: "poster_path",
     },
-    status: { type: coda.ValueType.String },
-    tagline: { type: coda.ValueType.String },
+    status: { type: sdk.ValueType.String },
+    tagline: { type: sdk.ValueType.String },
 
     // Synthetic
     details: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Html,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Html,
     },
     link: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Url,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Url,
     },
-    rating: { type: coda.ValueType.String },
+    rating: { type: sdk.ValueType.String },
   },
   displayProperty: undefined,
   titleProperty: undefined,
@@ -45,46 +45,46 @@ const CommonSchema = coda.makeObjectSchema({
   subtitleProperties: undefined,
   attribution: [
     {
-      type: coda.AttributionNodeType.Image,
+      type: sdk.AttributionNodeType.Image,
       imageUrl: "https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg",
       anchorUrl: "https://www.themoviedb.org",
     },
     {
-      type: coda.AttributionNodeType.Link,
+      type: sdk.AttributionNodeType.Link,
       anchorText: "The Movie Database (TMDB)",
       anchorUrl: "https://www.themoviedb.org",
     }
   ],
 });
 
-export const MovieSchema = coda.makeObjectSchema({
+export const MovieSchema = sdk.makeObjectSchema({
   ...CommonSchema,
   properties: {
     ...CommonSchema.properties,
 
     // API
     budget: {
-      type: coda.ValueType.Number,
-      codaType: coda.ValueHintType.Currency,
+      type: sdk.ValueType.Number,
+      codaType: sdk.ValueHintType.Currency,
     },
     release_date: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Date,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Date,
     },
     revenue: {
-      type: coda.ValueType.Number,
-      codaType: coda.ValueHintType.Currency,
+      type: sdk.ValueType.Number,
+      codaType: sdk.ValueHintType.Currency,
     },
     runtime: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Duration,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Duration,
     },
-    title: { type: coda.ValueType.String },
+    title: { type: sdk.ValueType.String },
 
     // Synthetic
     trailer: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Url,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Url,
     },
   },
   displayProperty: "title",
@@ -97,24 +97,24 @@ export const MovieSchema = coda.makeObjectSchema({
   ],
 });
 
-export const ShowSchema = coda.makeObjectSchema({
+export const ShowSchema = sdk.makeObjectSchema({
   ...CommonSchema,
   properties: {
     ...CommonSchema.properties,
 
     // API
     first_air_date: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Date,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Date,
     },
     last_air_date: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Date,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Date,
     },
-    name: { type: coda.ValueType.String },
-    number_of_episodes: { type: coda.ValueType.Number },
-    number_of_seasons: { type: coda.ValueType.Number },
-    type: { type: coda.ValueType.String },
+    name: { type: sdk.ValueType.String },
+    number_of_episodes: { type: sdk.ValueType.Number },
+    number_of_seasons: { type: sdk.ValueType.Number },
+    type: { type: sdk.ValueType.String },
   },
   displayProperty: "name",
   titleProperty: "name",

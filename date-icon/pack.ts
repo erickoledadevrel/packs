@@ -1,26 +1,26 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
 const DefaultIncludeDayOfWeek = false;
 const DefaultHeaderColor = "#E64C3C";
 const DefaultSize = 800;
 const DaySecs = 24 * 60 * 60;
 
-const DateParameter = coda.makeParameter({
-  type: coda.ParameterType.Date,
+const DateParameter = sdk.makeParameter({
+  type: sdk.ParameterType.Date,
   name: "date",
   description: "The date to use to populate the icon.",
 });
 
-const HeaderColorParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const HeaderColorParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "headerColor",
   description: `The color of the icon header (where the month is), as a CSS color value ("blue" or "#EE5A29"). Default: ${DefaultHeaderColor}`,
   optional: true,
 });
 
-const SizeParameter = coda.makeParameter({
-  type: coda.ParameterType.Number,
+const SizeParameter = sdk.makeParameter({
+  type: sdk.ParameterType.Number,
   name: "size",
   description: `The size of the image (width and height) in pixels. Default: ${DefaultSize}`,
   optional: true,
@@ -31,8 +31,8 @@ pack.addFormula({
   description: "Generate an icon for the given date, including the month, day, and optionally day of the week.",
   parameters: [
     DateParameter,
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "includeDayOfWeek",
       description: `Whether or not to include the day of the week at the bottom. Default: ${DefaultIncludeDayOfWeek}`,
       optional: true,
@@ -40,8 +40,8 @@ pack.addFormula({
     HeaderColorParameter,
     SizeParameter,
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.ImageReference,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.ImageReference,
   cacheTtlSecs: DaySecs,
   execute: async function (args, context) {
     let [
@@ -77,7 +77,7 @@ pack.addFormula({
     // Encode the markup as base64.
     let encoded = Buffer.from(svg.trim()).toString("base64");
     // Return the SVG as a data URL.
-    return coda.SvgConstants.DataUrlPrefix + encoded;
+    return sdk.SvgConstants.DataUrlPrefix + encoded;
   },
 });
 
@@ -89,8 +89,8 @@ pack.addFormula({
     HeaderColorParameter,
     SizeParameter,
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.ImageReference,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.ImageReference,
   cacheTtlSecs: DaySecs,
   execute: async function (args, context) {
     let [
@@ -122,7 +122,7 @@ pack.addFormula({
     // Encode the markup as base64.
     let encoded = Buffer.from(svg.trim()).toString("base64");
     // Return the SVG as a data URL.
-    return coda.SvgConstants.DataUrlPrefix + encoded;
+    return sdk.SvgConstants.DataUrlPrefix + encoded;
   },
 });
 

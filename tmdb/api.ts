@@ -1,15 +1,15 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as constants from "./constants";
 
 export class Api {
-  context: coda.ExecutionContext;
+  context: sdk.ExecutionContext;
 
-  constructor(context: coda.ExecutionContext) {
+  constructor(context: sdk.ExecutionContext) {
     this.context = context;
   }
 
   public async searchMovies(query: string) {
-    let url = coda.withQueryParams("https://api.themoviedb.org/3/search/movie", {
+    let url = sdk.withQueryParams("https://api.themoviedb.org/3/search/movie", {
       query,
       include_adult: false,
       language: "en-US",
@@ -24,7 +24,7 @@ export class Api {
   }
 
   public async searchShows(query: string) {
-    let url = coda.withQueryParams("https://api.themoviedb.org/3/search/tv", {
+    let url = sdk.withQueryParams("https://api.themoviedb.org/3/search/tv", {
       query,
       include_adult: false,
       language: "en-US",
@@ -39,7 +39,7 @@ export class Api {
   }
 
   public async getMovie(id: string) {
-    let url = coda.withQueryParams(`https://api.themoviedb.org/3/movie/${id}`, {
+    let url = sdk.withQueryParams(`https://api.themoviedb.org/3/movie/${id}`, {
       append_to_response: "release_dates,videos",
     });
     let response = await this.context.fetcher.fetch({
@@ -52,7 +52,7 @@ export class Api {
   }
 
   public async getShow(id: string) {
-    let url = coda.withQueryParams(`https://api.themoviedb.org/3/tv/${id}`, {
+    let url = sdk.withQueryParams(`https://api.themoviedb.org/3/tv/${id}`, {
       append_to_response: "content_ratings",
     });
     let response = await this.context.fetcher.fetch({

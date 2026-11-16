@@ -1,15 +1,15 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { onError } from "./helpers";
 
 const QueryPageSize = 100;
 const QueryTimeoutMs = 30 * 1000;
 
 export class BigQueryApi {
-  context: coda.ExecutionContext;
+  context: sdk.ExecutionContext;
   projectId: string;
   accessTokenPromise: Promise<string>;
 
-  constructor(context: coda.ExecutionContext, projectId: string) {
+  constructor(context: sdk.ExecutionContext, projectId: string) {
     this.context = context;
     this.projectId = projectId;
   }
@@ -38,7 +38,7 @@ export class BigQueryApi {
   }
 
   async getQueryResults(jobId: string, pageToken?: string) {
-    let url = coda.withQueryParams(`/queries/${jobId}`, {
+    let url = sdk.withQueryParams(`/queries/${jobId}`, {
       maxResults: QueryPageSize,
       timeoutMs: QueryTimeoutMs,
       pageToken,
@@ -50,9 +50,9 @@ export class BigQueryApi {
     return response.body;
   }
 
-  private async makeRequest(request: coda.FetchRequest) {
+  private async makeRequest(request: sdk.FetchRequest) {
     if (request.url?.startsWith("/")) {
-      request.url = coda.joinUrl("https://www.googleapis.com/bigquery/v2/projects", this.projectId, request.url);
+      request.url = sdk.joinUrl("https://www.googleapis.com/bigquery/v2/projects", this.projectId, request.url);
     }
     try {
       return await this.context.fetcher.fetch(request);

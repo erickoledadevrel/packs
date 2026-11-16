@@ -1,22 +1,22 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import TOML from "smol-toml";
 
 const OneDaySecs = 24 * 60 * 60;
 
-const TOMLParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const TOMLParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "toml",
   description: "The TOML contents as a string.",
 });
 
-const SpacesParam = coda.makeParameter({
-  type: coda.ParameterType.Number,
+const SpacesParam = sdk.makeParameter({
+  type: sdk.ParameterType.Number,
   name: "spaces",
   description: "The number of spaces to indent by. Default: no indenting.",
   optional: true,
 });
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "FormatTOML",
@@ -24,7 +24,7 @@ pack.addFormula({
   parameters: [
     TOMLParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`foo="bar"`], result: `foo = "bar"` },
@@ -43,7 +43,7 @@ pack.addFormula({
   parameters: [
     TOMLParam,
   ],
-  resultType: coda.ValueType.Boolean,
+  resultType: sdk.ValueType.Boolean,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { 
@@ -71,7 +71,7 @@ pack.addFormula({
     TOMLParam,
     SpacesParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`foo = "bar"`], result: `{"foo":"bar"}` },
@@ -88,13 +88,13 @@ pack.addFormula({
   name: "ToTOML",
   description: "Converts a JSON string to TOML.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "json",
       description: "The JSON contents as a string.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`{"foo": "bar"}`], result: `foo = "bar"` },
@@ -109,9 +109,9 @@ pack.addFormula({
 
 function onError(e) {
   if (e.message.startsWith("Invalid TOML")) {
-    throw new coda.UserVisibleError(e.message, e);
+    throw new sdk.UserVisibleError(e.message, e);
   } else if (e.toString().startsWith("SyntaxError")) {
-    throw new coda.UserVisibleError(e.message, e);
+    throw new sdk.UserVisibleError(e.message, e);
   }
   throw e;
 }

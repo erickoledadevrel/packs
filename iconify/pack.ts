@@ -1,8 +1,8 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { CollectionSchema, SearchResultSchema, SyncIconSchema } from "./schemas";
 import { getIconImages } from "./images";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const ApiBaseUrl = "https://api.iconify.design";
 const WebsiteBaseUrl = "https://icon-sets.iconify.design";
@@ -44,15 +44,15 @@ interface CollectionResponse {
   aliases?: Record<string, string>;
 }
 
-const QueryParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const QueryParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "query",
   description: "The icon to search for, such as home. Omit to browse the selected collection.",
   optional: true,
 });
 
-const CollectionParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const CollectionParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "collection",
   description: "The collection ID to browse or search, such as mdi. Required when no query is provided.",
   optional: true,
@@ -62,7 +62,7 @@ const CollectionParameter = coda.makeParameter({
       display: `${collection.name} (${collection.id})`,
       value: collection.id,
     }));
-    return coda.autocompleteSearchObjects(search, options, "display", "value");
+    return sdk.autocompleteSearchObjects(search, options, "display", "value");
   },
 });
 
@@ -72,22 +72,22 @@ pack.addFormula({
   parameters: [
     QueryParameter,
     CollectionParameter,
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "page",
       description: "The page to retrieve, starting at 1. Default: 1.",
       optional: true,
       suggestedValue: 1,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "pageSize",
       description: `Number of icons per page, from 1 to 999. Default: ${DefaultPageSize}.`,
       optional: true,
       suggestedValue: DefaultPageSize,
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: SearchResultSchema,
   cacheTtlSecs: OneDaySecs,
   examples: [
@@ -106,7 +106,7 @@ pack.addFormula({
   name: "Collections",
   description: "List Iconify collections, including their IDs, authors, licenses, and other metadata.",
   parameters: [],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: CollectionSchema,
   cacheTtlSecs: OneDaySecs,
   examples: [
@@ -194,7 +194,7 @@ function formatResult(icons: string[], collections: Record<string, CollectionInf
   };
 }
 
-async function getCollections(context: coda.ExecutionContext) {
+async function getCollections(context: sdk.ExecutionContext) {
   let response = await context.fetcher.fetch<Record<string, CollectionInfo>>({
     method: "GET",
     url: `${ApiBaseUrl}/collections`,
@@ -215,38 +215,38 @@ function formatCollections(collections: Record<string, CollectionInfo>) {
 }
 
 async function getIcons(query: string, collection: string, page: number, pageSize: number,
-  context: coda.ExecutionContext) {
+  context: sdk.ExecutionContext) {
   query = query.trim();
   collection = collection.trim();
   if (!query && !collection) {
-    throw new coda.UserVisibleError("Provide a search query or a collection.");
+    throw new sdk.UserVisibleError("Provide a search query or a collection.");
   }
   if (collection && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(collection)) {
-    throw new coda.UserVisibleError("Use a collection ID such as mdi or material-symbols.");
+    throw new sdk.UserVisibleError("Use a collection ID such as mdi or material-symbols.");
   }
   let summary = query ? `"${query}"${collection ? ` in ${collection}` : ""}` : collection;
   if (!Number.isSafeInteger(page) || page < 1) {
-    throw new coda.UserVisibleError("Page must be a whole number starting at 1.");
+    throw new sdk.UserVisibleError("Page must be a whole number starting at 1.");
   }
   if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > 999) {
-    throw new coda.UserVisibleError("Page size must be a whole number from 1 to 999.");
+    throw new sdk.UserVisibleError("Page size must be a whole number from 1 to 999.");
   }
   let start = (page - 1) * pageSize;
   if (!Number.isSafeInteger(start)) {
-    throw new coda.UserVisibleError("Page is too large. Choose a smaller page number.");
+    throw new sdk.UserVisibleError("Page is too large. Choose a smaller page number.");
   }
   if (!query) {
     let result: CollectionResponse;
     try {
       let response = await context.fetcher.fetch<CollectionResponse>({
         method: "GET",
-        url: coda.withQueryParams(`${ApiBaseUrl}/collection`, { prefix: collection, info: true }),
+        url: sdk.withQueryParams(`${ApiBaseUrl}/collection`, { prefix: collection, info: true }),
         cacheTtlSecs: OneDaySecs,
       });
       result = response.body;
     } catch (error) {
-      if (coda.StatusCodeError.isStatusCodeError(error) && error.statusCode === 404) {
-        throw new coda.UserVisibleError(`Collection "${collection}" was not found or cannot be browsed.`);
+      if (sdk.StatusCodeError.isStatusCodeError(error) && error.statusCode === 404) {
+        throw new sdk.UserVisibleError(`Collection "${collection}" was not found or cannot be browsed.`);
       }
       throw error;
     }
@@ -262,7 +262,7 @@ async function getIcons(query: string, collection: string, page: number, pageSiz
     return formatResult(icons, metadata, page, start + icons.length < names.length, summary);
   }
   if (start >= 999) {
-    throw new coda.UserVisibleError("Iconify exposes at most 999 results per search. Choose an earlier page or narrow your search.");
+    throw new sdk.UserVisibleError("Iconify exposes at most 999 results per search. Choose an earlier page or narrow your search.");
   }
   // Iconify applies start after collecting limit results and requires start <
   // limit. Increase the limit to the end of this page, respecting the API's
@@ -274,7 +274,7 @@ async function getIcons(query: string, collection: string, page: number, pageSiz
   }
   let response = await context.fetcher.fetch<SearchResponse>({
     method: "GET",
-    url: coda.withQueryParams(`${ApiBaseUrl}/search`, params),
+    url: sdk.withQueryParams(`${ApiBaseUrl}/search`, params),
     cacheTtlSecs: OneDaySecs,
   });
   let result = response.body;

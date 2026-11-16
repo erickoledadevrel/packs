@@ -1,11 +1,11 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { ManifestProperty, PackSchema } from "./schemas";
 import { PackUrlRegexes, MetadataTypes } from "./constants";
 import mask from 'json-mask';
 
 const OneDaySecs = 24 * 60 * 60;
 
-export function formatItem(context: coda.ExecutionContext, item: any) {
+export function formatItem(context: sdk.ExecutionContext, item: any) {
   if (!item.packId && item.id) {
     item.packId = item.id;
   }
@@ -13,13 +13,13 @@ export function formatItem(context: coda.ExecutionContext, item: any) {
   item.categories = item.categories?.map(category => category.categoryName);
   if (item.makers) {
     for (let maker of item.makers) {
-      maker.profileLink = coda.joinUrl(host, `/@${maker.slug}`);
+      maker.profileLink = sdk.joinUrl(host, `/@${maker.slug}`);
     }
   }
   item.price = item.standardPackPlan?.pricing?.amount;
   item.bundledWithPlan = item.bundledPackPlan?.pricing?.minimumFeatureSet;
-  item.listingUrl = coda.joinUrl(host, `/packs/${item.packId}`);
-  item.studioUrl = coda.joinUrl(host, `/p/${item.packId}`);
+  item.listingUrl = sdk.joinUrl(host, `/packs/${item.packId}`);
+  item.studioUrl = sdk.joinUrl(host, `/p/${item.packId}`);
   return item;
 }
 
@@ -28,7 +28,7 @@ export function unformatItem(item: any) {
   return item;
 }
 
-export async function addBuildingBlocks(context: coda.ExecutionContext, items: any[]) {
+export async function addBuildingBlocks(context: sdk.ExecutionContext, items: any[]) {
   let requests = items.map(item => {
     return context.fetcher.fetch({
       method: "GET",
@@ -91,7 +91,7 @@ function formatParameter(parameter) {
   return result;
 }
 
-function getParameterType(type: number | coda.ArrayType<number>): string {
+function getParameterType(type: number | sdk.ArrayType<number>): string {
   if (typeof type === 'number') {
     return getTypeName(type);
   }
@@ -103,7 +103,7 @@ function getParameterType(type: number | coda.ArrayType<number>): string {
 }
 
 function getTypeName(type: number) {
-  let name = coda.Type[type];
+  let name = sdk.Type[type];
   return name.slice(0, 1).toUpperCase() + name.slice(1);
 }
 
@@ -113,11 +113,11 @@ function formatColumnFormat(columnFormat) {
   return result;
 }
 
-export async function addPublished(context: coda.ExecutionContext, items: any[]) {
+export async function addPublished(context: sdk.ExecutionContext, items: any[]) {
   let requests = items.map(item => {
     return context.fetcher.fetch({
       method: "GET",
-      url: `https://coda.io/apis/v1/packs/${item.packId}/listing`,
+      url: `https://sdk.io/apis/v1/packs/${item.packId}/listing`,
     });
   });
   let results = await Promise.allSettled(requests);
@@ -136,12 +136,12 @@ export async function addPublished(context: coda.ExecutionContext, items: any[])
   }
 }
 
-export async function addReleases(context: coda.ExecutionContext, items: any[]) {
+export async function addReleases(context: sdk.ExecutionContext, items: any[]) {
   let host = context.invocationLocation.protocolAndHost;
   let requests = items.map(item => {
     return context.fetcher.fetch({
       method: "GET",
-      url: coda.joinUrl(host, `/apis/v1/packs/${item.packId}/releases`),
+      url: sdk.joinUrl(host, `/apis/v1/packs/${item.packId}/releases`),
     });
   });
   let results = await Promise.allSettled(requests);
@@ -155,12 +155,12 @@ export async function addReleases(context: coda.ExecutionContext, items: any[]) 
   }
 }
 
-export async function addFeaturedDocs(context: coda.ExecutionContext, items: any[]) {
+export async function addFeaturedDocs(context: sdk.ExecutionContext, items: any[]) {
   let host = context.invocationLocation.protocolAndHost;
   let requests = items.map(item => {
     return context.fetcher.fetch({
       method: "GET",
-      url: coda.joinUrl(host, `/apis/v1/packs/${item.packId}/featuredDocs`),
+      url: sdk.joinUrl(host, `/apis/v1/packs/${item.packId}/featuredDocs`),
     });
   });
   let results = await Promise.allSettled(requests);
@@ -174,7 +174,7 @@ export async function addFeaturedDocs(context: coda.ExecutionContext, items: any
   }
 }
 
-export async function addManifest(context: coda.ExecutionContext, items: any[], fieldMask: string) {
+export async function addManifest(context: sdk.ExecutionContext, items: any[], fieldMask: string) {
   let requests = items.map(item => {
     return context.fetcher.fetch({
       method: "GET",
@@ -196,26 +196,26 @@ export async function addManifest(context: coda.ExecutionContext, items: any[], 
   }
 }
 
-export function getPackId(context: coda.ExecutionContext, packIdOrUrl: string): string {
+export function getPackId(context: sdk.ExecutionContext, packIdOrUrl: string): string {
   for (let regex of PackUrlRegexes) {
     let match = packIdOrUrl.match(regex);
     if (match) {
       let [_, host, packId] = match;
       if (host != context.invocationLocation.protocolAndHost) {
-        throw new coda.UserVisibleError(
+        throw new sdk.UserVisibleError(
           `This Pack can only fetch Packs hosted on ${context.invocationLocation.protocolAndHost}`);
       }
       return packId;
     }
   }
   if (isNaN(Number.parseInt(packIdOrUrl))) {
-    throw new coda.UserVisibleError(`Invalid Pack ID or URL: ${packIdOrUrl}`);
+    throw new sdk.UserVisibleError(`Invalid Pack ID or URL: ${packIdOrUrl}`);
   }
   return packIdOrUrl;
 }
 
-export function extendSchema(metadata: string[], includeManifest): coda.GenericObjectSchema {
-  let properties: coda.ObjectSchemaProperties = { ...PackSchema.properties };
+export function extendSchema(metadata: string[], includeManifest): sdk.GenericObjectSchema {
+  let properties: sdk.ObjectSchemaProperties = { ...PackSchema.properties };
   let featured: string[] = [...PackSchema.featuredProperties];
   for (let key of metadata) {
     let settings = getMetdataSettings(key);
@@ -238,53 +238,53 @@ export function extendSchema(metadata: string[], includeManifest): coda.GenericO
 export function getMetdataSettings(key: string): MetadataSettings {
   let result = MetadataTypes[key];
   if (!result) {
-    throw new coda.UserVisibleError(`Invalid metadata: ${key}`);
+    throw new sdk.UserVisibleError(`Invalid metadata: ${key}`);
   }
   return result;
 }
 
 export interface MetadataSettings {
   name: string;
-  callback: (context: coda.ExecutionContext, items: any[]) => Promise<void>;
-  properties: coda.ObjectSchemaProperties;
+  callback: (context: sdk.ExecutionContext, items: any[]) => Promise<void>;
+  properties: sdk.ObjectSchemaProperties;
   maxPageSize?: number;
 }
 
-export async function getVersions(context: coda.ExecutionContext, packId: string) {
+export async function getVersions(context: sdk.ExecutionContext, packId: string) {
   let host = context.invocationLocation.protocolAndHost;
   let response = await context.fetcher.fetch({
     method: "GET",
-    url: coda.joinUrl(host, `/apis/v1/packs/${packId}/versions`),
+    url: sdk.joinUrl(host, `/apis/v1/packs/${packId}/versions`),
   });
   return response.body.items;
 }
 
-export async function getFiles(context: coda.ExecutionContext, packId: string, version: string) {
+export async function getFiles(context: sdk.ExecutionContext, packId: string, version: string) {
   let host = context.invocationLocation.protocolAndHost;
   let response = await context.fetcher.fetch({
     method: "GET",
-    url: coda.joinUrl(host, `/apis/v1/packs/${packId}/versions/${version}/sourceCode`),
+    url: sdk.joinUrl(host, `/apis/v1/packs/${packId}/versions/${version}/sourceCode`),
   });
   return response.body.files;
 }
 
-export async function getCategories(context: coda.ExecutionContext): Promise<string[]> {
+export async function getCategories(context: sdk.ExecutionContext): Promise<string[]> {
   let host = context.invocationLocation.protocolAndHost;
   let response = await context.fetcher.fetch({
     method: "GET",
-    url: coda.joinUrl(host, "apis/v1/categories"),
+    url: sdk.joinUrl(host, "apis/v1/categories"),
   });
   return response.body.items.map(item => item.name);
 }
 
-export async function addCategory(context: coda.ExecutionContext, packId: number, category: string) {
+export async function addCategory(context: sdk.ExecutionContext, packId: number, category: string) {
   let host = context.invocationLocation.protocolAndHost;
   let payload = {
     categoryName: category,
   };
   await context.fetcher.fetch({
     method: "POST",
-    url: coda.joinUrl(host, "apis/v1/packs", String(packId), "category"),
+    url: sdk.joinUrl(host, "apis/v1/packs", String(packId), "category"),
     headers: {
       "Content-Type": "application/json",
     },
@@ -292,30 +292,30 @@ export async function addCategory(context: coda.ExecutionContext, packId: number
   })
 }
 
-export async function removeCategory(context: coda.ExecutionContext, packId: number, category: string) {
+export async function removeCategory(context: sdk.ExecutionContext, packId: number, category: string) {
   let host = context.invocationLocation.protocolAndHost;
   await context.fetcher.fetch({
     method: "DELETE",
-    url: coda.joinUrl(host, "apis/v1/packs", String(packId), "category", category),
+    url: sdk.joinUrl(host, "apis/v1/packs", String(packId), "category", category),
   });
 }
 
 export function handleError(e) {
   if (e.statusCode == 404) {
-    throw new coda.UserVisibleError(`Pack doesn't exist or you don't have access to it.`);
+    throw new sdk.UserVisibleError(`Pack doesn't exist or you don't have access to it.`);
   }
   throw e;
 }
 
-export async function addStats(context: coda.ExecutionContext, packs: any[]) {
+export async function addStats(context: sdk.ExecutionContext, packs: any[]) {
   let until = new Date();
   let since = new Date(until);
   since.setDate(since.getDate() - 30);
   let untilDate = until.toISOString().split("T")[0];
   let sinceDate = since.toISOString().split("T")[0];
   let packIds = packs.map(pack => pack.id);
-  let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/analytics/packs");
-  let url = coda.withQueryParams(baseUrl, {
+  let baseUrl = sdk.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/analytics/packs");
+  let url = sdk.withQueryParams(baseUrl, {
     sinceDate,
     untilDate,
     scale: "cumulative",

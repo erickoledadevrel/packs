@@ -1,6 +1,6 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
-export async function getToken(context: coda.ExecutionContext) {
+export async function getToken(context: sdk.ExecutionContext) {
   let invocationToken = context.invocationToken;
   let payload = {
     method: "PASSWORD",
@@ -20,7 +20,7 @@ export async function getToken(context: coda.ExecutionContext) {
   return response.body.id_token;
 }
 
-export async function getJob(context: coda.ExecutionContext, jobId: string) {
+export async function getJob(context: sdk.ExecutionContext, jobId: string) {
   let token = await getToken(context);
   let url = `https://job.api.visualping.io/v2/jobs/${jobId}`;
   let response = await context.fetcher.fetch({

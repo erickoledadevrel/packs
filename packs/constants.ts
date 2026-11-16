@@ -4,8 +4,8 @@ import { BuildingBlockPoperties, FeaturedDocsProperties, PublishedProperties, Re
 export const PageSize = 20;
 
 export const PackUrlRegexes = [
-  new RegExp("^(https://(?:[^.]+\\.)?coda.io)/p/(\\d+)"),
-  new RegExp("^(https://(?:[^.]+\\.)?coda.io)/packs/(?:\\w+-)*(\\d+)"),
+  new RegExp("^(https://(?:[^.]+\\.)?sdk.io)/p/(\\d+)"),
+  new RegExp("^(https://(?:[^.]+\\.)?sdk.io)/packs/(?:\\w+-)*(\\d+)"),
 ];
 
 export const MetadataTypes: Record<string, MetadataSettings> = {

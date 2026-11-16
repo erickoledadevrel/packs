@@ -1,5 +1,5 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("httpbin.org");
 
@@ -10,49 +10,49 @@ pack.addFormula({
   name: "Request",
   description: "Make a request to httpbin.org.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "path",
       description: "The path to request.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "method",
       description: "The HTTP method.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "contentType",
       description: "The Content-Type header.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "body",
       description: "The request body.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "formName",
       description: "The name of a form field.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "formValue",
       description: "The value of form field.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "isBinary",
       description: "If the content to fetch is binary. Default: false.",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   execute: async ([path, method = "GET", contentType, body, formName, formValue, isBinary = false], context) => {
     let headers = {};
     if (contentType) {
@@ -67,7 +67,7 @@ pack.addFormula({
     try {
       let response = await context.fetcher.fetch({
         method: method as FetchMethodType,
-        url: coda.joinUrl("https://httpbin.org/", path),
+        url: sdk.joinUrl("https://httpbin.org/", path),
         headers: headers,
         body: body,
         form: form,

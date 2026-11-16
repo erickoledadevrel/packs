@@ -1,15 +1,15 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as api from "./api";
 import * as schemas from "./schemas";
 import * as helpers from "./helpers";
 import * as images from "./images.json";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("rebrickable.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.CustomHeaderToken,
+  type: sdk.AuthenticationType.CustomHeaderToken,
   headerName: "Authorization",
   tokenPrefix: "key"
 });
@@ -23,13 +23,13 @@ pack.addSyncTable({
     name: "SyncSets",
     description: "Syncs the data.",
     parameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "theme",
         description: "Only include sets in this theme.",
         optional: true,
         autocomplete: async function (context, search) {
-          let url = coda.withQueryParams("https://rebrickable.com/api/v3/lego/themes/", {
+          let url = sdk.withQueryParams("https://rebrickable.com/api/v3/lego/themes/", {
             page_size: 1000,
           });
           let response = await context.fetcher.fetch({
@@ -37,17 +37,17 @@ pack.addSyncTable({
             url,
           });
           let page = response.body;
-          return coda.autocompleteSearchObjects(search, page.results, "name", "id");
+          return sdk.autocompleteSearchObjects(search, page.results, "name", "id");
         },
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.DateArray,
+      sdk.makeParameter({
+        type: sdk.ParameterType.DateArray,
         name: "years",
         description: "Only include sets released during these years (month and day are ignored).",
         optional: true,
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "search",
         description: "Only include sets that match these search terms.",
         optional: true,
@@ -57,7 +57,7 @@ pack.addSyncTable({
       let [themeId, years, search] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
-        url = coda.withQueryParams("https://rebrickable.com/api/v3/lego/sets/", {
+        url = sdk.withQueryParams("https://rebrickable.com/api/v3/lego/sets/", {
           page_size: 500,
           theme_id: themeId,
           search,
@@ -97,13 +97,13 @@ pack.addSyncTable({
     name: "SyncParts",
     description: "Syncs the data.",
     parameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "category",
         description: "Only include parts in this category.",
         optional: true,
         autocomplete: async function (context, search) {
-          let url = coda.withQueryParams("https://rebrickable.com/api/v3/lego/part_categories/", {
+          let url = sdk.withQueryParams("https://rebrickable.com/api/v3/lego/part_categories/", {
             page_size: 1000,
           });
           let response = await context.fetcher.fetch({
@@ -111,16 +111,16 @@ pack.addSyncTable({
             url,
           });
           let page = response.body;
-          return coda.autocompleteSearchObjects(search, page.results, "name", "id");
+          return sdk.autocompleteSearchObjects(search, page.results, "name", "id");
         },
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "color",
         description: "Only include parts with this color.",
         optional: true,
         autocomplete: async function (context, search) {
-          let url = coda.withQueryParams("https://rebrickable.com/api/v3/lego/colors/", {
+          let url = sdk.withQueryParams("https://rebrickable.com/api/v3/lego/colors/", {
             page_size: 1000,
           });
           let response = await context.fetcher.fetch({
@@ -128,11 +128,11 @@ pack.addSyncTable({
             url,
           });
           let page = response.body;
-          return coda.autocompleteSearchObjects(search, page.results, "name", "id");
+          return sdk.autocompleteSearchObjects(search, page.results, "name", "id");
         },
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "search",
         description: "Only include parts that match these search terms.",
         optional: true,
@@ -142,7 +142,7 @@ pack.addSyncTable({
       let [categoryId, colorId, search] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
-        url = coda.withQueryParams("https://rebrickable.com/api/v3/lego/parts/", {
+        url = sdk.withQueryParams("https://rebrickable.com/api/v3/lego/parts/", {
           page_size: 500,
           part_cat_id: categoryId,
           color_id: colorId,
@@ -190,7 +190,7 @@ pack.addDynamicSyncTable({
           };
         });
     } else {
-      let results: coda.MetadataFormulaObjectResultType[] = [];
+      let results: sdk.MetadataFormulaObjectResultType[] = [];
       results = results.concat(themes
         .filter(theme => theme.parent_id == parseInt(themeId))
         .map(theme => {
@@ -234,7 +234,7 @@ pack.addDynamicSyncTable({
       let setId = context.sync.dynamicUrl;
       let url = context.sync.continuation?.url as string;
       if (!url) {
-        url = coda.withQueryParams(`https://rebrickable.com/api/v3/lego/sets/${setId}/parts`, {
+        url = sdk.withQueryParams(`https://rebrickable.com/api/v3/lego/sets/${setId}/parts`, {
           page_size: 500,
         });
       }
@@ -274,7 +274,7 @@ pack.addSyncTable({
     execute: async function (args, context) {
       let url = context.sync.continuation?.url as string;
       if (!url) {
-        url = coda.withQueryParams("https://rebrickable.com/api/v3/lego/themes/", {
+        url = sdk.withQueryParams("https://rebrickable.com/api/v3/lego/themes/", {
           page_size: 1000,
         });
       }
@@ -313,7 +313,7 @@ pack.addSyncTable({
     execute: async function (args, context) {
       let url = context.sync.continuation?.url as string;
       if (!url) {
-        url = coda.withQueryParams("https://rebrickable.com/api/v3/lego/part_categories/", {
+        url = sdk.withQueryParams("https://rebrickable.com/api/v3/lego/part_categories/", {
           page_size: 1000,
         });
       }
@@ -352,7 +352,7 @@ pack.addSyncTable({
       let url = context.sync.continuation?.url as string;
       let brickSvg = Buffer.from(images.brick, "base64").toString();
       if (!url) {
-        url = coda.withQueryParams("https://rebrickable.com/api/v3/lego/colors/", {
+        url = sdk.withQueryParams("https://rebrickable.com/api/v3/lego/colors/", {
           page_size: 1000,
         });
       }
@@ -363,7 +363,7 @@ pack.addSyncTable({
       let page = response.body;
       let rows = page.results.map(color => {
         let coloredSvg = brickSvg.replaceAll("#000", "#" + color.rgb);
-        let preview = coda.SvgConstants.DataUrlPrefix + Buffer.from(coloredSvg).toString("base64");
+        let preview = sdk.SvgConstants.DataUrlPrefix + Buffer.from(coloredSvg).toString("base64");
         return {
           ...color,
           preview,

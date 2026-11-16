@@ -1,18 +1,18 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import JSON5 from "json5";
 
 const OneDaySecs = 24 * 60 * 60;
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
-const JSON5Param = coda.makeParameter({
-  type: coda.ParameterType.String,
+const JSON5Param = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "json5",
   description: "The JSON5 contents as a string.",
 });
 
-const SpacesParam = coda.makeParameter({
-  type: coda.ParameterType.Number,
+const SpacesParam = sdk.makeParameter({
+  type: sdk.ParameterType.Number,
   name: "spaces",
   description: "The number of spaces to indent by. Default: no indenting.",
   optional: true,
@@ -24,8 +24,8 @@ pack.addFormula({
   parameters: [
     JSON5Param,
     SpacesParam,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "quote",
       description: "Which quote to use around strings. Default: single quote (').",
       optional: true,
@@ -35,7 +35,7 @@ pack.addFormula({
       ],
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`{a: 1, b: "foo"}`], result: `{a:1,b:'foo'}` },
@@ -63,7 +63,7 @@ pack.addFormula({
   parameters: [
     JSON5Param,
   ],
-  resultType: coda.ValueType.Boolean,
+  resultType: sdk.ValueType.Boolean,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`{a: 1}`], result: true },
@@ -90,7 +90,7 @@ pack.addFormula({
     JSON5Param,
     SpacesParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`{a: 1, b:'foo'}`], result: `{"a":1,"b":"foo"}` },
@@ -116,7 +116,7 @@ function parse(json5: string) {
     return JSON5.parse(json5);
   } catch (e) {
     if (e.toString().startsWith("SyntaxError")) {
-      throw new coda.UserVisibleError(e);
+      throw new sdk.UserVisibleError(e);
     }
     throw e;
   }

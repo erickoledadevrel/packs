@@ -1,27 +1,27 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import abbreviate from 'number-abbreviate';
 
 const DefaultDecimalPlaces = 1;
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "ShortNumber",
   description: "Abbreviate a number.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "number",
       description: "The number to shorten.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "decimalPlaces",
       description: `How many decimal places to include. Default: ${DefaultDecimalPlaces}`,
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     {params: [1234], result: "1.2k"},
     {params: [1234, 0], result: "1k"},

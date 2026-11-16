@@ -1,41 +1,41 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import type * as sst from "./types/smartsuite";
 
-const PersonSchema = coda.makeObjectSchema({
-  codaType: coda.ValueHintType.Person,
+const PersonSchema = sdk.makeObjectSchema({
+  codaType: sdk.ValueHintType.Person,
   properties: {
-    name: { type: coda.ValueType.String, required: true },
-    email: { type: coda.ValueType.String, required: true },
+    name: { type: sdk.ValueType.String, required: true },
+    email: { type: sdk.ValueType.String, required: true },
   },
   displayProperty: "name",
   idProperty: "email",
 });
 
-export const MemberSchema = coda.makeObjectSchema({
+export const MemberSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String, required: true },
-    id: { type: coda.ValueType.String, required: true },
-    email: { type: coda.ValueType.String, codaType: coda.ValueHintType.Email },
+    name: { type: sdk.ValueType.String, required: true },
+    id: { type: sdk.ValueType.String, required: true },
+    email: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Email },
     codaAccount: { ...PersonSchema },
-    timezone: { type: coda.ValueType.String },
+    timezone: { type: sdk.ValueType.String },
   },
   displayProperty: "name",
   idProperty: "id",
   featuredProperties: ["email", "codaAccount"],
 });
 
-export function getBaseRowSchema(table: sst.Table): coda.GenericObjectSchema {
+export function getBaseRowSchema(table: sst.Table): sdk.GenericObjectSchema {
   let primaryColumn = table.structure.find(column => column.slug == table.primary_field);
-  return coda.makeObjectSchema({
+  return sdk.makeObjectSchema({
     properties: {
       recordId: {
-        type: coda.ValueType.String,
+        type: sdk.ValueType.String,
         description: "The unique ID of the record.",
         fromKey: "id",
         required: true,
       },
       [primaryColumn.label]: {
-        type: coda.ValueType.String, 
+        type: sdk.ValueType.String, 
         fromKey: primaryColumn.slug,
         required: true,
       },
@@ -52,5 +52,5 @@ export function getBaseRowSchema(table: sst.Table): coda.GenericObjectSchema {
 
 export function getReferenceSchema(table: sst.Table) {
   let schema = getBaseRowSchema(table);
-  return coda.makeReferenceSchemaFromObjectSchema(schema);
+  return sdk.makeReferenceSchemaFromObjectSchema(schema);
 }

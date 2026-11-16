@@ -7,14 +7,14 @@ import * as mime from "mime-types";
 const DefaultIcon = "default-pack-icon.png";
 
 async function run(packName) {
-  let apiKey = JSON.parse(fs.readFileSync(".coda.json").toString()).apiKey;
+  let apiKey = JSON.parse(fs.readFileSync(".sdk.json").toString()).apiKey;
   let packs = await glob("**/.coda-pack.json");
   packs.sort();
   for (let pack of packs) {
     let name = path.basename(path.dirname(pack));
     if (packName && packName !== name) continue;
     let packId = JSON.parse(fs.readFileSync(pack).toString()).packId;
-    let url = `https://coda.io/apis/v1/packs/${packId}/listing`;
+    let url = `https://sdk.io/apis/v1/packs/${packId}/listing`;
     let response = await fetch(url, {
       headers: {
         "Authorization": `Bearer ${apiKey}`,

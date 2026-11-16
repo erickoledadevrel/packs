@@ -1,10 +1,10 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { Row, SheetResult, Sheet, SheetFormatSettings } from "./types";
 import { PageSize } from "./builder";
 
-export async function searchSheets(context: coda.ExecutionContext, query: string): Promise<SheetResult[]> {
+export async function searchSheets(context: sdk.ExecutionContext, query: string): Promise<SheetResult[]> {
   if (query) {
-    let url = coda.withQueryParams("https://api.smartsheet.com/2.0/search", {
+    let url = sdk.withQueryParams("https://api.smartsheet.com/2.0/search", {
       query,
       scopes: "sheetNames",
     })
@@ -23,7 +23,7 @@ export async function searchSheets(context: coda.ExecutionContext, query: string
         return {name, parent, id, url};
       });
   } else {
-    let url = coda.withQueryParams("https://api.smartsheet.com/2.0/sheets", {
+    let url = sdk.withQueryParams("https://api.smartsheet.com/2.0/sheets", {
       pageSize: 100,
     });
     let response = await context.fetcher.fetch({
@@ -41,8 +41,8 @@ export async function searchSheets(context: coda.ExecutionContext, query: string
   }
 }
 
-export async function getSheet(context: coda.ExecutionContext, sheetUrl: string): Promise<Sheet> {
-  let url = coda.withQueryParams(sheetUrl, {
+export async function getSheet(context: sdk.ExecutionContext, sheetUrl: string): Promise<Sheet> {
+  let url = sdk.withQueryParams(sheetUrl, {
     include: 'filterDefinitions',
     pageSize: 0,
   });
@@ -53,8 +53,8 @@ export async function getSheet(context: coda.ExecutionContext, sheetUrl: string)
   return response.body;
 }
 
-export async function syncSheet(context: coda.ExecutionContext, sheetUrl: string, settings: SheetFormatSettings): Promise<Sheet> {
-  let url = coda.withQueryParams(sheetUrl, {
+export async function syncSheet(context: sdk.ExecutionContext, sheetUrl: string, settings: SheetFormatSettings): Promise<Sheet> {
+  let url = sdk.withQueryParams(sheetUrl, {
     page: String(settings.page),
     pageSize: String(PageSize),
     filterId: settings.filterId,
@@ -69,10 +69,10 @@ export async function syncSheet(context: coda.ExecutionContext, sheetUrl: string
   return response.body as Sheet;
 }
 
-export async function updateRows(context: coda.ExecutionContext, sheetUrl: string, rows: Row[]) {
+export async function updateRows(context: sdk.ExecutionContext, sheetUrl: string, rows: Row[]) {
   let response = await context.fetcher.fetch({
     method: "PUT",
-    url: coda.withQueryParams(coda.joinUrl(sheetUrl, "/rows"), {
+    url: sdk.withQueryParams(sdk.joinUrl(sheetUrl, "/rows"), {
       allowPartialSuccess: true,
     }),
     headers: {
@@ -83,8 +83,8 @@ export async function updateRows(context: coda.ExecutionContext, sheetUrl: strin
   return response.body;
 }
 
-export async function getRows(context: coda.ExecutionContext, sheetUrl: string, rowIds: number[], cacheTtlSecs?: number) {
-  let url = coda.withQueryParams(sheetUrl, {
+export async function getRows(context: sdk.ExecutionContext, sheetUrl: string, rowIds: number[], cacheTtlSecs?: number) {
+  let url = sdk.withQueryParams(sheetUrl, {
     rowIds: rowIds.join(","),
   });
   let response = await context.fetcher.fetch({

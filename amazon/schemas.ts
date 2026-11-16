@@ -1,22 +1,22 @@
 import * as coda from '@codahq/packs-sdk';
 
-export const ProductSchema = coda.makeObjectSchema({
+export const ProductSchema = sdk.makeObjectSchema({
   properties: {
-    asin: { type: coda.ValueType.String },
-    upc: { type: coda.ValueType.String },
-    name: { type: coda.ValueType.String },
-    description: { type: coda.ValueType.String },
-    brand: { type: coda.ValueType.String },
+    asin: { type: sdk.ValueType.String },
+    upc: { type: sdk.ValueType.String },
+    name: { type: sdk.ValueType.String },
+    description: { type: sdk.ValueType.String },
+    brand: { type: sdk.ValueType.String },
     categories: { 
-      type: coda.ValueType.Array,
-      items: { type: coda.ValueType.String },
+      type: sdk.ValueType.Array,
+      items: { type: sdk.ValueType.String },
     },
-    rating: { type: coda.ValueType.Number },
-    reviews: { type: coda.ValueType.Number },
-    price: { fromKey: "price_parsed", type: coda.ValueType.Number, codaType: coda.ValueHintType.Currency },
-    photo: { type: coda.ValueType.String, codaType: coda.ValueHintType.ImageReference },
-    link: { fromKey: "short_url", type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
-    asOf: { type: coda.ValueType.String, codaType: coda.ValueHintType.Date },
+    rating: { type: sdk.ValueType.Number },
+    reviews: { type: sdk.ValueType.Number },
+    price: { fromKey: "price_parsed", type: sdk.ValueType.Number, codaType: sdk.ValueHintType.Currency },
+    photo: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.ImageReference },
+    link: { fromKey: "short_url", type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
+    asOf: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Date },
   },
   idProperty: "asin",
   displayProperty: "name",

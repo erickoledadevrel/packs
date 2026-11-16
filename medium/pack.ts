@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
 const OneDaySecs = 24 * 60 * 60;
 const StyleMap = {
@@ -7,12 +7,12 @@ const StyleMap = {
   "text-decoration: underline": "u",
 };
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("medium.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.HeaderBearerToken,
+  type: sdk.AuthenticationType.HeaderBearerToken,
   instructionsUrl: "https://medium.com/me/settings/security",
   getConnectionName: async function (context) {
     let user = await getUser(context);
@@ -24,18 +24,18 @@ pack.addFormula({
   name: "CreateDraft",
   description: "Creates a new draft post.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "title",
       description: "The title of the post.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Html,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Html,
       name: "content",
       description: "The content of the post.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "publication",
       description: "The publication to post to. Default: your personal blog.",
       optional: true,
@@ -48,11 +48,11 @@ pack.addFormula({
           name: "None",
           id: "",
         });
-        return coda.autocompleteSearchObjects(search, publications, "name", "id");
+        return sdk.autocompleteSearchObjects(search, publications, "name", "id");
       }
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
     let [title, content, publicationId] = args;
@@ -72,7 +72,7 @@ pack.addFormula({
     };
     let response = await context.fetcher.fetch({
       method: "POST",
-      url: coda.joinUrl("https://api.medium.com/v1/", fragment, "/posts"),
+      url: sdk.joinUrl("https://api.medium.com/v1/", fragment, "/posts"),
       headers: {
         "Content-Type": "application/json",
       },
@@ -83,7 +83,7 @@ pack.addFormula({
   },
 });
 
-async function getUser(context: coda.ExecutionContext): Promise<any> {
+async function getUser(context: sdk.ExecutionContext): Promise<any> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: "https://api.medium.com/v1/me",
@@ -92,7 +92,7 @@ async function getUser(context: coda.ExecutionContext): Promise<any> {
   return response.body.data;
 }
 
-async function getPublications(context: coda.ExecutionContext, userId: string): Promise<any[]> {
+async function getPublications(context: sdk.ExecutionContext, userId: string): Promise<any[]> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: `https://api.medium.com/v1/users/${userId}/publications`,
@@ -100,7 +100,7 @@ async function getPublications(context: coda.ExecutionContext, userId: string): 
   return response.body.data;
 }
 
-async function getContributors(context: coda.ExecutionContext, publicationId): Promise<any[]> {
+async function getContributors(context: sdk.ExecutionContext, publicationId): Promise<any[]> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: `https://api.medium.com/v1/publications/${publicationId}/contributors`,

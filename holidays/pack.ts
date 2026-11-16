@@ -1,25 +1,25 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 const Holidays = require('date-holidays');
 const crypto = require("crypto");
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const HolidayTypes = ["public", "bank", "school", "observance"];
 
-const DateParameter = coda.makeParameter({
-  type: coda.ParameterType.Date,
+const DateParameter = sdk.makeParameter({
+  type: sdk.ParameterType.Date,
   name: "date",
   description: "The date to check.",
 });
 
-const YearParameter = coda.makeParameter({
-  type: coda.ParameterType.Number,
+const YearParameter = sdk.makeParameter({
+  type: sdk.ParameterType.Number,
   name: "year",
   description: "The target year.",
 });
 
-const CountryParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const CountryParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "country",
   description: "The target country.",
   autocomplete: async function (context, search) {
@@ -32,12 +32,12 @@ const CountryParameter = coda.makeParameter({
         code: key,
       };
     });
-    return coda.autocompleteSearchObjects(search, options, "name", "code");
+    return sdk.autocompleteSearchObjects(search, options, "name", "code");
   },
 });
 
-const StateParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const StateParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "state",
   description: "The target state or province within the country.",
   optional: true,
@@ -51,12 +51,12 @@ const StateParameter = coda.makeParameter({
         code: key,
       };
     });
-    return coda.autocompleteSearchObjects(search, options, "name", "code");
+    return sdk.autocompleteSearchObjects(search, options, "name", "code");
   },
 });
 
-const RegionParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const RegionParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "region",
   description: "The target region (e.g. city) within the state or province.",
   optional: true,
@@ -70,39 +70,39 @@ const RegionParameter = coda.makeParameter({
         code: key,
       };
     });
-    return coda.autocompleteSearchObjects(search, options, "name", "code");
+    return sdk.autocompleteSearchObjects(search, options, "name", "code");
   },
 });
 
-const TypesParameter = coda.makeParameter({
-  type: coda.ParameterType.StringArray,
+const TypesParameter = sdk.makeParameter({
+  type: sdk.ParameterType.StringArray,
   name: "type",
   description: `The types of holidays to return. Options: ${HolidayTypes.join(", ")}`,
   optional: true,
   autocomplete: HolidayTypes,
 });
 
-const LocationSchema = coda.makeObjectSchema({
+const LocationSchema = sdk.makeObjectSchema({
   description: "The location that celebrates the holiday.",
   properties: {
-    country: { type: coda.ValueType.String, description: "The country." },
-    state: { type: coda.ValueType.String, description: "The state or province." },
-    region: { type: coda.ValueType.String, description: "The region (e.g. city)." },
+    country: { type: sdk.ValueType.String, description: "The country." },
+    state: { type: sdk.ValueType.String, description: "The state or province." },
+    region: { type: sdk.ValueType.String, description: "The region (e.g. city)." },
   },
   displayProperty: "country",
 });
 
-const HolidaySchema = coda.makeObjectSchema({
+const HolidaySchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String, description: "The name of the holiday." },
-    type: { type: coda.ValueType.String, description: "The type of holiday." },
+    name: { type: sdk.ValueType.String, description: "The name of the holiday." },
+    type: { type: sdk.ValueType.String, description: "The type of holiday." },
     date: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Date,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Date,
       description: "The date of the holiday.",
     },
     location: LocationSchema,
-    holidayId: { type: coda.ValueType.String, description: "The unique ID of the holiday." },
+    holidayId: { type: sdk.ValueType.String, description: "The unique ID of the holiday." },
   },
   displayProperty: "name",
   idProperty: "holidayId",
@@ -119,7 +119,7 @@ pack.addFormula({
     RegionParameter,
     TypesParameter,
   ],
-  resultType: coda.ValueType.Boolean,
+  resultType: sdk.ValueType.Boolean,
   examples: [
     { params: [new Date("2024-12-25"), "US"], result: true },
     { params: [new Date("2024-01-03"), "US"], result: false },
@@ -153,7 +153,7 @@ pack.addFormula({
     RegionParameter,
     TypesParameter,
   ],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: HolidaySchema,
   execute: async function (args, context) {
     let [
@@ -176,7 +176,7 @@ pack.addFormula({
 pack.addFormula({
   name: "HolidaysForYear",
   description: "Lists the holidays for the given year within the given country.",
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: HolidaySchema,
   parameters: [
     YearParameter,
@@ -213,8 +213,8 @@ pack.addSyncTable({
       StateParameter,
       RegionParameter,
       TypesParameter,
-      coda.makeParameter({
-        type: coda.ParameterType.Boolean,
+      sdk.makeParameter({
+        type: sdk.ParameterType.Boolean,
         name: "includeLocation",
         description: "Whether to include the location in the result. This prevents holidays from multiple syncs from being merged together.",
         optional: true,
@@ -238,7 +238,7 @@ pack.addSyncTable({
   },
 });
 
-function getYear(context: coda.ExecutionContext, date: Date) {
+function getYear(context: sdk.ExecutionContext, date: Date) {
   let formatted = date.toLocaleDateString("en", {
     timeZone: context.timezone,
     year: "numeric",
@@ -246,7 +246,7 @@ function getYear(context: coda.ExecutionContext, date: Date) {
   return Number(formatted);
 }
 
-function getLocalISO(context: coda.ExecutionContext, date: Date) {
+function getLocalISO(context: sdk.ExecutionContext, date: Date) {
   let formatter = new Intl.DateTimeFormat("en", {
     timeZone: context.timezone,
     year: "numeric",
@@ -272,7 +272,7 @@ function getHolidayDatabase(context, location?: Location) {
   });
 }
 
-function getHolidays(context: coda.ExecutionContext, year: number, location: Location, types?: string[]) {
+function getHolidays(context: sdk.ExecutionContext, year: number, location: Location, types?: string[]) {
   let hd = getHolidayDatabase(context, location);
   let holidays = hd.getHolidays(year) || [];
   if (types?.length > 0) {

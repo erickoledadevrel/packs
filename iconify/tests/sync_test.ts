@@ -1,11 +1,11 @@
 import { assert } from "chai";
 import { describe, it } from "mocha";
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import {
   executeSyncFormulaFromPackDefSingleIteration,
   newJsonFetchResponse,
   newMockSyncExecutionContext,
-} from "@codahq/packs-sdk/dist/development";
+} from "@superhuman/plugins-sdk/dist/development";
 import { pack } from "../pack";
 
 const Collection = {
@@ -17,8 +17,8 @@ const Collection = {
 };
 
 // Each call creates a fresh execution context, as real continuation runs do.
-async function iterate(name: string, params: any[], continuation: coda.Continuation | undefined,
-  fetch: (request: coda.FetchRequest) => Promise<coda.FetchResponse>) {
+async function iterate(name: string, params: any[], continuation: sdk.Continuation | undefined,
+  fetch: (request: sdk.FetchRequest) => Promise<sdk.FetchResponse>) {
   let context = newMockSyncExecutionContext();
   context.sync.continuation = continuation;
   context.fetcher.fetch.callsFake(async request => {
@@ -33,14 +33,14 @@ async function iterate(name: string, params: any[], continuation: coda.Continuat
     return fetch(request);
   });
   return executeSyncFormulaFromPackDefSingleIteration(pack, name,
-    params as coda.ParamValues<coda.ParamDefs>, context, { useDeprecatedResultNormalization: false });
+    params as sdk.ParamValues<sdk.ParamDefs>, context, { useDeprecatedResultNormalization: false });
 }
 
 describe("Iconify sync tables", () => {
   it("syncs an entire collection across fresh continuation runs beyond 999 icons", async () => {
     let names = Array.from({ length: 1203 }, (_, i) => `icon-${String(i).padStart(4, "0")}`);
     let calls = 0;
-    let fetch = async (request: coda.FetchRequest) => {
+    let fetch = async (request: sdk.FetchRequest) => {
       calls++;
       let url = new URL(request.url);
       assert.equal(url.pathname, "/collection");
@@ -67,7 +67,7 @@ describe("Iconify sync tables", () => {
     assert.deepEqual(rows.map(row => row.id), names.map(name => `mdi:${name}`));
     assert.equal(new Set(rows.map(row => row.id)).size, 1203);
     assert.deepEqual(rows[0].collection, { id: "mdi", name: "Test Icons" });
-    assert.isTrue(rows[0].image.startsWith(coda.SvgConstants.DataUrlPrefix));
+    assert.isTrue(rows[0].image.startsWith(sdk.SvgConstants.DataUrlPrefix));
     assert.include(Buffer.from(rows[0].image.split(",")[1], "base64").toString(), '<svg xmlns="http://www.w3.org/2000/svg"');
     assert.equal(rows[0].link, "https://icon-sets.iconify.design/mdi/icon-0000/");
     assert.equal(calls, 3);
@@ -76,7 +76,7 @@ describe("Iconify sync tables", () => {
   it("uses large search requests and stops at the API's 999-result cap", async () => {
     let ids = Array.from({ length: 1500 }, (_, i) => `mdi:home-${i}`);
     let requests: URL[] = [];
-    let fetch = async (request: coda.FetchRequest) => {
+    let fetch = async (request: sdk.FetchRequest) => {
       let url = new URL(request.url);
       requests.push(url);
       assert.equal(url.pathname, "/search");
@@ -102,7 +102,7 @@ describe("Iconify sync tables", () => {
   });
 
   it("ends a search on a partial page and supports searches across all collections", async () => {
-    let fetch = async (request: coda.FetchRequest) => {
+    let fetch = async (request: sdk.FetchRequest) => {
       assert.isFalse(new URL(request.url).searchParams.has("prefix"));
       return newJsonFetchResponse({
         icons: ["mdi:home", "lucide:house"], collections: { mdi: Collection, lucide: Collection },
@@ -130,10 +130,10 @@ describe("Iconify sync tables", () => {
   it("uses the same collection identity for icon references and the collections table", () => {
     let icons = pack.syncTables.find(table => table.name === "Icons");
     let collections = pack.syncTables.find(table => table.name === "Collections");
-    let properties = Object.values(icons.schema.properties) as coda.Schema[];
+    let properties = Object.values(icons.schema.properties) as sdk.Schema[];
     let reference = properties.find(property =>
-      property.type === coda.ValueType.Object && property.codaType === coda.ValueHintType.Reference) as coda.GenericObjectSchema;
-    assert.equal(reference.codaType, coda.ValueHintType.Reference);
+      property.type === sdk.ValueType.Object && property.codaType === sdk.ValueHintType.Reference) as sdk.GenericObjectSchema;
+    assert.equal(reference.codaType, sdk.ValueHintType.Reference);
     assert.equal(reference.identity.name, collections.schema.identity.name);
     assert.equal(reference.idProperty, collections.schema.idProperty);
   });
@@ -172,7 +172,7 @@ describe("Iconify sync tables", () => {
   it("syncs all collections in stable batches without duplicates or missing rows", async () => {
     let ids = Array.from({ length: 1203 }, (_, i) => `set-${String(i).padStart(4, "0")}`);
     let calls = 0;
-    let fetch = async (request: coda.FetchRequest) => {
+    let fetch = async (request: sdk.FetchRequest) => {
       assert.equal(request.url, "https://api.iconify.design/collections");
       assert.equal(request.cacheTtlSecs, 86400);
       // API object ordering is allowed to change between requests.

@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as Handlebars from "handlebars";
 import { decode } from 'html-entities';
 const cheerio = require('cheerio');
@@ -7,7 +7,7 @@ const escape = require('escape-html');
 import * as helpers from "./helpers";
 Object.entries(helpers).forEach(([name, func]) => Handlebars.registerHelper(name, func as Handlebars.HelperDelegate));
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const OneDaySecs = 24 * 60 * 60;
 
@@ -21,15 +21,15 @@ pack.addFormula({
     {params: ["It is {{time}}{{#if location}} in {{location}}{{/if}}", "time", "3pm", "location", "London"], result: "It is 3pm in London"},
   ],
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Html,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Html,
       name: "template",
       description: `The template text, with placeholders in the Handlesbars syntax. Ex: "Hello {{name}}"`,
     }),
   ],
   varargParameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "name",
       description: `The name of a placeholder. Ex: "name"`,
       autocomplete: async function (context, search, args) {
@@ -38,14 +38,14 @@ pack.addFormula({
         return getPlaceholders(template);
       },
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Html,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Html,
       name: "value",
       description: `The value of the placeholder. Ex: "Alice"`,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Html,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Html,
   cacheTtlSecs: OneDaySecs,
   onError: onError,
   execute: async function (args, context) {
@@ -75,19 +75,19 @@ pack.addFormula({
     {params: ["{{person.name}} is {{person.feeling}}", `{"person": {"name": "Alice", "feeling": "happy"}}`], result: "Alice is happy"},
   ],
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Html,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Html,
       name: "template",
       description: `The template text, with placeholders in the Handlesbars syntax. Ex: "Hello {{name}}"`,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "valuesJSON",
       description: `The values to for the replacement, as a JSON string. Ex: '{"name": "Alice"}'`,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Html,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Html,
   cacheTtlSecs: OneDaySecs,
   onError: onError,
   execute: async function (args, context) {
@@ -98,7 +98,7 @@ pack.addFormula({
     try {
       variables = JSON.parse(valuesJSON);
     } catch (e) {
-      throw new coda.UserVisibleError("The values are not valid JSON: " + e)
+      throw new sdk.UserVisibleError("The values are not valid JSON: " + e)
     }
     let compiled = Handlebars.compile(template, {
       strict: true,
@@ -123,15 +123,15 @@ pack.addFormula({
     {params: ["{{name}} is {{feeling}}"], result: ["name", "feeling"]},
   ],
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Html,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Html,
       name: "template",
       description: "The Handlebars template.",
     }),
   ],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: {
-    type: coda.ValueType.String,
+    type: sdk.ValueType.String,
   },
   cacheTtlSecs: OneDaySecs,
   onError: onError,
@@ -209,11 +209,11 @@ function onError(e: Error) {
   console.error(e);
   let match;
   if (e.message.match(/^Parse error/)) {
-    throw new coda.UserVisibleError(e.message.split("\n").slice(0, 2).join(" "));
+    throw new sdk.UserVisibleError(e.message.split("\n").slice(0, 2).join(" "));
   }
   if (match = e.message.match(/"(.*?)" not defined in/)) {
     let [_, variable] = match;
-    throw new coda.UserVisibleError(`Missing a value for the variable "${variable}".`);
+    throw new sdk.UserVisibleError(`Missing a value for the variable "${variable}".`);
   }
   throw e;
 }

@@ -1,7 +1,7 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import CSSColorList from 'css-named-colors';
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const BasicParameters = ["width", "height"];
 const AdvancedParameters = ["text", "backgroundColor", "textColor"];
@@ -45,58 +45,58 @@ pack.addFormula({
   name: "Placeholder",
   description: "Create a placeholder image.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "width",
       description: "The width of the placeholder image, in pixels.",
       suggestedValue: "400",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "height",
       description: "The height of the placeholder image, in pixels.",
       suggestedValue: "300",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "service",
       description: `Which placeholder image service to use. Default: ${DefaultService}.`,
       optional: true,
       autocomplete: Object.keys(PlaceholderServices),
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: `The text to show in the placeholder image. Default: the image dimensions. Supported by: ${supportedBy("text")}.`,
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "backgroundColor",
       description: `The background color of the placeholder image, as a 6-digit hex color. Supported by: ${supportedBy("backgroundColor")}.`,
       optional: true,
       autocomplete: async function (context, search, parameters) {
-        return coda.autocompleteSearchObjects(search, CSSColorList, "name", "hex");
+        return sdk.autocompleteSearchObjects(search, CSSColorList, "name", "hex");
       },
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "textColor",
       description: `The text color of the placeholder image, as a 6-digit hex color. Supported by: ${supportedBy("textColor")}.`,
       optional: true,
       autocomplete: async function (context, search, parameters) {
-        return coda.autocompleteSearchObjects(search, CSSColorList, "name", "hex");
+        return sdk.autocompleteSearchObjects(search, CSSColorList, "name", "hex");
       },
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "ratio",
       description: `The width to height ratio of the placeholder image. Takes precedence over height. Supported by: ${supportedBy("ratio")}`,
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.ImageAttachment,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.ImageAttachment,
   examples: [
     {params: [600, 300], result: "https://dummyimage.com/600x300"},
     {params: [600, 300, undefined, "Product photo here"], result: "https://dummyimage.com/600x300?text=Product%20photo%20here"},
@@ -110,13 +110,13 @@ pack.addFormula({
 
     let settings = PlaceholderServices[service];
     if (!settings) {
-      throw new coda.UserVisibleError("Invalid service: " + service)
+      throw new sdk.UserVisibleError("Invalid service: " + service)
     }
 
     let supports = settings.supports || BasicParameters;
     for (let [key, value] of Object.entries(params)) {
       if (value && !supports.includes(key)) {
-        throw new coda.UserVisibleError(`Service ${service} doesn't support the parameter "${key}".`);
+        throw new sdk.UserVisibleError(`Service ${service} doesn't support the parameter "${key}".`);
       }
     }
 
@@ -127,7 +127,7 @@ pack.addFormula({
 
 function getPlaceholderImage(domain, {width, height, ratio, text, backgroundColor, textColor}) {
   if (textColor && !backgroundColor) {
-    throw new coda.UserVisibleError("When setting the textColor you must also set the backgroundColor.")
+    throw new sdk.UserVisibleError("When setting the textColor you must also set the backgroundColor.")
   }
   if (backgroundColor?.startsWith("#")) {
     backgroundColor = backgroundColor.substring(1);
@@ -138,12 +138,12 @@ function getPlaceholderImage(domain, {width, height, ratio, text, backgroundColo
 
   let url = `https://${domain}/${width}x${ratio || height}`;
   if (backgroundColor) {
-    url = coda.joinUrl(url, backgroundColor);
+    url = sdk.joinUrl(url, backgroundColor);
   }
   if (textColor) {
-    url = coda.joinUrl(url, textColor);
+    url = sdk.joinUrl(url, textColor);
   }
-  url = coda.withQueryParams(url, {
+  url = sdk.withQueryParams(url, {
     text,
   });
   return url;

@@ -1,23 +1,23 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 const Diff = require("diff");
 
 const ByOptions = ["character", "line", "word"];
 const DefaultDiffBy = "word";
 const DefaultContext = 3;
 
-const OldParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const OldParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "old",
   description: "The old value.",
 });
 
-const NewParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const NewParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "new",
   description: "The new value.",
 });
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "Diff",
@@ -25,16 +25,16 @@ pack.addFormula({
   parameters: [
     OldParam,
     NewParam,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "by",
       description: `At what level to calculate the differences (${ByOptions.join(", ")}). Default: ${DefaultDiffBy}`,
       autocomplete: ByOptions,
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Html,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Html,
   execute: async function (args, context) {
     let [
       oldText,
@@ -54,7 +54,7 @@ pack.addFormula({
         func = Diff.diffChars;
         break;
       default:
-        throw new coda.UserVisibleError(`Invalid diff by option: ${by}`);
+        throw new sdk.UserVisibleError(`Invalid diff by option: ${by}`);
     }
     return format(func(oldText, newText));
   },
@@ -79,15 +79,15 @@ pack.addFormula({
   parameters: [
     OldParam,
     NewParam,
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "context",
       description: `How many lines of context to show before and after a difference. Default: ${DefaultContext}`,
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Markdown,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Markdown,
   execute: async function (args, context) {
     let [
       oldText,

@@ -1,13 +1,13 @@
 import { assert } from "chai";
 import { describe, it } from "mocha";
-import * as coda from "@codahq/packs-sdk";
-import { newJsonFetchResponse, newMockExecutionContext } from "@codahq/packs-sdk/dist/development";
+import * as sdk from "@superhuman/plugins-sdk";
+import { newJsonFetchResponse, newMockExecutionContext } from "@superhuman/plugins-sdk/dist/development";
 import { DOMParser } from "@xmldom/xmldom";
 import { getIconImages } from "../images";
 
 function decodeImage(uri: string) {
-  assert.isTrue(uri.startsWith(coda.SvgConstants.DataUrlPrefix));
-  return Buffer.from(uri.slice(coda.SvgConstants.DataUrlPrefix.length), "base64").toString("utf8");
+  assert.isTrue(uri.startsWith(sdk.SvgConstants.DataUrlPrefix));
+  return Buffer.from(uri.slice(sdk.SvgConstants.DataUrlPrefix.length), "base64").toString("utf8");
 }
 
 describe("Iconify sync images", () => {

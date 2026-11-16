@@ -1,19 +1,19 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as c from "case";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "Snake",
   description: "Converts text to snake case.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to convert.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["Hello world!"], result: "hello_world" },
   ],
@@ -27,13 +27,13 @@ pack.addFormula({
   name: "Pascal",
   description: "Converts text to Pascal case.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to convert.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["Hello world!"], result: "HelloWorld" },
   ],
@@ -47,13 +47,13 @@ pack.addFormula({
   name: "Camel",
   description: "Converts text to camel case.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to convert.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["Hello world!"], result: "helloWorld" },
   ],
@@ -67,13 +67,13 @@ pack.addFormula({
   name: "Kebab",
   description: "Converts text to kebab case.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to convert.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["Hello world!"], result: "hello-world" },
   ],
@@ -87,13 +87,13 @@ pack.addFormula({
   name: "Header",
   description: "Converts text to header case.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to convert.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["Hello world!"], result: "Hello-World" },
   ],
@@ -107,13 +107,13 @@ pack.addFormula({
   name: "Constant",
   description: "Converts text to constant case.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to convert.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["Hello world!"], result: "HELLO_WORLD" },
   ],
@@ -127,13 +127,13 @@ pack.addFormula({
   name: "Title",
   description: "Converts text to title case.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to convert.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["Hello world!"], result: "Hello World!" },
     { params: ["snake_case"], result: "Snake Case" },
@@ -149,25 +149,25 @@ pack.addFormula({
   name: "Sentence",
   description: "Converts text to sentence case.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to convert.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.StringArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.StringArray,
       name: "names",
       description: "Names to keep capitalized.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.StringArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.StringArray,
       name: "abbreviations",
       description: "Abbreviations that appear with a period.",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["this_is_cool"], result: "This is cool" },
     { params: ["a man. a plan."], result: "A man. A plan." },

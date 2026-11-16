@@ -1,19 +1,19 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { extendSchema, getPackId, formatItem, getMetdataSettings, getVersions, getFiles, handleError, getCategories, unformatItem, removeCategory, addCategory, addStats, addManifest } from "./helpers";
 import { MetadataTypes, PackUrlRegexes, PageSize } from "./constants";
 import { MyPackSchema, PackSchema, StatsSchema } from "./schemas";
 const escape = require('escape-html');
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
-const PackIdOrUrlParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const PackIdOrUrlParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "packIdOrUrl",
   description: "The ID or URL of the Pack.",
 });
 
-const ManifestFieldsParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const ManifestFieldsParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "manifestFields",
   description: "If this field mask is specified, the selected fields from Pack's internal manifest will be included as raw JSON in Manifest.",
   optional: true,
@@ -23,13 +23,13 @@ const IncludeBrainOnlyPacksOption = "includeBrainOnlyPacks";
 const CertifiedAgentsOnlyOption = "certifiedAgentsOnly";
 const AllOptions = [IncludeBrainOnlyPacksOption, CertifiedAgentsOnlyOption];
 
-pack.addNetworkDomain("coda.io");
+pack.addNetworkDomain("sdk.io");
 pack.addNetworkDomain("coda-us-west-2-prod-packs.s3.us-west-2.amazonaws.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.CodaApiHeaderBearerToken,
+  type: sdk.AuthenticationType.CodaApiHeaderBearerToken,
   shouldAutoAuthSetup: true,
-  networkDomain: "coda.io",
+  networkDomain: "sdk.io",
 });
 
 pack.addFormula({
@@ -39,13 +39,13 @@ pack.addFormula({
     PackIdOrUrlParameter,
     ManifestFieldsParameter,
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: extendSchema(Object.keys(MetadataTypes), true),
   execute: async function (args, context) {
     let [packIdOrUrl, manifestFields] = args;
     let packId = getPackId(context, packIdOrUrl);
-    let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs/listings");
-    let url = coda.withQueryParams(baseUrl, {
+    let baseUrl = sdk.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs/listings");
+    let url = sdk.withQueryParams(baseUrl, {
       packIds: packId
     });
     let response = await context.fetcher.fetch({
@@ -54,7 +54,7 @@ pack.addFormula({
     });
     let { items } = response.body;
     if (!items?.length) {
-      throw new coda.UserVisibleError(`Pack not found: ${packIdOrUrl}`);
+      throw new sdk.UserVisibleError(`Pack not found: ${packIdOrUrl}`);
     }
     let item = items[0];
     formatItem(context, item);
@@ -95,7 +95,7 @@ pack.addSyncTable({
         case "categories":
           return await getCategories(context);
         default:
-          throw new coda.UserVisibleError(`Unknown property: ${context.propertyName}`);
+          throw new sdk.UserVisibleError(`Unknown property: ${context.propertyName}`);
       }
     },
   },
@@ -103,26 +103,26 @@ pack.addSyncTable({
     name: "SyncPacks",
     description: "Sync the Packs.",
     parameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.Boolean,
+      sdk.makeParameter({
+        type: sdk.ParameterType.Boolean,
         name: "includePublished",
         description: "Include public Packs published in the gallery.",
         suggestedValue: true,
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.Boolean,
+      sdk.makeParameter({
+        type: sdk.ParameterType.Boolean,
         name: "includeWorkspace",
         description: "Include internal Packs shared with everyone in your workspace.",
         suggestedValue: false,
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.Boolean,
+      sdk.makeParameter({
+        type: sdk.ParameterType.Boolean,
         name: "includePrivate",
         description: "Include private Packs you created or were shared with your directly.",
         suggestedValue: false,
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.StringArray,
+      sdk.makeParameter({
+        type: sdk.ParameterType.StringArray,
         name: "metdata",
         description: "Which additional Pack metadata to include (may increase time to sync).",
         optional: true,
@@ -130,8 +130,8 @@ pack.addSyncTable({
           display: value.name, value: key,
         })),
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.StringArray,
+      sdk.makeParameter({
+        type: sdk.ParameterType.StringArray,
         name: "options",
         description: "Additional options to enable.",
         optional: true,
@@ -150,13 +150,13 @@ pack.addSyncTable({
       ] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
-        let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs/listings");
+        let baseUrl = sdk.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs/listings");
         let pageSize = metadata.reduce((result, key) => {
           let maxPageSize = getMetdataSettings(key).maxPageSize;
             return maxPageSize ? Math.min(result, maxPageSize) : result;
           }, PageSize);
         
-        url = coda.withQueryParams(baseUrl, {
+        url = sdk.withQueryParams(baseUrl, {
           excludePublicPacks: !includePublished,
           excludeWorkspaceAcls: !includeWorkspace,
           excludeIndividualAcls: !includePrivate,
@@ -206,7 +206,7 @@ pack.addSyncTable({
         case "categories":
           return await getCategories(context);
         default:
-          throw new coda.UserVisibleError(`Unknown property: ${context.propertyName}`);
+          throw new sdk.UserVisibleError(`Unknown property: ${context.propertyName}`);
       }
     },
   },
@@ -217,8 +217,8 @@ pack.addSyncTable({
     execute: async function (args, context) {
       let url = context.sync.continuation?.url as string;
       if (!url) {
-        let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs");
-        url = coda.withQueryParams(baseUrl, {
+        let baseUrl = sdk.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/packs");
+        url = sdk.withQueryParams(baseUrl, {
           accessTypes: "edit,admin",
           limit: 20,
         });
@@ -267,7 +267,7 @@ pack.addSyncTable({
           ([key, value]) => update.updatedFields.includes(key)));
       let response = await context.fetcher.fetch({
         method: "PATCH",
-        url: coda.joinUrl(host, "apis/v1/packs", String(pack.packId)),
+        url: sdk.joinUrl(host, "apis/v1/packs", String(pack.packId)),
         headers: {
           "Content-Type": "application/json",
         },
@@ -291,14 +291,14 @@ pack.addSyncTable({
     name: "SyncStats",
     description: "Sync the stats.",
     parameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.DateArray,
+      sdk.makeParameter({
+        type: sdk.ParameterType.DateArray,
         name: "dateRange",
         description: "The date range of stats to retrieve.",
-        suggestedValue: coda.PrecannedDateRange.Last90Days,
+        suggestedValue: sdk.PrecannedDateRange.Last90Days,
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.StringArray,
+      sdk.makeParameter({
+        type: sdk.ParameterType.StringArray,
         name: "packIds",
         description: "If specified, only the stats for these Packs will be included.",
         optional: true,
@@ -308,8 +308,8 @@ pack.addSyncTable({
       let [dateRange, packIds] = args;
       let url = context.sync.continuation?.url as string;
       if (!url) {
-        let baseUrl = coda.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/analytics/packs");
-        url = coda.withQueryParams(baseUrl, {
+        let baseUrl = sdk.joinUrl(context.invocationLocation.protocolAndHost, "apis/v1/analytics/packs");
+        url = sdk.withQueryParams(baseUrl, {
           sinceDate: dateRange[0].toISOString().split("T")[0],
           untilDate: dateRange[1].toISOString().split("T")[0],
           scale: "daily",
@@ -353,15 +353,15 @@ pack.addFormula({
   description: "Gets the source code for a Pack. You must be a Pack Admin of the Pack.",
   parameters: [
     PackIdOrUrlParameter,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "version",
       description: "Which version of the Pack to get the source code for.",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.Html,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.Html,
   onError: handleError,
   execute: async function (args, context) {
     let [packIdOrUrl, version] = args;

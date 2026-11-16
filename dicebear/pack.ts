@@ -1,11 +1,11 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as dicebear from '@dicebear/core';
 import * as styles from '@dicebear/collection';
 import * as c from "case";
 // import CSSColorList from "css-named-colors";
 import Ajv from "ajv";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const ApiVersion = "7.x";
 const DefaultStyle = "initials";
@@ -19,38 +19,38 @@ const ColorPattern = '^(transparent|[a-fA-F0-9]{6})$';
 const StyleDocumentationBaseUrl = "https://www.dicebear.com/styles/";
 const ImageFormats = ["svg", "png", "jpg"];
 
-const LicenseSchema = coda.makeObjectSchema({
+const LicenseSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    url: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
+    name: { type: sdk.ValueType.String },
+    url: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
   },
   displayProperty: "name",
 });
 
-const OptionSchema = coda.makeObjectSchema({
+const OptionSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    type: { type: coda.ValueType.String },
-    minimum: { type: coda.ValueType.Number },
-    maximum: { type: coda.ValueType.Number },
-    pattern: { type: coda.ValueType.String },
-    enum: { type: coda.ValueType.Array, items: { type: coda.ValueType.String } },
-    multipleAllowed: { type: coda.ValueType.Boolean },
+    name: { type: sdk.ValueType.String },
+    type: { type: sdk.ValueType.String },
+    minimum: { type: sdk.ValueType.Number },
+    maximum: { type: sdk.ValueType.Number },
+    pattern: { type: sdk.ValueType.String },
+    enum: { type: sdk.ValueType.Array, items: { type: sdk.ValueType.String } },
+    multipleAllowed: { type: sdk.ValueType.Boolean },
   },
   displayProperty: "name",
 });
 
-const StyleSchema = coda.makeObjectSchema({
+const StyleSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    title: { type: coda.ValueType.String },
-    example: { type: coda.ValueType.String, codaType: coda.ValueHintType.ImageReference },
-    creator: { type: coda.ValueType.String },
-    source: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
-    homepage: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
+    name: { type: sdk.ValueType.String },
+    title: { type: sdk.ValueType.String },
+    example: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.ImageReference },
+    creator: { type: sdk.ValueType.String },
+    source: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
+    homepage: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
     license: LicenseSchema,
-    options: { type: coda.ValueType.Array, items: OptionSchema },
-    documentation: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
+    options: { type: sdk.ValueType.Array, items: OptionSchema },
+    documentation: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
   },
   displayProperty: "name",
   idProperty: "name",
@@ -61,13 +61,13 @@ pack.addFormula({
   name: "Avatar",
   description: "Generate an avatar image using one of many styles.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "seed",
       description: "The name, email address, or other unique identifier of the user.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "style",
       description: "Which style to use.",
       suggestedValue: DefaultStyle,
@@ -78,8 +78,8 @@ pack.addFormula({
     }),
   ],
   varargParameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "option",
       description: "The name of an option.",
       autocomplete: async function (context, search, args) {
@@ -90,8 +90,8 @@ pack.addFormula({
           .filter(option => option.toLowerCase().includes(search.toLowerCase()));
       },
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "value",
       description: "The value of the option.",
       autocomplete: async function (context, search, args) {
@@ -105,8 +105,8 @@ pack.addFormula({
       },
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.ImageReference,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.ImageReference,
   cacheTtlSecs: OneDaySecs,
   execute: async function (args, context) {
     let [
@@ -121,7 +121,7 @@ pack.addFormula({
       vars = rest;
     }
     if (!seed) {
-      throw new coda.UserVisibleError("A non-empty seed value is required.");
+      throw new sdk.UserVisibleError("A non-empty seed value is required.");
     }
     let schema = getSchema(style);
     validateOptions(schema, options);
@@ -159,7 +159,7 @@ pack.addSyncTable({
           ...meta,
           example: getAvatarUrl("Eric Koleda", style),
           options: options,
-          documentation: coda.joinUrl(StyleDocumentationBaseUrl, style),
+          documentation: sdk.joinUrl(StyleDocumentationBaseUrl, style),
         };
       });
       return {
@@ -175,7 +175,7 @@ function getAvatarUrl(seed: string, style: string, options?: Record<string, stri
     ...(options ?? {}),
   };
   let baseUrl = getBaseUrl(style, options);
-  let url = coda.withQueryParams(baseUrl, {
+  let url = sdk.withQueryParams(baseUrl, {
     seed: seed,
   });
   return url;
@@ -184,8 +184,8 @@ function getAvatarUrl(seed: string, style: string, options?: Record<string, stri
 function getBaseUrl(style: string, options: Record<string, string>): string {
   let format = options.format ?? DefaultImageFormat;
   delete options["format"];
-  return coda.withQueryParams(
-    coda.joinUrl("https://api.dicebear.com/", ApiVersion, style, format),
+  return sdk.withQueryParams(
+    sdk.joinUrl("https://api.dicebear.com/", ApiVersion, style, format),
     options);
 }
 
@@ -218,7 +218,7 @@ function validateOptions(schema, options) {
     }));
   }
   if (errors?.length) {
-    throw new coda.UserVisibleError(`Invalid options: ${errors.join(", ")}`);
+    throw new sdk.UserVisibleError(`Invalid options: ${errors.join(", ")}`);
   }
 }
 
@@ -229,7 +229,7 @@ function getStyles() {
 function getSchema(styleName, includeBaseSchema = true) {
   let styleSchema = styles[c.camel(styleName)]?.schema;
   if (!styleSchema) {
-    throw new coda.UserVisibleError(`Invalid style: ${styleName}`);
+    throw new sdk.UserVisibleError(`Invalid style: ${styleName}`);
   }
   return {
     properties: {
@@ -247,7 +247,7 @@ function getSchema(styleName, includeBaseSchema = true) {
 function getMeta(styleName) {
   let meta = styles[c.camel(styleName)]?.meta;
   if (!meta) {
-    throw new coda.UserVisibleError(`Invalid style: ${styleName}`);
+    throw new sdk.UserVisibleError(`Invalid style: ${styleName}`);
   }
   return meta;
 }

@@ -1,38 +1,38 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
-const InfoSchema = coda.makeObjectSchema({
+const InfoSchema = sdk.makeObjectSchema({
   properties: {
     ip: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The IP address.",
     },
     city: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The city where the IP is associated.",
     },
     region: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The region where the IP is associated.",
     },
     country: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The country where the IP is associated.",
     },
     postal: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The post code where the IP is associated.",
     },
     timezone: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The timezone where the IP is associated.",
     },
     latitude: {
-      type: coda.ValueType.Number,
+      type: sdk.ValueType.Number,
       description: "The latitude where the IP is associated.",
     },
     longitude: {
-      type: coda.ValueType.Number,
+      type: sdk.ValueType.Number,
       description: "The longitude where the IP is associated.",
     },
   },
@@ -43,13 +43,13 @@ pack.addFormula({
   name: "IPInfo",
   description: "Gets information about an IP address.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "ipAddress",
       description: "The IP address to lookup.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: InfoSchema,
   execute: async function (args, context) {
     let [ipAddress] = args;

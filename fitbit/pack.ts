@@ -1,14 +1,14 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as console from "console";
 import { url } from "inspector";
 import { DateTime } from "luxon";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("fitbit.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.OAuth2,
+  type: sdk.AuthenticationType.OAuth2,
   authorizationUrl: "https://www.fitbit.com/oauth2/authorize",
   tokenUrl: "https://api.fitbit.com/oauth2/token",
   scopes: ["activity", "profile", "weight"],
@@ -31,15 +31,15 @@ const ValidUnits = {
   Metric: "",
 };
 
-const DateRangeParameter = coda.makeParameter({
-  type: coda.ParameterType.DateArray,
+const DateRangeParameter = sdk.makeParameter({
+  type: sdk.ParameterType.DateArray,
   name: "dateRange",
   description: "The date range to consider.",
-  suggestedValue: coda.PrecannedDateRange.Last3Months,
+  suggestedValue: sdk.PrecannedDateRange.Last3Months,
 });
 
-const UnitsParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const UnitsParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "units",
   description: [
     "Which units system to use. ",
@@ -49,23 +49,23 @@ const UnitsParameter = coda.makeParameter({
   optional: true,
 });
 
-const UserSchema = coda.makeObjectSchema({
+const UserSchema = sdk.makeObjectSchema({
   properties: {
     name: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       fromKey: "fullName",
       description: "The full name of the user.",
       required: true,
     },
     userId: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       fromKey: "encodedId",
       description: "The user's unique ID.",
       required: true,
     },
     photo: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.ImageAttachment,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.ImageAttachment,
       fromKey: "avatar640",
       description: "The user's profile photo.",
     },
@@ -75,27 +75,27 @@ const UserSchema = coda.makeObjectSchema({
   featuredProperties: ["photo"],
 });
 
-const WeightEntrySchema = coda.makeObjectSchema({
+const WeightEntrySchema = sdk.makeObjectSchema({
   properties: {
     user: UserSchema,
-    date: { type: coda.ValueType.String, codaType: coda.ValueHintType.Date },
-    time: { type: coda.ValueType.String, codaType: coda.ValueHintType.Time },
-    weight: { type: coda.ValueType.Number },
-    bmi: { type: coda.ValueType.Number },
-    fat: { type: coda.ValueType.Number, codaType: coda.ValueHintType.Percent, precision: 2 },
-    logId: { type: coda.ValueType.String },
+    date: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Date },
+    time: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Time },
+    weight: { type: sdk.ValueType.Number },
+    bmi: { type: sdk.ValueType.Number },
+    fat: { type: sdk.ValueType.Number, codaType: sdk.ValueHintType.Percent, precision: 2 },
+    logId: { type: sdk.ValueType.String },
   },
   displayProperty: "date",
   idProperty: "logId",
   featuredProperties: ["weight", "fat", "bmi"],
 });
 
-const StepsEntrySchema = coda.makeObjectSchema({
+const StepsEntrySchema = sdk.makeObjectSchema({
   properties: {
     user: UserSchema,
-    date: { type: coda.ValueType.String, codaType: coda.ValueHintType.Date, fromKey: "dateTime" },
-    steps: { type: coda.ValueType.Number, fromKey: "value" },
-    logId: { type: coda.ValueType.String },
+    date: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Date, fromKey: "dateTime" },
+    steps: { type: sdk.ValueType.Number, fromKey: "value" },
+    logId: { type: sdk.ValueType.String },
   },
   displayProperty: "date",
   idProperty: "logId",
@@ -163,7 +163,7 @@ pack.addSyncTable({
 
       let {start, end, continuation} = getDatePage(context, fromDate, toDate, LargePageSizeDays);
       let url = `https://api.fitbit.com/1/user/-/activities/steps/date/${start}/${end}.json`;
-      let response: coda.FetchResponse;
+      let response: sdk.FetchResponse;
       try {
         response = await context.fetcher.fetch({
           method: "GET",
@@ -172,7 +172,7 @@ pack.addSyncTable({
         });
       } catch (error) {
         if (error.statusCode == 400 && error.body?.errors?.[0]?.message) {
-          throw new coda.UserVisibleError(error.body.errors[0].message);
+          throw new sdk.UserVisibleError(error.body.errors[0].message);
         }
         throw error;
       }
@@ -192,7 +192,7 @@ pack.addSyncTable({
   },
 });
 
-async function getProfile(context: coda.ExecutionContext): Promise<any> {
+async function getProfile(context: sdk.ExecutionContext): Promise<any> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: "https://api.fitbit.com/1/user/-/profile.json",
@@ -204,14 +204,14 @@ async function getProfile(context: coda.ExecutionContext): Promise<any> {
 function getLanguageHeader(units, unitType, profile): string {
   if (units) {
     if (!Object.keys(ValidUnits).includes(units)) {
-      throw new coda.UserVisibleError(`Unsupported units system: ${units}`);
+      throw new sdk.UserVisibleError(`Unsupported units system: ${units}`);
     }
     return ValidUnits[units];
   }
   return profile[unitType];
 }
 
-function getDatePage(context: coda.ExecutionContext, fromDate: Date, toDate: Date, pageSizeDays: number) {
+function getDatePage(context: sdk.ExecutionContext, fromDate: Date, toDate: Date, pageSizeDays: number) {
   let {timezone} = context;
   let fromDateTime = DateTime.fromJSDate(fromDate, {zone: timezone}).startOf("day");
   let toDateTime = DateTime.fromJSDate(toDate, {zone: timezone}).startOf("day");

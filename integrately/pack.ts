@@ -1,18 +1,18 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addFormula({
   name: "TriggerWebhook",
   description: "Trigger a webhook created in Integrately.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "webhookUrl",
       description: "The URL of the webhook. Ex: https://webhooks.integrately.com/a/webhooks/...",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
     // TODO: Unpack the parameter values.

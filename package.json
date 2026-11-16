@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "@codahq/packs-sdk": "^1.18.4",
     "@dicebear/collection": "^7.0.4",
     "@dicebear/core": "^7.0.4",
     "@iconify/utils": "^3.1.7",
+    "@superhuman/plugins-sdk": "^1.21.0",
     "@toon-format/toon": "^1.0.0",
     "@universe/address-parser": "^4.0.0",
     "@xmldom/xmldom": "^0.9.3",

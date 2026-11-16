@@ -1,10 +1,10 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { OneDaySecs } from "./constants";
 import { getAirports, getAirline, getAirlines } from "./helpers";
 import { AirportSchema, AirlineSchema, FlightSchema } from "./schemas";
 var FlightDesignator = require("flight-designator");
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("githubusercontent.com");
 
@@ -12,13 +12,13 @@ pack.addFormula({
   name: "Airport",
   description: "Get information about an airport given it's identification code.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "code",
       description: "The IATA or ICAO code of the airport.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: AirportSchema,
   cacheTtlSecs: OneDaySecs,
   examples: [
@@ -40,7 +40,7 @@ pack.addFormula({
   execute: async function (args, context) {
     let [code] = args;
     if (!code) {
-      throw new coda.UserVisibleError("Airline code cannot be blank.");
+      throw new sdk.UserVisibleError("Airline code cannot be blank.");
     }
     code = code.toUpperCase();
     let airports = await getAirports(context);
@@ -51,7 +51,7 @@ pack.addFormula({
       result = airports.find(airport => airport.ICAO == code);
     }
     if (!result) {
-      throw new coda.UserVisibleError(`Invalid airport code: ${code}`);
+      throw new sdk.UserVisibleError(`Invalid airport code: ${code}`);
     }
     return result;
   },
@@ -61,13 +61,13 @@ pack.addFormula({
   name: "Airline",
   description: "Get information about an airline given it's identification code.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "code",
       description: "The IATA or ICAO code of the airline.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: AirlineSchema,
   cacheTtlSecs: OneDaySecs,
   examples: [
@@ -85,7 +85,7 @@ pack.addFormula({
   execute: async function (args, context) {
     let [code] = args;
     if (!code) {
-      throw new coda.UserVisibleError("Airline code cannot be blank.");
+      throw new sdk.UserVisibleError("Airline code cannot be blank.");
     }
     return await getAirline(context, code);
   },
@@ -95,13 +95,13 @@ pack.addFormula({
   name: "Flight",
   description: "Parses the flight designator code (flight number) into its component parts and gets information about the airline.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "code",
       description: "The designator code (flight number) for a flight.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: FlightSchema,
   cacheTtlSecs: OneDaySecs,
   examples: [
@@ -123,10 +123,10 @@ pack.addFormula({
   execute: async function (args, context) {
     let [designator] = args;
     if (!designator) {
-      throw new coda.UserVisibleError("Flight designator cannot be blank.");
+      throw new sdk.UserVisibleError("Flight designator cannot be blank.");
     }
     if (!FlightDesignator.isValid(designator)) {
-      throw new coda.UserVisibleError(`Invalid flight designator: ${designator}`);
+      throw new sdk.UserVisibleError(`Invalid flight designator: ${designator}`);
     }
     let parts = FlightDesignator.parse(designator);
     let airline = await getAirline(context, parts.airlineCode);

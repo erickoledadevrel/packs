@@ -1,8 +1,8 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { AppToken } from "./credentials";
 const urlParse = require('url-parse');
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 // The max number of columns to include in the sync table by default.
 const MaxFeaturedColumns = 50;
@@ -17,48 +17,48 @@ const PageSize = 100;
 const MaxDatasets = 10000;
 
 // Schema for an address (part of a location).
-const AddressSchema = coda.makeObjectSchema({
+const AddressSchema = sdk.makeObjectSchema({
   properties: {
-    address: { type: coda.ValueType.String },
-    city: { type: coda.ValueType.String },
-    state: { type: coda.ValueType.String },
-    zip: { type: coda.ValueType.String },
+    address: { type: sdk.ValueType.String },
+    city: { type: sdk.ValueType.String },
+    state: { type: sdk.ValueType.String },
+    zip: { type: sdk.ValueType.String },
   },
   displayProperty: "address",
 });
 
 // Schema for a location (used for locations and points).
-const LocationSchema = coda.makeObjectSchema({
+const LocationSchema = sdk.makeObjectSchema({
   properties: {
     coordinates: {
-      type: coda.ValueType.Array,
-      items: { type: coda.ValueType.Number },
+      type: sdk.ValueType.Array,
+      items: { type: sdk.ValueType.Number },
     },
-    latitude: { type: coda.ValueType.Number },
-    longitude: { type: coda.ValueType.Number },
+    latitude: { type: sdk.ValueType.Number },
+    longitude: { type: sdk.ValueType.Number },
     address: { ...AddressSchema, fromKey: "human_address" },
   },
   displayProperty: "coordinates",
 });
 
 // A mapping from Socrata types to Coda schemas.
-const TypeSchemaMap: Record<string, coda.Schema> = {
-  text: { type: coda.ValueType.String },
-  number: { type: coda.ValueType.Number },
-  checkbox: { type: coda.ValueType.Boolean },
+const TypeSchemaMap: Record<string, sdk.Schema> = {
+  text: { type: sdk.ValueType.String },
+  number: { type: sdk.ValueType.Number },
+  checkbox: { type: sdk.ValueType.Boolean },
   calendar_date: {
-    type: coda.ValueType.String,
-    codaType: coda.ValueHintType.Date,
+    type: sdk.ValueType.String,
+    codaType: sdk.ValueHintType.Date,
   },
   location: LocationSchema,
   point: LocationSchema,
-  url: { type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
+  url: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
 };
 
 // A base row schema, extended for each dataset.
-const BaseRowSchema = coda.makeObjectSchema({
+const BaseRowSchema = sdk.makeObjectSchema({
   properties: {
-    rowId: { type: coda.ValueType.String, fromKey: ":id" },
+    rowId: { type: sdk.ValueType.String, fromKey: ":id" },
   },
   idProperty: "rowId",
   displayProperty: "rowId",
@@ -66,7 +66,7 @@ const BaseRowSchema = coda.makeObjectSchema({
 
 // Include user authentication so that they can provide an endpoint URL.
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.Custom,
+  type: sdk.AuthenticationType.Custom,
   params: [],
   requiresEndpointUrl: true,
   // TODO: instructionsUrl
@@ -76,7 +76,7 @@ pack.setUserAuthentication({
         limit: 0,
       });
     } catch (e) {
-      throw new coda.UserVisibleError(`The URL ${context.endpoint} does not appear to be a Socrata server.`);
+      throw new sdk.UserVisibleError(`The URL ${context.endpoint} does not appear to be a Socrata server.`);
     }
     return getDomain(context);
   },
@@ -159,7 +159,7 @@ pack.addDynamicSyncTable({
     let dataset = await getDataset(context);
 
     // Copy the base schema.
-    let schema: coda.GenericObjectSchema = {
+    let schema: sdk.GenericObjectSchema = {
       ...BaseRowSchema,
     };
 
@@ -203,15 +203,15 @@ pack.addDynamicSyncTable({
     name: "SyncDataset",
     description: "Syncs the dataset.",
     parameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "search",
         description: "If specified, only rows containing this search term " +
           "will be included.",
         optional: true,
       }),
-      coda.makeParameter({
-        type: coda.ParameterType.String,
+      sdk.makeParameter({
+        type: sdk.ParameterType.String,
         name: "filter",
         description: "A SoQL $where clause to use to filter the results. " +
           "https://dev.socrata.com/docs/queries/where.html",
@@ -223,11 +223,11 @@ pack.addDynamicSyncTable({
       let offset = context.sync.continuation?.offset as number || 0;
 
       // Only fetch the selected columns.
-      let fields = coda.getEffectivePropertyKeysFromSchema(context.sync.schema);
+      let fields = sdk.getEffectivePropertyKeysFromSchema(context.sync.schema);
 
       // Fetch the row data.
       let baseUrl = `/resource/${dataset.id}.json`;
-      let url = coda.withQueryParams(baseUrl, {
+      let url = sdk.withQueryParams(baseUrl, {
         $select: fields.join(","),
         $q: search,
         $where: filter,
@@ -264,7 +264,7 @@ pack.addDynamicSyncTable({
 /**
  * Gets the domain from the endpoint URL.
  */
-function getDomain(context: coda.ExecutionContext) {
+function getDomain(context: sdk.ExecutionContext) {
   let url = urlParse(context.endpoint);
   return url.host;
 }
@@ -300,11 +300,11 @@ function formatValue(value) {
 /**
  * Get the list of dataset categories.
  */
-async function getCategories(context: coda.ExecutionContext):
+async function getCategories(context: sdk.ExecutionContext):
   Promise<string[]> {
   let domain = getDomain(context);
   let baseUrl = `/api/catalog/v1/domain_categories`;
-  let url = coda.withQueryParams(baseUrl, {
+  let url = sdk.withQueryParams(baseUrl, {
     domains: domain,
   });
   let response = await fetch(context, {
@@ -317,9 +317,9 @@ async function getCategories(context: coda.ExecutionContext):
 /**
  * Search for datasets, using a flexible set of parameters.
  */
-async function searchDatasets(context: coda.ExecutionContext,
+async function searchDatasets(context: sdk.ExecutionContext,
   params: Record<string, any>): Promise<DatasetResult[]> {
-  let url = coda.withQueryParams(`/api/catalog/v1`, params);
+  let url = sdk.withQueryParams(`/api/catalog/v1`, params);
   let response = await fetch(context, {
     method: "GET",
     url: url,
@@ -335,7 +335,7 @@ async function searchDatasets(context: coda.ExecutionContext,
 /**
  * Get a dataset by ID.
  */
-async function getDataset(context: coda.ExecutionContext): Promise<Dataset> {
+async function getDataset(context: sdk.ExecutionContext): Promise<Dataset> {
   let datasetUrl = context.sync.dynamicUrl;
   let datasetId = getDatasetId(datasetUrl);
   let url = `/api/views/${datasetId}.json`;
@@ -357,11 +357,11 @@ function getDatasetId(url: string): string {
  * Determine which rows to feature (include in the table by default) for a given
  * dataset.
  */
-async function getFeatured(dataset: Dataset, context: coda.ExecutionContext):
+async function getFeatured(dataset: Dataset, context: sdk.ExecutionContext):
   Promise<string[]> {
   // Fetch some of the first rows from the dataset.
   let baseUrl = `/resource/${dataset.id}.json`;
-  let url = coda.withQueryParams(baseUrl, {
+  let url = sdk.withQueryParams(baseUrl, {
     $limit: TableScanMaxRows,
   });
   let response = await fetch(context, {
@@ -394,20 +394,20 @@ async function getFeatured(dataset: Dataset, context: coda.ExecutionContext):
 /**
  * Get the attribution node for a given dataset.
  */
-function getAttribution(dataset: Dataset): coda.AttributionNode[] {
+function getAttribution(dataset: Dataset): sdk.AttributionNode[] {
   if (!dataset.attribution) {
     return undefined;
   }
   let node;
   if (dataset.attributionLink) {
-    node = coda.makeAttributionNode({
-      type: coda.AttributionNodeType.Link,
+    node = sdk.makeAttributionNode({
+      type: sdk.AttributionNodeType.Link,
       anchorText: dataset.attribution,
       anchorUrl: dataset.attributionLink,
     });
   } else {
-    node = coda.makeAttributionNode({
-      type: coda.AttributionNodeType.Text,
+    node = sdk.makeAttributionNode({
+      type: sdk.AttributionNodeType.Text,
       text: dataset.attribution,
     });
   }
@@ -417,9 +417,9 @@ function getAttribution(dataset: Dataset): coda.AttributionNode[] {
 /**
  * Makes an HTTP request, ensuring the correct domain and app token are used.
  */
-async function fetch(context: coda.ExecutionContext, request: coda.FetchRequest) {
+async function fetch(context: sdk.ExecutionContext, request: sdk.FetchRequest) {
   let domain = getDomain(context);
-  let url = coda.joinUrl(`https://${domain}`, request.url);
+  let url = sdk.joinUrl(`https://${domain}`, request.url);
   try {
     return await context.fetcher.fetch({
       ...request,
@@ -431,15 +431,15 @@ async function fetch(context: coda.ExecutionContext, request: coda.FetchRequest)
     });
   } catch (error) {
     // If the request failed because the server returned a 300+ status code.
-    if (coda.StatusCodeError.isStatusCodeError(error)) {
+    if (sdk.StatusCodeError.isStatusCodeError(error)) {
       // Cast the error as a StatusCodeError, for better intellisense.
-      let statusError = error as coda.StatusCodeError;
+      let statusError = error as sdk.StatusCodeError;
       // If the API returned an error message in the body, show it to the user.
       let message = statusError.body?.message;
       if (message) {
         let parts = message.split(";");
         message = parts[1] ?? message;
-        throw new coda.UserVisibleError(message);
+        throw new sdk.UserVisibleError(message);
       }
     }
     // The request failed for some other reason. Re-throw the error so that it

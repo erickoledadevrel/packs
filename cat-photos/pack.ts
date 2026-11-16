@@ -1,5 +1,5 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("cataas.com");
 
@@ -7,8 +7,8 @@ pack.addNetworkDomain("cataas.com");
 const PageSize = 1000;
 
 // Tag parameter, shared across multiple formulas.
-const TagParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const TagParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "tag",
   description: "Only cats with this tag will be selected.",
   optional: true,
@@ -20,7 +20,7 @@ const TagParameter = coda.makeParameter({
     });
     let tags = response.body;
     // Convert the tags into a list of autocomplete options.
-    return coda.simpleAutocomplete(search, tags);
+    return sdk.simpleAutocomplete(search, tags);
   },
 });
 
@@ -29,53 +29,53 @@ pack.addFormula({
   name: "CatPhoto",
   description: "Gets a random cat photo.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "Text to display over the photo.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "size",
       description: "The size of the text, in pixels.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "color",
       description: "The color of the text. Any valid CSS color can be used.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "width",
       description: "The width of the desired photo, in pixels.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "height",
       description: "The height of the desired photo, in pixels.",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "filter",
       description: "A filter to apply to the photo.",
       autocomplete: ["blur", "mono", "sepia", "negative", "paint", "pixel"],
       optional: true,
     }),
     TagParameter,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "catId",
       description: "The ID of the cat photo to use. If this is supplied then the tag parameter will be ignored. ",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.ImageReference,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.ImageReference,
   execute: async function ([text, size, color, width, height, filter, tag, catId],
     context) {
     let url = "https://cataas.com/cat";
@@ -85,7 +85,7 @@ pack.addFormula({
     if (text) {
       url += "/says/" + encodeURIComponent(text);
     }
-    url = coda.withQueryParams(url, {
+    url = sdk.withQueryParams(url, {
       size: size,
       color: color,
       width: width,
@@ -111,24 +111,24 @@ pack.addColumnFormat({
 });
 
 // Schema for a Cat photo.
-const CatSchema = coda.makeObjectSchema({
+const CatSchema = sdk.makeObjectSchema({
   properties: {
     image: {
       description: "The cat photo.",
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.ImageReference,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.ImageReference,
     },
     tags: {
       description: "The tags used to categorize this cat.",
-      type: coda.ValueType.Array,
-      items: coda.makeSchema({ type: coda.ValueType.String }),
+      type: sdk.ValueType.Array,
+      items: sdk.makeSchema({ type: sdk.ValueType.String }),
     },
     created: {
       description: "When the cat photo was added.",
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.DateTime,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.DateTime,
     },
-    catId: { type: coda.ValueType.String },
+    catId: { type: sdk.ValueType.String },
   },
   displayProperty: "catId",
   idProperty: "catId",
@@ -143,7 +143,7 @@ pack.addSyncTable({
   name: "Cats",
   identityName: "Cat",
   schema: CatSchema,
-  connectionRequirement: coda.ConnectionRequirement.None,
+  connectionRequirement: sdk.ConnectionRequirement.None,
   formula: {
     name: "SyncCats",
     description: "Syncs the cats.",
@@ -155,7 +155,7 @@ pack.addSyncTable({
       // if this is the first run.
       let skip = context.sync.continuation?.skip as number ?? 0;
 
-      let url = coda.withQueryParams("https://cataas.com/api/cats", {
+      let url = sdk.withQueryParams("https://cataas.com/api/cats", {
         tags: tag,
         limit: PageSize,
         skip: skip,

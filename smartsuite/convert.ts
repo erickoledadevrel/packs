@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import type * as ct from "./types/coda";
 import type * as sst from "./types/smartsuite";
 import { getReferenceSchema, MemberSchema } from "./schemas";
@@ -138,7 +138,7 @@ abstract class ColumnConverter<T, C> {
     this.column = column;
   }
 
-  async getSchema(): Promise<coda.Schema & coda.ObjectSchemaProperty> {
+  async getSchema(): Promise<sdk.Schema & sdk.ObjectSchemaProperty> {
     let schema = await this._getSchema();
     let propertyKey = this.getPropertyKey();
     let columnName = this.getColumnName();
@@ -151,8 +151,8 @@ abstract class ColumnConverter<T, C> {
     schema.displayName = columnName;
     schema.description = this.column.params.help_text;
     if (this.column.params.entries_allowed == "multiple") {
-      schema = coda.makeSchema({
-        type: coda.ValueType.Array,
+      schema = sdk.makeSchema({
+        type: sdk.ValueType.Array,
         items: {
           ...schema,
         },
@@ -167,7 +167,7 @@ abstract class ColumnConverter<T, C> {
   }
 
   // Each implementation must define the base property schema.
-  abstract _getSchema(): Promise<coda.Schema & coda.ObjectSchemaProperty>;
+  abstract _getSchema(): Promise<sdk.Schema & sdk.ObjectSchemaProperty>;
 
   getPropertyKey(): string {
     return this.column.slug;
@@ -216,16 +216,16 @@ abstract class ColumnConverter<T, C> {
 
 class TextColumnConverter extends ColumnConverter<string, string> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
     });
   }
 }
 
 class NumberColumnConverter extends ColumnConverter<string, number> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.Number,
+    return sdk.makeSchema({
+      type: sdk.ValueType.Number,
       precision: this.column.params.precision,
       useThousandsSeparator: this.column.params.separator,
     });
@@ -242,9 +242,9 @@ class NumberColumnConverter extends ColumnConverter<string, number> {
 
 class SliderColumnConverter extends ColumnConverter<number, number> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.Number,
-      codaType: coda.ValueHintType.Slider,
+    return sdk.makeSchema({
+      type: sdk.ValueType.Number,
+      codaType: sdk.ValueHintType.Slider,
       minimum: this.column.params.min_value,
       maximum: this.column.params.max_value,
       step: this.column.params.value_increment,
@@ -254,9 +254,9 @@ class SliderColumnConverter extends ColumnConverter<number, number> {
 
 class ProgressColumnConverter extends ColumnConverter<number, number> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.Number,
-      codaType: coda.ValueHintType.ProgressBar,
+    return sdk.makeSchema({
+      type: sdk.ValueType.Number,
+      codaType: sdk.ValueHintType.ProgressBar,
       minimum: this.column.params.min_value,
       maximum: this.column.params.max_value,
       step: this.column.params.value_increment,
@@ -269,28 +269,28 @@ class ScaleColumnConverter extends ColumnConverter<number, number> {
     let icon = undefined;
     switch(this.column.params.display_format) {
       case "star":
-        icon = coda.ScaleIconSet.Star;
+        icon = sdk.ScaleIconSet.Star;
         break;
       case "heart":
-        icon = coda.ScaleIconSet.Heart;
+        icon = sdk.ScaleIconSet.Heart;
         break;
       case "smiley":
-        icon = coda.ScaleIconSet.Smiley;
+        icon = sdk.ScaleIconSet.Smiley;
         break;
       case "flag":
         // Approximation.
-        icon = coda.ScaleIconSet.Lightning;
+        icon = sdk.ScaleIconSet.Lightning;
         break;
       case "thumb_up":
-        icon = coda.ScaleIconSet.ThumbsUp;
+        icon = sdk.ScaleIconSet.ThumbsUp;
         break;
       case "rectangles":
-        icon = coda.ScaleIconSet.Battery;
+        icon = sdk.ScaleIconSet.Battery;
         break;
     }
-    return coda.makeSchema({
-      type: coda.ValueType.Number,
-      codaType: coda.ValueHintType.Scale,
+    return sdk.makeSchema({
+      type: sdk.ValueType.Number,
+      codaType: sdk.ValueHintType.Scale,
       maximum: this.column.params.scale,
       icon: icon,
     });
@@ -300,9 +300,9 @@ class ScaleColumnConverter extends ColumnConverter<number, number> {
 class PercentColumnConverter extends NumberColumnConverter {
   async _getSchema() {
     let baseSchema = await super._getSchema();
-    return coda.makeSchema({
+    return sdk.makeSchema({
       ...baseSchema,
-      codaType: coda.ValueHintType.Percent,
+      codaType: sdk.ValueHintType.Percent,
     });
   }
 
@@ -318,9 +318,9 @@ class PercentColumnConverter extends NumberColumnConverter {
 class CurrencyColumnConverter extends NumberColumnConverter {
   async _getSchema() {
     let baseSchema = await super._getSchema();
-    return coda.makeSchema({
+    return sdk.makeSchema({
       ...baseSchema,
-      codaType: coda.ValueHintType.Currency,
+      codaType: sdk.ValueHintType.Currency,
       currencyCode: this.column.params.currency,
       // For some reason this field doesn't exist on the CurrencySchema,
       // so we need to unset it.
@@ -331,18 +331,18 @@ class CurrencyColumnConverter extends NumberColumnConverter {
 
 class BooleanColumnConverter extends ColumnConverter<boolean, boolean> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.Boolean,
-      codaType: this.column.params.display_format.includes("toggle") ? coda.ValueHintType.Toggle : undefined,
+    return sdk.makeSchema({
+      type: sdk.ValueType.Boolean,
+      codaType: this.column.params.display_format.includes("toggle") ? sdk.ValueHintType.Toggle : undefined,
     });
   }
 }
 
 class DateColumnConverter extends ColumnConverter<sst.Date, string> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Date,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Date,
     });
   }
 
@@ -371,18 +371,18 @@ class DateColumnConverter extends ColumnConverter<sst.Date, string> {
 
 class TimeColumnConverter extends ColumnConverter<string, string> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Time,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Time,
     });
   }
 }
 
 class DurationColumnConverter extends ColumnConverter<number, number> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.Number,
-      codaType: coda.ValueHintType.Duration,
+    return sdk.makeSchema({
+      type: sdk.ValueType.Number,
+      codaType: sdk.ValueHintType.Duration,
     });
   }
 
@@ -397,8 +397,8 @@ class DurationColumnConverter extends ColumnConverter<number, number> {
 
 class PhoneColumnConverter extends ColumnConverter<sst.PhoneField | string, string> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
     });
   }
 
@@ -408,7 +408,7 @@ class PhoneColumnConverter extends ColumnConverter<sst.PhoneField | string, stri
 
   async _formatValueForApi(value: string): Promise<string> {
     if (!value.trim().startsWith("+")) {
-      throw new coda.UserVisibleError("Phone number doesn't start with a plus and country code: " + value);
+      throw new sdk.UserVisibleError("Phone number doesn't start with a plus and country code: " + value);
     }
     return value;
   }
@@ -416,12 +416,12 @@ class PhoneColumnConverter extends ColumnConverter<sst.PhoneField | string, stri
 
 class MemberDatePairColumnConverter extends ColumnConverter<sst.DatePersonField, ct.DatePersonField> {
   async _getSchema() {
-    return coda.makeObjectSchema({
+    return sdk.makeObjectSchema({
       properties: {
-        by: coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
+        by: sdk.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
         on: {
-          type: coda.ValueType.String,
-          codaType: coda.ValueHintType.DateTime,
+          type: sdk.ValueType.String,
+          codaType: sdk.ValueHintType.DateTime,
           mutable: false,
         },
       },
@@ -440,18 +440,18 @@ class MemberDatePairColumnConverter extends ColumnConverter<sst.DatePersonField,
 
 class SelectListColumnConverter extends ColumnConverter<string | string[] | sst.Status, ct.Option | ct.Option[]> {
   async _getSchema() {
-    let schema: coda.Schema = coda.makeObjectSchema({
+    let schema: sdk.Schema = sdk.makeObjectSchema({
       properties: {
-        label: { type: coda.ValueType.String },
-        value: { type: coda.ValueType.String },
+        label: { type: sdk.ValueType.String },
+        value: { type: sdk.ValueType.String },
       },
-      codaType: coda.ValueHintType.SelectList,
-      options: coda.OptionsType.Dynamic,
+      codaType: sdk.ValueHintType.SelectList,
+      options: sdk.OptionsType.Dynamic,
       allowNewValues: this.column.params.new_choices_allowed || this.column.field_type == "tagsfield",
     });
     if (["multipleselectfield", "tagsfield"].includes(this.column.field_type)) {
-      schema = coda.makeSchema({
-        type: coda.ValueType.Array,
+      schema = sdk.makeSchema({
+        type: sdk.ValueType.Array,
         items: schema,
       });
     }
@@ -488,9 +488,9 @@ class SelectListColumnConverter extends ColumnConverter<string | string[] | sst.
 
 class HtmlColumnConverter extends ColumnConverter<sst.RichTextField, string> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Html,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Html,
       // All formatting is lost on edit.
       mutable: false,
     });
@@ -503,26 +503,26 @@ class HtmlColumnConverter extends ColumnConverter<sst.RichTextField, string> {
 
 class LinkColumnConverter extends ColumnConverter<string, string> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Url,
-      display: this.column.params.display_format == "favicon_only" ? coda.LinkDisplayType.IconOnly : coda.LinkDisplayType.Url,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Url,
+      display: this.column.params.display_format == "favicon_only" ? sdk.LinkDisplayType.IconOnly : sdk.LinkDisplayType.Url,
     });
   }
 }
 
 class EmailColumnConverter extends ColumnConverter<string, string> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Email,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Email,
     });
   }
 }
 
 class MemberColumnConverter extends ColumnConverter<string, ct.MemberReference> {
   async _getSchema() {
-    return coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member");
+    return sdk.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member");
   }
 
   async _formatValueForSchema(value: string): Promise<ct.MemberReference> {
@@ -539,12 +539,12 @@ class MemberColumnConverter extends ColumnConverter<string, ct.MemberReference> 
 
 class VoteColumnConverter extends ColumnConverter<sst.Vote, ct.Vote> {
   async _getSchema() {
-    return coda.makeObjectSchema({
+    return sdk.makeObjectSchema({
       properties: {
-        total_votes: { type: coda.ValueType.Number },
+        total_votes: { type: sdk.ValueType.Number },
         votes: {
-          type: coda.ValueType.Array,
-          items: coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
+          type: sdk.ValueType.Array,
+          items: sdk.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
         },
       },
       displayProperty: "total_votes",
@@ -575,7 +575,7 @@ class NestedColumnConverter extends ColumnConverter<any, any> {
   }
 
   async _getSchema() {
-    let schema = coda.makeObjectSchema({
+    let schema = sdk.makeObjectSchema({
       properties: {},
       displayProperty: undefined,
       mutable: false,
@@ -592,7 +592,7 @@ class NestedColumnConverter extends ColumnConverter<any, any> {
     }
     if (!schema.displayProperty && this.syntheticDisplayValueSeparator) {
       schema.properties[SyntheticDisplayPropertyName] = {
-        type: coda.ValueType.String,
+        type: sdk.ValueType.String,
         fromKey: SyntheticDisplayPropertyKey,
         fixedId: SyntheticDisplayPropertyKey,
         displayName: SyntheticDisplayPropertyName,
@@ -654,11 +654,11 @@ class FileColumnConverter extends ColumnConverter<sst.File[], string[]> {
   }
 
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.Array,
+    return sdk.makeSchema({
+      type: sdk.ValueType.Array,
       items: {
-        type: coda.ValueType.String,
-        codaType: coda.ValueHintType.Attachment,
+        type: sdk.ValueType.String,
+        codaType: sdk.ValueHintType.Attachment,
       },
     });
   }
@@ -701,8 +701,8 @@ class LinkedRecordColumnConverter extends ColumnConverter<string, ct.Row> {
 
 class DependencyColumnConverter extends ColumnConverter<sst.Dependency, ct.Row[]> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.Array,
+    return sdk.makeSchema({
+      type: sdk.ValueType.Array,
       items: getReferenceSchema(this.settings.table),
     });
   }
@@ -738,21 +738,21 @@ class DependencyColumnConverter extends ColumnConverter<sst.Dependency, ct.Row[]
 
 class ChecklistColumnConverter extends ColumnConverter<sst.Checklist, ct.Checklist> {
   async _getSchema() {
-    let itemSchema = coda.makeObjectSchema({
+    let itemSchema = sdk.makeObjectSchema({
       properties: {
-        preview: { type: coda.ValueType.String, codaType: coda.ValueHintType.Markdown },
-        label: { type: coda.ValueType.String },
-        completed: { type: coda.ValueType.Boolean },
-        assignee: coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
-        due_date: { type: coda.ValueType.String, codaType: coda.ValueHintType.Date },
-        completed_at: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime },
+        preview: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Markdown },
+        label: { type: sdk.ValueType.String },
+        completed: { type: sdk.ValueType.Boolean },
+        assignee: sdk.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
+        due_date: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Date },
+        completed_at: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime },
       },
       displayProperty: "preview",
     });
-    return coda.makeObjectSchema({
+    return sdk.makeObjectSchema({
       properties: {
-        summary: { type: coda.ValueType.String },
-        items: { type: coda.ValueType.Array, items: itemSchema },
+        summary: { type: sdk.ValueType.String },
+        items: { type: sdk.ValueType.Array, items: itemSchema },
       },
       displayProperty: "summary",
       mutable: false,
@@ -779,19 +779,19 @@ class ChecklistColumnConverter extends ColumnConverter<sst.Checklist, ct.Checkli
 
 class TimeTrackkingLogColumnConverter extends ColumnConverter<sst.TimeTrackingLog, ct.TimeTrackingLog> {
   async _getSchema() {
-    let entrySchema = coda.makeObjectSchema({
+    let entrySchema = sdk.makeObjectSchema({
       properties: {
-        user: coda.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
-        created: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime },
-        duration: { type: coda.ValueType.String, codaType: coda.ValueHintType.Duration },
-        note: { type: coda.ValueType.String },
+        user: sdk.makeReferenceSchemaFromObjectSchema(MemberSchema, "Member"),
+        created: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime },
+        duration: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Duration },
+        note: { type: sdk.ValueType.String },
       },
       displayProperty: "created",
     });
-    return coda.makeObjectSchema({
+    return sdk.makeObjectSchema({
       properties: {
-        total: { type: coda.ValueType.String, codaType: coda.ValueHintType.Duration },
-        entries: { type: coda.ValueType.Array, items: entrySchema },
+        total: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Duration },
+        entries: { type: sdk.ValueType.Array, items: entrySchema },
       },
       displayProperty: "total",
       mutable: false,
@@ -817,8 +817,8 @@ class TimeTrackkingLogColumnConverter extends ColumnConverter<sst.TimeTrackingLo
 
 class ColorColumnConverter extends ColumnConverter<sst.Color, string> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
     });
   }
 
@@ -835,10 +835,10 @@ class ColorColumnConverter extends ColumnConverter<sst.Color, string> {
 
 class IpAddressColumnConverter extends ColumnConverter<sst.IpAddress, sst.IpAddress> {
   async _getSchema() {
-    return coda.makeObjectSchema({
+    return sdk.makeObjectSchema({
       properties: {
-        address: { type: coda.ValueType.String },
-        country_code: { type: coda.ValueType.String },
+        address: { type: sdk.ValueType.String },
+        country_code: { type: sdk.ValueType.String },
       },
       displayProperty: "address",
     });
@@ -847,8 +847,8 @@ class IpAddressColumnConverter extends ColumnConverter<sst.IpAddress, sst.IpAddr
 
 class UnknownColumnConverter extends ColumnConverter<any, string> {
   async _getSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
       mutable: false,
     });
   }

@@ -1,9 +1,9 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as crypto from "crypto";
 import { ObjectTypeKey } from "./schemas";
 import { BaseQueryObjectSchema } from "./schemas";
 
-export function getProjectId(context: coda.ExecutionContext) {
+export function getProjectId(context: sdk.ExecutionContext) {
   return context.endpoint.split("#").pop();
 }
 
@@ -38,37 +38,37 @@ function getColumnValue(field, value) {
   }
 }
 
-function getColumnSchema(field): coda.Schema & coda.ObjectSchemaProperty {
+function getColumnSchema(field): sdk.Schema & sdk.ObjectSchemaProperty {
   if (field.mode == "REPEATED") {
     return {
-      type: coda.ValueType.Array,
+      type: sdk.ValueType.Array,
       items: getColumnSchema(itemOf(field)),
     };
   }
   switch (field.type) {
     case "STRING":
-      return { type: coda.ValueType.String };
+      return { type: sdk.ValueType.String };
     case "INTEGER":
     case "FLOAT":
-      return { type: coda.ValueType.Number };
+      return { type: sdk.ValueType.Number };
     case "BOOLEAN":
-      return { type: coda.ValueType.Boolean };
+      return { type: sdk.ValueType.Boolean };
     case "DATE":
-      return { type: coda.ValueType.String, codaType: coda.ValueHintType.Date };
+      return { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Date };
     case "TIME":
-      return { type: coda.ValueType.String, codaType: coda.ValueHintType.Time };
+      return { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Time };
     case "DATETIME":
     case "TIMESTAMP":
-      return { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime };
+      return { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime };
     case "RECORD":
       return getSchema(field, BaseQueryObjectSchema);
     default:
-      return { type: coda.ValueType.String };
+      return { type: sdk.ValueType.String };
   }
 }
 
-export function getSchema(schema, baseSchema?): coda.GenericObjectSchema {
-  let result = coda.makeObjectSchema({
+export function getSchema(schema, baseSchema?): sdk.GenericObjectSchema {
+  let result = sdk.makeObjectSchema({
     ...baseSchema ? baseSchema : {},
     properties: {
       ...baseSchema ? baseSchema.properties : {},
@@ -95,13 +95,13 @@ export function randomId() {
 
 export function onError(error: Error) {
   console.error(error)
-  if (coda.StatusCodeError.isStatusCodeError(error) && error.statusCode != 401 && error.body?.error?.message) {
+  if (sdk.StatusCodeError.isStatusCodeError(error) && error.statusCode != 401 && error.body?.error?.message) {
     let message = error.body.error.message;
     if (message.includes("CloudRegion")) {
       console.log("match");
       message = "Invalid project ID, or access hasn't been granted.";
     }
-    throw new coda.UserVisibleError(message);
+    throw new sdk.UserVisibleError(message);
   }
   throw error;
 }

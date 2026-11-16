@@ -1,7 +1,7 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import tokenizeWords from "tokenize-words";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const CodeWords = [
   "Alfa",
@@ -41,14 +41,14 @@ pack.addFormula({
   name: "TranslateWord",
   description: "Translates a word into a series of codewords, as a list.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "word",
       description: "The word to translate.",
     }),
   ],
-  resultType: coda.ValueType.Array,
-  items: { type: coda.ValueType.String },
+  resultType: sdk.ValueType.Array,
+  items: { type: sdk.ValueType.String },
   execute: async function (args, context) {
     let [word] = args;
     if (!word) {
@@ -56,7 +56,7 @@ pack.addFormula({
     }
     let words = tokenizeWords(word);
     if (words.length > 1) {
-      throw new coda.UserVisibleError("The input must be a single word.")
+      throw new sdk.UserVisibleError("The input must be a single word.")
     }
     return words[0].split("")
       .map(letter => CodeWordMap[letter.toUpperCase()])
@@ -68,16 +68,16 @@ pack.addFormula({
   name: "TranslateText",
   description: "Translates text into codewords, as a list of lists.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to translate.",
     }),
   ],
-  resultType: coda.ValueType.Array,
+  resultType: sdk.ValueType.Array,
   items: { 
-    type: coda.ValueType.Array, 
-    items: { type: coda.ValueType.String },
+    type: sdk.ValueType.Array, 
+    items: { type: sdk.ValueType.String },
   },
   execute: async function (args, context) {
     let [text] = args;
@@ -93,10 +93,10 @@ pack.addFormula({
   },
 });
 
-const CodeWordSchema = coda.makeObjectSchema({
+const CodeWordSchema = sdk.makeObjectSchema({
   properties: {
-    letter: { type: coda.ValueType.String },
-    codeWord: { type: coda.ValueType.String },
+    letter: { type: sdk.ValueType.String },
+    codeWord: { type: sdk.ValueType.String },
   },
   displayProperty: "codeWord",
   idProperty: "letter",

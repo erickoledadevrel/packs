@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { getAccount, getAccounts, getAccountId, getCurrentMember, getMembers, getSolutions, getTable, getTables, fetch, getMembersTable, getRecords } from "./api";
 import { getConverter } from "./convert";
 import type * as ct from "./types/coda";
@@ -6,7 +6,7 @@ import type * as sst from "./types/smartsuite";
 import { getBaseRowSchema, MemberSchema } from "./schemas";
 import { ConversionSettings } from "./types";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 export const PageSize = 100;
 const IdParameterRegex = /^.*\((.+?)\)$/;
@@ -14,13 +14,13 @@ const IdParameterRegex = /^.*\((.+?)\)$/;
 pack.addNetworkDomain("smartsuite.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.CustomHeaderToken,
+  type: sdk.AuthenticationType.CustomHeaderToken,
   headerName: "Authorization",
   tokenPrefix: "Token",
   instructionsUrl: "https://help.smartsuite.com/en/articles/4855681-generating-an-api-key",
   postSetup: [
     {
-      type: coda.PostSetupType.SetEndpoint,
+      type: sdk.PostSetupType.SetEndpoint,
       name: "SelectAccount",
       description: "Select a workspace.",
       getOptions: async function (context) {
@@ -71,7 +71,7 @@ pack.addDynamicSyncTable({
   },
   searchDynamicUrls: async function (context, search) {
     let tables = await getTables(context);
-    return coda.autocompleteSearchObjects(search, tables, "name", "id");
+    return sdk.autocompleteSearchObjects(search, tables, "name", "id");
   },
   getName: async function (context) {
     let tableId = context.sync.dynamicUrl;
@@ -121,8 +121,8 @@ pack.addDynamicSyncTable({
     description: "Syncs the data.",
     parameters: [
       // TODO: Filtering
-      coda.makeParameter({
-        type: coda.ParameterType.StringArray,
+      sdk.makeParameter({
+        type: sdk.ParameterType.StringArray,
         name: "filters",
         description: "The filters to apply. Create filters using the Filter formula.",
         optional: true,
@@ -238,8 +238,8 @@ pack.addFormula({
   name: "Filter",
   description: "Make a filter value to pass into the filter parameter of the Table table.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "table",
       description: "The table being filtered.",
       autocomplete: async function (context, search) {
@@ -250,11 +250,11 @@ pack.addFormula({
             value: `${table.name} (${table.id})`,
           };
         });
-        return coda.autocompleteSearchObjects(search, options, "display", "value");
+        return sdk.autocompleteSearchObjects(search, options, "display", "value");
       }
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "field",
       description: "The field to filter on.",
       autocomplete: async function (context, search, args) {
@@ -270,21 +270,21 @@ pack.addFormula({
             value: `${column.label} (${column.slug})`,
           };
         });
-        return coda.autocompleteSearchObjects(search, options, "display", "value");
+        return sdk.autocompleteSearchObjects(search, options, "display", "value");
       }
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "comparison",
       description: "The comparison operator to use.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "value",
       description: "The comparison value. For operators that don't require a comparison value pass an empty string.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   execute: async function (args, context) {
     let [_tableValue, fieldValue, comparison, value] = args;
     let fieldId = parseIdParameter(fieldValue);
@@ -320,7 +320,7 @@ async function formatRowForApi(settings: ConversionSettings, row: ct.Row): Promi
   return result;
 }
 
-async function getSettings(context: coda.ExecutionContext): Promise<ConversionSettings> {
+async function getSettings(context: sdk.ExecutionContext): Promise<ConversionSettings> {
   let tableId = context.sync.dynamicUrl;
   let [table, membersTable] = await Promise.all([
     getTable(context, tableId),

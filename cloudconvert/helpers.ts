@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { error } from "console";
 
 export const DetectFormat = "*detect*";
@@ -21,7 +21,7 @@ export const PageFormatOptions = [
   },
 ];
 
-export async function getFormatCodes(context: coda.ExecutionContext, usage: string, otherFormat?: string): Promise<string[]> {
+export async function getFormatCodes(context: sdk.ExecutionContext, usage: string, otherFormat?: string): Promise<string[]> {
   let formats = await getFormats(context);
   if (otherFormat && otherFormat != DetectFormat) {
     formats = formats.filter(format => usage == "input" ?
@@ -37,7 +37,7 @@ export async function getFormatCodes(context: coda.ExecutionContext, usage: stri
   return result;
 }
 
-async function getFormats(context: coda.ExecutionContext) {
+async function getFormats(context: sdk.ExecutionContext) {
   let url = "https://api.cloudconvert.com/v2/convert/formats";
   let response = await context.fetcher.fetch({
     method: "GET",
@@ -47,8 +47,8 @@ async function getFormats(context: coda.ExecutionContext) {
   return response.body.data;
 }
 
-export async function getFormatOptions(context: coda.ExecutionContext, from: string, to: string): Promise<any[]> {
-  let url = coda.withQueryParams("https://api.cloudconvert.com/v2/convert/formats", {
+export async function getFormatOptions(context: sdk.ExecutionContext, from: string, to: string): Promise<any[]> {
+  let url = sdk.withQueryParams("https://api.cloudconvert.com/v2/convert/formats", {
     "filter[input_format]": from,
     "filter[output_format]": to,
     include: "options",
@@ -82,10 +82,10 @@ function onlyUnique(value, index, array) {
 }
 
 export function onError(error) {
-  if (coda.StatusCodeError.isStatusCodeError(error) && error.statusCode != 401) {
+  if (sdk.StatusCodeError.isStatusCodeError(error) && error.statusCode != 401) {
     let message = error.body.message;
     if (message) {
-      throw new coda.UserVisibleError(message);
+      throw new sdk.UserVisibleError(message);
     }
   }
   throw error;
@@ -105,7 +105,7 @@ export function parseOptions(options: string[]) {
   return result;
 }
 
-export async function doExport(context: coda.ExecutionContext, importTask: any, fromFormat: string, toFormat: string, filename: string, options: string[]) {
+export async function doExport(context: sdk.ExecutionContext, importTask: any, fromFormat: string, toFormat: string, filename: string, options: string[]) {
   let conversion: Record<string, any> = {
     operation: "convert",
     input: "import",
@@ -144,10 +144,10 @@ function parseJob(job: any): string {
     let tasks = job.tasks.sort((a, b) => TaskOrder.indexOf(a.name) - TaskOrder.indexOf(b.name));
     for (let task of tasks) {
       if (task.status == "error") {
-        throw new coda.UserVisibleError(task.message);
+        throw new sdk.UserVisibleError(task.message);
       }
     }
-    throw new coda.UserVisibleError("The conversion failed for an unknown reason.");
+    throw new sdk.UserVisibleError("The conversion failed for an unknown reason.");
   }
   let exportTask = job.tasks.find(job => job.name == "export");
   return exportTask.result.files[0].url;

@@ -1,16 +1,16 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { PrintJobStatusSchema, PrinterSchema, WebhookPrintJobSchema } from "./schemas";
 import { getPrinters, print, getAllPrinterProperties, getSupportedFileFormats, OneDaySecs } from "./helpers";
 import { PrinterParameter, OrientationParameter, CopiesParameter, ColorParameter, PaperSizeParameter, PaperWidthParameter, PaperLengthParameter, ResolutionParameter, DuplexParameter } from "./parameters";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.OAuth2,
+  type: sdk.AuthenticationType.OAuth2,
   authorizationUrl: "https://account.ezeep.com/oauth/authorize",
   tokenUrl: "https://account.ezeep.com/oauth/access_token/",
   scopes: ["printing", "reporting"],
-  credentialsLocation: coda.TokenExchangeCredentialsLocation.AuthorizationHeader,
+  credentialsLocation: sdk.TokenExchangeCredentialsLocation.AuthorizationHeader,
   getConnectionName: async function (context) {
     let response = await context.fetcher.fetch({
       method: "GET",
@@ -35,8 +35,8 @@ pack.addFormula({
   description: "Prints a file using a connected printer.",
   parameters: [
     PrinterParameter,
-    coda.makeParameter({
-      type: coda.ParameterType.File,
+    sdk.makeParameter({
+      type: sdk.ParameterType.File,
       name: "file",
       description: "The file to print.",
     }),
@@ -49,7 +49,7 @@ pack.addFormula({
     PaperLengthParameter,
     ResolutionParameter,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   execute: async function (args, context) {
     let [printerId, fileUrl, orientation, copies, color, duplex, paperSize, paperWidth, paperLength, resolution] = args;
@@ -64,13 +64,13 @@ pack.addFormula({
   description: "TODO",
   parameters: [
     PrinterParameter,
-    coda.makeParameter({
-      type: coda.ParameterType.Html,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Html,
       name: "page",
       description: "The page or text content to print.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   isExperimental: true,
   execute: async function (args, context) {
@@ -115,9 +115,9 @@ pack.addFormula({
   name: "SupportedFileFormats",
   description: "Lists the file formats (file extensions) that can be printed.",
   parameters: [],
-  resultType: coda.ValueType.Array,
-  items: coda.makeSchema({
-    type: coda.ValueType.String,
+  resultType: sdk.ValueType.Array,
+  items: sdk.makeSchema({
+    type: sdk.ValueType.String,
   }),
   cacheTtlSecs: OneDaySecs,
   execute: async function (args, context) {
@@ -129,13 +129,13 @@ pack.addFormula({
   name: "PrintJobStatus",
   description: "Gets the status of a print job.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "jobId",
       description: "The ID of the print job, as returned by the PrintFile action.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: PrintJobStatusSchema,
   cacheTtlSecs: 0,
   execute: async function (args, context) {
@@ -145,7 +145,7 @@ pack.addFormula({
     }
     let response = await context.fetcher.fetch({
       method: "GET",
-      url: coda.withQueryParams("https://printapi.ezeep.com/sfapi/Status/", {
+      url: sdk.withQueryParams("https://printapi.ezeep.com/sfapi/Status/", {
         id: jobId,
       }),
       cacheTtlSecs: 0,
@@ -171,13 +171,13 @@ pack.addFormula({
   name: "CompletedPrintJob",
   description: "Extracts information about the completed print job from the webhook body.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "json",
       description: "The JSON payload sent by the print job wehbook.",
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: WebhookPrintJobSchema,
   cacheTtlSecs: OneDaySecs,
   execute: async function (args, context) {

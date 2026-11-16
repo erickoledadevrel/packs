@@ -1,10 +1,10 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 const urlParse = require('url-parse');
 const cheerio = require('cheerio');
 // https://github.com/BetaHuhn/metadata-scraper/blob/master/src/rules.ts
 const scraperRules = require("metadata-scraper/lib/rules");
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const OneHourSecs = 1 * 60 * 60;
 const RedirectBaseUrl = "https://redirect.erickoleda.com";
@@ -22,95 +22,95 @@ const InvalidCanonicalUrl = [
   "https://www.youtube.com/undefined",
 ];
 
-const MetadataSchema = coda.makeObjectSchema({
+const MetadataSchema = sdk.makeObjectSchema({
   properties: {
     label: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Html,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Html,
       description: "The label to show for the web page. Default to the title.",
     },
     title: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Html,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Html,
       description: "The title of the web page.",
     },
     description: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Html,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Html,
       description: "The description of the web page.",
     },
     language: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The language code for language of the content of the web page.",
     },
     type: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The Open Graph type of the content of the web page. See https://ogp.me.",
     },
     url: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Url,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Url,
       description: "The canonical URL of the web page.",
     },
     provider: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The organization providing the web page.",
     },
     keywords: {
-      type: coda.ValueType.Array,
+      type: sdk.ValueType.Array,
       items: {
-        type: coda.ValueType.String,
+        type: sdk.ValueType.String,
       },
       description: "The keywords associated with the web page.",
     },
     author: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The author of the web page.",
     },
     published: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.DateTime,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.DateTime,
       description: "The date and time the web page was published.",
     },
     modified: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.DateTime,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.DateTime,
       description: "The date and time the web page was last modified.",
     },
     copyright: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The copyright information for the web page.",
     },
     email: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The email address associated with the web page.",
     },
     twitter: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The Twitter handle associated with the web page.",
     },
     facebook: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The Facebook page associated with the web page.",
     },
     image: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.ImageReference,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.ImageReference,
       description: "The primary image of the web page.",
     },
     icon: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.ImageReference,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.ImageReference,
       description: "The icon of the web page.",
     },
     video: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Embed,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Embed,
       description: "The primary video of the web page.",
     },
     audio: {
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Embed,
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Embed,
       description: "The primary audio of the web page.",
     },
   },
@@ -120,20 +120,20 @@ const MetadataSchema = coda.makeObjectSchema({
 pack.addNetworkDomain("erickoleda.com");
 
 pack.setSystemAuthentication({
-  type: coda.AuthenticationType.HeaderBearerToken,
+  type: sdk.AuthenticationType.HeaderBearerToken,
 });
 
 pack.addFormula({
   name: "WebPageMetadata",
   description: "Gets metdata (title, icon, etc.) about a specific web page.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "url",
       description: "The URL of the web page to inspect. It must be a public URL that doesn't require the user to sign in."
     }),
   ],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: MetadataSchema,
   cacheTtlSecs: OneHourSecs,
   execute: async function (args, context) {
@@ -144,7 +144,7 @@ pack.addFormula({
       };
     }
     if (!url.toLocaleLowerCase().startsWith("https://")) {
-      throw new coda.UserVisibleError("The URL must start with 'https://'.");
+      throw new sdk.UserVisibleError("The URL must start with 'https://'.");
     }
     let result: Record<string, any> = {};
     let oembedUrl;
@@ -179,8 +179,8 @@ pack.addColumnFormat({
   instructions: "Paste a URL of a web page to get its metadata (title, icon, etc).",
 });
 
-async function fetchPage(context: coda.ExecutionContext, url: string): Promise<string> {
-  let redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
+async function fetchPage(context: sdk.ExecutionContext, url: string): Promise<string> {
+  let redirectUrl = sdk.withQueryParams(RedirectBaseUrl, {
     url: url,
   });
   let response;
@@ -192,18 +192,18 @@ async function fetchPage(context: coda.ExecutionContext, url: string): Promise<s
     });
     return response.body;
   } catch (e) {
-    if (coda.StatusCodeError.isStatusCodeError(e)) {
+    if (sdk.StatusCodeError.isStatusCodeError(e)) {
       // Blocked by Data Dome.
       if (e.statusCode == 403 && e.response.headers["x-datadome"]) {
-        throw new coda.UserVisibleError(`Access blocked by website.`);
+        throw new sdk.UserVisibleError(`Access blocked by website.`);
       }
     }
   }
-  throw new coda.UserVisibleError(`Error accessing URL: ${url}`);
+  throw new sdk.UserVisibleError(`Error accessing URL: ${url}`);
 }
 
-async function fetchOEmbed(context: coda.ExecutionContext, oembedUrl: string): Promise<Record<any, any>> {
-  let redirectUrl = coda.withQueryParams(RedirectBaseUrl, {
+async function fetchOEmbed(context: sdk.ExecutionContext, oembedUrl: string): Promise<Record<any, any>> {
+  let redirectUrl = sdk.withQueryParams(RedirectBaseUrl, {
     url: oembedUrl,
   });
   let response;

@@ -1,7 +1,7 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as phones from "awesome-phonenumber";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const Formats = [
   "international",
@@ -25,35 +25,35 @@ const Types = [
   "unknown",
 ];
 
-const InputParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const InputParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "input",
   description: "The input to check.",
 });
 
-const RegionParameter = coda.makeParameter({
-  type: coda.ParameterType.String,
+const RegionParameter = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "region",
   description: "The region of the phone number, if provided in a local format.",
   optional: true,
   autocomplete: phones.getSupportedRegionCodes(),
 });
 
-const PhoneFormatsSchema = coda.makeObjectSchema({
+const PhoneFormatsSchema = sdk.makeObjectSchema({
   properties: {
-    international: { type: coda.ValueType.String },
-    national: { type: coda.ValueType.String },
-    e164: { type: coda.ValueType.String },
-    rfc3966: { type: coda.ValueType.String },
-    significant: { type: coda.ValueType.String },
+    international: { type: sdk.ValueType.String },
+    national: { type: sdk.ValueType.String },
+    e164: { type: sdk.ValueType.String },
+    rfc3966: { type: sdk.ValueType.String },
+    significant: { type: sdk.ValueType.String },
   },
   displayProperty: "e164",
 });
 
-const PhoneSchema = coda.makeObjectSchema({
+const PhoneSchema = sdk.makeObjectSchema({
   properties: {
     input: { 
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The original phone number."
     },
     formats: {
@@ -61,19 +61,19 @@ const PhoneSchema = coda.makeObjectSchema({
       description: "The phone number rewritten in various formats.",
     },
     type: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: `The type of the phone number. One of: ${Types.join(", ")}`,
     },
     regionCode: {
-      type: coda.ValueType.String,
+      type: sdk.ValueType.String,
       description: "The two-digit region code the phone number belongs to. For example, \"US\" or \"CA\".",
     },
     countryCode: {
-      type: coda.ValueType.Number,
+      type: sdk.ValueType.Number,
       description: "The numerical country code of the phone number.",
     },
     canBeInternationallyDialled: {
-      type: coda.ValueType.Boolean,
+      type: sdk.ValueType.Boolean,
       description: "If the phone number can be dialed internationally.",
     },
   },
@@ -84,7 +84,7 @@ pack.addFormula({
   name: "IsPhoneNumber",
   description: "Determine if the input is a valid phone number.",
   parameters: [InputParameter, RegionParameter],
-  resultType: coda.ValueType.Boolean,
+  resultType: sdk.ValueType.Boolean,
   examples: [
     { params: ["+19164451254"], result: true },
     { params: ["+1 (916) 445-1254"], result: true },
@@ -104,8 +104,8 @@ pack.addFormula({
   parameters: [
     InputParameter,
     RegionParameter,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "format",
       description: "The format to return the phone number in. Default value: e164",
       optional: true,
@@ -117,7 +117,7 @@ pack.addFormula({
       },
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["+19164451254"], result: "+19164451254" },
     { params: ["(916) 445-1254", "US"], result: "+19164451254" },
@@ -136,7 +136,7 @@ pack.addFormula({
   name: "PhoneNumberInfo",
   description: "Returns various information about the phone number, including the type, country code, region code, etc. Returns an error if the input is not a valid phone number.",
   parameters: [InputParameter, RegionParameter],
-  resultType: coda.ValueType.Object,
+  resultType: sdk.ValueType.Object,
   schema: PhoneSchema,
   examples: [
     {
@@ -160,9 +160,9 @@ pack.addFormula({
   execute: async function ([input, region], context) {
     let parsed = phones.parsePhoneNumber(input, {regionCode: region});
     if (!parsed.valid) {
-      throw new coda.UserVisibleError(`Invalid phone number: ${input}`);
+      throw new sdk.UserVisibleError(`Invalid phone number: ${input}`);
     }
-    let result: coda.SchemaType<typeof PhoneSchema> = {...parsed};
+    let result: sdk.SchemaType<typeof PhoneSchema> = {...parsed};
     result.formats = parsed.number;
     result.input = parsed.number.input;
     return result;
@@ -175,7 +175,7 @@ pack.addFormula({
   parameters: [
     InputParameter,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["(916) 445-1254"], result: "(916) 445-1254" },
     { params: ["9164451254"], result: "(916) 445-1254" },
@@ -192,7 +192,7 @@ pack.addFormula({
   parameters: [
     InputParameter,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["(613) 941-6900"], result: "(613) 941-6900" },
     { params: ["6139416900"], result: "(613) 941-6900" },
@@ -209,7 +209,7 @@ pack.addFormula({
   parameters: [
     InputParameter,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["+1 916-445-1254"], result: "+1 916-445-1254" },
     { params: ["+1 9164451254"], result: "+1 916-445-1254" },
@@ -226,7 +226,7 @@ pack.addFormula({
   parameters: [
     InputParameter,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     { params: ["+1 916-445-1254"], result: "(916) 445-1254" },
     { params: ["+48 225-239-000"], result: "22 523 90 00" },
@@ -263,10 +263,10 @@ pack.addColumnFormat({
 function formatNumber(input: string, region: string, format: string) {
   let parsed = phones.parsePhoneNumber(input, {regionCode: region});
   if (!parsed.valid) {
-    throw new coda.UserVisibleError("Invalid phone number");
+    throw new sdk.UserVisibleError("Invalid phone number");
   }
   if (format && !Formats.includes(format)) {
-    throw new coda.UserVisibleError("Invalid format");
+    throw new sdk.UserVisibleError("Invalid format");
   }
   return parsed.number[format];
 }

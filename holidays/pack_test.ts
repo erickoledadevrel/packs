@@ -1,4 +1,4 @@
-import {executeFormulaFromPackDef} from "@codahq/packs-sdk/dist/development";
+import {executeFormulaFromPackDef} from "@superhuman/plugins-sdk/dist/development";
 import {pack} from "./pack";
 import * as chai from "chai";
 import {assert} from "chai";

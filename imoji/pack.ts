@@ -1,7 +1,7 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import * as emojidict from "emoji-dictionary";
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const DefaultImageSize = 200;
 
@@ -9,8 +9,8 @@ pack.addFormula({
   name: "Imoji",
   description: "Create an image from an emoji.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "emoji",
       description: "The emoji to convert into an image. It can be the actual emoji characters, or the name of the emoji.",
       suggestedValue: "😃",
@@ -22,18 +22,18 @@ pack.addFormula({
             value: name,
           };
         });
-        return coda.autocompleteSearchObjects(search, options, "display", "value");
+        return sdk.autocompleteSearchObjects(search, options, "display", "value");
       },
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "size",
       description: `The desired size of the resulting image, in pixels. Defaults to ${DefaultImageSize}.`,
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  codaType: coda.ValueHintType.ImageReference,
+  resultType: sdk.ValueType.String,
+  codaType: sdk.ValueHintType.ImageReference,
   examples: [
     {params: ["😃"], result: ""},
     {params: ["smiley"], result: ""},
@@ -58,7 +58,7 @@ pack.addFormula({
       </svg>
     `.trim();
     let encoded = Buffer.from(svg).toString("base64");
-    //return coda.SvgConstants.DataUrlPrefix + encoded;
+    //return sdk.SvgConstants.DataUrlPrefix + encoded;
     return "data:image/svg+xml;base64," + encoded;
   },
 });

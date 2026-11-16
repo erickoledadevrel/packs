@@ -1,10 +1,10 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import FormData from 'form-data';
 import * as mime from "mime-types";
 const cheerio = require('cheerio');
 const sanitize = require("sanitize-filename");
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const DocUrlRegex = new RegExp("^https://docs.google.com/document/d/([^/]+)/");
 const UrlRegex = new RegExp("^https?://");
@@ -15,40 +15,40 @@ const OneDaySecs = 24 * 60 * 60;
 const DocsMimeType = "application/vnd.google-apps.document";
 const AutoNamePlaceholder = "[auto]";
 
-const NameParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const NameParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "name",
   description: `The name of the resulting Google Doc file. Use the special value "${AutoNamePlaceholder}" generate the name automatically from the page title or first heading.`,
 });
 
-const ContentParam = coda.makeParameter({
-  type: coda.ParameterType.Html,
+const ContentParam = sdk.makeParameter({
+  type: sdk.ParameterType.Html,
   name: "content",
   description: "The page or canvas content to export. Open the formula editor with the equals key to select the page or canvas.",
 });
 
-const DocParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const DocParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "doc",
   description: "The URL or ID of a Google Doc created by this Pack.",
 });
 
-const PermissionsParam = coda.makeParameter({
-  type: coda.ParameterType.StringArray,
+const PermissionsParam = sdk.makeParameter({
+  type: sdk.ParameterType.StringArray,
   name: "permissions",
   description: "Who should the exported doc be shared with. Pass in a List() of permissions, each created with the CreatePermission() formula.",
   optional: true,
 });
 
-const FolderParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const FolderParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "folder",
   description: "The ID of the folder where the exported doc should be created. It must first be selected at https://packs.erickoleda.com/export.",
   optional: true,
 });
 
-const PageSizeParam = coda.makeParameter({
-  type: coda.ParameterType.NumberArray,
+const PageSizeParam = sdk.makeParameter({
+  type: sdk.ParameterType.NumberArray,
   name: "pageSize",
   description: "The width and height of the pages in the doc, comma-separated, in points (1/72 of an inch). For example, 11 x 8.5 inches is be '792, 612'.",
   optional: true,
@@ -57,7 +57,7 @@ const PageSizeParam = coda.makeParameter({
 pack.addNetworkDomain("googleapis.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.OAuth2,
+  type: sdk.AuthenticationType.OAuth2,
   authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth",
   tokenUrl: "https://oauth2.googleapis.com/token",
   scopes: [
@@ -88,22 +88,22 @@ pack.addFormula({
     FolderParam,
     PageSizeParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   onError: onError,
   execute: async function (args, context) {
     let [name, content, permissions = [], folderId, pageSize] = args;
     if (!name) {
-      throw new coda.UserVisibleError("The name cannot be empty.");
+      throw new sdk.UserVisibleError("The name cannot be empty.");
     }
     if (pageSize && pageSize.length != 2) {
-      throw new coda.UserVisibleError("Page size must include both a width and height.");
+      throw new sdk.UserVisibleError("Page size must include both a width and height.");
     }
     let {title, html} = processHtml(content);
     if (name == AutoNamePlaceholder) {
       console.log(title);
       if (!title) {
-        throw new coda.UserVisibleError("The name could not be determined automatically.");
+        throw new sdk.UserVisibleError("The name could not be determined automatically.");
       }
       name = title;
     }
@@ -125,7 +125,7 @@ pack.addFormula({
     DocParam,
     ContentParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   onError: onError,
   execute: async function (args, context) {
@@ -142,13 +142,13 @@ pack.addFormula({
   description: "Appends plain text to a Google Doc that was previously created by this Pack.",
   parameters: [
     DocParam,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "text",
       description: "The text to append. Only plain text is supported, any styling will be lost.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   onError: onError,
   execute: async function (args, context) {
@@ -195,25 +195,25 @@ pack.addFormula({
   description: "Appends an image to a Google Doc that was previously created by this Pack.",
   parameters: [
     DocParam,
-    coda.makeParameter({
-      type: coda.ParameterType.Image,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Image,
       name: "image",
       description: "The URL of the image. It must be publicly accessible.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "width",
       description: "The max width of the inserted image, in points (1/72 of an inch).",
       optional: true,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "height",
       description: "The max height of the inserted image, in points (1/72 of an inch).",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   onError: onError,
   execute: async function (args, context) {
@@ -255,8 +255,8 @@ pack.addFormula({
   description: "Converts a file (PDF, Word Doc, image, etc) to a Google Doc.",
   parameters: [
     NameParam,
-    coda.makeParameter({
-      type: coda.ParameterType.File,
+    sdk.makeParameter({
+      type: sdk.ParameterType.File,
       name: "file",
       description: "The file to convert.",
     }),
@@ -264,13 +264,13 @@ pack.addFormula({
     FolderParam,
     PageSizeParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   isAction: true,
   onError: onError,
   execute: async function (args, context) {
     let [name, fileUrl, permissions = [], folderId, pageSize] = args;
     if (pageSize && pageSize.length != 2) {
-      throw new coda.UserVisibleError("Page size must include both a width and height.");
+      throw new sdk.UserVisibleError("Page size must include both a width and height.");
     }
     let response = await context.fetcher.fetch({
       method: "GET",
@@ -282,9 +282,9 @@ pack.addFormula({
     let mimeType = response.headers['content-type'] as string | undefined;
     let supportedMimeTypes = await getSupportedImportFormats(context);
     if (!mimeType) {
-      throw new coda.UserVisibleError("Can't determine the file type of the source file.");
+      throw new sdk.UserVisibleError("Can't determine the file type of the source file.");
     } else if (!supportedMimeTypes.includes(mimeType)) {
-      throw new coda.UserVisibleError(`Unsupported file type: ${mimeType}`);
+      throw new sdk.UserVisibleError(`Unsupported file type: ${mimeType}`);
     }
     let file = await exportToDoc(context, buffer, response.headers['content-type'] as string, {name, folderId});
     let jobs = [];
@@ -301,32 +301,32 @@ pack.addFormula({
   name: "CreatePermission",
   description: "Creates a permission value to be used with the permissions parameter of the ExportDoc() formula.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "type",
       description: "The type of entity to share with. One of: " + ShareTypes.join(", "),
       autocomplete: ShareTypes,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "who",
       description: "Who to share with. For users and groups this should be their email address, for domains it should be the domain name, and for anyone leave it blank.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "role",
       description: "What role they should have in the document. One of: " + ShareRoles.join(", "),
       autocomplete: ShareRoles,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "sendNotificationEmail",
       description: "Whether or not Google Drive should send a notification email about the shared doc. Default: false",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
-  connectionRequirement: coda.ConnectionRequirement.None,
+  resultType: sdk.ValueType.String,
+  connectionRequirement: sdk.ConnectionRequirement.None,
   cacheTtlSecs: OneDaySecs,
   execute: async function (args, context) {
     let [type, who, role, sendNotificationEmail = false] = args;
@@ -345,8 +345,8 @@ pack.addFormula({
   description: `Gets a temporary download URL for a Google Doc created using this Pack. Use with the "Open hyperlink" action to download immediately, or the "Modify rows" action to save it to a File column.`,
   parameters: [
     DocParam,
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "format",
       description: "Which file format the Google Doc should be converted to.",
       autocomplete: async function (context) {
@@ -354,14 +354,14 @@ pack.addFormula({
         return mimeTypes.map(mimeType => mime.extension(mimeType));
       }
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "filename",
       description: "The name of the resulting file. If not specified, the name of the Google Doc will be used.",
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: 0,
   onError: onError,
   execute: async function (args, context) {
@@ -377,7 +377,7 @@ pack.addFormula({
       let extension = mime.extension(mimeType);
       filename = sanitize(`${name}.${extension}`);
     }
-    let url = coda.withQueryParams(`https://www.googleapis.com/drive/v3/files/${docId}/export`, {
+    let url = sdk.withQueryParams(`https://www.googleapis.com/drive/v3/files/${docId}/export`, {
       mimeType: mimeType,
     });
     return context.temporaryBlobStorage.storeUrl(url, {
@@ -394,14 +394,14 @@ interface ExportOptions {
   folderId?: string;
 }
 
-async function exportToDoc(context: coda.ExecutionContext, content: Buffer, mimeType: string, options?: ExportOptions): Promise<DriveFile> {
+async function exportToDoc(context: sdk.ExecutionContext, content: Buffer, mimeType: string, options?: ExportOptions): Promise<DriveFile> {
   let url = "https://www.googleapis.com/upload/drive/v3/files";
-  let method: coda.FetchMethodType = "POST";
+  let method: sdk.FetchMethodType = "POST";
   if (options?.docId) {
-    url = coda.joinUrl(url, options.docId);
+    url = sdk.joinUrl(url, options.docId);
     method = "PATCH";
   }
-  url = coda.withQueryParams(url, {
+  url = sdk.withQueryParams(url, {
     uploadType: "multipart",
     fields: "id,webViewLink",
     supportsAllDrives: true,
@@ -432,11 +432,11 @@ async function exportToDoc(context: coda.ExecutionContext, content: Buffer, mime
   return file;
 }
 
-async function addPermission(context: coda.ExecutionContext, fileId: string, permissionJson: string) {
+async function addPermission(context: sdk.ExecutionContext, fileId: string, permissionJson: string) {
   let permission = JSON.parse(permissionJson);
   let {sendNotificationEmail, ...rest} = permission;
   permission = rest;
-  let url = coda.withQueryParams(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
+  let url = sdk.withQueryParams(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
     sendNotificationEmail,
     supportsAllDrives: true,
   });
@@ -451,7 +451,7 @@ async function addPermission(context: coda.ExecutionContext, fileId: string, per
   return response.body;
 }
 
-async function adjustDoc(context: coda.ExecutionContext, fileId: string, pageSize: number[] | undefined) {
+async function adjustDoc(context: sdk.ExecutionContext, fileId: string, pageSize: number[] | undefined) {
   if (!pageSize) {
     return;
   }
@@ -482,12 +482,12 @@ function parseDocUrl(idOrUrl: string) {
   let match = idOrUrl.match(DocUrlRegex);
   if (match) return match[1];
   if (idOrUrl.match(UrlRegex)) {
-    throw new coda.UserVisibleError("Invalid doc URL: " + idOrUrl);
+    throw new sdk.UserVisibleError("Invalid doc URL: " + idOrUrl);
   }
   return idOrUrl;
 }
 
-async function modifyDoc(context: coda.ExecutionContext, docId: string, requests: any[]) {
+async function modifyDoc(context: sdk.ExecutionContext, docId: string, requests: any[]) {
   let payload = {
     requests: requests,
   };
@@ -502,8 +502,8 @@ async function modifyDoc(context: coda.ExecutionContext, docId: string, requests
   return response.body.replies;
 }
 
-async function getEndIndex(context: coda.ExecutionContext, docId: string) {
-  let url = coda.withQueryParams(`https://docs.googleapis.com/v1/documents/${docId}`, {
+async function getEndIndex(context: sdk.ExecutionContext, docId: string) {
+  let url = sdk.withQueryParams(`https://docs.googleapis.com/v1/documents/${docId}`, {
     fields: "body/content/endIndex",
   });
   let response = await context.fetcher.fetch({
@@ -516,7 +516,7 @@ async function getEndIndex(context: coda.ExecutionContext, docId: string) {
   return doc?.body?.content?.at(-1)?.endIndex;
 }
 
-async function getSupportedImportFormats(context: coda.ExecutionContext): Promise<string[]> {
+async function getSupportedImportFormats(context: sdk.ExecutionContext): Promise<string[]> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: "https://www.googleapis.com/drive/v3/about?fields=importFormats",
@@ -526,7 +526,7 @@ async function getSupportedImportFormats(context: coda.ExecutionContext): Promis
   return Object.keys(formats).filter(mimeType => formats[mimeType].includes(DocsMimeType));
 }
 
-async function getSupportedExportFormats(context: coda.ExecutionContext): Promise<string[]> {
+async function getSupportedExportFormats(context: sdk.ExecutionContext): Promise<string[]> {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: "https://www.googleapis.com/drive/v3/about?fields=exportFormats",
@@ -535,7 +535,7 @@ async function getSupportedExportFormats(context: coda.ExecutionContext): Promis
   return response.body.exportFormats[DocsMimeType];
 }
 
-async function getDocInfo(context: coda.ExecutionContext, docId: string) {
+async function getDocInfo(context: sdk.ExecutionContext, docId: string) {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: `https://www.googleapis.com/drive/v3/files/${docId}?fields=name&supportsAllDrives=true`,
@@ -563,11 +563,11 @@ function processHtml(html:string): {title: string, html: string} {
 }
 
 function onError(error: Error) {
-  if (coda.StatusCodeError.isStatusCodeError(error) && error.body.error.message && error.statusCode != 401) {
+  if (sdk.StatusCodeError.isStatusCodeError(error) && error.body.error.message && error.statusCode != 401) {
     if (error.statusCode == 403 && error.body?.error?.errors?.[0]?.reason == "insufficientPermissions") {
-      throw new coda.MissingScopesError("You must check the box next to each permission.");
+      throw new sdk.MissingScopesError("You must check the box next to each permission.");
     }
-    throw new coda.UserVisibleError("Error from Google Docs: " + error.body.error.message);
+    throw new sdk.UserVisibleError("Error from Google Docs: " + error.body.error.message);
   }
   throw error;
 }

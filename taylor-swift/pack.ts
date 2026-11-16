@@ -1,40 +1,40 @@
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("taylor-swift-api.sarbo.workers.dev");
 
 const PageSize = 20;
 const OneDaySecs = 24 * 60 * 60;
 
-const AlbumSchema = coda.makeObjectSchema({
+const AlbumSchema = sdk.makeObjectSchema({
   properties: {
-    title: { type: coda.ValueType.String, required: true },
-    album_id: { type: coda.ValueType.Number, required: true },
-    release_date: { type: coda.ValueType.String, codaType: coda.ValueHintType.Date },
+    title: { type: sdk.ValueType.String, required: true },
+    album_id: { type: sdk.ValueType.Number, required: true },
+    release_date: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Date },
   },
   displayProperty: "title",
   idProperty: "album_id",
   featuredProperties: ["release_date", "songs"],
 });
 
-const AlbumnReferenceSchema = coda.makeReferenceSchemaFromObjectSchema(AlbumSchema, "Album");
+const AlbumnReferenceSchema = sdk.makeReferenceSchemaFromObjectSchema(AlbumSchema, "Album");
 
-const SongSchema = coda.makeObjectSchema({
+const SongSchema = sdk.makeObjectSchema({
   properties: {
-    title: { type: coda.ValueType.String, required: true },
-    song_id: { type: coda.ValueType.Number, required: true },
+    title: { type: sdk.ValueType.String, required: true },
+    song_id: { type: sdk.ValueType.Number, required: true },
     album: AlbumnReferenceSchema,
-    lyrics: { type: coda.ValueType.String },
+    lyrics: { type: sdk.ValueType.String },
   },
   displayProperty: "title",
   idProperty: "song_id",
   featuredProperties: ["album", "lyrics"],
 });
 
-const SongReferenceSchema = coda.makeReferenceSchemaFromObjectSchema(SongSchema, "Song");
+const SongReferenceSchema = sdk.makeReferenceSchemaFromObjectSchema(SongSchema, "Song");
 
-AlbumSchema.properties["songs"] = coda.makeSchema({
-  type: coda.ValueType.Array,
+AlbumSchema.properties["songs"] = sdk.makeSchema({
+  type: sdk.ValueType.Array,
   items: SongReferenceSchema,
 });
 
@@ -111,7 +111,7 @@ pack.addFormula({
   name: "RandomLyrics",
   description: "Gets some lyrics from a randomly selected song.",
   parameters: [],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: 0,
   execute: async function (args, context) {
     let response = await context.fetcher.fetch({
@@ -123,7 +123,7 @@ pack.addFormula({
   },
 });
 
-async function getAlbums(context: coda.ExecutionContext) {
+async function getAlbums(context: sdk.ExecutionContext) {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: "https://taylor-swift-api.sarbo.workers.dev/albums",
@@ -131,7 +131,7 @@ async function getAlbums(context: coda.ExecutionContext) {
   return response.body;
 }
 
-async function getSongs(context: coda.ExecutionContext) {
+async function getSongs(context: sdk.ExecutionContext) {
   let response = await context.fetcher.fetch({
     method: "GET",
     url: "https://taylor-swift-api.sarbo.workers.dev/songs",
@@ -140,10 +140,10 @@ async function getSongs(context: coda.ExecutionContext) {
   return response.body;
 }
 
-async function getLyrics(context: coda.ExecutionContext, song_id: number): Promise<string> {
+async function getLyrics(context: sdk.ExecutionContext, song_id: number): Promise<string> {
   let response = await context.fetcher.fetch({
     method: "GET",
-    url: coda.joinUrl("https://taylor-swift-api.sarbo.workers.dev/lyrics/", String(song_id)),
+    url: sdk.joinUrl("https://taylor-swift-api.sarbo.workers.dev/lyrics/", String(song_id)),
   });
   return response.body.lyrics;
 }

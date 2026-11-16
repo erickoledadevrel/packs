@@ -2,13 +2,13 @@
  * Blocked, as this API currently only works with DwD.
  */
 
-import * as coda from "@codahq/packs-sdk";
-export const pack = coda.newPack();
+import * as sdk from "@superhuman/plugins-sdk";
+export const pack = sdk.newPack();
 
 pack.addNetworkDomain("googleapis.com");
 
 pack.setUserAuthentication({
-  type: coda.AuthenticationType.OAuth2,
+  type: sdk.AuthenticationType.OAuth2,
   authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth",
   tokenUrl: "https://oauth2.googleapis.com/token",
   scopes: [
@@ -29,20 +29,20 @@ pack.setUserAuthentication({
   },
 });
 
-const NoteSchema = coda.makeObjectSchema({
+const NoteSchema = sdk.makeObjectSchema({
   properties: {
-    id: { type: coda.ValueType.String, fromKey: "name" },
-    title: { type: coda.ValueType.String },
-    body: { type: coda.ValueType.String, codaType: coda.ValueHintType.Markdown },
+    id: { type: sdk.ValueType.String, fromKey: "name" },
+    title: { type: sdk.ValueType.String },
+    body: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Markdown },
     images: {
-      type: coda.ValueType.Array,
-      items: { type: coda.ValueType.String, codaType: coda.ValueHintType.Attachment },
+      type: sdk.ValueType.Array,
+      items: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.Attachment },
       fromKey: "attachments",
     },
-    trashed: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime, fromKey: "trashed" },
-    createdAt: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime, fromKey: "createTime" },
-    updatedAt: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime, fromKey: "updateTime" },
-    trashedAt: { type: coda.ValueType.String, codaType: coda.ValueHintType.DateTime, fromKey: "trashTime" },
+    trashed: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime, fromKey: "trashed" },
+    createdAt: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime, fromKey: "createTime" },
+    updatedAt: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime, fromKey: "updateTime" },
+    trashedAt: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.DateTime, fromKey: "trashTime" },
   },
   displayProperty: "title",
   idProperty: "id",
@@ -58,8 +58,8 @@ pack.addSyncTable({
     name: "SyncNotes",
     description: "Syncs the data.",
     parameters: [
-      coda.makeParameter({
-        type: coda.ParameterType.Boolean,
+      sdk.makeParameter({
+        type: sdk.ParameterType.Boolean,
         name: "includeTrashed",
         description: "If true, trashed notes are included.",
       }),
@@ -67,7 +67,7 @@ pack.addSyncTable({
     execute: async function (args, context) {
       let [includeTrashed] = args;
       let pageToken = context.sync.continuation?.pageToken;
-      let url = coda.withQueryParams("https://keep.googleapis.com/v1/notes", {
+      let url = sdk.withQueryParams("https://keep.googleapis.com/v1/notes", {
         pageToken,
       });
       let response = await context.fetcher.fetch({

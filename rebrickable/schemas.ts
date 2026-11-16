@@ -1,12 +1,12 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
-export const ThemeSchema = coda.makeObjectSchema({
+export const ThemeSchema = sdk.makeObjectSchema({
   identity: {
     name: "Theme",
   },
   properties: {
-    name: { type: coda.ValueType.String, required: true },
-    id: { type: coda.ValueType.Number, required: true },
+    name: { type: sdk.ValueType.String, required: true },
+    id: { type: sdk.ValueType.Number, required: true },
     // Synthetic.
     // parent: Added below.
   },
@@ -15,86 +15,86 @@ export const ThemeSchema = coda.makeObjectSchema({
   featuredProperties: ["parent"],
 });
 
-ThemeSchema.properties["parent"] = coda.makeReferenceSchemaFromObjectSchema(ThemeSchema);
+ThemeSchema.properties["parent"] = sdk.makeReferenceSchemaFromObjectSchema(ThemeSchema);
 
-export const SetSchema = coda.makeObjectSchema({
+export const SetSchema = sdk.makeObjectSchema({
   identity: {
     name: "Set",
   },
   properties: {
-    name: { type: coda.ValueType.String },
-    id: { fromKey: "set_num", type: coda.ValueType.String },
-    year: { type: coda.ValueType.Number, useThousandsSeparator: false },
-    num_parts: { type: coda.ValueType.Number },
-    photo: { fromKey: "set_img_url", type: coda.ValueType.String, codaType: coda.ValueHintType.ImageReference },
-    link: { fromKey: "set_url", type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
+    name: { type: sdk.ValueType.String },
+    id: { fromKey: "set_num", type: sdk.ValueType.String },
+    year: { type: sdk.ValueType.Number, useThousandsSeparator: false },
+    num_parts: { type: sdk.ValueType.Number },
+    photo: { fromKey: "set_img_url", type: sdk.ValueType.String, codaType: sdk.ValueHintType.ImageReference },
+    link: { fromKey: "set_url", type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
     // Synthetic properties.
-    theme: coda.makeReferenceSchemaFromObjectSchema(ThemeSchema),
+    theme: sdk.makeReferenceSchemaFromObjectSchema(ThemeSchema),
   },
   displayProperty: "name",
   idProperty: "id",
   featuredProperties: ["photo", "year", "num_parts", "link"],
 });
 
-export const PartCategorySchema = coda.makeObjectSchema({
+export const PartCategorySchema = sdk.makeObjectSchema({
   identity: {
     name: "PartCategory",
   },
   properties: {
-    name: { type: coda.ValueType.String, required: true },
-    id: { type: coda.ValueType.Number, required: true },
+    name: { type: sdk.ValueType.String, required: true },
+    id: { type: sdk.ValueType.Number, required: true },
   },
   displayProperty: "name",
   idProperty: "id",
   featuredProperties: [],
 });
 
-export const ColorSchema = coda.makeObjectSchema({
+export const ColorSchema = sdk.makeObjectSchema({
   identity: {
     name: "Color",
   },
   properties: {
-    name: { type: coda.ValueType.String, required: true },
-    id: { type: coda.ValueType.Number, required: true },
-    rgb: { type: coda.ValueType.String },
-    preview: { type: coda.ValueType.String, codaType: coda.ValueHintType.ImageReference, width: "30" },
-    transparent: { fromKey: "is_trans", type: coda.ValueType.Boolean },
+    name: { type: sdk.ValueType.String, required: true },
+    id: { type: sdk.ValueType.Number, required: true },
+    rgb: { type: sdk.ValueType.String },
+    preview: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.ImageReference, width: "30" },
+    transparent: { fromKey: "is_trans", type: sdk.ValueType.Boolean },
   },
   displayProperty: "name",
   idProperty: "id",
   featuredProperties: ["rgb", "preview"],
 });
 
-export const PartSchema = coda.makeObjectSchema({
+export const PartSchema = sdk.makeObjectSchema({
   identity: {
     name: "Part",
   },
   properties: {
-    name: { type: coda.ValueType.String },
-    id: { fromKey: "part_num", type: coda.ValueType.String },
-    link: { fromKey: "part_url", type: coda.ValueType.String, codaType: coda.ValueHintType.Url },
-    photo: { fromKey: "part_img_url", type: coda.ValueType.String, codaType: coda.ValueHintType.ImageReference },
+    name: { type: sdk.ValueType.String },
+    id: { fromKey: "part_num", type: sdk.ValueType.String },
+    link: { fromKey: "part_url", type: sdk.ValueType.String, codaType: sdk.ValueHintType.Url },
+    photo: { fromKey: "part_img_url", type: sdk.ValueType.String, codaType: sdk.ValueHintType.ImageReference },
     // Synthetic.
-    category: coda.makeReferenceSchemaFromObjectSchema(PartCategorySchema),
+    category: sdk.makeReferenceSchemaFromObjectSchema(PartCategorySchema),
   },
   displayProperty: "name",
   idProperty: "id",
   featuredProperties: ["photo", "category", "link"],
 });
 
-export const SetPartSchema = coda.makeObjectSchema({
+export const SetPartSchema = sdk.makeObjectSchema({
   ...PartSchema,
   identity: {
     name: "SetPart",
   },
   properties: {
     ...PartSchema.properties,
-    name: { type: coda.ValueType.String },
-    id: { type: coda.ValueType.String },
-    quantity: { type: coda.ValueType.Number },
-    spare: { fromKey: "is_spare", type: coda.ValueType.Boolean },
+    name: { type: sdk.ValueType.String },
+    id: { type: sdk.ValueType.String },
+    quantity: { type: sdk.ValueType.Number },
+    spare: { fromKey: "is_spare", type: sdk.ValueType.Boolean },
     // Synthetic.
-    color: coda.makeReferenceSchemaFromObjectSchema(ColorSchema),
+    color: sdk.makeReferenceSchemaFromObjectSchema(ColorSchema),
   },
   displayProperty: "name",
   idProperty: "id",

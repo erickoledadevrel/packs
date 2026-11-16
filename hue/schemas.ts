@@ -1,83 +1,83 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
-export const LightSchema = coda.makeObjectSchema({
+export const LightSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String, required: true },
-    type: { type: coda.ValueType.String,  fromKey: "archetype" },
-    manufacturer: { type: coda.ValueType.String, fromKey: "manufacturername" },
-    model: { type: coda.ValueType.String, fromKey: "modelid" },
-    lightId: { type: coda.ValueType.String, fromKey: "id", required: true },
+    name: { type: sdk.ValueType.String, required: true },
+    type: { type: sdk.ValueType.String,  fromKey: "archetype" },
+    manufacturer: { type: sdk.ValueType.String, fromKey: "manufacturername" },
+    model: { type: sdk.ValueType.String, fromKey: "modelid" },
+    lightId: { type: sdk.ValueType.String, fromKey: "id", required: true },
   },
   displayProperty: "name",
   idProperty: "lightId",
   featuredProperties: ["type", "lightId"],
 });
 
-export const LightStatusSchema = coda.makeObjectSchema({
+export const LightStatusSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    lightId: { type: coda.ValueType.String },
-    on: { type: coda.ValueType.Boolean },
-    hue: { type: coda.ValueType.Number },
-    saturation: { type: coda.ValueType.Number, fromKey: "sat" },
-    brightness: { type: coda.ValueType.Number, fromKey: "bri" },
-    color: { type: coda.ValueType.String },
-    swatch: { type: coda.ValueType.String, codaType: coda.ValueHintType.ImageReference },
-    reachable: { type: coda.ValueType.Boolean },
+    name: { type: sdk.ValueType.String },
+    lightId: { type: sdk.ValueType.String },
+    on: { type: sdk.ValueType.Boolean },
+    hue: { type: sdk.ValueType.Number },
+    saturation: { type: sdk.ValueType.Number, fromKey: "sat" },
+    brightness: { type: sdk.ValueType.Number, fromKey: "bri" },
+    color: { type: sdk.ValueType.String },
+    swatch: { type: sdk.ValueType.String, codaType: sdk.ValueHintType.ImageReference },
+    reachable: { type: sdk.ValueType.Boolean },
   },
   displayProperty: "name",
 });
 
-const LightReferenceSchema = coda.makeReferenceSchemaFromObjectSchema(LightSchema, "Light");
+const LightReferenceSchema = sdk.makeReferenceSchemaFromObjectSchema(LightSchema, "Light");
 
-export const RoomSchema = coda.makeObjectSchema({
+export const RoomSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String, required: true },
-    type: { type: coda.ValueType.String, fromKey: "class" },
+    name: { type: sdk.ValueType.String, required: true },
+    type: { type: sdk.ValueType.String, fromKey: "class" },
     lights: {
-      type: coda.ValueType.Array,
+      type: sdk.ValueType.Array,
       items: LightReferenceSchema,
     },
-    roomId: { type: coda.ValueType.String, fromKey: "id", required: true },
+    roomId: { type: sdk.ValueType.String, fromKey: "id", required: true },
   },
   displayProperty: "name",
   idProperty: "roomId",
   featuredProperties: ["lights", "roomId"],
 });
 
-const RoomReferenceSchema = coda.makeReferenceSchemaFromObjectSchema(RoomSchema, "Room");
+const RoomReferenceSchema = sdk.makeReferenceSchemaFromObjectSchema(RoomSchema, "Room");
 
-export const SceneSchema = coda.makeObjectSchema({
+export const SceneSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    type: { type: coda.ValueType.String },
+    name: { type: sdk.ValueType.String },
+    type: { type: sdk.ValueType.String },
     lights: {
-      type: coda.ValueType.Array,
+      type: sdk.ValueType.Array,
       items: LightReferenceSchema,
     },
     room: RoomReferenceSchema,
-    sceneId: { type: coda.ValueType.String, fromKey: "id" },
+    sceneId: { type: sdk.ValueType.String, fromKey: "id" },
   },
   displayProperty: "name",
   idProperty: "sceneId",
   featuredProperties: ["type", "lights", "room"],
 });
 
-const TimePointSchema = coda.makeObjectSchema({
+const TimePointSchema = sdk.makeObjectSchema({
   properties: {
-    summary: { type: coda.ValueType.String },
-    type: { type: coda.ValueType.String },
-    time: { type: coda.ValueType.String },
-    offset: { type: coda.ValueType.Number },
+    summary: { type: sdk.ValueType.String },
+    type: { type: sdk.ValueType.String },
+    time: { type: sdk.ValueType.String },
+    offset: { type: sdk.ValueType.Number },
   },
   displayProperty: "summary",
 })
 
-export const AutomationSchema = coda.makeObjectSchema({
+export const AutomationSchema = sdk.makeObjectSchema({
   properties: {
-    name: { type: coda.ValueType.String },
-    automationId: { type: coda.ValueType.String, fromKey: "id" },
-    enabled: { type: coda.ValueType.Boolean },
+    name: { type: sdk.ValueType.String },
+    automationId: { type: sdk.ValueType.String, fromKey: "id" },
+    enabled: { type: sdk.ValueType.Boolean },
     start: TimePointSchema,
     end: TimePointSchema,
   },

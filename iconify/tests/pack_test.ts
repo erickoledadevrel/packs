@@ -6,9 +6,9 @@ import {
   MockExecutionContext,
   newJsonFetchResponse,
   newMockExecutionContext,
-} from "@codahq/packs-sdk/dist/development";
+} from "@superhuman/plugins-sdk/dist/development";
 import { pack } from "../pack";
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
 const Collection = {
   name: "Material Design Icons",
@@ -30,7 +30,7 @@ describe("Iconify", () => {
   });
 
   function execute(name: string, params: any[] = []) {
-    return executeFormulaFromPackDef(pack, name, params as coda.ParamValues<coda.ParamDefs>, context, {
+    return executeFormulaFromPackDef(pack, name, params as sdk.ParamValues<sdk.ParamDefs>, context, {
       useDeprecatedResultNormalization: false,
     });
   }
@@ -126,7 +126,7 @@ describe("Iconify", () => {
   it("autocompletes collections by name and ID", async () => {
     context.fetcher.fetch.resolves(newJsonFetchResponse({ mdi: Collection }));
     let formula = pack.formulas.find(formula => formula.name === "Icons");
-    let parameters: Array<coda.ParamDefs[number]> = formula.parameters;
+    let parameters: Array<sdk.ParamDefs[number]> = formula.parameters;
     let autocomplete = parameters.find(parameter => parameter.name === "collection").autocomplete;
     for (let search of ["mdi", "material"]) {
       let result = await executeMetadataFormula(autocomplete, { search }, context);

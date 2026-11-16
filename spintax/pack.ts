@@ -1,7 +1,7 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 const Spinner = require('node-spintax');
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
 const DefaultUnique = false;
 
@@ -9,14 +9,14 @@ pack.addFormula({
   name: "GenerateAll",
   description: "Generate all the variations of the spintax string.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "spintax",
       description: "A string in the spintax format.",
     }),
   ],
-  resultType: coda.ValueType.Array,
-  items: {type: coda.ValueType.String},
+  resultType: sdk.ValueType.Array,
+  items: {type: sdk.ValueType.String},
   examples: [
     {
       params: ["Hello {World|Earth|Humans}!"],
@@ -34,26 +34,26 @@ pack.addFormula({
   name: "GenerateSome",
   description: "Generate a number of random variations of the spintax string.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "spintax",
       description: "A string in the spintax format.",
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Number,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Number,
       name: "variations",
       description: "How many variations to generate.",
       suggestedValue: 10,
     }),
-    coda.makeParameter({
-      type: coda.ParameterType.Boolean,
+    sdk.makeParameter({
+      type: sdk.ParameterType.Boolean,
       name: "unique",
       description: `If each of the generated variations should be unique. Default: ${DefaultUnique}`,
       optional: true,
     }),
   ],
-  resultType: coda.ValueType.Array,
-  items: {type: coda.ValueType.String},
+  resultType: sdk.ValueType.Array,
+  items: {type: sdk.ValueType.String},
   cacheTtlSecs: 0,
   examples: [
     {
@@ -75,14 +75,14 @@ pack.addFormula({
   name: "Generate",
   description: "Generate a random variation of the spintax string.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "spintax",
       description: "A string in the spintax format.",
     }),
   ],
-  resultType: coda.ValueType.Array,
-  items: {type: coda.ValueType.String},
+  resultType: sdk.ValueType.Array,
+  items: {type: sdk.ValueType.String},
   cacheTtlSecs: 0,
   examples: [
     {
@@ -101,20 +101,20 @@ pack.addFormula({
   name: "Build",
   description: "Builds a string in the spintax format, from a base string and columns of possible options.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "format",
       description: "The base format string, which contains a placeholders like {1} where the options should be inserted.",
     }),
   ],
   varargParameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.SparseStringArray,
+    sdk.makeParameter({
+      type: sdk.ParameterType.SparseStringArray,
       name: "options",
       description: "The options available for a given placeholder. The first list of options will replace the {1} placeholder, etc.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   examples: [
     {
       params: ["Hello {1}!", ["World", "Earth", "Humans"]],

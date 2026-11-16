@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 
 export function formatMovieForSchema(movie, country: string, configuration) {
   formatCommonForSchema(movie, configuration);
@@ -42,10 +42,10 @@ function formatCommonForSchema(common, configuration) {
   // Images
   let baseUrl = configuration.images.secure_base_url;
   if (common.poster_path) {
-    common.poster_path = coda.joinUrl(baseUrl, getLargestStandardSize(configuration.images.poster_sizes), common.poster_path);
+    common.poster_path = sdk.joinUrl(baseUrl, getLargestStandardSize(configuration.images.poster_sizes), common.poster_path);
   }
   if (common.backdrop_path) {
-    common.backdrop_path = coda.joinUrl(baseUrl, getLargestStandardSize(configuration.images.backdrop_sizes), common.backdrop_path);
+    common.backdrop_path = sdk.joinUrl(baseUrl, getLargestStandardSize(configuration.images.backdrop_sizes), common.backdrop_path);
   }
   return common;
 }

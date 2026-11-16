@@ -1,18 +1,18 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import YAML from "yaml";
 
 const OneDaySecs = 24 * 60 * 60;
 
-export const pack = coda.newPack();
+export const pack = sdk.newPack();
 
-const YAMLParam = coda.makeParameter({
-  type: coda.ParameterType.String,
+const YAMLParam = sdk.makeParameter({
+  type: sdk.ParameterType.String,
   name: "yaml",
   description: "The YAML contents as a string.",
 });
 
-const IndentParam = coda.makeParameter({
-  type: coda.ParameterType.Number,
+const IndentParam = sdk.makeParameter({
+  type: sdk.ParameterType.Number,
   name: "indent",
   description: "The number of spaces to indent by. Default: 2.",
   optional: true,
@@ -25,7 +25,7 @@ pack.addFormula({
     YAMLParam,
     IndentParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { 
@@ -62,7 +62,7 @@ pack.addFormula({
   parameters: [
     YAMLParam,
   ],
-  resultType: coda.ValueType.Boolean,
+  resultType: sdk.ValueType.Boolean,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`a: [1, 2]`], result: true },
@@ -89,7 +89,7 @@ pack.addFormula({
     YAMLParam,
     IndentParam,
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { params: [`a: [1, 2]`], result: `{"a":[1,2]}` },
@@ -116,13 +116,13 @@ pack.addFormula({
   name: "ToYAML",
   description: "Converts a JSON string to YAML.",
   parameters: [
-    coda.makeParameter({
-      type: coda.ParameterType.String,
+    sdk.makeParameter({
+      type: sdk.ParameterType.String,
       name: "json",
       description: "The JSON contents as a string.",
     }),
   ],
-  resultType: coda.ValueType.String,
+  resultType: sdk.ValueType.String,
   cacheTtlSecs: OneDaySecs,
   examples: [
     { 
@@ -141,7 +141,7 @@ pack.addFormula({
       return YAML.stringify(value);
     } catch (e) {
       if (e.toString().startsWith("SyntaxError")) {
-        throw new coda.UserVisibleError(e);
+        throw new sdk.UserVisibleError(e);
       }
       throw e;
     }
@@ -153,7 +153,7 @@ function parse(yaml: string) {
     return YAML.parse(yaml);
   } catch (e) {
     if (e.toString().startsWith("YAMLParseError")) {
-      throw new coda.UserVisibleError(e);
+      throw new sdk.UserVisibleError(e);
     }
     throw e;
   }

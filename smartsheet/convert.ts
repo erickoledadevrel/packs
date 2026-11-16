@@ -1,4 +1,4 @@
-import * as coda from "@codahq/packs-sdk";
+import * as sdk from "@superhuman/plugins-sdk";
 import { Cell, Column, SheetFormatSettings, Sheet, Row, CodaRow, CodaPerson } from "./types";
 
 export function getConverter(
@@ -42,7 +42,7 @@ abstract class ColumnConverter<T, C> {
     this.sheet = sheet;
   }
 
-  getSchema(): coda.Schema & coda.ObjectSchemaProperty {
+  getSchema(): sdk.Schema & sdk.ObjectSchemaProperty {
     let schema = this._getBaseSchema();
     schema.fixedId = String(this.column.id);
     schema.fromKey = String(this.column.id);
@@ -53,7 +53,7 @@ abstract class ColumnConverter<T, C> {
   }
 
   // Each implementation must define the base property schema.
-  abstract _getBaseSchema(): coda.Schema & coda.ObjectSchemaProperty;
+  abstract _getBaseSchema(): sdk.Schema & sdk.ObjectSchemaProperty;
 
   // Default to passing through the value as-is, in both directions.
   formatValueForSchema(cell: Cell<T>): C {
@@ -70,8 +70,8 @@ abstract class ColumnConverter<T, C> {
 
 class AnyColumnConverter extends ColumnConverter<any, string> {
   _getBaseSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
     });
   }
 
@@ -85,19 +85,19 @@ class AnyColumnConverter extends ColumnConverter<any, string> {
 
 class BooleanColumnConverter extends ColumnConverter<boolean, boolean> {
   _getBaseSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.Boolean,
+    return sdk.makeSchema({
+      type: sdk.ValueType.Boolean,
     });
   }
 }
 
 class ContactListColumnConverter extends ColumnConverter<string, CodaPerson> {
   _getBaseSchema() {
-    return coda.makeObjectSchema({
-      codaType: coda.ValueHintType.Person,
+    return sdk.makeObjectSchema({
+      codaType: sdk.ValueHintType.Person,
       properties: {
-        name: { type: coda.ValueType.String },
-        email: { type: coda.ValueType.String, required: true },
+        name: { type: sdk.ValueType.String },
+        email: { type: sdk.ValueType.String, required: true },
       },
       displayProperty: "name",
       idProperty: "email",
@@ -124,18 +124,18 @@ class ContactListColumnConverter extends ColumnConverter<string, CodaPerson> {
 
 class DateColumnConverter extends ColumnConverter<string, string> {
   _getBaseSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Date,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Date,
     });
   }
 }
 
 class DateTimeColumnConverter extends ColumnConverter<string, string> {
   _getBaseSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.DateTime,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.DateTime,
     });
   }
 }
@@ -151,9 +151,9 @@ class DurationColumnConverter extends ColumnConverter<string, string> {
   ];
 
   _getBaseSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.Duration,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.Duration,
     });
   }
 
@@ -188,9 +188,9 @@ class DurationColumnConverter extends ColumnConverter<string, string> {
 
 class PicklistColumnConverter extends ColumnConverter<string, string> {
   _getBaseSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
-      codaType: coda.ValueHintType.SelectList,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
+      codaType: sdk.ValueHintType.SelectList,
       options: this.column.options,
     });
   }
@@ -198,8 +198,8 @@ class PicklistColumnConverter extends ColumnConverter<string, string> {
 
 class TextOrNumberColumnConverter extends ColumnConverter<string|number, string> {
   _getBaseSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
     });
   }
 
@@ -224,8 +224,8 @@ class TextOrNumberColumnConverter extends ColumnConverter<string|number, string>
 
 class UnknownColumnConverter extends ColumnConverter<any, string> {
   _getBaseSchema() {
-    return coda.makeSchema({
-      type: coda.ValueType.String,
+    return sdk.makeSchema({
+      type: sdk.ValueType.String,
       mutable: false,
     });
   }
